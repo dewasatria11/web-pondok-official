@@ -5165,19 +5165,6 @@ Jazakumullahu khairan,
       textarea.value = maintenanceState.message;
     }
 
-    const lastUpdate = $("#maintenanceLastUpdate");
-    if (lastUpdate) {
-      lastUpdate.textContent = maintenanceState.updated_at
-        ? formatIDDatetime(maintenanceState.updated_at)
-        : "Belum pernah";
-    }
-
-    const updatedBy = $("#maintenanceUpdatedBy");
-    if (updatedBy) {
-      updatedBy.textContent = maintenanceState.updated_by
-        ? `Terakhir diubah oleh ${maintenanceState.updated_by}`
-        : "Belum ada penanggung jawab tercatat";
-    }
   }
 
   function setMaintenanceControlsDisabled(state) {

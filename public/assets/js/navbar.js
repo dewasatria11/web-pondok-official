@@ -460,16 +460,11 @@
         "Kami berusaha menghadirkan pengalaman terbaik bagi para wali dan calon santri. Mohon doa agar proses ini dimudahkan Allah SWT.";
       card.appendChild(doaEl);
 
-      const metaEl = document.createElement("p");
-      metaEl.id = "maintenanceOverlayMeta";
-      metaEl.className = "maintenance-meta";
-      card.appendChild(metaEl);
-
       const button = document.createElement("button");
       button.type = "button";
       button.className = "btn btn-light btn-lg fw-semibold shadow-sm";
       button.innerHTML =
-        '<i class="bi bi-arrow-clockwise me-2"></i>Muat Ulang Halaman';
+        '<i class="bi bi-arrow-clockwise me-2"></i>Refresh';
       button.addEventListener("click", () => window.location.reload());
       card.appendChild(button);
 
@@ -483,15 +478,11 @@
     const doaEl =
       overlay.querySelector("#maintenanceOverlayDoa") ||
       overlay.querySelector(".maintenance-doa");
-    const metaEl =
-      overlay.querySelector("#maintenanceOverlayMeta") ||
-      overlay.querySelector(".maintenance-meta");
-
-    return { overlay, messageEl, metaEl, doaEl };
+    return { overlay, messageEl, doaEl };
   };
 
   const showOverlay = (payload) => {
-    const { overlay, messageEl, metaEl, doaEl } = getOverlayElements();
+    const { overlay, messageEl, doaEl } = getOverlayElements();
     overlay.style.display = "flex";
     document.body?.classList.add("maintenance-locked");
     if (messageEl) {
@@ -500,14 +491,6 @@
     if (doaEl) {
       doaEl.textContent =
         "Semoga Allah SWT memudahkan segala urusan dan memberikan kelancaran kepada kita semua.";
-    }
-    if (metaEl) {
-      const updatedInfo = payload.updated_by
-        ? `Admin: ${payload.updated_by}`
-        : "Admin sedang menyiapkan sistem.";
-      metaEl.textContent = `${updatedInfo} · ${formatDatetime(
-        payload.updated_at
-      )}`;
     }
   };
 
