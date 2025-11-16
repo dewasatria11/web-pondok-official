@@ -226,6 +226,15 @@ class handler(BaseHTTPRequestHandler):
                 else:
                     KontakSettingsHandler.do_OPTIONS(self)
 
+            elif action == 'maintenance_status':
+                from lib.handlers.maintenance_status import handler as MaintenanceStatusHandler
+                if self.command == 'GET':
+                    MaintenanceStatusHandler.do_GET(self)
+                elif self.command == 'POST':
+                    MaintenanceStatusHandler.do_POST(self)
+                else:
+                    MaintenanceStatusHandler.do_OPTIONS(self)
+
             elif action == 'berita_items':
                 from lib.handlers.berita_items import handler as BeritaItemsHandler
                 if self.command == 'GET':

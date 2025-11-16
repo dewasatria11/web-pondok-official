@@ -39,6 +39,12 @@
   let brosurItemsData = [];
   let kontakItemsData = [];
   let kontakSettingsData = null;
+  let maintenanceState = {
+    active: false,
+    message: "",
+    updated_at: null,
+    updated_by: "",
+  };
   const ALUR_LANGS = ["id", "en"];
   const ALUR_LABEL = {
     id: { name: "Bahasa Indonesia", flag: "🇮🇩" },
@@ -93,6 +99,7 @@
     biaya: "Biaya Pendaftaran",
     brosur: "Brosur",
     kontak: "Kontak",
+    maintenance: "Mode Maintenance",
   };
   const INFORMASI_ENDPOINTS = {
     alur: "/api/alur_steps",
@@ -409,6 +416,8 @@
     } else if (tab === "kontak") {
       loadKontakItems(true);
       loadKontakSettings();
+    } else if (tab === "maintenance") {
+      loadMaintenanceStatus();
     } else if (tab === "berita") {
       loadBeritaItems(true);
     }
@@ -5093,6 +5102,173 @@ Jazakumullahu khairan,
     }
   }
 
+  /* =========================
+     9) MODE MAINTENANCE
+     ========================= */
+  const MAINTENANCE_API = "/api/maintenance_status";
+
+  function normalizeMaintenanceState(state = {}) {
+    return {
+      active: Boolean(state.active),
+      message: state.message || "",
+      updated_at: state.updated_at || state.updatedAt || null,
+      updated_by: state.updated_by || state.updatedBy || "",
+    };
+  }
+
+  function defaultMaintenanceMessage() {
+    return "Situs sedang menjalani perawatan sistem. Silakan coba kembali beberapa saat lagi.";
+  }
+
+  function updateMaintenanceUI(nextState = maintenanceState) {
+    maintenanceState = normalizeMaintenanceState(nextState);
+
+    const badge = $("#maintenanceStatusBadge");
+    if (badge) {
+      const badgeClass = maintenanceState.active ? "bg-danger" : "bg-success";
+      const badgeIcon = maintenanceState.active
+        ? "bi-exclamation-octagon-fill"
+        : "bi-check-circle-fill";
+      const badgeText = maintenanceState.active
+        ? "Maintenance Aktif"
+        : "Situs Normal";
+      badge.className = `badge ${badgeClass}`;
+      badge.innerHTML = `<i class="bi ${badgeIcon} me-1"></i>${badgeText}`;
+    }
+
+    const summary = $("#maintenanceStatusSummary");
+    if (summary) {
+      summary.textContent = maintenanceState.active
+        ? "Pengunjung tidak dapat mengakses form pendaftaran & pembayaran."
+        : "Seluruh halaman publik berjalan normal.";
+    }
+
+    const alert = $("#maintenanceActiveAlert");
+    if (alert) {
+      alert.classList.toggle("d-none", !maintenanceState.active);
+    }
+
+    const alertMessage = $("#maintenanceActiveMessagePreview");
+    const previewText = maintenanceState.message || defaultMaintenanceMessage();
+    if (alertMessage) alertMessage.textContent = previewText;
+
+    const preview = $("#maintenancePreviewMessage");
+    if (preview) preview.textContent = previewText;
+
+    const toggle = $("#maintenanceToggle");
+    if (toggle) {
+      toggle.checked = maintenanceState.active;
+    }
+
+    const textarea = $("#maintenanceMessageInput");
+    if (textarea && textarea.value.trim() !== maintenanceState.message.trim()) {
+      textarea.value = maintenanceState.message;
+    }
+
+    const lastUpdate = $("#maintenanceLastUpdate");
+    if (lastUpdate) {
+      lastUpdate.textContent = maintenanceState.updated_at
+        ? formatIDDatetime(maintenanceState.updated_at)
+        : "Belum pernah";
+    }
+
+    const updatedBy = $("#maintenanceUpdatedBy");
+    if (updatedBy) {
+      updatedBy.textContent = maintenanceState.updated_by
+        ? `Terakhir diubah oleh ${maintenanceState.updated_by}`
+        : "Belum ada penanggung jawab tercatat";
+    }
+  }
+
+  function setMaintenanceControlsDisabled(state) {
+    ["maintenanceToggle", "maintenanceMessageInput"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.disabled = state;
+    });
+  }
+
+  async function loadMaintenanceStatus(showToast = false) {
+    const badge = $("#maintenanceStatusBadge");
+    if (badge) {
+      badge.className = "badge bg-secondary";
+      badge.innerHTML =
+        '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>Memuat...';
+    }
+
+    setMaintenanceControlsDisabled(true);
+    try {
+      const response = await fetch(MAINTENANCE_API, { cache: "no-store" });
+      const result = await response.json();
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || "Gagal mengambil status maintenance");
+      }
+      updateMaintenanceUI(result.data);
+      if (showToast) {
+        safeToastr.success("Status maintenance terbaru dimuat");
+      }
+    } catch (error) {
+      console.error("[MAINTENANCE] Load error:", error);
+      safeToastr.error(error.message || "Tidak dapat memuat status maintenance");
+      const summary = $("#maintenanceStatusSummary");
+      if (summary) {
+        summary.textContent =
+          "Gagal memuat status. Silakan coba lagi dengan tombol muat ulang.";
+      }
+    } finally {
+      setMaintenanceControlsDisabled(false);
+    }
+  }
+
+  async function saveMaintenanceSettings(event) {
+    if (event) event.preventDefault();
+
+    const toggle = $("#maintenanceToggle");
+    const messageInput = $("#maintenanceMessageInput");
+    const btn = $("#maintenanceSaveBtn");
+    if (!toggle || !messageInput || !btn) return;
+
+    const payload = {
+      active: toggle.checked,
+      message: messageInput.value.trim(),
+      updatedBy: localStorage.getItem("adminEmail") || "Admin",
+    };
+
+    setButtonLoading(btn, true, "Menyimpan...");
+    setMaintenanceControlsDisabled(true);
+    try {
+      const response = await fetch(MAINTENANCE_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || "Gagal menyimpan pengaturan");
+      }
+      updateMaintenanceUI(result.data);
+      safeToastr.success("Mode maintenance berhasil diperbarui");
+    } catch (error) {
+      console.error("[MAINTENANCE] Save error:", error);
+      safeToastr.error(error.message || "Gagal menyimpan mode maintenance");
+    } finally {
+      setButtonLoading(btn, false);
+      setMaintenanceControlsDisabled(false);
+    }
+  }
+
+  function resetMaintenanceForm() {
+    updateMaintenanceUI(maintenanceState);
+    safeToastr.info("Form maintenance dikembalikan ke nilai terakhir");
+  }
+
+  function handleMaintenanceMessageInput(event) {
+    const preview = $("#maintenancePreviewMessage");
+    const alertPreview = $("#maintenanceActiveMessagePreview");
+    const text = (event?.target?.value || "").trim() || defaultMaintenanceMessage();
+    if (preview) preview.textContent = text;
+    if (alertPreview) alertPreview.textContent = text;
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     $("#alurForm")?.addEventListener("submit", handleAlurSubmit);
     $("#btnResetAlur")?.addEventListener("click", resetAlurForm);
@@ -5150,6 +5326,19 @@ Jazakumullahu khairan,
     setKontakActiveLang("id");
 
     $("#kontakSettingsForm")?.addEventListener("submit", handleKontakSettingsSubmit);
+
+    $("#maintenanceForm")?.addEventListener("submit", saveMaintenanceSettings);
+    $("#maintenanceResetBtn")?.addEventListener("click", resetMaintenanceForm);
+    $("#maintenanceRefreshBtn")?.addEventListener("click", () =>
+      loadMaintenanceStatus(true)
+    );
+    $("#maintenanceMessageInput")?.addEventListener(
+      "input",
+      handleMaintenanceMessageInput
+    );
+    if ($("#tab-maintenance")) {
+      updateMaintenanceUI(maintenanceState);
+    }
 
     // Berita form setup
     setupBeritaLangSwitch();

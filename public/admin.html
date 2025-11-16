@@ -724,6 +724,9 @@
           <a class="nav-link" href="#" data-tab="kontak" onclick="switchTab('kontak')">
             <i class="bi bi-telephone"></i> Kontak
           </a>
+          <a class="nav-link" href="#" data-tab="maintenance" onclick="switchTab('maintenance')">
+            <i class="bi bi-tools"></i> Mode Maintenance
+          </a>
         </li>
       </ul>
 
@@ -2019,6 +2022,97 @@
                     <div class="d-flex gap-2">
                       <button type="submit" class="btn btn-primary" id="btnSaveKontakSettings">
                         <i class="bi bi-save"></i> Simpan Map
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Maintenance -->
+        <div id="tab-maintenance" class="tab-content" style="display:none">
+          <div class="page-header d-flex justify-content-between align-items-center">
+            <div>
+              <h2><i class="bi bi-tools"></i> Mode Maintenance</h2>
+              <p>Aktifkan mode perawatan untuk menutup seluruh halaman publik sementara</p>
+            </div>
+            <div class="text-end">
+              <span class="badge bg-secondary" id="maintenanceStatusBadge">
+                <i class="bi bi-info-circle"></i> Status belum dimuat
+              </span>
+              <div class="text-muted small">
+                Terakhir diperbarui: <span id="maintenanceLastUpdate">-</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-lg-5">
+              <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                  <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="rounded-circle bg-success bg-opacity-25 text-success d-flex align-items-center justify-content-center" style="width:60px;height:60px;font-size:1.8rem;">
+                      <i class="bi bi-shield-exclamation"></i>
+                    </div>
+                    <div>
+                      <h5 class="mb-1">Status Sistem</h5>
+                      <p class="text-muted mb-0 small" id="maintenanceStatusSummary">
+                        Menunggu data terbaru...
+                      </p>
+                    </div>
+                  </div>
+                  <div id="maintenanceActiveAlert" class="alert alert-warning d-none" role="alert">
+                    <div class="d-flex gap-2">
+                      <i class="bi bi-exclamation-triangle-fill"></i>
+                      <div>
+                        <strong>Situs sedang maintenance</strong>
+                        <p class="mb-0 small" id="maintenanceActiveMessagePreview">Pengunjung tidak dapat mengakses form pendaftaran dan pembayaran.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="border rounded p-3 bg-light mt-3">
+                    <p class="mb-1 text-muted small">Pesan yang dilihat pengunjung:</p>
+                    <p class="mb-0 fw-semibold" id="maintenancePreviewMessage">-</p>
+                  </div>
+                  <p class="text-muted mt-3 small" id="maintenanceUpdatedBy">
+                    -
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-7">
+              <div class="card border-0 shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0"><i class="bi bi-toggle2-on"></i> Pengaturan Mode Maintenance</h5>
+                  <button type="button" class="btn btn-outline-secondary btn-sm" id="maintenanceRefreshBtn">
+                    <i class="bi bi-arrow-clockwise"></i> Muat Ulang Status
+                  </button>
+                </div>
+                <div class="card-body">
+                  <form id="maintenanceForm">
+                    <div class="form-check form-switch form-switch-lg mb-3">
+                      <input class="form-check-input" type="checkbox" role="switch" id="maintenanceToggle">
+                      <label class="form-check-label fw-semibold" for="maintenanceToggle">
+                        Aktifkan Mode Maintenance
+                      </label>
+                      <div class="text-muted small">
+                        Saat aktif, seluruh halaman publik akan terkunci dan menampilkan pesan yang Anda tulis.
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="maintenanceMessageInput" class="form-label">Pesan untuk Pengunjung</label>
+                      <textarea id="maintenanceMessageInput" class="form-control" rows="4" placeholder="Contoh: Situs sedang perawatan hingga pukul 14.00 WIB. Terima kasih atas pengertiannya."></textarea>
+                      <small class="text-muted">Gunakan nada sopan dan berikan estimasi waktu selesai.</small>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2">
+                      <button type="submit" class="btn btn-success" id="maintenanceSaveBtn">
+                        <i class="bi bi-save"></i> Simpan Pengaturan
+                      </button>
+                      <button type="button" class="btn btn-outline-secondary" id="maintenanceResetBtn">
+                        <i class="bi bi-arrow-repeat"></i> Reset Form
                       </button>
                     </div>
                   </form>

@@ -304,3 +304,252 @@
     initActiveLinks(nav, mobileMenu);
   });
 })();
+
+(function () {
+  "use strict";
+
+  const API_URL = "/api/maintenance_status";
+  const STYLE_ID = "maintenance-overlay-styles";
+  const OVERLAY_ID = "globalMaintenanceOverlay";
+  const POLL_INTERVAL = 5 * 60 * 1000;
+  const DEFAULT_MESSAGE =
+    "Assalamualaikum Wr. Wb. Saat ini situs sedang dalam perawatan singkat. Mohon berkenan kembali beberapa saat lagi.";
+
+  const ensureStyles = () => {
+    if (document.getElementById(STYLE_ID)) return;
+    const style = document.createElement("style");
+    style.id = STYLE_ID;
+    style.textContent = `
+      body.maintenance-locked { overflow: hidden !important; }
+      #${OVERLAY_ID} {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background:
+          radial-gradient(circle at top, rgba(26,83,25,0.88), rgba(6,24,11,0.95)),
+          repeating-linear-gradient(45deg, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 2px, transparent 2px, transparent 12px);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: clamp(1.5rem, 3vw, 3rem);
+        text-align: center;
+      }
+      #${OVERLAY_ID}::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.18;
+        background: radial-gradient(circle, rgba(255,255,255,0.22) 0, transparent 55%) top left / 220px 220px,
+                    radial-gradient(circle, rgba(255,255,255,0.12) 0, transparent 60%) bottom right / 260px 260px;
+        pointer-events: none;
+      }
+      #${OVERLAY_ID} .maintenance-card {
+        max-width: 640px;
+        width: 100%;
+        background: rgba(255,255,255,0.08);
+        border-radius: 24px;
+        padding: clamp(1.5rem, 4vw, 2.75rem);
+        backdrop-filter: blur(6px);
+        box-shadow: 0 25px 70px rgba(0,0,0,0.35);
+      }
+      #${OVERLAY_ID} .maintenance-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.15);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.25rem;
+        margin-bottom: 1rem;
+      }
+      #${OVERLAY_ID} .maintenance-basmalah {
+        font-size: clamp(1rem, 3vw, 1.25rem);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.8);
+        margin-bottom: 0.75rem;
+      }
+      #${OVERLAY_ID} h2 {
+        font-size: clamp(1.5rem, 5vw, 2.25rem);
+        margin-bottom: 0.75rem;
+        font-weight: 700;
+      }
+      #${OVERLAY_ID} .maintenance-greeting {
+        font-size: 1rem;
+        letter-spacing: 0.02em;
+        color: rgba(255,255,255,0.92);
+        margin-bottom: 0.35rem;
+      }
+      #${OVERLAY_ID} p {
+        margin-bottom: 0.5rem;
+        line-height: 1.6;
+        color: rgba(255,255,255,0.9);
+      }
+      #${OVERLAY_ID} .maintenance-meta {
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.7);
+      }
+      #${OVERLAY_ID} .maintenance-doa {
+        font-size: 0.95rem;
+        color: rgba(255,255,255,0.85);
+        margin-top: 0.75rem;
+        font-style: italic;
+      }
+      #${OVERLAY_ID} button {
+        margin-top: 1rem;
+        border-radius: 999px;
+        padding-inline: 2rem;
+        background: linear-gradient(135deg, #facc15, #f97316);
+        border: none;
+        color: #0d1b0f;
+      }
+    `;
+    document.head?.appendChild(style);
+  };
+
+  const formatDatetime = (value) => {
+    if (!value) return "Waktu tidak tersedia";
+    try {
+      return new Date(value).toLocaleString("id-ID", {
+        dateStyle: "full",
+        timeStyle: "short",
+      });
+    } catch (error) {
+      return value;
+    }
+  };
+
+  const getOverlayElements = () => {
+    let overlay = document.getElementById(OVERLAY_ID);
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.id = OVERLAY_ID;
+      const card = document.createElement("div");
+      card.className = "maintenance-card";
+
+      const icon = document.createElement("div");
+      icon.className = "maintenance-icon";
+      icon.textContent = "🛠️";
+      card.appendChild(icon);
+
+      const basmalah = document.createElement("div");
+      basmalah.className = "maintenance-basmalah";
+      basmalah.textContent = "Bismillahirrahmanirrahim";
+      card.appendChild(basmalah);
+
+      const greeting = document.createElement("p");
+      greeting.className = "maintenance-greeting";
+      greeting.textContent = "Assalamualaikum Warahmatullahi Wabarakatuh";
+      card.appendChild(greeting);
+
+      const title = document.createElement("h2");
+      title.textContent = "Sedang Perawatan Sistem";
+      card.appendChild(title);
+
+      const messageEl = document.createElement("p");
+      messageEl.id = "maintenanceOverlayMessage";
+      messageEl.textContent = DEFAULT_MESSAGE;
+      card.appendChild(messageEl);
+
+      const doaEl = document.createElement("p");
+      doaEl.id = "maintenanceOverlayDoa";
+      doaEl.className = "maintenance-doa";
+      doaEl.textContent =
+        "Kami berusaha menghadirkan pengalaman terbaik bagi para wali dan calon santri. Mohon doa agar proses ini dimudahkan Allah SWT.";
+      card.appendChild(doaEl);
+
+      const metaEl = document.createElement("p");
+      metaEl.id = "maintenanceOverlayMeta";
+      metaEl.className = "maintenance-meta";
+      card.appendChild(metaEl);
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "btn btn-light btn-lg fw-semibold shadow-sm";
+      button.innerHTML =
+        '<i class="bi bi-arrow-clockwise me-2"></i>Muat Ulang Halaman';
+      button.addEventListener("click", () => window.location.reload());
+      card.appendChild(button);
+
+      overlay.appendChild(card);
+      document.body?.appendChild(overlay);
+    }
+
+    const messageEl =
+      overlay.querySelector("#maintenanceOverlayMessage") ||
+      overlay.querySelector("p");
+    const doaEl =
+      overlay.querySelector("#maintenanceOverlayDoa") ||
+      overlay.querySelector(".maintenance-doa");
+    const metaEl =
+      overlay.querySelector("#maintenanceOverlayMeta") ||
+      overlay.querySelector(".maintenance-meta");
+
+    return { overlay, messageEl, metaEl, doaEl };
+  };
+
+  const showOverlay = (payload) => {
+    const { overlay, messageEl, metaEl, doaEl } = getOverlayElements();
+    overlay.style.display = "flex";
+    document.body?.classList.add("maintenance-locked");
+    if (messageEl) {
+      messageEl.textContent = payload.message || DEFAULT_MESSAGE;
+    }
+    if (doaEl) {
+      doaEl.textContent =
+        "Semoga Allah SWT memudahkan segala urusan dan memberikan kelancaran kepada kita semua.";
+    }
+    if (metaEl) {
+      const updatedInfo = payload.updated_by
+        ? `Admin: ${payload.updated_by}`
+        : "Admin sedang menyiapkan sistem.";
+      metaEl.textContent = `${updatedInfo} · ${formatDatetime(
+        payload.updated_at
+      )}`;
+    }
+  };
+
+  const hideOverlay = () => {
+    const overlay = document.getElementById(OVERLAY_ID);
+    if (overlay) overlay.style.display = "none";
+    document.body?.classList.remove("maintenance-locked");
+  };
+
+  const applyStatus = (state) => {
+    if (state && state.active) {
+      showOverlay(state);
+    } else {
+      hideOverlay();
+    }
+  };
+
+  const fetchStatus = async () => {
+    try {
+      const res = await fetch(API_URL, { cache: "no-store" });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.ok) {
+        throw new Error(data?.error || "Gagal mengambil status maintenance");
+      }
+      applyStatus(data.data || {});
+    } catch (error) {
+      console.warn("[MAINTENANCE] Tidak dapat memuat status:", error);
+    }
+  };
+
+  const init = () => {
+    if (!document.body || document.body.dataset.skipMaintenance === "true") {
+      return;
+    }
+    ensureStyles();
+    fetchStatus();
+    setInterval(fetchStatus, POLL_INTERVAL);
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
+  }
+})();
