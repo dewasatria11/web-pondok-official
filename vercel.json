@@ -45,6 +45,7 @@
     { "source": "/api/kontak_items", "destination": "/api/index?action=kontak_items" },
     { "source": "/api/kontak_settings", "destination": "/api/index?action=kontak_settings" },
     { "source": "/api/berita_items", "destination": "/api/index?action=berita_items" },
+    { "source": "/api/maintenance_status", "destination": "/api/index?action=maintenance_status" },
     { "source": "/", "destination": "/index.html" },
     { "source": "/daftar", "destination": "/daftar.html" },
     { "source": "/admin", "destination": "/admin.html" },
