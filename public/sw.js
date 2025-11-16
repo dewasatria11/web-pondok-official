@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ppdsb-pwa-v1';
+const CACHE_NAME = 'ppdsb-pwa-v2';
 const CORE_ASSETS = [
   '/',
   '/index.html',
@@ -297,7 +297,21 @@ function escapeHtml(value = '') {
     .replace(/'/g, '&#39;');
 }
 
+const MAINTENANCE_BYPASS_PATHS = [
+  '/admin',
+  '/admin.html',
+  '/login',
+  '/login.html',
+  '/admin/index.html',
+  '/login/index.html',
+];
+
 async function handleHtmlRequest(request) {
+  const url = new URL(request.url);
+  if (MAINTENANCE_BYPASS_PATHS.some((path) => url.pathname.startsWith(path))) {
+    return networkFirst(request);
+  }
+
   const state = await getMaintenanceState();
   if (state.active) {
     return new Response(maintenancePageHTML(state), {

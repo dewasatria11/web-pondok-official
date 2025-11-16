@@ -16,7 +16,7 @@ TABLE_NAME = "maintenance_settings"
 
 
 def _public_client():
-    return supabase_client(service_role=False)
+    return supabase_client(service_role=True)
 
 
 def _admin_client():

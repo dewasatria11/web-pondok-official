@@ -5338,6 +5338,7 @@ Jazakumullahu khairan,
     );
     if ($("#tab-maintenance")) {
       updateMaintenanceUI(maintenanceState);
+      loadMaintenanceStatus();
     }
 
     // Berita form setup
