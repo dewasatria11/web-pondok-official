@@ -11,7 +11,7 @@
     },
     "description": {
       "home": "Al Ikhsan Islamic Boarding School PPDB 2025/2026 is now open. Apply online, check registration status, review requirements, fees, brochures, and the official admission flow.",
-      "register": "New santri registration form for Al Ikhsan Islamic Boarding School. Fill in personal data, education, parents, and upload registration documents.",
+      "register": "New Student registration form for Al Ikhsan Islamic Boarding School. Fill in personal data, education, parents, and upload registration documents.",
       "flow": "Registration flow for new students of Al Ikhsan Islamic Boarding School. A step-by-step guide from online registration to payment and re-enrolment.",
       "requirements": "Registration requirements for Al Ikhsan Islamic Boarding School. Complete guide to documents and upload rules.",
       "fees": "Fee breakdown for Al Ikhsan Islamic Boarding School. Transparent costs for prospective students and parents.",
@@ -32,7 +32,7 @@
   },
   "section": {
     "hero": {
-      "title": "<span class='text-yellow-400' style='text-shadow:2px 4px 8px rgba(0,0,0,0.5);'>New Student and Santri Admissions</span><br/><span>Al Ikhsan Islamic Boarding School</span>",
+      "title": "<span class='text-yellow-400' style='text-shadow:2px 4px 8px rgba(0,0,0,0.5);'>New Student and Student Admissions</span><br/><span>Al Ikhsan Islamic Boarding School</span>",
       "body": "<p>Join Al Ikhsan Islamic Boarding School. Integrated Islamic education with character development, Quran memorization (tahfidz), and sciences to shape a Qur’anic, high-achieving generation.</p>"
     }
   },
@@ -52,11 +52,11 @@
     }
   },
   "hero": {
-    "headingMain": "New Santri Admissions",
+    "headingMain": "New Student Admissions",
     "badge": "2025/2026 Online Admissions",
-    "titleHighlight": "New Student and Santri Admissions",
+    "titleHighlight": "New Student and Student Admissions",
     "titleMain": "<span class='text-yellow-400' style='text-shadow:2px 4px 8px rgba(0,0,0,0.5);'>Al Ikhsan Islamic Boarding School</span>",
-    "subtitle": "Become a santri at Al Ikhsan Islamic Boarding School. Integrated Islamic education with character building, Qur'an memorisation, and knowledge to shape a Qur'anic and high-achieving generation.",
+    "subtitle": "Become a Student at Al Ikhsan Islamic Boarding School. Integrated Islamic education with character building, Qur'an memorisation, and knowledge to shape a Qur'anic and high-achieving generation.",
     "ctaApply": "Apply Now",
     "ctaStatus": "Check Status",
     "ctaBrochure": "Download Brochure"
@@ -106,7 +106,7 @@
     "why": {
       "title": "Why Choose Al Ikhsan Islamic Boarding School?",
       "subtitle": "Integrated Islamic education: Qur'an memorisation, noble character, and knowledge",
-      "description": "Join Al Ikhsan Islamic Boarding School to receive integrated Islamic education that shapes santri with noble character."
+      "description": "Join Al Ikhsan Islamic Boarding School to receive integrated Islamic education that shapes Student with noble character."
     }
   },
   "pages": {
@@ -497,7 +497,7 @@
         "title": "🎉 Payment Verified!",
         "registrationLine": "<strong>✅ Registration:</strong> Verified",
         "paymentLine": "<strong>💳 Payment:</strong> Marked as Paid & Valid",
-        "infoTitle": "Congratulations! You are officially accepted as a prospective santri of Al Ikhsan Islamic Boarding School.",
+        "infoTitle": "Congratulations! You are officially accepted as a prospective Student of Al Ikhsan Islamic Boarding School.",
         "infoBody": "All administrative steps are complete. Please watch for official announcements regarding arrival schedule, student orientation, and required items.",
         "verifiedAt": "Payment verified on {{datetime}}",
         "nextStepsTitle": "Next Steps",
