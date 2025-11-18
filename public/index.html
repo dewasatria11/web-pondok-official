@@ -157,6 +157,97 @@
     .hero-text-shadow {
       text-shadow: 2px 4px 8px rgba(0,0,0,0.4);
     }
+    .hero-ppdb {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 16px 80px;
+      background: linear-gradient(180deg, #047857 0%, #10b981 100%);
+      overflow: hidden;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      color: #ffffff;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 10px 32px;
+      margin-bottom: 24px;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #047857;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+    }
+    .hero-title {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 600;
+      margin-bottom: 16px;
+      text-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+    }
+    .hero-desc {
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 780px;
+      margin: 0 auto 32px;
+      color: rgba(255, 255, 255, 0.92);
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+    }
+    .btn-primary,
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 32px;
+      border-radius: 999px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .btn-primary {
+      background: #fbbf24;
+      color: #065f46;
+    }
+    .btn-secondary {
+      background: #ffffff;
+      color: #047857;
+    }
+    .btn-primary:hover,
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+    }
+    .hero-wave {
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 100%;
+      height: auto;
+    }
+    @media (max-width: 640px) {
+      .hero-ppdb {
+        padding-top: 140px;
+        padding-bottom: 60px;
+      }
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+        max-width: 260px;
+      }
+    }
 
     /* Gelombang cards responsive stacking */
     @media (max-width: 768px) {
@@ -565,45 +656,32 @@
   <!-- MAIN -->
   <main class="flex-1">
     <!-- HERO -->
-    <section class="relative min-h-screen overflow-hidden bg-[#00804b] text-white">
-      <div class="absolute inset-0 pointer-events-none opacity-25 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.45),_transparent_55%)]"></div>
-      <div class="absolute inset-0 pointer-events-none bg-gradient-to-br from-[#008f54]/70 to-[#00663b]/70"></div>
-      <div class="relative container mx-auto px-4 py-24 lg:py-32 flex items-center justify-center min-h-screen">
-        <div class="max-w-3xl mx-auto text-center space-y-6">
-          <div class="inline-flex items-center justify-center bg-white text-[#00804b] uppercase tracking-wide text-xs font-semibold px-5 py-1.5 rounded-full shadow-lg">
-            <i class="bi bi-calendar-event mr-2"></i>
-            <span data-i18n="hero.badge">PPDB Online 2025/2026</span>
-          </div>
-          <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight hero-text-shadow drop-shadow-2xl" data-i18n="hero.headingMain">
-            Penerimaan Santri Baru
-          </h1>
-          <p class="text-base lg:text-lg leading-relaxed text-white/90 hero-text-shadow" data-i18n="hero.subtitle">
-            Bergabunglah menjadi santri Pondok Pesantren Al Ikhsan Beji. Pendidikan islami terpadu dengan pembinaan akhlak, tahfidz Al-Qur'an, dan ilmu pengetahuan yang membentuk generasi Qur'ani dan berprestasi.
-          </p>
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-            <a href="/daftar.html" class="w-full sm:w-auto inline-flex items-center justify-center bg-[#facc15] hover:bg-[#f4c20d] text-[#0b3d2a] font-bold px-10 py-3 rounded-full shadow-xl hover:shadow-2xl transition transform hover:-translate-y-0.5 text-sm lg:text-base">
-              <i class="bi bi-pencil-square mr-2"></i>
-              <span data-i18n="hero.ctaApply">Daftar Sekarang</span>
-            </a>
-            <a href="/cek-status.html" class="w-full sm:w-auto inline-flex items-center justify-center bg-white text-[#0b3d2a] font-semibold px-10 py-3 rounded-full shadow-lg hover:shadow-xl transition text-sm lg:text-base border border-white/40">
-              <i class="bi bi-search mr-2 text-[#0b3d2a]"></i>
-              <span data-i18n="hero.ctaStatus" class="text-[#0b3d2a]">Cek Status</span>
-            </a>
-          </div>
+    <section class="hero-ppdb">
+      <div class="hero-inner">
+        <div class="hero-badge">
+          <i class="bi bi-calendar-event mr-2"></i>
+          <span data-i18n="hero.badge">PPDB Online 2025/2026</span>
+        </div>
+        <h1 class="hero-title" data-i18n="hero.headingMain">
+          Penerimaan Santri Baru
+        </h1>
+        <p class="hero-desc" data-i18n="hero.subtitle">
+          Bergabunglah menjadi santri Pondok Pesantren Al Ikhsan Beji. Pendidikan islami terpadu dengan pembinaan akhlak, tahfidz Al-Qur'an, dan ilmu pengetahuan yang membentuk generasi Qur'ani dan berprestasi.
+        </p>
+        <div class="hero-actions">
+          <a href="/daftar.html" class="btn-primary">
+            <span class="mr-2">✏️</span>
+            <span data-i18n="hero.ctaApply">Daftar Sekarang</span>
+          </a>
+          <a href="/cek-status.html" class="btn-secondary">
+            <span class="mr-2">🔍</span>
+            <span data-i18n="hero.ctaStatus">Cek Status</span>
+          </a>
         </div>
       </div>
-      <div class="absolute left-0 right-0 bottom-0 h-24 lg:h-32 pointer-events-none">
-        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" class="w-full h-full">
-          <defs>
-            <linearGradient id="waveToWhite" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#00804b" />
-              <stop offset="100%" stop-color="#ffffff" />
-            </linearGradient>
-          </defs>
-          <path d="M0,80 C240,120 480,40 720,70 C960,100 1200,60 1440,90 L1440,120 L0,120 Z" fill="#00804b"></path>
-          <path d="M0,95 C240,135 480,55 720,85 C960,115 1200,75 1440,105 L1440,120 L0,120 Z" fill="url(#waveToWhite)"></path>
-        </svg>
-      </div>
+      <svg class="hero-wave" viewBox="0 0 1440 320" aria-hidden="true" preserveAspectRatio="none">
+        <path fill="#ffffff" fill-opacity="1" d="M0,224L48,213.3C96,203,192,181,288,176C384,171,480,181,576,192C672,203,768,213,864,202.7C960,192,1056,160,1152,160C1248,160,1344,192,1392,208L1440,224L1440,320L0,320Z"></path>
+      </svg>
     </section>
 
     <!-- SEO HEADING SECTION -->
