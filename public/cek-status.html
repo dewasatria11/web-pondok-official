@@ -229,38 +229,6 @@
         margin: 0 auto 24px;
         color: rgba(255, 255, 255, 0.92);
       }
-      .hero-actions {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 16px;
-      }
-      .btn-primary,
-      .btn-secondary {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        padding: 12px 32px;
-        border-radius: 999px;
-        font-weight: 600;
-        text-decoration: none;
-        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
-        transition: transform 0.15s ease, box-shadow 0.15s ease;
-      }
-      .btn-primary {
-        background: #fbbf24;
-        color: #065f46;
-      }
-      .btn-secondary {
-        background: #ffffff;
-        color: #047857;
-      }
-      .btn-primary:hover,
-      .btn-secondary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
-      }
       .hero-wave {
         position: absolute;
         left: 0;
@@ -497,14 +465,6 @@
         <p class="hero-desc" data-i18n="cekStatus.hero.subtitle">
           Masukkan NISN Anda untuk melihat status terbaru pendaftaran Pondok Pesantren Al Ikhsan Beji.
         </p>
-        <div class="hero-actions">
-          <a href="/daftar.html" class="btn-primary">
-            ✏️ <span data-i18n="hero.ctaApply">Daftar Sekarang</span>
-          </a>
-          <a href="#cek-status-form" class="btn-secondary">
-            🔍 <span data-i18n="hero.ctaStatus">Cek Status</span>
-          </a>
-        </div>
       </div>
       <svg class="hero-wave" viewBox="0 0 1440 320" aria-hidden="true" preserveAspectRatio="none">
         <path fill="#ffffff" fill-opacity="1" d="M0,224L48,213.3C96,203,192,181,288,176C384,171,480,181,576,192C672,203,768,213,864,202.7C960,192,1056,160,1152,160C1248,160,1344,192,1392,208L1440,224L1440,320L0,320Z"></path>

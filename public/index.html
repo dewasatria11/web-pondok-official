@@ -159,8 +159,9 @@
     }
     .hero-ppdb {
       position: relative;
+      padding-top: 60px;
+      padding-bottom: 40px;
       text-align: center;
-      padding: 60px 16px 80px;
       background: linear-gradient(180deg, #047857 0%, #10b981 100%);
       overflow: hidden;
     }
@@ -229,7 +230,7 @@
     .hero-wave {
       position: absolute;
       left: 0;
-      bottom: -1px;
+      bottom: 0;
       width: 100%;
       height: auto;
     }
@@ -277,7 +278,7 @@
     }
     @media (min-width: 1024px) {
       .news-grid {
-        grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr);
+        grid-template-columns: minmax(0, 1.4fr) minmax(260px, 1fr);
         align-items: flex-start;
       }
     }
@@ -1427,7 +1428,7 @@
           const detailUrl = getDetailUrl(berita);
 
           return `
-            <article class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+            <article class="featured-berita bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
               <div class="relative h-64 lg:h-80 overflow-hidden">
                 <img
                   src="${escapeHtml(imageUrl)}"
