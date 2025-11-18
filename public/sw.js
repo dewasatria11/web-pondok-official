@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ppdsb-pwa-v2';
+const CACHE_NAME = 'ppdsb-pwa-v3';
 const CORE_ASSETS = [
   '/',
   '/index.html',
@@ -305,10 +305,18 @@ const MAINTENANCE_BYPASS_PATHS = [
   '/admin/index.html',
   '/login/index.html',
 ];
+const MAINTENANCE_BYPASS_PARAM = 'preview';
+const MAINTENANCE_BYPASS_TOKEN = 'admin';
 
 async function handleHtmlRequest(request) {
   const url = new URL(request.url);
-  if (MAINTENANCE_BYPASS_PATHS.some((path) => url.pathname.startsWith(path))) {
+  const hasBypassToken =
+    url.searchParams.get(MAINTENANCE_BYPASS_PARAM) === MAINTENANCE_BYPASS_TOKEN;
+
+  if (
+    hasBypassToken ||
+    MAINTENANCE_BYPASS_PATHS.some((path) => url.pathname.startsWith(path))
+  ) {
     return networkFirst(request);
   }
 
