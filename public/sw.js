@@ -307,14 +307,24 @@ const MAINTENANCE_BYPASS_PATHS = [
 ];
 const MAINTENANCE_BYPASS_PARAM = 'preview';
 const MAINTENANCE_BYPASS_TOKEN = 'admin';
+const MAINTENANCE_BYPASS_DURATION = 15 * 60 * 1000; // 15 menit
+let maintenanceBypassExpiry = 0;
 
 async function handleHtmlRequest(request) {
   const url = new URL(request.url);
   const hasBypassToken =
     url.searchParams.get(MAINTENANCE_BYPASS_PARAM) === MAINTENANCE_BYPASS_TOKEN;
+  const now = Date.now();
+
+  if (hasBypassToken) {
+    maintenanceBypassExpiry = now + MAINTENANCE_BYPASS_DURATION;
+  }
+
+  const bypassStillActive = maintenanceBypassExpiry && now < maintenanceBypassExpiry;
 
   if (
     hasBypassToken ||
+    bypassStillActive ||
     MAINTENANCE_BYPASS_PATHS.some((path) => url.pathname.startsWith(path))
   ) {
     return networkFirst(request);
