@@ -160,7 +160,7 @@
     .hero-ppdb {
       position: relative;
       text-align: center;
-      padding: 70px 16px 80px;
+      padding: 60px 16px 80px;
       background: linear-gradient(180deg, #047857 0%, #10b981 100%);
       overflow: hidden;
     }
@@ -237,6 +237,17 @@
       display: grid;
       gap: 2rem;
     }
+    .featured-berita img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+    @media (max-width: 640px) {
+      .featured-berita img {
+        height: auto;
+        max-height: 240px;
+      }
+    }
     .sr-only {
       position: absolute;
       width: 1px;
@@ -272,7 +283,7 @@
     }
     @media (max-width: 640px) {
       .hero-ppdb {
-        padding-top: 140px;
+        padding-top: 80px;
         padding-bottom: 60px;
       }
       .btn-primary,
@@ -548,7 +559,7 @@
     </div>
   </header>
   <!-- NAVBAR -->
-  <nav class="sticky top-0 z-[130] bg-white/95 backdrop-blur supports-backdrop-blur:bg-white/85 shadow-lg" data-nav-root>
+  <nav class="z-[130] bg-white/95 backdrop-blur supports-backdrop-blur:bg-white/85 shadow-lg" data-nav-root>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16 min-h-[64px]">
         <!-- Logo -->

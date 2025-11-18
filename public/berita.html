@@ -48,29 +48,171 @@
     </style>
   </head>
   <body class="min-h-screen flex flex-col bg-gray-50 text-gray-800">
-    <header class="bg-white shadow-sm">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-        <a href="/index.html" class="flex items-center gap-3">
-          <img src="/logo-bimi.svg" alt="Logo Al Ikhsan" class="h-12 w-auto" />
-          <div>
-            <p class="text-sm text-gray-500 uppercase tracking-wide">Pondok Pesantren</p>
-            <p class="text-lg font-semibold text-gray-900">Al Ikhsan Beji</p>
+    <nav class="z-[130] bg-white/95 backdrop-blur supports-backdrop-blur:bg-white/85 shadow-lg" data-nav-root>
+      <div class="mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+          <div class="flex items-center gap-16">
+            <a href="/" class="flex items-center gap-4">
+              <img src="/assets/img/logo-alikhsan.png" alt="Logo Al Ikhsan" class="h-12 w-auto" />
+              <div class="flex flex-col leading-tight">
+                <span class="text-xs uppercase tracking-widest text-gray-500">Pondok Pesantren</span>
+                <span class="text-lg font-semibold text-gray-900">Al Ikhsan Beji</span>
+              </div>
+            </a>
+            <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
+              <a href="/" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium" data-nav-link data-i18n="nav.home">Beranda</a>
+              <div class="relative">
+                <button 
+                  type="button"
+                  class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition"
+                  data-dropdown-toggle="desktopInfoDropdown"
+                  aria-expanded="false"
+                  aria-controls="desktopInfoDropdown"
+                  aria-haspopup="true">
+                  <span data-i18n="nav.info">Informasi</span>
+                  <i class="bi bi-caret-down-fill ml-1 text-xs transition-transform duration-200" data-dropdown-caret></i>
+                </button>
+                <div
+                  id="desktopInfoDropdown"
+                  class="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg py-2 z-50 border border-gray-100 hidden"
+                  role="menu">
+                  <a href="/alur-pendaftaran.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-nav-link data-i18n="nav.flow">Alur Pendaftaran</a>
+                  <a href="/syarat-pendaftaran.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-nav-link data-i18n="nav.requirements">Syarat Pendaftaran</a>
+                  <a href="/biaya.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-nav-link data-i18n="nav.fees">Biaya</a>
+                </div>
+              </div>
+
+              <a href="/brosur.html" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium" data-nav-link data-i18n="nav.brochure">Brosur</a>
+              <a href="/kontak.html" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium" data-nav-link data-i18n="nav.contact">Kontak</a>
+            </div>
           </div>
-        </a>
-        <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
-          <a href="/index.html" class="hover:text-emerald-600 transition">Beranda</a>
-          <a href="/alur-pendaftaran.html" class="hover:text-emerald-600 transition">Alur</a>
-          <a href="/biaya.html" class="hover:text-emerald-600 transition">Biaya</a>
-          <a href="/kontak.html" class="hover:text-emerald-600 transition">Kontak</a>
-        </nav>
-        <a
-          href="/daftar.html"
-          class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-600 text-white text-sm font-semibold shadow"
-        >
-          <i class="bi bi-pencil-square"></i> Daftar Sekarang
-        </a>
+
+          <div class="hidden md:flex items-center gap-3">
+            <button
+              id="installAppBtn"
+              class="hidden items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full border border-brand-600 text-brand-700 hover:bg-brand-50 transition"
+              data-install-btn
+              data-install-available-text="Install Aplikasi"
+              data-install-unavailable-text="Install tersedia setelah browser mendukung pemasangan aplikasi.">
+              <i class="bi bi-download"></i>
+              <span data-i18n="nav.install">Download App</span>
+            </button>
+
+            <div class="relative" data-language-select>
+              <button
+                type="button"
+                class="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-full border border-gray-200 text-gray-600 hover:text-brand-600 hover:border-brand-200 transition"
+                aria-label="Toggle language menu">
+                <i class="bi bi-translate"></i>
+                <span data-current-language>Bahasa</span>
+                <i class="bi bi-chevron-down text-xs"></i>
+              </button>
+              <div class="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-lg border border-gray-100 hidden" data-language-menu>
+                <button data-language-option="id" class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 flex items-center justify-between">
+                  <span data-i18n="nav.language.id">Indonesia</span>
+                  <i class="bi bi-check2 text-brand-600 hidden"></i>
+                </button>
+                <button data-language-option="en" class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 flex items-center justify-between">
+                  <span data-i18n="nav.language.en">English</span>
+                  <i class="bi bi-check2 text-brand-600 hidden"></i>
+                </button>
+              </div>
+            </div>
+
+            <a href="/login" class="bg-brand-700 hover:bg-brand-800 text-white px-6 py-2 rounded-lg text-sm font-medium shadow-md hover:shadow-lg" data-i18n="nav.admin">Admin</a>
+          </div>
+
+          <div class="md:hidden">
+            <button 
+              type="button"
+              aria-label="Toggle menu"
+              aria-expanded="false"
+              aria-controls="mobileNavMenu"
+              class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-brand-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+              data-mobile-toggle>
+              <i class="bi bi-list text-xl" data-mobile-icon="open"></i>
+              <i class="bi bi-x-lg text-xl hidden" data-mobile-icon="close"></i>
+            </button>
+          </div>
+        </div>
       </div>
-    </header>
+    </nav>
+
+    <div
+      id="mobileNavBackdrop"
+      class="md:hidden absolute inset-0 z-[140] bg-black/60 hidden"
+      data-mobile-backdrop></div>
+
+    <div
+      id="mobileNavMenu"
+      class="md:hidden absolute inset-y-0 left-0 z-[141] mobile-menu bg-white shadow-2xl border-r border-gray-200 overflow-y-auto hidden"
+      data-mobile-menu
+      role="dialog"
+      aria-modal="true">
+      <div class="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+        <div class="flex items-center">
+          <img src="/assets/img/logo-alikhsan.png" alt="Logo Al Ikhsan" class="h-12 w-auto" />
+        </div>
+        <button 
+          type="button"
+          aria-label="Close menu"
+          class="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+          data-close-mobile>
+          <i class="bi bi-x-lg text-xl"></i>
+        </button>
+      </div>
+
+      <div class="px-2 pt-4 pb-6 space-y-1">
+        <a 
+          href="/" 
+          class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-700 hover:bg-gray-50" 
+          data-nav-link data-i18n="nav.home"
+          data-close-mobile>Beranda</a>
+
+        <details class="px-1">
+          <summary class="cursor-pointer text-gray-700 hover:text-brand-700 hover:bg-gray-50 px-4 py-3 rounded-md text-base font-medium flex items-center justify-between" data-i18n="nav.info">
+            <span>Informasi</span>
+            <i class="bi bi-chevron-down text-xs"></i>
+          </summary>
+          <div class="pl-4 space-y-1 mt-1">
+            <a 
+              href="/alur-pendaftaran.html" 
+              class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" 
+              data-nav-link data-i18n="nav.flow"
+              data-close-mobile>Alur Pendaftaran</a>
+            <a 
+              href="/syarat-pendaftaran.html" 
+              class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" 
+              data-nav-link data-i18n="nav.requirements"
+              data-close-mobile>Syarat Pendaftaran</a>
+            <a 
+              href="/biaya.html" 
+              class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" 
+              data-nav-link data-i18n="nav.fees"
+              data-close-mobile>Biaya</a>
+          </div>
+        </details>
+
+        <a 
+          href="/brosur.html" 
+          class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50" 
+          data-nav-link data-i18n="nav.brochure"
+          data-close-mobile>Brosur</a>
+        <a 
+          href="/kontak.html" 
+          class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50" 
+          data-nav-link data-i18n="nav.contact"
+          data-close-mobile>Kontak</a>
+
+        <div class="pt-4 pb-2 px-2 border-t border-gray-200 mt-4">
+          <a 
+            href="/login.html" 
+            class="w-full bg-brand-700 hover:bg-brand-800 text-white px-4 py-3 rounded-lg text-base font-medium shadow-md hover:shadow-lg block text-center" 
+            data-i18n="nav.admin"
+            data-close-mobile>Admin</a>
+        </div>
+      </div>
+    </div>
 
     <main class="flex-1 py-10">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
