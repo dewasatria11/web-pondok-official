@@ -43,3 +43,5 @@ Platform ini digunakan Pondok Pesantren Al Ikhsan Beji untuk mengelola seluruh p
 - Pastikan service worker terbaru (`public/sw.js`) telah aktif setelah deploy untuk menjamin caching & maintenance overlay bekerja.
 
 Kontribusi, isu, atau perbaikan dapat diajukan melalui repository ini. Semoga bermanfaat untuk keberlangsungan PPDSB Al Ikhsan Beji.
+
+Salam Hangat Dewa S.
