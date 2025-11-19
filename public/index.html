@@ -246,6 +246,8 @@
     .news-grid {
       display: grid;
       gap: 2rem;
+      grid-template-columns: minmax(0, 1fr);
+      width: 100%;
     }
     .featured-berita .featured-image {
       position: relative;
@@ -327,7 +329,11 @@
     }
     @media (max-width: 1023px) {
       .news-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: center;
+      }
+      .news-grid > * {
+        width: min(100%, 640px);
       }
     }
 
@@ -915,7 +921,7 @@
   (function(){
   var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
   s1.async=true;
-  s1.src='https://embed.tawk.to/691d47f603ae371957a13a07/1jad6273g';
+  s1.src='https://embed.tawk.to/691d47f603ae371957a13a07/1jadejimv';
   s1.charset='UTF-8';
   s1.setAttribute('crossorigin','*');
   s0.parentNode.insertBefore(s1,s0);
