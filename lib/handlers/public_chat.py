@@ -15,23 +15,30 @@ class handler(BaseHTTPRequestHandler):
             
             # 1. Primary Search: Full Text Search on 'question'
             # Good for natural language queries
-            res = supa.table("faq_kb") \
-                .select("*") \
-                .textSearch("question", query, {"type": "websearch", "config": "indonesian"}) \
-                .limit(3) \
-                .execute()
-            
-            matches = res.data
+            try:
+                res = supa.table("faq_kb") \
+                    .select("*") \
+                    .textSearch("question", query, {"type": "websearch", "config": "indonesian"}) \
+                    .limit(3) \
+                    .execute()
+                matches = res.data
+            except Exception as ts_err:
+                print(f"Primary search error: {ts_err}")
+                matches = []
             
             # 2. Secondary Search: Full Text Search on 'keywords'
             # If question didn't match, maybe keywords will
             if not matches:
-                res_kw = supa.table("faq_kb") \
-                    .select("*") \
-                    .textSearch("keywords", query, {"type": "websearch", "config": "indonesian"}) \
-                    .limit(3) \
-                    .execute()
-                matches = res_kw.data
+                try:
+                    res_kw = supa.table("faq_kb") \
+                        .select("*") \
+                        .textSearch("keywords", query, {"type": "websearch", "config": "indonesian"}) \
+                        .limit(3) \
+                        .execute()
+                    matches = res_kw.data
+                except Exception as kw_err:
+                    print(f"Secondary search error: {kw_err}")
+                    matches = []
 
             # 3. Fallback: Word-based partial match (AND logic)
             # Splits query into words and ensures ALL words exist in either question OR keywords
