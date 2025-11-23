@@ -261,6 +261,9 @@ class handler(BaseHTTPRequestHandler):
                     PublicChatHandler.do_POST(self)
                 else:
                     PublicChatHandler.do_OPTIONS(self)
+
+
+
                     
             else:
                 # Default response for unknown actions
