@@ -2901,40 +2901,14 @@
 
   <!-- Toastr Configuration & Fallback -->
   <script>
-    // Ensure toastr is available (fallback to alert if CDN fails)
-    if (typeof toastr === "undefined") {
-      console.warn("[TOASTR] CDN failed to load, using alert fallback");
-      window.toastr = {
-        info: function (msg) { alert("ℹ️ " + msg); },
-        success: function (msg) { alert("✅ " + msg); },
-        error: function (msg) { alert("❌ " + msg); },
-        warning: function (msg) { alert("⚠️ " + msg); }
+    // Initialize Toastr
+    if (typeof toastr !== 'undefined') {
+      toastr.options = {
+        closeButton: true,
+        progressBar: true,
+        positionClass: "toast-top-right",
+        timeOut: "3000",
       };
-    } else {
-      // Configure toastr options
-      try {
-        toastr.options = {
-          closeButton: true,
-          progressBar: true,
-          positionClass: "toast-bottom-right",
-          timeOut: "2500",
-          extendedTimeOut: "1000",
-          showEasing: "swing",
-          hideEasing: "linear",
-          showMethod: "fadeIn",
-          hideMethod: "fadeOut"
-        };
-        console.log("[TOASTR] Initialized successfully");
-      } catch (err) {
-        console.error("[TOASTR] Config error:", err);
-        // Fallback if configuration fails
-        window.toastr = {
-          info: function (msg) { alert("ℹ️ " + msg); },
-          success: function (msg) { alert("✅ " + msg); },
-          error: function (msg) { alert("❌ " + msg); },
-          warning: function (msg) { alert("⚠️ " + msg); }
-        };
-      }
     }
   </script>
 

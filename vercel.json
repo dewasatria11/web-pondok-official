@@ -6,51 +6,173 @@
     }
   },
   "functions": {
-    "api/index.py": { 
+    "api/index.py": {
       "runtime": "@vercel/python@4.3.1",
       "maxDuration": 60,
       "memory": 2048
     }
   },
   "rewrites": [
-    { "source": "/locales/:lang.json", "destination": "/api/index?action=locales&lang=:lang" },
-    { "source": "/api/pendaftar_create", "destination": "/api/index?action=pendaftar_create" },
-    { "source": "/api/pendaftar_list", "destination": "/api/index?action=pendaftar_list" },
-    { "source": "/api/pendaftar_cek_status", "destination": "/api/index?action=pendaftar_cek_status" },
-    { "source": "/api/pendaftar_status", "destination": "/api/index?action=pendaftar_status" },
-    { "source": "/api/pendaftar_update_files", "destination": "/api/index?action=pendaftar_update_files" },
-    { "source": "/api/pendaftar_files_list", "destination": "/api/index?action=pendaftar_files_list" },
-    { "source": "/api/pendaftar_download_zip", "destination": "/api/index?action=pendaftar_download_zip" },
-    { "source": "/api/export_pendaftar_xlsx", "destination": "/api/index?action=export_pendaftar_xlsx" },
-    { "source": "/api/get_gelombang_list", "destination": "/api/index?action=get_gelombang_list" },
-    { "source": "/api/update_gelombang", "destination": "/api/index?action=update_gelombang" },
-    { "source": "/api/set_gelombang_active", "destination": "/api/index?action=set_gelombang_active" },
-    { "source": "/api/gelombang_active", "destination": "/api/index?action=gelombang_active" },
-    { "source": "/api/upload_file", "destination": "/api/index?action=upload_file" },
-    { "source": "/api/pembayaran_list", "destination": "/api/index?action=pembayaran_list" },
-    { "source": "/api/pembayaran_submit", "destination": "/api/index?action=pembayaran_submit" },
-    { "source": "/api/pembayaran_verify", "destination": "/api/index?action=pembayaran_verify" },
-    { "source": "/api/supa_proxy", "destination": "/api/index?action=supa_proxy" },
-    { "source": "/api/hero_images_list", "destination": "/api/index?action=hero_images_list" },
-    { "source": "/api/hero_images_upload", "destination": "/api/index?action=hero_images_upload" },
-    { "source": "/api/hero_images_delete", "destination": "/api/index?action=hero_images_delete" },
-    { "source": "/api/hero_images_update_order", "destination": "/api/index?action=hero_images_update_order" },
-    { "source": "/api/why_section_list", "destination": "/api/index?action=why_section_list" },
-    { "source": "/api/why_section_update", "destination": "/api/index?action=why_section_update" },
-    { "source": "/api/admin/sections/upsert", "destination": "/api/index?action=sections_upsert" },
-    { "source": "/api/alur_steps", "destination": "/api/index?action=alur_steps" },
-    { "source": "/api/syarat_items", "destination": "/api/index?action=syarat_items" },
-    { "source": "/api/biaya_items", "destination": "/api/index?action=biaya_items" },
-    { "source": "/api/brosur_items", "destination": "/api/index?action=brosur_items" },
-    { "source": "/api/kontak_items", "destination": "/api/index?action=kontak_items" },
-    { "source": "/api/kontak_settings", "destination": "/api/index?action=kontak_settings" },
-    { "source": "/api/berita_items", "destination": "/api/index?action=berita_items" },
-    { "source": "/api/maintenance_status", "destination": "/api/index?action=maintenance_status" },
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/daftar", "destination": "/daftar.html" },
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/login", "destination": "/login.html" },
-    { "source": "/cek-status", "destination": "/cek-status.html" }
+    {
+      "source": "/locales/:lang.json",
+      "destination": "/api/index?action=locales&lang=:lang"
+    },
+    {
+      "source": "/api/pendaftar_create",
+      "destination": "/api/index?action=pendaftar_create"
+    },
+    {
+      "source": "/api/pendaftar_list",
+      "destination": "/api/index?action=pendaftar_list"
+    },
+    {
+      "source": "/api/pendaftar_cek_status",
+      "destination": "/api/index?action=pendaftar_cek_status"
+    },
+    {
+      "source": "/api/pendaftar_status",
+      "destination": "/api/index?action=pendaftar_status"
+    },
+    {
+      "source": "/api/pendaftar_update_files",
+      "destination": "/api/index?action=pendaftar_update_files"
+    },
+    {
+      "source": "/api/pendaftar_files_list",
+      "destination": "/api/index?action=pendaftar_files_list"
+    },
+    {
+      "source": "/api/pendaftar_download_zip",
+      "destination": "/api/index?action=pendaftar_download_zip"
+    },
+    {
+      "source": "/api/export_pendaftar_xlsx",
+      "destination": "/api/index?action=export_pendaftar_xlsx"
+    },
+    {
+      "source": "/api/get_gelombang_list",
+      "destination": "/api/index?action=get_gelombang_list"
+    },
+    {
+      "source": "/api/update_gelombang",
+      "destination": "/api/index?action=update_gelombang"
+    },
+    {
+      "source": "/api/set_gelombang_active",
+      "destination": "/api/index?action=set_gelombang_active"
+    },
+    {
+      "source": "/api/gelombang_active",
+      "destination": "/api/index?action=gelombang_active"
+    },
+    {
+      "source": "/api/upload_file",
+      "destination": "/api/index?action=upload_file"
+    },
+    {
+      "source": "/api/pembayaran_list",
+      "destination": "/api/index?action=pembayaran_list"
+    },
+    {
+      "source": "/api/pembayaran_submit",
+      "destination": "/api/index?action=pembayaran_submit"
+    },
+    {
+      "source": "/api/pembayaran_verify",
+      "destination": "/api/index?action=pembayaran_verify"
+    },
+    {
+      "source": "/api/supa_proxy",
+      "destination": "/api/index?action=supa_proxy"
+    },
+    {
+      "source": "/api/hero_images_list",
+      "destination": "/api/index?action=hero_images_list"
+    },
+    {
+      "source": "/api/hero_images_upload",
+      "destination": "/api/index?action=hero_images_upload"
+    },
+    {
+      "source": "/api/hero_images_delete",
+      "destination": "/api/index?action=hero_images_delete"
+    },
+    {
+      "source": "/api/hero_images_update_order",
+      "destination": "/api/index?action=hero_images_update_order"
+    },
+    {
+      "source": "/api/why_section_list",
+      "destination": "/api/index?action=why_section_list"
+    },
+    {
+      "source": "/api/why_section_update",
+      "destination": "/api/index?action=why_section_update"
+    },
+    {
+      "source": "/api/admin/sections/upsert",
+      "destination": "/api/index?action=sections_upsert"
+    },
+    {
+      "source": "/api/alur_steps",
+      "destination": "/api/index?action=alur_steps"
+    },
+    {
+      "source": "/api/syarat_items",
+      "destination": "/api/index?action=syarat_items"
+    },
+    {
+      "source": "/api/biaya_items",
+      "destination": "/api/index?action=biaya_items"
+    },
+    {
+      "source": "/api/brosur_items",
+      "destination": "/api/index?action=brosur_items"
+    },
+    {
+      "source": "/api/kontak_items",
+      "destination": "/api/index?action=kontak_items"
+    },
+    {
+      "source": "/api/kontak_settings",
+      "destination": "/api/index?action=kontak_settings"
+    },
+    {
+      "source": "/api/berita_items",
+      "destination": "/api/index?action=berita_items"
+    },
+    {
+      "source": "/api/maintenance_status",
+      "destination": "/api/index?action=maintenance_status"
+    },
+    {
+      "source": "/api/admin_faq_upload",
+      "destination": "/api/index?action=admin_faq_upload"
+    },
+    {
+      "source": "/api/chat/search",
+      "destination": "/api/index?action=chat_search"
+    },
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/daftar",
+      "destination": "/daftar.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/login.html"
+    },
+    {
+      "source": "/cek-status",
+      "destination": "/cek-status.html"
+    }
   ],
   "github": {
     "silent": true
