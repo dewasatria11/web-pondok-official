@@ -63,9 +63,7 @@ class handler(BaseHTTPRequestHandler):
                     )
                     return
                     
-                    )
-                    return
-                    
+
             if data.get("file_kk"):
                 # Validasi URL file_kk
                 if data["file_kk"].startswith(('http://', 'https://')):
