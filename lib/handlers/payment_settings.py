@@ -41,6 +41,7 @@ class handler(BaseHTTPRequestHandler):
                 "nominal": data.get("nominal"), # For bank transfer
                 "qris_image_url": data.get("qris_image_url"),
                 "qris_nominal": data.get("qris_nominal"),
+                "qris_data": data.get("qris_data"),
                 "updated_at": "now()"
             }
             

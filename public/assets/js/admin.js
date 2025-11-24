@@ -5593,7 +5593,7 @@ Jazakumullahu khairan,
                 <td>
                   <div class="btn-group btn-group-sm">
                     <button type="button" class="btn btn-warning" onclick="editBeritaItem(${item.id})">
-                    <i class="bi bi-pencil"></i> <span class="d-none d-md-inline">Edit</span>
+                    <i class="bi bi-pencil"></i> <span>Edit</span>
                   </button>
                     <button type="button" class="btn btn-danger" onclick="deleteBeritaItem(${item.id})">
                       <i class="bi bi-trash"></i>
@@ -5950,6 +5950,9 @@ Jazakumullahu khairan,
         const nominalEl = $("#payment-nominal");
         if (nominalEl) nominalEl.value = d.nominal || "";
 
+        const qrisDataEl = $("#payment-qris-data");
+        if (qrisDataEl) qrisDataEl.value = d.qris_data || "";
+
         const qrisNominalEl = $("#payment-qris-nominal");
         if (qrisNominalEl) qrisNominalEl.value = d.qris_nominal || "";
 
@@ -5984,6 +5987,7 @@ Jazakumullahu khairan,
         bank_holder: $("#payment-bank-holder")?.value,
         nominal: toInteger($("#payment-nominal")?.value),
         qris_nominal: toInteger($("#payment-qris-nominal")?.value),
+        qris_data: $("#payment-qris-data")?.value,
       };
 
       // Handle QRIS upload if file selected
@@ -6024,20 +6028,59 @@ Jazakumullahu khairan,
   window.savePaymentSettings = savePaymentSettings;
   console.log("[ADMIN] Payment settings functions registered");
 
-  // QRIS Preview Handler
+  // QRIS Preview & Auto-Scan Handler
   document.addEventListener("change", (e) => {
     if (e.target && e.target.id === "payment-qris-file") {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = (e) => {
+          const result = e.target.result;
+
+          // 1. Show Preview
           const preview = document.getElementById("payment-qris-preview");
           const noneMsg = document.getElementById("payment-qris-none");
           if (preview && noneMsg) {
-            preview.src = e.target.result;
+            preview.src = result;
             preview.style.display = "block";
             noneMsg.style.display = "none";
           }
+
+          // 2. Auto-Scan QR Code
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            context.drawImage(img, 0, 0);
+
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+            const qrisDataInput = document.getElementById("payment-qris-data");
+
+            if (code && qrisDataInput) {
+              console.log("[QRIS] Auto-scan success:", code.data);
+              qrisDataInput.value = code.data;
+              if (typeof safeToastr !== 'undefined') {
+                safeToastr.success("QRIS berhasil discan otomatis!");
+              }
+              // Highlight the input to show it changed
+              qrisDataInput.style.borderColor = "#198754";
+              qrisDataInput.style.backgroundColor = "#f8fffb";
+              setTimeout(() => {
+                qrisDataInput.style.borderColor = "";
+                qrisDataInput.style.backgroundColor = "";
+              }, 2000);
+            } else {
+              console.warn("[QRIS] No QR code found in image");
+              if (typeof safeToastr !== 'undefined') {
+                safeToastr.warning("QR Code tidak terdeteksi otomatis. Silakan copy manual jika perlu.");
+              }
+            }
+          };
+          img.src = result;
         };
         reader.readAsDataURL(file);
       }

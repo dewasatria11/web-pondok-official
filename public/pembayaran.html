@@ -753,7 +753,83 @@
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+  <!-- QR Code Generator Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+
   <script>
+    // CRC16-CCITT (0xFFFF) Implementation for QRIS
+    function crc16ccitt(text) {
+      let crc = 0xFFFF;
+      for (let i = 0; i < text.length; i++) {
+        let c = text.charCodeAt(i);
+        crc ^= c << 8;
+        for (let j = 0; j < 8; j++) {
+          if (crc & 0x8000) {
+            crc = (crc << 1) ^ 0x1021;
+          } else {
+            crc = crc << 1;
+          }
+        }
+      }
+      let hex = (crc & 0xFFFF).toString(16).toUpperCase();
+      return hex.padStart(4, '0');
+    }
+
+    // Generate Dynamic QRIS with Nominal
+    function generateDynamicQris(originalString, nominal) {
+      if (!originalString) return null;
+
+      // 1. Remove CRC (Tag 63) from end if exists
+      // QRIS usually ends with "6304" + 4 chars CRC
+      let cleanString = originalString;
+      if (cleanString.includes("6304")) {
+        const split = cleanString.split("6304");
+        // Take everything before the last 6304 occurrence
+        cleanString = split.slice(0, -1).join("6304");
+      }
+
+      // 2. Inject/Update Tag 54 (Transaction Amount)
+      // Format: 54 + Length (2 chars) + Amount
+      // First, remove existing Tag 54 if any
+      // Note: This is a simplified regex, might need adjustment for complex QRIS
+      // But for standard static QRIS, Tag 54 is usually missing or empty
+
+      // If Tag 54 exists, remove it? simpler to just append/replace if we knew the structure.
+      // Standard QRIS structure: ... 5303360 (Currency IDR) ... 5802ID (Country) ...
+      // Tag 54 should come after Tag 53 usually.
+
+      // A safer approach for "Static to Dynamic" is to reconstruct:
+      // But parsing is hard.
+      // Hacky way: If it's a static QRIS, it likely doesn't have Tag 54.
+      // We can inject Tag 54 before Tag 58 (Country Code) or just append it before CRC?
+      // EMVCo spec says tags can be in any order, but usually sorted.
+
+      // Let's try appending Tag 54 before Tag 58 (Country Code) if found, or before Tag 59 (Merchant Name).
+      // Or just append it at the end (before CRC).
+
+      // Construct Tag 54
+      const amountStr = nominal.toString();
+      const lengthStr = amountStr.length.toString().padStart(2, '0');
+      const tag54 = "54" + lengthStr + amountStr;
+
+      // Check if Tag 54 already exists
+      // Regex to find "54" followed by 2 digits length
+      // This is risky without full parsing.
+
+      // ALTERNATIVE: Just append Tag 54 at the end (before CRC).
+      // Most parsers handle this.
+
+      let payloadWithoutCrc = cleanString + tag54;
+
+      // 3. Append Tag 63 (CRC) Header
+      payloadWithoutCrc += "6304";
+
+      // 4. Calculate CRC
+      const crc = crc16ccitt(payloadWithoutCrc);
+
+      return payloadWithoutCrc + crc;
+    }
+
     // Initialize Bootstrap Modal
     const paymentModal = new bootstrap.Modal(document.getElementById('paymentResultModal'));
     const loadingBox = document.getElementById('paymentLoading');
@@ -965,8 +1041,6 @@
 
             console.log("Biaya yang dihitung:", biaya);
 
-            console.log("Biaya yang dihitung:", biaya);
-
             document.getElementById("jumlahTransfer").textContent = formatRupiah(biaya).replace(',-', ''); // Update jumlah transfer tanpa ",-"
           } else {
             console.error("Pendaftar tidak ditemukan dengan NISN:", nisn);
@@ -1099,7 +1173,42 @@
           const qrisNone = document.getElementById("qrisNone");
           const qrisLoading = document.getElementById("qrisLoading");
 
-          if (d.qris_image_url) {
+          // Check if we have QRIS Data (String) for dynamic generation
+          if (d.qris_data && d.qris_nominal) {
+            console.log("[QRIS] Generating dynamic QR...");
+            try {
+              const dynamicPayload = generateDynamicQris(d.qris_data, d.qris_nominal);
+              console.log("[QRIS] Dynamic Payload:", dynamicPayload);
+
+              // Generate QR using QRious
+              const qr = new QRious({
+                element: document.createElement('canvas'),
+                value: dynamicPayload,
+                size: 250,
+                level: 'M'
+              });
+
+              qrisImg.src = qr.toDataURL();
+              qrisImg.style.display = "block";
+              qrisLoading.style.display = "none";
+              qrisNone.style.display = "none";
+
+            } catch (e) {
+              console.error("[QRIS] Generation failed:", e);
+              // Fallback to static image if available
+              if (d.qris_image_url) {
+                qrisImg.src = d.qris_image_url;
+                qrisImg.style.display = "block";
+                qrisLoading.style.display = "none";
+                qrisNone.style.display = "none";
+              } else {
+                qrisLoading.style.display = "none";
+                qrisNone.style.display = "block";
+              }
+            }
+          }
+          // Fallback to static image
+          else if (d.qris_image_url) {
             qrisImg.src = d.qris_image_url;
             qrisImg.onload = () => {
               qrisImg.style.display = "block";
