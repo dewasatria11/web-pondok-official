@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": {
-      "home": "Pondok Pesantren Al Ikhsan Beji | PPDB Online 2025/2026",
+      "home": "Pondok Pesantren Al Ikhsan Beji | PPDB Online 2026/2027",
       "register": "Formulir Pendaftaran – PPDSB Pondok Pesantren Al Ikhsan Beji",
       "flow": "Alur Pendaftaran – PPDSB Pondok Pesantren Al Ikhsan Beji",
       "requirements": "Syarat Pendaftaran – PPDSB Pondok Pesantren Al Ikhsan Beji",
@@ -10,7 +10,7 @@
       "contact": "Kontak – PPDSB Pondok Pesantren Al Ikhsan Beji"
     },
     "description": {
-      "home": "PPDB Pondok Pesantren Al Ikhsan Beji 2025/2026 kini dibuka. Daftar PPDB online, cek status pendaftaran, lihat syarat, biaya, brosur, dan alur pendaftaran resmi.",
+      "home": "PPDB Pondok Pesantren Al Ikhsan Beji 2026/2027 kini dibuka. Daftar PPDB online, cek status pendaftaran, lihat syarat, biaya, brosur, dan alur pendaftaran resmi.",
       "register": "Formulir pendaftaran santri baru Pondok Pesantren Al Ikhsan Beji. Isi data diri, pendidikan, orang tua, dan unggah dokumen pendaftaran.",
       "flow": "Alur pendaftaran santri baru Pondok Pesantren Al Ikhsan Beji. Panduan langkah demi langkah pendaftaran online, pembayaran, hingga daftar ulang.",
       "requirements": "Syarat dan ketentuan pendaftaran santri baru Pondok Pesantren Al Ikhsan Beji. Panduan lengkap dokumen dan ketentuan unggahan.",
@@ -22,7 +22,7 @@
   "seo": {
     "headings": {
       "h1": "Pondok Pesantren Al Ikhsan Beji",
-      "h2": "Pendaftaran Peserta Didik Baru (PPDB) 2025/2026",
+      "h2": "Pendaftaran Peserta Didik Baru (PPDB) 2026/2027",
       "flow": "Alur Pendaftaran",
       "requirements": "Syarat Pendaftaran",
       "fees": "Biaya Pendidikan",
@@ -54,7 +54,7 @@
   "hero": {
     "headingMain": "PPDSB Al Ikhsan Beji – Pendaftaran MTs, MA & Pondok Pesantren",
     "headingSub": "Penerimaan resmi untuk jenjang MTs, MA, dan program Pondok Pesantren terintegrasi.",
-    "badge": "PPDB Online 2025/2026",
+    "badge": "PPDB Online 2026/2027",
     "titleHighlight": "Penerimaan Peserta Didik dan Santri Baru",
     "titleMain": "<span class='text-yellow-400' style='text-shadow:2px 4px 8px rgba(0,0,0,0.5);'>(PPDSB) PONDOK PESANTREN AL IKHSAN BEJI</span>",
     "subtitle": "Bergabunglah menjadi santri Pondok Pesantren Al Ikhsan Beji. Pendidikan islami terpadu dengan pembinaan akhlak, tahfidz Al-Qur'an, dan ilmu pengetahuan yang membentuk generasi Qur'ani dan berprestasi.",
@@ -166,7 +166,7 @@
     }
   },
   "footer": {
-    "copyright": "© 2025/2026 Pondok Pesantren Al Ikhsan Beji. All rights reserved.",
+    "copyright": "© 2026/2027 Pondok Pesantren Al Ikhsan Beji. All rights reserved.",
     "credit": "Development by Tim IT Pesantren"
   },
   "whatsapp": {

@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Rincian biaya pendaftaran dan pendidikan PPDSB Pondok Pesantren Al Ikhsan Beji. Transparansi biaya untuk calon santri dan wali." data-i18n="meta.description.fees" data-i18n-attr="content" data-i18n-skip-text>
-  <meta name="keywords" content="Biaya Pondok Pesantren Al Ikhsan Beji, biaya pendaftaran, biaya tahfidz, biaya MTs MA PPDSB">
+  <meta name="description"
+    content="Rincian biaya pendaftaran dan pendidikan PPDSB Pondok Pesantren Al Ikhsan Beji. Transparansi biaya untuk calon santri dan wali."
+    data-i18n="meta.description.fees" data-i18n-attr="content" data-i18n-skip-text>
+  <meta name="keywords"
+    content="Biaya Pondok Pesantren Al Ikhsan Beji, biaya pendaftaran, biaya tahfidz, biaya MTs MA PPDSB">
   <meta name="theme-color" content="#14532d">
   <title data-i18n="meta.title.fees">Biaya Pendaftaran – PPDSB Pondok Pesantren Al Ikhsan Beji</title>
 
@@ -15,7 +19,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
   <link rel="manifest" href="/manifest.webmanifest">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  
+
   <link rel="stylesheet" href="/assets/css/tailwind.css" />
 
   <!-- Bootstrap Icons -->
@@ -28,34 +32,58 @@
     :root {
       --tw-font-sans: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
     }
-    html, body { font-family: var(--tw-font-sans); }
-    
+
+    html,
+    body {
+      font-family: var(--tw-font-sans);
+    }
+
     /* ===== RESPONSIVE ENHANCEMENTS ===== */
-    
+
     /* Mobile-first responsive typography */
     @media (max-width: 640px) {
-      h1 { font-size: 1.875rem !important; line-height: 2.25rem !important; }
-      h2 { font-size: 1.5rem !important; line-height: 2rem !important; }
-      h3 { font-size: 1.25rem !important; line-height: 1.75rem !important; }
-      .text-lg { font-size: 1rem !important; line-height: 1.5rem !important; }
-      .text-xl { font-size: 1.125rem !important; line-height: 1.75rem !important; }
+      h1 {
+        font-size: 1.875rem !important;
+        line-height: 2.25rem !important;
+      }
+
+      h2 {
+        font-size: 1.5rem !important;
+        line-height: 2rem !important;
+      }
+
+      h3 {
+        font-size: 1.25rem !important;
+        line-height: 1.75rem !important;
+      }
+
+      .text-lg {
+        font-size: 1rem !important;
+        line-height: 1.5rem !important;
+      }
+
+      .text-xl {
+        font-size: 1.125rem !important;
+        line-height: 1.75rem !important;
+      }
     }
 
     /* Navbar mobile fixes - Simple and working */
     @media (max-width: 767px) {
+
       /* Navbar container */
       nav.sticky {
         position: sticky !important;
         top: 0 !important;
         z-index: 50 !important;
       }
-      
+
       /* Navbar inner container */
       nav .max-w-7xl {
         padding-left: 1rem !important;
         padding-right: 1rem !important;
       }
-      
+
       /* Logo responsive */
       nav img.h-16,
       nav img[alt*="Logo"] {
@@ -63,13 +91,13 @@
         height: 64px !important;
         width: auto !important;
       }
-      
+
       /* Navbar row */
-      nav > div > div.flex {
+      nav>div>div.flex {
         min-height: 64px !important;
         height: auto !important;
       }
-      
+
       /* Mobile menu button - ensure it's visible and clickable */
       nav button[type="button"]:not([aria-label="Close menu"]) {
         min-width: 44px !important;
@@ -81,19 +109,20 @@
         justify-content: center !important;
         padding: 0.5rem !important;
       }
-      
+
       /* Hide desktop nav */
       nav .hidden.md\:block {
         display: none !important;
       }
-      
+
       /* Show mobile button */
       nav .md\:hidden {
         display: flex !important;
       }
     }
-    
+
     @media (max-width: 640px) {
+
       /* Smaller logo on very small screens */
       nav img.h-16,
       nav img[alt*="Logo"] {
@@ -104,25 +133,26 @@
 
     /* Mobile menu - Simple and working */
     @media (max-width: 767px) {
+
       /* Mobile menu panel */
       .mobile-menu {
         width: 100vw !important;
         max-width: 100vw !important;
       }
-      
+
       /* Mobile menu logo */
       .mobile-menu img {
         max-height: 64px !important;
         height: 64px !important;
       }
-      
+
       /* Mobile menu links - ensure touch targets */
       .mobile-menu a {
         min-height: 44px !important;
         display: flex !important;
         align-items: center !important;
       }
-      
+
       /* Mobile menu summary */
       .mobile-menu summary {
         min-height: 44px !important;
@@ -132,38 +162,38 @@
         cursor: pointer !important;
         list-style: none !important;
       }
-      
+
       .mobile-menu summary::-webkit-details-marker {
         display: none !important;
       }
-      
+
       .mobile-menu summary::marker {
         display: none !important;
       }
-      
+
       /* Mobile menu sub-items */
-      .mobile-menu details > div {
+      .mobile-menu details>div {
         padding-left: 1rem !important;
         border-left: 2px solid #e5e7eb !important;
       }
-      
+
       .mobile-menu details a {
         font-size: 0.875rem !important;
         min-height: 64px !important;
       }
-      
+
       /* Details arrow rotation */
       .mobile-menu details[open] summary i {
         transform: rotate(180deg) !important;
       }
     }
-    
+
     @media (max-width: 640px) {
       .mobile-menu {
         width: 100vw !important;
         max-width: 100vw !important;
       }
-      
+
       .mobile-menu a,
       .mobile-menu summary {
         font-size: 0.9rem !important;
@@ -173,7 +203,9 @@
 
     /* Improve button touch targets on mobile */
     @media (max-width: 640px) {
-      a, button {
+
+      a,
+      button {
         min-height: 44px;
         min-width: 44px;
       }
@@ -194,49 +226,60 @@
       box-shadow: 0 25px 60px rgba(15, 23, 42, 0.08);
       background: #fff;
     }
+
     .fees-table-wrapper table {
       width: 100%;
     }
+
     .fees-table-wrapper th {
       font-size: 0.75rem;
       letter-spacing: 0.08em;
     }
+
     [data-fees-table] tbody tr:nth-child(even) {
       background-color: rgba(249, 250, 251, 0.7);
     }
+
     [data-fees-table] td,
     [data-fees-table] th {
       white-space: nowrap;
     }
+
     @media (max-width: 768px) {
       .fees-table-wrapper {
         border-radius: 1rem;
         box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
       }
+
       [data-fees-table] td,
       [data-fees-table] th {
         padding-left: 1rem !important;
         padding-right: 1rem !important;
       }
     }
+
     @media (max-width: 640px) {
       .fees-table-wrapper {
         border-radius: 1rem;
         border: 1px solid rgba(15, 23, 42, 0.06);
         box-shadow: 0 20px 30px rgba(15, 23, 42, 0.08);
       }
+
       [data-fees-table] table {
         border-collapse: separate;
         border-spacing: 0;
       }
+
       [data-fees-table] thead {
         display: none;
       }
+
       [data-fees-table] tbody {
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
       }
+
       [data-fees-table] tbody tr {
         display: flex;
         flex-direction: column;
@@ -246,14 +289,17 @@
         box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
         background: #fff;
       }
+
       [data-fees-table] tbody tr td {
         white-space: normal !important;
         padding: 0.25rem 0 !important;
       }
+
       [data-fees-table] tbody tr td:first-child {
         font-weight: 600;
         color: #0f172a;
       }
+
       [data-fees-table] tbody tr td:last-child {
         color: #047857;
         font-weight: 700;
@@ -282,6 +328,7 @@
         from {
           transform: translate3d(0, 0, 0);
         }
+
         to {
           transform: translate3d(0, -120px, 0);
         }
@@ -290,43 +337,30 @@
   </style>
 
 </head>
+
 <body class="min-h-screen flex flex-col bg-white text-gray-800">
-<!-- HEADER -->
+  <!-- HEADER -->
   <header class="relative z-50">
     <div id="superHeader" class="bg-yellow-300 text-gray-900 text-xs tracking-wide">
       <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 lg:px-8 py-1.5">
-        <button
-          type="button"
+        <button type="button"
           class="inline-flex items-center gap-2 bg-white/40 hover:bg-white/60 text-gray-900 px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold uppercase shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 transition disabled:opacity-60 disabled:cursor-not-allowed"
           data-install-button
-          data-install-unavailable-text="Install tersedia setelah browser mendukung pemasangan aplikasi."
-        >
+          data-install-unavailable-text="Install tersedia setelah browser mendukung pemasangan aplikasi.">
           <i class="bi bi-cloud-arrow-down-fill text-base" aria-hidden="true"></i>
           <span data-i18n="nav.install">Download App</span>
         </button>
         <div class="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-semibold uppercase">
-          <button
-            type="button"
-            data-setlang="id"
+          <button type="button" data-setlang="id"
             class="inline-flex items-center gap-1 text-gray-900 hover:text-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 transition"
-            aria-label="Bahasa Indonesia"
-            data-i18n="nav.language.id"
-            data-i18n-attr="aria-label"
-            data-i18n-skip-text
-          >
+            aria-label="Bahasa Indonesia" data-i18n="nav.language.id" data-i18n-attr="aria-label" data-i18n-skip-text>
             <span aria-hidden="true" class="text-base leading-none">🇮🇩</span>
             <span>ID</span>
           </button>
           <span class="text-gray-600" aria-hidden="true">|</span>
-          <button
-            type="button"
-            data-setlang="en"
+          <button type="button" data-setlang="en"
             class="inline-flex items-center gap-1 text-gray-900 hover:text-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 transition"
-            aria-label="English"
-            data-i18n="nav.language.en"
-            data-i18n-attr="aria-label"
-            data-i18n-skip-text
-          >
+            aria-label="English" data-i18n="nav.language.en" data-i18n-attr="aria-label" data-i18n-skip-text>
             <span aria-hidden="true" class="text-base leading-none">🇬🇧</span>
             <span>EN</span>
           </button>
@@ -335,7 +369,8 @@
     </div>
   </header>
   <!-- NAVBAR -->
-  <nav class="sticky top-0 z-[130] bg-white/95 backdrop-blur supports-backdrop-blur:bg-white/85 shadow-lg" data-nav-root>
+  <nav class="sticky top-0 z-[130] bg-white/95 backdrop-blur supports-backdrop-blur:bg-white/85 shadow-lg"
+    data-nav-root>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16 min-h-[64px]">
         <!-- Logo -->
@@ -348,47 +383,47 @@
         <!-- Desktop Navigation -->
         <div class="hidden md:block">
           <div class="flex items-baseline space-x-4">
-            <a href="/" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium" data-nav-link data-i18n="nav.home">Beranda</a>
+            <a href="/" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium"
+              data-nav-link data-i18n="nav.home">Beranda</a>
 
             <!-- Dropdown Informasi -->
             <div class="relative">
-              <button 
-                type="button"
+              <button type="button"
                 class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition"
-                data-dropdown-toggle="desktopInfoDropdown"
-                aria-expanded="false"
-                aria-controls="desktopInfoDropdown"
+                data-dropdown-toggle="desktopInfoDropdown" aria-expanded="false" aria-controls="desktopInfoDropdown"
                 aria-haspopup="true">
                 <span data-i18n="nav.info">Informasi</span>
                 <i class="bi bi-caret-down-fill ml-1 text-xs transition-transform duration-200" data-dropdown-caret></i>
               </button>
-              <div
-                id="desktopInfoDropdown"
+              <div id="desktopInfoDropdown"
                 class="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg py-2 z-50 border border-gray-100 hidden"
                 role="menu">
-                <a href="/alur-pendaftaran.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-nav-link data-i18n="nav.flow">Alur Pendaftaran</a>
-                <a href="/syarat-pendaftaran.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-nav-link data-i18n="nav.requirements">Syarat Pendaftaran</a>
-                <a href="/biaya.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-nav-link data-i18n="nav.fees">Biaya</a>
+                <a href="/alur-pendaftaran.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  data-nav-link data-i18n="nav.flow">Alur Pendaftaran</a>
+                <a href="/syarat-pendaftaran.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  data-nav-link data-i18n="nav.requirements">Syarat Pendaftaran</a>
+                <a href="/biaya.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-nav-link
+                  data-i18n="nav.fees">Biaya</a>
               </div>
             </div>
 
-            <a href="/brosur.html" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium" data-nav-link data-i18n="nav.brochure">Brosur</a>
-            <a href="/kontak.html" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium" data-nav-link data-i18n="nav.contact">Kontak</a>
+            <a href="/brosur.html" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium"
+              data-nav-link data-i18n="nav.brochure">Brosur</a>
+            <a href="/kontak.html" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium"
+              data-nav-link data-i18n="nav.contact">Kontak</a>
           </div>
         </div>
 
         <!-- CTA Button Desktop -->
         <div class="hidden md:block">
-          <a href="/login" class="bg-brand-700 hover:bg-brand-800 text-white px-6 py-2 rounded-lg text-sm font-medium shadow-md hover:shadow-lg" data-i18n="nav.admin">Admin</a>
+          <a href="/login"
+            class="bg-brand-700 hover:bg-brand-800 text-white px-6 py-2 rounded-lg text-sm font-medium shadow-md hover:shadow-lg"
+            data-i18n="nav.admin">Admin</a>
         </div>
 
         <!-- Mobile menu button -->
         <div class="md:hidden">
-          <button 
-            type="button"
-            aria-label="Toggle menu"
-            aria-expanded="false"
-            aria-controls="mobileNavMenu"
+          <button type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileNavMenu"
             class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-brand-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
             data-mobile-toggle>
             <i class="bi bi-list text-xl" data-mobile-icon="open"></i>
@@ -401,78 +436,52 @@
   </nav>
 
   <!-- MOBILE NAV OVERLAY -->
-  <div
-    id="mobileNavBackdrop"
-    class="md:hidden absolute inset-0 z-[140] bg-black/60 hidden"
-    data-mobile-backdrop></div>
+  <div id="mobileNavBackdrop" class="md:hidden absolute inset-0 z-[140] bg-black/60 hidden" data-mobile-backdrop></div>
 
-  <div
-    id="mobileNavMenu"
+  <div id="mobileNavMenu"
     class="md:hidden absolute inset-y-0 left-0 z-[141] mobile-menu bg-white shadow-2xl border-r border-gray-200 overflow-y-auto hidden"
-    data-mobile-menu
-    role="dialog"
-    aria-modal="true">
+    data-mobile-menu role="dialog" aria-modal="true">
     <div class="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
       <div class="flex items-center">
         <img src="/assets/img/logo-alikhsan.png" alt="Logo Al Ikhsan" class="h-12 w-auto" />
       </div>
-      <button 
-        type="button"
-        aria-label="Close menu"
-        class="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100"
-        data-close-mobile>
+      <button type="button" aria-label="Close menu"
+        class="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100" data-close-mobile>
         <i class="bi bi-x-lg text-xl"></i>
       </button>
     </div>
 
     <div class="px-2 pt-4 pb-6 space-y-1">
-      <a 
-        href="/" 
-        class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-700 hover:bg-gray-50" 
-        data-nav-link data-i18n="nav.home"
-        data-close-mobile>Beranda</a>
+      <a href="/"
+        class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-700 hover:bg-gray-50"
+        data-nav-link data-i18n="nav.home" data-close-mobile>Beranda</a>
 
       <details class="px-1">
-        <summary class="cursor-pointer text-gray-700 hover:text-brand-700 hover:bg-gray-50 px-4 py-3 rounded-md text-base font-medium flex items-center justify-between" data-i18n="nav.info">
+        <summary
+          class="cursor-pointer text-gray-700 hover:text-brand-700 hover:bg-gray-50 px-4 py-3 rounded-md text-base font-medium flex items-center justify-between"
+          data-i18n="nav.info">
           <span>Informasi</span>
           <i class="bi bi-chevron-down text-xs"></i>
         </summary>
         <div class="pl-4 space-y-1 mt-1">
-          <a 
-            href="/alur-pendaftaran.html" 
-            class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" 
-            data-nav-link data-i18n="nav.flow"
-            data-close-mobile>Alur Pendaftaran</a>
-          <a 
-            href="/syarat-pendaftaran.html" 
-            class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" 
-            data-nav-link data-i18n="nav.requirements"
-            data-close-mobile>Syarat Pendaftaran</a>
-          <a 
-            href="/biaya.html" 
-            class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" 
-            data-nav-link data-i18n="nav.fees"
-            data-close-mobile>Biaya</a>
+          <a href="/alur-pendaftaran.html" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" data-nav-link
+            data-i18n="nav.flow" data-close-mobile>Alur Pendaftaran</a>
+          <a href="/syarat-pendaftaran.html" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" data-nav-link
+            data-i18n="nav.requirements" data-close-mobile>Syarat Pendaftaran</a>
+          <a href="/biaya.html" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" data-nav-link
+            data-i18n="nav.fees" data-close-mobile>Biaya</a>
         </div>
       </details>
 
-      <a 
-        href="/brosur.html" 
-        class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50" 
-        data-nav-link data-i18n="nav.brochure"
-        data-close-mobile>Brosur</a>
-      <a 
-        href="/kontak.html" 
-        class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50" 
-        data-nav-link data-i18n="nav.contact"
-        data-close-mobile>Kontak</a>
+      <a href="/brosur.html" class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"
+        data-nav-link data-i18n="nav.brochure" data-close-mobile>Brosur</a>
+      <a href="/kontak.html" class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"
+        data-nav-link data-i18n="nav.contact" data-close-mobile>Kontak</a>
 
       <div class="pt-4 pb-2 px-2 border-t border-gray-200 mt-4">
-        <a 
-          href="/login.html" 
-          class="w-full bg-brand-700 hover:bg-brand-800 text-white px-4 py-3 rounded-lg text-base font-medium shadow-md hover:shadow-lg block text-center" 
-          data-i18n="nav.admin"
-          data-close-mobile>Admin</a>
+        <a href="/login.html"
+          class="w-full bg-brand-700 hover:bg-brand-800 text-white px-4 py-3 rounded-lg text-base font-medium shadow-md hover:shadow-lg block text-center"
+          data-i18n="nav.admin" data-close-mobile>Admin</a>
       </div>
     </div>
   </div>
@@ -480,7 +489,8 @@
   <!-- MAIN -->
   <main class="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-6">
     <header class="space-y-3 text-center sm:text-left">
-      <p class="text-sm uppercase tracking-[0.25em] text-brand-700 font-semibold" data-i18n="pages.fees.badge">Informasi Biaya</p>
+      <p class="text-sm uppercase tracking-[0.25em] text-brand-700 font-semibold" data-i18n="pages.fees.badge">Informasi
+        Biaya</p>
       <h1 class="text-3xl sm:text-4xl font-bold text-gray-900" data-i18n="pages.fees.heading">Biaya Pendaftaran</h1>
       <p class="text-gray-600 text-base sm:text-lg" data-i18n="pages.fees.intro">
         Berikut adalah rincian biaya pendaftaran dan pendidikan di Pondok Pesantren Al Ikhsan Beji:
@@ -493,13 +503,18 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
-              <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-[0.25em]" data-i18n="pages.fees.table.label">Keterangan</th>
-              <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-[0.25em]" data-i18n="pages.fees.table.amount">Biaya</th>
+              <th scope="col"
+                class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-[0.25em]"
+                data-i18n="pages.fees.table.label">Keterangan</th>
+              <th scope="col"
+                class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-[0.25em]"
+                data-i18n="pages.fees.table.amount">Biaya</th>
             </tr>
           </thead>
           <tbody id="biayaTableBody" class="bg-white divide-y divide-gray-100 text-sm sm:text-base">
             <tr>
-              <td colspan="2" class="px-6 py-4 text-center text-gray-500" data-i18n="pages.fees.loading">Memuat data biaya...</td>
+              <td colspan="2" class="px-6 py-4 text-center text-gray-500" data-i18n="pages.fees.loading">Memuat data
+                biaya...</td>
             </tr>
           </tbody>
         </table>
@@ -514,7 +529,9 @@
   <!-- FOOTER -->
   <footer class="bg-white text-gray-600 py-6 shadow-2xl border-t border-gray-200 mt-auto">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <p class="text-sm"><span data-i18n="footer.copyright">© 2025/2026 Pondok Pesantren Al Ikhsan Beji. All rights reserved.</span> <span class="hidden sm:inline" data-i18n="footer.credit">Development by Tim IT Pesantren</span></p>
+      <p class="text-sm"><span data-i18n="footer.copyright">© 2026/2027 Pondok Pesantren Al Ikhsan Beji. All rights
+          reserved.</span> <span class="hidden sm:inline" data-i18n="footer.credit">Development by Tim IT
+          Pesantren</span></p>
     </div>
   </footer>
 
@@ -525,207 +542,207 @@
   <script>
     // Shim toastr -> toastify agar kompatibel dgn snippet lama
     window.toastr = {
-      success(msg){ Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#10b981', color: '#fff' }}).showToast(); },
-      error(msg){ Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#ef4444', color: '#fff' }}).showToast(); },
-      warning(msg){ Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#f59e0b', color: '#fff' }}).showToast(); },
-      info(msg){ Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#3b82f6', color: '#fff' }}).showToast(); }
+      success(msg) { Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#10b981', color: '#fff' } }).showToast(); },
+      error(msg) { Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#ef4444', color: '#fff' } }).showToast(); },
+      warning(msg) { Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#f59e0b', color: '#fff' } }).showToast(); },
+      info(msg) { Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#3b82f6', color: '#fff' } }).showToast(); }
     }
   </script>
 
   <script>
-    (function() {
-      const escapeHtml = (value = "") =>
-        String(value)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
+      (function () {
+        const escapeHtml = (value = "") =>
+          String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
 
-      const translate = (key, fallback = "", replacements) => {
-        if (typeof window.__ === "function") {
-          const value = window.__(key, replacements);
-          if (typeof value === "string" && value !== key) {
-            return value;
+        const translate = (key, fallback = "", replacements) => {
+          if (typeof window.__ === "function") {
+            const value = window.__(key, replacements);
+            if (typeof value === "string" && value !== key) {
+              return value;
+            }
           }
-        }
-        return fallback || key;
-      };
+          return fallback || key;
+        };
 
-      const getActiveLanguage = () => {
-        if (typeof window.__lang === "function") {
-          return window.__lang();
-        }
-        const stored = (localStorage.getItem("lang") || "id").toLowerCase();
-        return stored.startsWith("en") ? "en" : "id";
-      };
+        const getActiveLanguage = () => {
+          if (typeof window.__lang === "function") {
+            return window.__lang();
+          }
+          const stored = (localStorage.getItem("lang") || "id").toLowerCase();
+          return stored.startsWith("en") ? "en" : "id";
+        };
 
-      const formatTimestamp = (value, lang) => {
-        if (!value) return "";
-        const ts = typeof value === "number" ? value : Date.parse(value);
-        if (Number.isNaN(ts)) return "";
-        const locale = lang === "en" ? "en-US" : "id-ID";
-        return new Date(ts).toLocaleString(locale, {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-      };
+        const formatTimestamp = (value, lang) => {
+          if (!value) return "";
+          const ts = typeof value === "number" ? value : Date.parse(value);
+          if (Number.isNaN(ts)) return "";
+          const locale = lang === "en" ? "en-US" : "id-ID";
+          return new Date(ts).toLocaleString(locale, {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        };
 
-      const selectBiayaField = (item = {}, field, lang) => {
-        const normalized = lang === "en" ? "en" : "id";
-        if (normalized === "en") {
-          const enVal = item[`${field}_en`];
-          if (typeof enVal === "string" && enVal.trim()) return enVal.trim();
-        }
-        const base = item[field];
-        if (typeof base === "string" && base.trim()) return base.trim();
-        if (normalized === "id") {
-          const fallback = item[`${field}_en`];
-          if (typeof fallback === "string" && fallback.trim()) return fallback.trim();
-        } else {
-          const fallback = item[field];
-          if (typeof fallback === "string" && fallback.trim()) return fallback.trim();
-        }
-        return "";
-      };
+        const selectBiayaField = (item = {}, field, lang) => {
+          const normalized = lang === "en" ? "en" : "id";
+          if (normalized === "en") {
+            const enVal = item[`${field}_en`];
+            if (typeof enVal === "string" && enVal.trim()) return enVal.trim();
+          }
+          const base = item[field];
+          if (typeof base === "string" && base.trim()) return base.trim();
+          if (normalized === "id") {
+            const fallback = item[`${field}_en`];
+            if (typeof fallback === "string" && fallback.trim()) return fallback.trim();
+          } else {
+            const fallback = item[field];
+            if (typeof fallback === "string" && fallback.trim()) return fallback.trim();
+          }
+          return "";
+        };
 
-      let cachedBiayaItems = null;
+        let cachedBiayaItems = null;
 
-      function renderBiayaContent(items) {
-        const tbody = document.getElementById("biayaTableBody");
-        const infoEl = document.getElementById("biayaLastUpdate");
-        if (!tbody) return;
+        function renderBiayaContent(items) {
+          const tbody = document.getElementById("biayaTableBody");
+          const infoEl = document.getElementById("biayaLastUpdate");
+          if (!tbody) return;
 
-        if (!items || !items.length) {
-          const emptyText = escapeHtml(translate("pages.fees.empty", "Belum ada data biaya."));
-          tbody.innerHTML = `
+          if (!items || !items.length) {
+            const emptyText = escapeHtml(translate("pages.fees.empty", "Belum ada data biaya."));
+            tbody.innerHTML = `
             <tr>
               <td colspan="2" class="px-6 py-4 text-center text-gray-500">${emptyText}</td>
             </tr>
           `;
-          if (infoEl) infoEl.textContent = "";
-          return;
-        }
+            if (infoEl) infoEl.textContent = "";
+            return;
+          }
 
-        const lang = getActiveLanguage();
-        tbody.innerHTML = items
-          .map((item) => {
-            const label = escapeHtml(selectBiayaField(item, "label", lang));
-            const amount = escapeHtml(selectBiayaField(item, "amount", lang));
-            return `
+          const lang = getActiveLanguage();
+          tbody.innerHTML = items
+            .map((item) => {
+              const label = escapeHtml(selectBiayaField(item, "label", lang));
+              const amount = escapeHtml(selectBiayaField(item, "amount", lang));
+              return `
               <tr>
                 <td class="px-6 py-4 whitespace-nowrap">${label}</td>
                 <td class="px-6 py-4 whitespace-nowrap">${amount}</td>
               </tr>
             `;
-          })
-          .join("");
+            })
+            .join("");
 
-        if (infoEl) {
-          const latestTimestamp = items.reduce((max, item) => {
-            const ts = item?.updated_at
-              ? Date.parse(item.updated_at)
-              : item?.created_at
-              ? Date.parse(item.created_at)
-              : 0;
-            return Number.isNaN(ts) ? max : Math.max(max, ts);
-          }, 0);
+          if (infoEl) {
+            const latestTimestamp = items.reduce((max, item) => {
+              const ts = item?.updated_at
+                ? Date.parse(item.updated_at)
+                : item?.created_at
+                  ? Date.parse(item.created_at)
+                  : 0;
+              return Number.isNaN(ts) ? max : Math.max(max, ts);
+            }, 0);
 
-          infoEl.textContent = latestTimestamp
-            ? `${translate("pages.fees.lastUpdated", lang === "en" ? "Last updated:" : "Terakhir diperbarui:")} ${formatTimestamp(latestTimestamp, lang)}`
-            : "";
-        }
-      }
-
-      async function loadBiayaContent({ force = false } = {}) {
-        if (!force && cachedBiayaItems) {
-          renderBiayaContent(cachedBiayaItems);
-          return;
+            infoEl.textContent = latestTimestamp
+              ? `${translate("pages.fees.lastUpdated", lang === "en" ? "Last updated:" : "Terakhir diperbarui:")} ${formatTimestamp(latestTimestamp, lang)}`
+              : "";
+          }
         }
 
-        const tbody = document.getElementById("biayaTableBody");
-        const infoEl = document.getElementById("biayaLastUpdate");
-        if (!tbody) return;
+        async function loadBiayaContent({ force = false } = {}) {
+          if (!force && cachedBiayaItems) {
+            renderBiayaContent(cachedBiayaItems);
+            return;
+          }
 
-        const loadingText = escapeHtml(translate("pages.fees.loading", "Memuat data biaya..."));
-        tbody.innerHTML = `
+          const tbody = document.getElementById("biayaTableBody");
+          const infoEl = document.getElementById("biayaLastUpdate");
+          if (!tbody) return;
+
+          const loadingText = escapeHtml(translate("pages.fees.loading", "Memuat data biaya..."));
+          tbody.innerHTML = `
           <tr>
             <td colspan="2" class="px-6 py-4 text-center text-gray-500">${loadingText}</td>
           </tr>
         `;
-        if (infoEl) infoEl.textContent = "";
+          if (infoEl) infoEl.textContent = "";
 
-        try {
-          const response = await fetch("/api/biaya_items");
-          const result = await response.json();
-          if (!result.ok) {
-            throw new Error(result.error || "Gagal memuat data");
-          }
+          try {
+            const response = await fetch("/api/biaya_items");
+            const result = await response.json();
+            if (!result.ok) {
+              throw new Error(result.error || "Gagal memuat data");
+            }
 
-          const items = Array.isArray(result.data) ? result.data : [];
-          cachedBiayaItems = items
-            .map((item) => ({
-              ...item,
-              label: selectBiayaField(item, "label", "id"),
-              label_en: selectBiayaField(item, "label", "en"),
-              amount: selectBiayaField(item, "amount", "id"),
-              amount_en: selectBiayaField(item, "amount", "en"),
-            }))
-            .sort(
-              (a, b) =>
-                (a?.order_index || 0) - (b?.order_index || 0)
-            );
+            const items = Array.isArray(result.data) ? result.data : [];
+            cachedBiayaItems = items
+              .map((item) => ({
+                ...item,
+                label: selectBiayaField(item, "label", "id"),
+                label_en: selectBiayaField(item, "label", "en"),
+                amount: selectBiayaField(item, "amount", "id"),
+                amount_en: selectBiayaField(item, "amount", "en"),
+              }))
+              .sort(
+                (a, b) =>
+                  (a?.order_index || 0) - (b?.order_index || 0)
+              );
 
-          if (!cachedBiayaItems.length) {
-            const emptyText = escapeHtml(translate("pages.fees.empty", "Belum ada data biaya."));
-            tbody.innerHTML = `
+            if (!cachedBiayaItems.length) {
+              const emptyText = escapeHtml(translate("pages.fees.empty", "Belum ada data biaya."));
+              tbody.innerHTML = `
               <tr>
                 <td colspan="2" class="px-6 py-4 text-center text-gray-500">${emptyText}</td>
               </tr>
             `;
-            return;
-          }
+              return;
+            }
 
-          renderBiayaContent(cachedBiayaItems);
-        } catch (error) {
-          console.error("[BIAYA_PAGE] Error memuat biaya:", error);
-          const errorText = escapeHtml(translate("pages.fees.error", "Gagal memuat data biaya. Silakan coba lagi."));
-          tbody.innerHTML = `
+            renderBiayaContent(cachedBiayaItems);
+          } catch (error) {
+            console.error("[BIAYA_PAGE] Error memuat biaya:", error);
+            const errorText = escapeHtml(translate("pages.fees.error", "Gagal memuat data biaya. Silakan coba lagi."));
+            tbody.innerHTML = `
             <tr>
               <td colspan="2" class="px-6 py-4 text-center text-red-500">${errorText}</td>
             </tr>
           `;
+          }
         }
-      }
 
-      document.addEventListener("DOMContentLoaded", () => {
-        loadBiayaContent({ force: true });
-      });
-
-      window.addEventListener("i18n:languageChanged", () => {
-        if (cachedBiayaItems) {
-          renderBiayaContent(cachedBiayaItems);
-        } else {
+        document.addEventListener("DOMContentLoaded", () => {
           loadBiayaContent({ force: true });
-        }
-      });
+        });
 
-      window.addEventListener("storage", (event) => {
-        if (event.key === "biaya_items_update") {
-          cachedBiayaItems = null;
-          loadBiayaContent({ force: true });
-        }
-      });
-    })();
+        window.addEventListener("i18n:languageChanged", () => {
+          if (cachedBiayaItems) {
+            renderBiayaContent(cachedBiayaItems);
+          } else {
+            loadBiayaContent({ force: true });
+          }
+        });
+
+        window.addEventListener("storage", (event) => {
+          if (event.key === "biaya_items_update") {
+            cachedBiayaItems = null;
+            loadBiayaContent({ force: true });
+          }
+        });
+      })();
   </script>
 
 
-  
+
   <script>
-    (function() {
+    (function () {
       const blob = document.getElementById("yellowBlob");
       if (!blob) return;
 
@@ -787,4 +804,5 @@
   <script src="/assets/js/pwa.js" defer></script>
   <script src="/assets/js/install-button.js" defer></script>
 </body>
+
 </html>
