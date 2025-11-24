@@ -1,248 +1,320 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="csrf-token" content="{{CSRF_TOKEN}}" />
-    <meta name="description" content="Formulir pendaftaran santri baru Pondok Pesantren Al Ikhsan Beji. Isi data diri, pendidikan, orang tua, dan unggah berkas pendaftaran." data-i18n="meta.description.register" data-i18n-attr="content" data-i18n-skip-text />
-    <meta name="keywords" content="Formulir Pendaftaran, PPDSB, Pondok Pesantren Al Ikhsan Beji, Pendaftaran Santri Baru, Beji, Depok" />
-    <meta name="theme-color" content="#14532d" />
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
-    <link rel="manifest" href="/manifest.webmanifest">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="csrf-token" content="{{CSRF_TOKEN}}" />
+  <meta name="description"
+    content="Formulir pendaftaran santri baru Pondok Pesantren Al Ikhsan Beji. Isi data diri, pendidikan, orang tua, dan unggah berkas pendaftaran."
+    data-i18n="meta.description.register" data-i18n-attr="content" data-i18n-skip-text />
+  <meta name="keywords"
+    content="Formulir Pendaftaran, PPDSB, Pondok Pesantren Al Ikhsan Beji, Pendaftaran Santri Baru, Beji, Depok" />
+  <meta name="theme-color" content="#14532d" />
 
-    <title data-i18n="meta.title.register">Formulir Pendaftaran - PPDSB Pondok Pesantren Al Ikhsan Beji</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+  <link rel="manifest" href="/manifest.webmanifest">
 
-    <link rel="stylesheet" href="/assets/css/tailwind.css" />
+  <title data-i18n="meta.title.register">Formulir Pendaftaran - PPDSB Pondok Pesantren Al Ikhsan Beji</title>
 
-    <script src="/i18n.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/tailwind.css" />
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <script src="/i18n.js" defer></script>
 
-    <!-- Choices.js / Flatpickr / Toastify (opsional, kompatibel dgn snippet lama) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
-    <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <!-- Choices.js / Flatpickr / Toastify (opsional, kompatibel dgn snippet lama) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
 
-    <script>
-      document.addEventListener('alpine:init', () => {
-        Alpine.store('modals', { showKonfirmasi: false, showSukses: false });
-        console.log('[ALPINE] Store initialized:', Alpine.store('modals'));
-      });
-    </script>
-    <style>
-            /* Force hide modals initially, then show via JS */
-      .modal-hidden { display: none !important; }
-      .modal-visible { display: flex !important; }
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
 
-      /* Navbar mobile fixes - Simple and working */
-      @media (max-width: 767px) {
-        /* Navbar container */
-        nav.sticky {
-          position: sticky !important;
-          top: 0 !important;
-          z-index: 50 !important;
-        }
-        
-        /* Navbar inner container */
-        nav .max-w-7xl {
-          padding-left: 1rem !important;
-          padding-right: 1rem !important;
-        }
-        
-        /* Logo responsive */
-        nav img.h-16,
-        nav img[alt*="Logo"] {
-          max-height: 64px !important;
-          height: 64px !important;
-          width: auto !important;
-        }
-        
-        /* Navbar row */
-        nav > div > div.flex {
-          min-height: 64px !important;
-          height: auto !important;
-        }
-        
-        /* Mobile menu button - ensure it's visible and clickable */
-        nav button[type="button"]:not([aria-label="Close menu"]) {
-          min-width: 44px !important;
-          min-height: 44px !important;
-          width: 44px !important;
-          height: 44px !important;
-          display: inline-flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          padding: 0.5rem !important;
-        }
-        
-        /* Hide desktop nav */
-        nav .hidden.md\:block {
-          display: none !important;
-        }
-        
-        /* Show mobile button */
-        nav .md\:hidden {
-          display: flex !important;
-        }
-      }
-      
-      @media (max-width: 640px) {
-        /* Smaller logo on very small screens */
-        nav img.h-16,
-        nav img[alt*="Logo"] {
-          max-height: 64px !important;
-          height: 64px !important;
-        }
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('modals', { showKonfirmasi: false, showSukses: false });
+      console.log('[ALPINE] Store initialized:', Alpine.store('modals'));
+    });
+  </script>
+  <style>
+    /* Force hide modals initially, then show via JS */
+    .modal-hidden {
+      display: none !important;
+    }
+
+    .modal-visible {
+      display: flex !important;
+    }
+
+    /* Navbar mobile fixes - Simple and working */
+    @media (max-width: 767px) {
+
+      /* Navbar container */
+      nav.sticky {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 50 !important;
       }
 
-      /* Mobile menu - Simple and working */
-      @media (max-width: 767px) {
-        /* Mobile menu panel */
-        .mobile-menu {
-          width: 100vw !important;
-          max-width: 100vw !important;
-        }
-        
-        /* Mobile menu logo */
-        .mobile-menu img {
-          max-height: 64px !important;
-          height: 64px !important;
-        }
-        
-        /* Mobile menu links - ensure touch targets */
-        .mobile-menu a {
-          min-height: 44px !important;
-          display: flex !important;
-          align-items: center !important;
-        }
-        
-        /* Mobile menu summary */
-        .mobile-menu summary {
-          min-height: 44px !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: space-between !important;
-          cursor: pointer !important;
-          list-style: none !important;
-        }
-        
-        .mobile-menu summary::-webkit-details-marker {
-          display: none !important;
-        }
-        
-        .mobile-menu summary::marker {
-          display: none !important;
-        }
-        
-        /* Mobile menu sub-items */
-        .mobile-menu details > div {
-          padding-left: 1rem !important;
-          border-left: 2px solid #e5e7eb !important;
-        }
-        
-        .mobile-menu details a {
-          font-size: 0.875rem !important;
-          min-height: 64px !important;
-        }
-        
-        /* Details arrow rotation */
-        .mobile-menu details[open] summary i {
-          transform: rotate(180deg) !important;
-        }
-      }
-      
-      @media (max-width: 640px) {
-        .mobile-menu {
-          width: 100vw !important;
-          max-width: 100vw !important;
-        }
-        
-        .mobile-menu a,
-        .mobile-menu summary {
-          font-size: 0.9rem !important;
-          padding: 0.625rem 0.875rem !important;
-        }
+      /* Navbar inner container */
+      nav .max-w-7xl {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
       }
 
-      /* Improve button touch targets on mobile */
-      @media (max-width: 640px) {
-        a, button {
-          min-height: 44px;
-          min-width: 44px;
-        }
+      /* Logo responsive */
+      nav img.h-16,
+      nav img[alt*="Logo"] {
+        max-height: 64px !important;
+        height: 64px !important;
+        width: auto !important;
       }
 
-      /* Container responsive padding */
-      @media (max-width: 640px) {
-        .container {
-          padding-left: 1rem !important;
-          padding-right: 1rem !important;
-        }
+      /* Navbar row */
+      nav>div>div.flex {
+        min-height: 64px !important;
+        height: auto !important;
       }
-      /* Tailwind-like baseline for legacy classes (to avoid changing field names/structure) */
-      .form-label { display:block; font-size:0.875rem; font-weight:500; color:#374151; margin-bottom:0.25rem; }
-      .form-control, .form-select { display:block; width:100%; border:1px solid #d1d5db; color:#111827; border-radius:0.5rem; padding:0.75rem 1rem; }
-      .form-control:focus, .form-select:focus { outline:2px solid transparent; outline-offset:2px; --tw-ring-color:#059669; box-shadow:0 0 0 2px var(--tw-ring-color); border-color:#059669; }
-      .form-text, .text-muted.small { font-size:0.75rem; color:#6b7280; margin-top:0.25rem; display:block; }
-      .text-danger { color:#dc2626; }
-      .border-bottom { border-bottom:1px solid #e5e7eb; }
-      .btn { display:inline-flex; align-items:center; justify-content:center; gap:0.5rem; border-radius:0.5rem; padding:0.75rem 1rem; font-weight:600; }
-      .btn.btn-danger { background:#ef4444; color:#fff; }
-      .btn.btn-danger:hover { background:#dc2626; }
-      .btn.btn-lg { padding:0.875rem 1.25rem; }
-      .d-flex { display:flex; }
-      .flex-column { flex-direction:column; }
-      .flex-sm-row { }
-      @media (min-width: 640px){ .flex-sm-row { flex-direction:row; } }
-      .gap-2 { gap:0.5rem; }
-    </style>
-  </head>
-  <body class="min-h-screen flex flex-col bg-gray-100 text-gray-800">
-    <!-- HEADER -->
+
+      /* Mobile menu button - ensure it's visible and clickable */
+      nav button[type="button"]:not([aria-label="Close menu"]) {
+        min-width: 44px !important;
+        min-height: 44px !important;
+        width: 44px !important;
+        height: 44px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0.5rem !important;
+      }
+
+      /* Hide desktop nav */
+      nav .hidden.md\:block {
+        display: none !important;
+      }
+
+      /* Show mobile button */
+      nav .md\:hidden {
+        display: flex !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+
+      /* Smaller logo on very small screens */
+      nav img.h-16,
+      nav img[alt*="Logo"] {
+        max-height: 64px !important;
+        height: 64px !important;
+      }
+    }
+
+    /* Mobile menu - Simple and working */
+    @media (max-width: 767px) {
+
+      /* Mobile menu panel */
+      .mobile-menu {
+        width: 100vw !important;
+        max-width: 100vw !important;
+      }
+
+      /* Mobile menu logo */
+      .mobile-menu img {
+        max-height: 64px !important;
+        height: 64px !important;
+      }
+
+      /* Mobile menu links - ensure touch targets */
+      .mobile-menu a {
+        min-height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+      }
+
+      /* Mobile menu summary */
+      .mobile-menu summary {
+        min-height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        cursor: pointer !important;
+        list-style: none !important;
+      }
+
+      .mobile-menu summary::-webkit-details-marker {
+        display: none !important;
+      }
+
+      .mobile-menu summary::marker {
+        display: none !important;
+      }
+
+      /* Mobile menu sub-items */
+      .mobile-menu details>div {
+        padding-left: 1rem !important;
+        border-left: 2px solid #e5e7eb !important;
+      }
+
+      .mobile-menu details a {
+        font-size: 0.875rem !important;
+        min-height: 64px !important;
+      }
+
+      /* Details arrow rotation */
+      .mobile-menu details[open] summary i {
+        transform: rotate(180deg) !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .mobile-menu {
+        width: 100vw !important;
+        max-width: 100vw !important;
+      }
+
+      .mobile-menu a,
+      .mobile-menu summary {
+        font-size: 0.9rem !important;
+        padding: 0.625rem 0.875rem !important;
+      }
+    }
+
+    /* Improve button touch targets on mobile */
+    @media (max-width: 640px) {
+
+      a,
+      button {
+        min-height: 44px;
+        min-width: 44px;
+      }
+    }
+
+    /* Container responsive padding */
+    @media (max-width: 640px) {
+      .container {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+      }
+    }
+
+    /* Tailwind-like baseline for legacy classes (to avoid changing field names/structure) */
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 0.25rem;
+    }
+
+    .form-control,
+    .form-select {
+      display: block;
+      width: 100%;
+      border: 1px solid #d1d5db;
+      color: #111827;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+      --tw-ring-color: #059669;
+      box-shadow: 0 0 0 2px var(--tw-ring-color);
+      border-color: #059669;
+    }
+
+    .form-text,
+    .text-muted.small {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+      display: block;
+    }
+
+    .text-danger {
+      color: #dc2626;
+    }
+
+    .border-bottom {
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+    }
+
+    .btn.btn-danger {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .btn.btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .btn.btn-lg {
+      padding: 0.875rem 1.25rem;
+    }
+
+    .d-flex {
+      display: flex;
+    }
+
+    .flex-column {
+      flex-direction: column;
+    }
+
+    .flex-sm-row {}
+
+    @media (min-width: 640px) {
+      .flex-sm-row {
+        flex-direction: row;
+      }
+    }
+
+    .gap-2 {
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col bg-gray-100 text-gray-800">
+  <!-- HEADER -->
   <header class="relative z-50">
     <div id="superHeader" class="bg-yellow-300 text-gray-900 text-xs tracking-wide">
       <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 lg:px-8 py-1.5">
-        <button
-          type="button"
+        <button type="button"
           class="inline-flex items-center gap-2 bg-white/40 hover:bg-white/60 text-gray-900 px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold uppercase shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 transition disabled:opacity-60 disabled:cursor-not-allowed"
           data-install-button
-          data-install-unavailable-text="Install tersedia setelah browser mendukung pemasangan aplikasi."
-        >
+          data-install-unavailable-text="Install tersedia setelah browser mendukung pemasangan aplikasi.">
           <i class="bi bi-cloud-arrow-down-fill text-base" aria-hidden="true"></i>
           <span data-i18n="nav.install">Download App</span>
         </button>
         <div class="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-semibold uppercase">
-          <button
-            type="button"
-            data-setlang="id"
+          <button type="button" data-setlang="id"
             class="inline-flex items-center gap-1 text-gray-900 hover:text-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 transition"
-            aria-label="Bahasa Indonesia"
-            data-i18n="nav.language.id"
-            data-i18n-attr="aria-label"
-            data-i18n-skip-text
-          >
+            aria-label="Bahasa Indonesia" data-i18n="nav.language.id" data-i18n-attr="aria-label" data-i18n-skip-text>
             <span aria-hidden="true" class="text-base leading-none">🇮🇩</span>
             <span>ID</span>
           </button>
           <span class="text-gray-600" aria-hidden="true">|</span>
-          <button
-            type="button"
-            data-setlang="en"
+          <button type="button" data-setlang="en"
             class="inline-flex items-center gap-1 text-gray-900 hover:text-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 transition"
-            aria-label="English"
-            data-i18n="nav.language.en"
-            data-i18n-attr="aria-label"
-            data-i18n-skip-text
-          >
+            aria-label="English" data-i18n="nav.language.en" data-i18n-attr="aria-label" data-i18n-skip-text>
             <span aria-hidden="true" class="text-base leading-none">🇬🇧</span>
             <span>EN</span>
           </button>
@@ -251,7 +323,8 @@
     </div>
   </header>
   <!-- NAVBAR -->
-  <nav class="sticky top-0 z-[130] bg-white/95 backdrop-blur supports-backdrop-blur:bg-white/85 shadow-lg" data-nav-root>
+  <nav class="sticky top-0 z-[130] bg-white/95 backdrop-blur supports-backdrop-blur:bg-white/85 shadow-lg"
+    data-nav-root>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16 min-h-[64px]">
         <!-- Logo -->
@@ -264,47 +337,47 @@
         <!-- Desktop Navigation -->
         <div class="hidden md:block">
           <div class="flex items-baseline space-x-4">
-            <a href="/" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium" data-nav-link data-i18n="nav.home">Beranda</a>
+            <a href="/" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium"
+              data-nav-link data-i18n="nav.home">Beranda</a>
 
             <!-- Dropdown Informasi -->
             <div class="relative">
-              <button 
-                type="button"
+              <button type="button"
                 class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium flex items-center transition"
-                data-dropdown-toggle="desktopInfoDropdown"
-                aria-expanded="false"
-                aria-controls="desktopInfoDropdown"
+                data-dropdown-toggle="desktopInfoDropdown" aria-expanded="false" aria-controls="desktopInfoDropdown"
                 aria-haspopup="true">
                 <span data-i18n="nav.info">Informasi</span>
                 <i class="bi bi-caret-down-fill ml-1 text-xs transition-transform duration-200" data-dropdown-caret></i>
               </button>
-              <div
-                id="desktopInfoDropdown"
+              <div id="desktopInfoDropdown"
                 class="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg py-2 z-50 border border-gray-100 hidden"
                 role="menu">
-                <a href="/alur-pendaftaran.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-nav-link data-i18n="nav.flow">Alur Pendaftaran</a>
-                <a href="/syarat-pendaftaran.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-nav-link data-i18n="nav.requirements">Syarat Pendaftaran</a>
-                <a href="/biaya.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-nav-link data-i18n="nav.fees">Biaya</a>
+                <a href="/alur-pendaftaran.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  data-nav-link data-i18n="nav.flow">Alur Pendaftaran</a>
+                <a href="/syarat-pendaftaran.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  data-nav-link data-i18n="nav.requirements">Syarat Pendaftaran</a>
+                <a href="/biaya.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-nav-link
+                  data-i18n="nav.fees">Biaya</a>
               </div>
             </div>
 
-            <a href="/brosur.html" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium" data-nav-link data-i18n="nav.brochure">Brosur</a>
-            <a href="/kontak.html" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium" data-nav-link data-i18n="nav.contact">Kontak</a>
+            <a href="/brosur.html" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium"
+              data-nav-link data-i18n="nav.brochure">Brosur</a>
+            <a href="/kontak.html" class="text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md text-sm font-medium"
+              data-nav-link data-i18n="nav.contact">Kontak</a>
           </div>
         </div>
 
         <!-- CTA Button Desktop -->
         <div class="hidden md:block">
-          <a href="/login" class="bg-brand-700 hover:bg-brand-800 text-white px-6 py-2 rounded-lg text-sm font-medium shadow-md hover:shadow-lg" data-i18n="nav.admin">Admin</a>
+          <a href="/login"
+            class="bg-brand-700 hover:bg-brand-800 text-white px-6 py-2 rounded-lg text-sm font-medium shadow-md hover:shadow-lg"
+            data-i18n="nav.admin">Admin</a>
         </div>
 
         <!-- Mobile menu button -->
         <div class="md:hidden">
-          <button 
-            type="button"
-            aria-label="Toggle menu"
-            aria-expanded="false"
-            aria-controls="mobileNavMenu"
+          <button type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileNavMenu"
             class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-brand-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
             data-mobile-toggle>
             <i class="bi bi-list text-xl" data-mobile-icon="open"></i>
@@ -317,1625 +390,1554 @@
   </nav>
 
   <!-- MOBILE NAV OVERLAY -->
-  <div
-    id="mobileNavBackdrop"
-    class="md:hidden absolute inset-0 z-[140] bg-black/60 hidden"
-    data-mobile-backdrop></div>
+  <div id="mobileNavBackdrop" class="md:hidden absolute inset-0 z-[140] bg-black/60 hidden" data-mobile-backdrop></div>
 
-  <div
-    id="mobileNavMenu"
+  <div id="mobileNavMenu"
     class="md:hidden absolute inset-y-0 left-0 z-[141] mobile-menu bg-white shadow-2xl border-r border-gray-200 overflow-y-auto hidden"
-    data-mobile-menu
-    role="dialog"
-    aria-modal="true">
+    data-mobile-menu role="dialog" aria-modal="true">
     <div class="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
       <div class="flex items-center">
         <img src="/assets/img/logo-alikhsan.png" alt="Logo Al Ikhsan" class="h-12 w-auto" />
       </div>
-      <button 
-        type="button"
-        aria-label="Close menu"
-        class="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100"
-        data-close-mobile>
+      <button type="button" aria-label="Close menu"
+        class="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100" data-close-mobile>
         <i class="bi bi-x-lg text-xl"></i>
       </button>
     </div>
 
     <div class="px-2 pt-4 pb-6 space-y-1">
-      <a 
-        href="/" 
-        class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-700 hover:bg-gray-50" 
-        data-nav-link data-i18n="nav.home"
-        data-close-mobile>Beranda</a>
+      <a href="/"
+        class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-700 hover:bg-gray-50"
+        data-nav-link data-i18n="nav.home" data-close-mobile>Beranda</a>
 
       <details class="px-1">
-        <summary class="cursor-pointer text-gray-700 hover:text-brand-700 hover:bg-gray-50 px-4 py-3 rounded-md text-base font-medium flex items-center justify-between" data-i18n="nav.info">
+        <summary
+          class="cursor-pointer text-gray-700 hover:text-brand-700 hover:bg-gray-50 px-4 py-3 rounded-md text-base font-medium flex items-center justify-between"
+          data-i18n="nav.info">
           <span>Informasi</span>
           <i class="bi bi-chevron-down text-xs"></i>
         </summary>
         <div class="pl-4 space-y-1 mt-1">
-          <a 
-            href="/alur-pendaftaran.html" 
-            class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" 
-            data-nav-link data-i18n="nav.flow"
-            data-close-mobile>Alur Pendaftaran</a>
-          <a 
-            href="/syarat-pendaftaran.html" 
-            class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" 
-            data-nav-link data-i18n="nav.requirements"
-            data-close-mobile>Syarat Pendaftaran</a>
-          <a 
-            href="/biaya.html" 
-            class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" 
-            data-nav-link data-i18n="nav.fees"
-            data-close-mobile>Biaya</a>
+          <a href="/alur-pendaftaran.html" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" data-nav-link
+            data-i18n="nav.flow" data-close-mobile>Alur Pendaftaran</a>
+          <a href="/syarat-pendaftaran.html" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" data-nav-link
+            data-i18n="nav.requirements" data-close-mobile>Syarat Pendaftaran</a>
+          <a href="/biaya.html" class="block px-4 py-2 text-sm rounded-md hover:bg-gray-50" data-nav-link
+            data-i18n="nav.fees" data-close-mobile>Biaya</a>
         </div>
       </details>
 
-      <a 
-        href="/brosur.html" 
-        class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50" 
-        data-nav-link data-i18n="nav.brochure"
-        data-close-mobile>Brosur</a>
-      <a 
-        href="/kontak.html" 
-        class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50" 
-        data-nav-link data-i18n="nav.contact"
-        data-close-mobile>Kontak</a>
+      <a href="/brosur.html" class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"
+        data-nav-link data-i18n="nav.brochure" data-close-mobile>Brosur</a>
+      <a href="/kontak.html" class="block px-4 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"
+        data-nav-link data-i18n="nav.contact" data-close-mobile>Kontak</a>
 
       <div class="pt-4 pb-2 px-2 border-t border-gray-200 mt-4">
-        <a 
-          href="/login.html" 
-          class="w-full bg-brand-700 hover:bg-brand-800 text-white px-4 py-3 rounded-lg text-base font-medium shadow-md hover:shadow-lg block text-center" 
-          data-i18n="nav.admin"
-          data-close-mobile>Admin</a>
+        <a href="/login.html"
+          class="w-full bg-brand-700 hover:bg-brand-800 text-white px-4 py-3 rounded-lg text-base font-medium shadow-md hover:shadow-lg block text-center"
+          data-i18n="nav.admin" data-close-mobile>Admin</a>
       </div>
     </div>
   </div>
   <!-- END MOBILE NAV OVERLAY -->
-    <!-- MAIN -->
-    <main class="flex-1 container mx-auto px-4 py-8">
-      <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-        <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center" data-i18n="form.heading">Formulir Pendaftaran</h1>
-        <p class="text-center text-gray-600 mb-6" data-i18n="form.intro">Silakan isi formulir di bawah ini dengan lengkap dan benar.</p>
+  <!-- MAIN -->
+  <main class="flex-1 container mx-auto px-4 py-8">
+    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+      <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center" data-i18n="form.heading">Formulir Pendaftaran</h1>
+      <p class="text-center text-gray-600 mb-6" data-i18n="form.intro">Silakan isi formulir di bawah ini dengan lengkap
+        dan benar.</p>
 
-        <form id="formPendaftar" class="space-y-6" novalidate>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Data Pribadi -->
-            <div class="col-span-full">
-              <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3" data-i18n="form.sections.personal">
-                Data Pribadi Calon Siswa
-              </h5>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.nik.label">NIK Calon Siswa</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                name="nikCalon"
-                required
-                maxlength="16"
-                pattern="[0-9]{16}"
-              />
-              <div class="form-text" data-i18n="form.fields.nik.helper">16 digit</div>
-            </div>
-
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.nisn.label">NISN</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                name="nisn"
-                maxlength="10"
-                required
-              />
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.namaLengkap.label">Nama Lengkap</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                name="namaLengkap"
-                required
-              />
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label">
-                <span data-i18n="form.fields.provinsiTempatLahir.label">Provinsi Tempat Lahir</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select
-                class="form-select"
-                id="provinsiTempatLahir"
-                name="provinsiTempatLahir"
-                required
-              >
-                <option value="" data-i18n="form.options.selectProvince">Pilih Provinsi...</option>
-              </select>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label">
-                <span data-i18n="form.fields.tempatLahir.label">Kota/Kab Tempat Lahir</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select
-                class="form-select"
-                id="tempatLahir"
-                name="tempatLahir"
-                required
-                disabled
-              >
-                <option value="" data-i18n="form.options.selectProvinceFirst">Pilih Provinsi Dulu...</option>
-              </select>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label">
-                <span data-i18n="form.fields.tanggalLahir.label">Tanggal Lahir</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="date"
-                class="form-control"
-                name="tanggalLahir"
-                required
-              />
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label">
-                <span data-i18n="form.fields.jenisKelamin.label">Jenis Kelamin</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select class="form-select" name="jenisKelamin" required>
-                <option value="" data-i18n="form.options.select">Pilih...</option>
-                <option value="L" data-i18n="form.options.gender.male">Laki-laki</option>
-                <option value="P" data-i18n="form.options.gender.female">Perempuan</option>
-              </select>
-            </div>
-
-            <!-- Alamat -->
-            <div class="col-span-full mt-4">
-              <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3" data-i18n="form.sections.address">Alamat</h5>
-            </div>
-
-            <div class="col-12">
-              <label class="form-label">
-                <span data-i18n="form.fields.alamatJalan.label">Alamat Jalan</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                name="alamatJalan"
-                placeholder="Contoh: Jl. Merdeka No. 123"
-                data-i18n="form.fields.alamatJalan"
-                data-i18n-attr="placeholder"
-                data-i18n-skip-text
-                required
-              />
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.provinsi.label">Provinsi</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select class="form-select" id="provinsiAlamat" required>
-                <option value="" data-i18n="form.options.selectProvince">Pilih Provinsi...</option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.kota.label">Kota/Kabupaten</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select
-                class="form-select"
-                id="kotaAlamat"
-                required
-                disabled
-              >
-                <option value="" data-i18n="form.options.selectProvinceFirst">Pilih Provinsi Dulu...</option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.kecamatan.label">Kecamatan</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select
-                class="form-select"
-                id="kecamatanAlamat"
-                required
-                disabled
-              >
-                <option value="" data-i18n="form.options.selectCityFirst">Pilih Kota Dulu...</option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.desa.label">Desa/Kelurahan</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select
-                class="form-select"
-                id="desaAlamat"
-                name="desa"
-                required
-                disabled
-              >
-                <option value="" data-i18n="form.options.selectDistrictFirst">Pilih Kecamatan Dulu...</option>
-              </select>
-            </div>
-
-            <!-- Pendidikan -->
-            <div class="col-span-full mt-4">
-              <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3" data-i18n="form.sections.education">
-                Pendidikan & Rencana
-              </h5>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.ijazahFormalTerakhir.label">Ijazah Formal Terakhir</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select
-                class="form-select"
-                name="ijazahFormalTerakhir"
-                required
-              >
-                <option value="" data-i18n="form.options.select">Pilih...</option>
-                <option value="SD" data-i18n="form.options.education.sdMi">SD/MI</option>
-                <option value="SMP" data-i18n="form.options.education.smpMts">SMP/MTs</option>
-                <option value="SMA" data-i18n="form.options.education.smaMa">SMA/MA</option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.rencanaTingkat.label">Tingkat Pendidikan</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select
-                class="form-select"
-                id="rencanaTingkat"
-                name="rencanaTingkat"
-                required
-                onchange="handleTingkatChange()"
-              >
-                <option value="" data-i18n="form.options.select">Pilih...</option>
-                <option value="MTs" data-i18n="form.options.planLevel.mts">MTs (Tsanawiyah)</option>
-                <option value="MA" data-i18n="form.options.planLevel.ma">MA (Aliyah)</option>
-                <option value="Kuliah" data-i18n="form.options.planLevel.college">Kuliah</option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.rencanaProgram.label">Jenis Asrama</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select
-                class="form-select"
-                id="rencanaProgram"
-                name="rencanaProgram"
-                required
-              >
-                <option value="" data-i18n="form.options.select">Pilih...</option>
-                <option value="Asrama Putra Induk" data-i18n="form.options.planProgram.putraInduk">
-                  Asrama Putra Induk
-                </option>
-                <option value="Asrama Putra Tahfidz" data-i18n="form.options.planProgram.putraTahfidz">
-                  Asrama Putra Tahfidz
-                </option>
-                <option value="Asrama Putri" data-i18n="form.options.planProgram.putri">Asrama Putri</option>
-                <option value="Hanya Sekolah" id="optionHanyaSekolah" data-i18n="form.options.planProgram.nonAsrama">
-                  Non Asrama
-                </option>
-              </select>
-            </div>
-
-            <!-- Data Orang Tua -->
-            <div class="col-span-full mt-4">
-              <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3" data-i18n="form.sections.parents">Data Orang Tua</h5>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.namaAyah.label">Nama Ayah</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                name="namaAyah"
-                required
-              />
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.nikAyah.label">NIK Ayah</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                name="nikAyah"
-                required
-                maxlength="16"
-                pattern="[0-9]{16}"
-              />
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.statusAyah.label">Status Ayah</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select class="form-select" name="statusAyah" required>
-                <option value="" data-i18n="form.options.select">Pilih...</option>
-                <option value="Hidup" data-i18n="form.options.parentStatus.alive">Hidup</option>
-                <option value="Meninggal" data-i18n="form.options.parentStatus.deceased">Meninggal</option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.pekerjaanAyah.label">Pekerjaan Ayah</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select class="form-select" name="pekerjaanAyah" required>
-                <option value="" data-i18n="form.options.select">Pilih...</option>
-                <option value="PNS" data-i18n="form.options.job.pns">PNS</option>
-                <option value="TNI/Polri" data-i18n="form.options.job.tniPolri">TNI/Polri</option>
-                <option value="Guru/Dosen" data-i18n="form.options.job.teacher">Guru/Dosen</option>
-                <option value="Pegawai Swasta" data-i18n="form.options.job.privateEmployee">Pegawai Swasta</option>
-                <option value="Wiraswasta" data-i18n="form.options.job.entrepreneur">Wiraswasta</option>
-                <option value="Petani" data-i18n="form.options.job.farmer">Petani</option>
-                <option value="Nelayan" data-i18n="form.options.job.fisherman">Nelayan</option>
-                <option value="Pedagang" data-i18n="form.options.job.trader">Pedagang</option>
-                <option value="Buruh" data-i18n="form.options.job.laborer">Buruh</option>
-                <option value="Sopir" data-i18n="form.options.job.driver">Sopir</option>
-                <option value="Tukang" data-i18n="form.options.job.craftsman">Tukang</option>
-                <option value="Pensiunan" data-i18n="form.options.job.retired">Pensiunan</option>
-                <option value="Tidak Bekerja" data-i18n="form.options.job.unemployed">Tidak Bekerja</option>
-                <option value="Lainnya" data-i18n="form.options.job.other">Lainnya</option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.namaIbu.label">Nama Ibu</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                name="namaIbu"
-                required
-              />
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.nikIbu.label">NIK Ibu</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                name="nikIbu"
-                required
-                maxlength="16"
-                pattern="[0-9]{16}"
-              />
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.statusIbu.label">Status Ibu</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select class="form-select" name="statusIbu" required>
-                <option value="" data-i18n="form.options.select">Pilih...</option>
-                <option value="Hidup" data-i18n="form.options.parentStatus.alive">Hidup</option>
-                <option value="Meninggal" data-i18n="form.options.parentStatus.deceased">Meninggal</option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.pekerjaanIbu.label">Pekerjaan Ibu</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select class="form-select" name="pekerjaanIbu" required>
-                <option value="" data-i18n="form.options.select">Pilih...</option>
-                <option value="PNS" data-i18n="form.options.job.pns">PNS</option>
-                <option value="TNI/Polri" data-i18n="form.options.job.tniPolri">TNI/Polri</option>
-                <option value="Guru/Dosen" data-i18n="form.options.job.teacher">Guru/Dosen</option>
-                <option value="Pegawai Swasta" data-i18n="form.options.job.privateEmployee">Pegawai Swasta</option>
-                <option value="Wiraswasta" data-i18n="form.options.job.entrepreneur">Wiraswasta</option>
-                <option value="Petani" data-i18n="form.options.job.farmer">Petani</option>
-                <option value="Pedagang" data-i18n="form.options.job.trader">Pedagang</option>
-                <option value="Ibu Rumah Tangga" data-i18n="form.options.job.housewife">Ibu Rumah Tangga</option>
-                <option value="Buruh" data-i18n="form.options.job.laborer">Buruh</option>
-                <option value="Pensiunan" data-i18n="form.options.job.retired">Pensiunan</option>
-                <option value="Tidak Bekerja" data-i18n="form.options.job.unemployed">Tidak Bekerja</option>
-                <option value="Lainnya" data-i18n="form.options.job.other">Lainnya</option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.teleponOrtu.label">No Telepon Orang Tua</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="tel"
-                class="form-control"
-                name="teleponOrtu"
-                required
-              />
-            </div>
-
-            <!-- Upload Berkas -->
-            <div class="col-span-full mt-4">
-              <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3">
-                <i class="bi bi-file-earmark-arrow-up"></i> <span data-i18n="form.documents.title">Upload Berkas</span>
-                <span class="text-muted" data-i18n="form.documents.optionalTag">(Opsional)</span>
-              </h5>
-              <p class="text-muted small" data-i18n="form.documents.note">
-                Format: PDF, JPG, PNG. Maksimal 2MB per file.
-              </p>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <i class="bi bi-file-pdf"></i> <span data-i18n="form.documents.fields.ijazah.label">Scan Ijazah Terakhir</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="file"
-                class="form-control"
-                name="fileIjazah"
-                accept=".pdf,.jpg,.jpeg,.png"
-                required
-              />
-              <small class="text-muted" data-i18n="form.documents.fields.ijazah.helper"
-                >PDF, JPG, atau PNG (max 2MB)</small
-              >
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <i class="bi bi-file-pdf"></i> <span data-i18n="form.documents.fields.akta.label">Scan Akta Kelahiran</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="file"
-                class="form-control"
-                name="fileAkta"
-                accept=".pdf,.jpg,.jpeg,.png"
-                required
-              />
-              <small class="text-muted" data-i18n="form.documents.fields.akta.helper"
-                >PDF, JPG, atau PNG (max 2MB)</small
-              >
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <i class="bi bi-image"></i> <span data-i18n="form.documents.fields.foto.label">Pas Foto 3x4</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="file"
-                class="form-control"
-                name="fileFoto"
-                accept=".jpg,.jpeg,.png"
-                required
-              />
-              <small class="text-muted" data-i18n="form.documents.fields.foto.helper">JPG atau PNG (max 2MB)</small>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <i class="bi bi-file-medical"></i> <span data-i18n="form.documents.fields.bpjs.label">Kartu BPJS</span>
-                <span class="text-muted" data-i18n="form.documents.optionalTag">(Opsional)</span>
-              </label>
-              <input
-                type="file"
-                class="form-control"
-                name="fileBPJS"
-                accept=".pdf,.jpg,.jpeg,.png"
-              />
-              <small class="text-muted" data-i18n="form.documents.fields.bpjs.helper">PDF, JPG, atau PNG (max 2MB) - Tidak wajib</small>
-            </div>
+      <form id="formPendaftar" class="space-y-6" novalidate>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="col-span-full">
+            <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3"
+              data-i18n="form.sections.registrationInfo">
+              Informasi Pendaftaran
+            </h5>
           </div>
 
-          <div class="mt-4 flex flex-col sm:flex-row gap-2">
-            <button
-              id="btnLanjutKonfirmasi"
-              class="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-5 py-3 rounded-lg w-full sm:w-auto"
-              type="button"
-            >
-              <i class="bi bi-check-circle"></i> <span data-i18n="form.buttons.review">Lanjut ke Konfirmasi</span>
-            </button>
-            <a href="/" class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-lg w-full sm:w-auto">
-              <i class="bi bi-arrow-left"></i> <span data-i18n="form.buttons.back">Kembali</span>
-            </a>
+          <div class="col-span-full">
+            <label class="form-label">
+              <span data-i18n="form.fields.gelombang.label">Gelombang Pendaftaran</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control bg-gray-100 cursor-not-allowed" name="gelombang" id="gelombangInput"
+              readonly placeholder="Memuat gelombang..." required />
+            <div class="form-text text-brand-600 font-medium" id="gelombangStatus"></div>
           </div>
-        </form>
-      </div>
-    </main>
 
-    <!-- Modal Sukses -->
-    <div id="modalSukses" class="modal-hidden fixed inset-0 z-50 flex items-center justify-center">
-      <div class="absolute inset-0 bg-black/50"></div>
-      <div class="relative bg-white rounded-2xl shadow-2xl max-w-lg w-[92vw]">
-        <div class="px-6 py-4 bg-green-600 text-white rounded-t-2xl">
-          <h5 class="font-semibold"><i class="bi bi-check-circle-fill"></i> <span data-i18n="form.modals.success.title">Pendaftaran Berhasil!</span></h5>
+          <!-- Data Pribadi -->
+          <div class="col-span-full mt-4">
+            <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3" data-i18n="form.sections.personal">
+              Data Pribadi Calon Siswa
+            </h5>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.nik.label">NIK Calon Siswa</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" name="nikCalon" required maxlength="16" pattern="[0-9]{16}" />
+            <div class="form-text" data-i18n="form.fields.nik.helper">16 digit</div>
+          </div>
+
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.nisn.label">NISN</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" name="nisn" maxlength="10" required />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.namaLengkap.label">Nama Lengkap</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" name="namaLengkap" required />
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">
+              <span data-i18n="form.fields.provinsiTempatLahir.label">Provinsi Tempat Lahir</span>
+              <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" id="provinsiTempatLahir" name="provinsiTempatLahir" required>
+              <option value="" data-i18n="form.options.selectProvince">Pilih Provinsi...</option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">
+              <span data-i18n="form.fields.tempatLahir.label">Kota/Kab Tempat Lahir</span>
+              <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" id="tempatLahir" name="tempatLahir" required disabled>
+              <option value="" data-i18n="form.options.selectProvinceFirst">Pilih Provinsi Dulu...</option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">
+              <span data-i18n="form.fields.tanggalLahir.label">Tanggal Lahir</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="date" class="form-control" name="tanggalLahir" required />
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">
+              <span data-i18n="form.fields.jenisKelamin.label">Jenis Kelamin</span>
+              <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" name="jenisKelamin" required>
+              <option value="" data-i18n="form.options.select">Pilih...</option>
+              <option value="L" data-i18n="form.options.gender.male">Laki-laki</option>
+              <option value="P" data-i18n="form.options.gender.female">Perempuan</option>
+            </select>
+          </div>
+
+          <!-- Alamat -->
+          <div class="col-span-full mt-4">
+            <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3" data-i18n="form.sections.address">
+              Alamat</h5>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">
+              <span data-i18n="form.fields.alamatJalan.label">Alamat Jalan</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" name="alamatJalan" placeholder="Contoh: Jl. Merdeka No. 123"
+              data-i18n="form.fields.alamatJalan" data-i18n-attr="placeholder" data-i18n-skip-text required />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.provinsi.label">Provinsi</span>
+              <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" id="provinsiAlamat" required>
+              <option value="" data-i18n="form.options.selectProvince">Pilih Provinsi...</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.kota.label">Kota/Kabupaten</span>
+              <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" id="kotaAlamat" required disabled>
+              <option value="" data-i18n="form.options.selectProvinceFirst">Pilih Provinsi Dulu...</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.kecamatan.label">Kecamatan</span>
+              <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" id="kecamatanAlamat" required disabled>
+              <option value="" data-i18n="form.options.selectCityFirst">Pilih Kota Dulu...</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.desa.label">Desa/Kelurahan</span>
+              <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" id="desaAlamat" name="desa" required disabled>
+              <option value="" data-i18n="form.options.selectDistrictFirst">Pilih Kecamatan Dulu...</option>
+            </select>
+          </div>
+
+          <!-- Pendidikan -->
+          <div class="col-span-full mt-4">
+            <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3" data-i18n="form.sections.education">
+              Pendidikan & Rencana
+            </h5>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.ijazahFormalTerakhir.label">Ijazah Formal Terakhir</span>
+              <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" name="ijazahFormalTerakhir" required>
+              <option value="" data-i18n="form.options.select">Pilih...</option>
+              <option value="SD" data-i18n="form.options.education.sdMi">SD/MI</option>
+              <option value="SMP" data-i18n="form.options.education.smpMts">SMP/MTs</option>
+              <option value="SMA" data-i18n="form.options.education.smaMa">SMA/MA</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.rencanaTingkat.label">Tingkat Pendidikan</span>
+              <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" id="rencanaTingkat" name="rencanaTingkat" required
+              onchange="handleTingkatChange()">
+              <option value="" data-i18n="form.options.select">Pilih...</option>
+              <option value="MTs" data-i18n="form.options.planLevel.mts">MTs (Tsanawiyah)</option>
+              <option value="MA" data-i18n="form.options.planLevel.ma">MA (Aliyah)</option>
+              <option value="Kuliah" data-i18n="form.options.planLevel.college">Kuliah</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.rencanaProgram.label">Jenis Asrama</span>
+              <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" id="rencanaProgram" name="rencanaProgram" required>
+              <option value="" data-i18n="form.options.select">Pilih...</option>
+              <option value="Asrama Putra Induk" data-i18n="form.options.planProgram.putraInduk">
+                Asrama Putra Induk
+              </option>
+              <option value="Asrama Putra Tahfidz" data-i18n="form.options.planProgram.putraTahfidz">
+                Asrama Putra Tahfidz
+              </option>
+              <option value="Asrama Putri" data-i18n="form.options.planProgram.putri">Asrama Putri</option>
+              <option value="Hanya Sekolah" id="optionHanyaSekolah" data-i18n="form.options.planProgram.nonAsrama">
+                Non Asrama
+              </option>
+            </select>
+          </div>
+
+          <!-- Data Orang Tua -->
+          <div class="col-span-full mt-4">
+            <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3" data-i18n="form.sections.parents">
+              Data Orang Tua</h5>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.namaAyah.label">Nama Ayah</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" name="namaAyah" required />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.nikAyah.label">NIK Ayah</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" name="nikAyah" required maxlength="16" pattern="[0-9]{16}" />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.statusAyah.label">Status Ayah</span>
+              <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" name="statusAyah" required>
+              <option value="" data-i18n="form.options.select">Pilih...</option>
+              <option value="Hidup" data-i18n="form.options.parentStatus.alive">Hidup</option>
+              <option value="Meninggal" data-i18n="form.options.parentStatus.deceased">Meninggal</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.pekerjaanAyah.label">Pekerjaan Ayah</span>
+              <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" name="pekerjaanAyah" required>
+              <option value="" data-i18n="form.options.select">Pilih...</option>
+              <option value="PNS" data-i18n="form.options.job.pns">PNS</option>
+              <option value="TNI/Polri" data-i18n="form.options.job.tniPolri">TNI/Polri</option>
+              <option value="Guru/Dosen" data-i18n="form.options.job.teacher">Guru/Dosen</option>
+              <option value="Pegawai Swasta" data-i18n="form.options.job.privateEmployee">Pegawai Swasta</option>
+              <option value="Wiraswasta" data-i18n="form.options.job.entrepreneur">Wiraswasta</option>
+              <option value="Petani" data-i18n="form.options.job.farmer">Petani</option>
+              <option value="Nelayan" data-i18n="form.options.job.fisherman">Nelayan</option>
+              <option value="Pedagang" data-i18n="form.options.job.trader">Pedagang</option>
+              <option value="Buruh" data-i18n="form.options.job.laborer">Buruh</option>
+              <option value="Sopir" data-i18n="form.options.job.driver">Sopir</option>
+              <option value="Tukang" data-i18n="form.options.job.craftsman">Tukang</option>
+              <option value="Pensiunan" data-i18n="form.options.job.retired">Pensiunan</option>
+              <option value="Tidak Bekerja" data-i18n="form.options.job.unemployed">Tidak Bekerja</option>
+              <option value="Lainnya" data-i18n="form.options.job.other">Lainnya</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.namaIbu.label">Nama Ibu</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" name="namaIbu" required />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.nikIbu.label">NIK Ibu</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" name="nikIbu" required maxlength="16" pattern="[0-9]{16}" />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.statusIbu.label">Status Ibu</span>
+              <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" name="statusIbu" required>
+              <option value="" data-i18n="form.options.select">Pilih...</option>
+              <option value="Hidup" data-i18n="form.options.parentStatus.alive">Hidup</option>
+              <option value="Meninggal" data-i18n="form.options.parentStatus.deceased">Meninggal</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.pekerjaanIbu.label">Pekerjaan Ibu</span>
+              <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" name="pekerjaanIbu" required>
+              <option value="" data-i18n="form.options.select">Pilih...</option>
+              <option value="PNS" data-i18n="form.options.job.pns">PNS</option>
+              <option value="TNI/Polri" data-i18n="form.options.job.tniPolri">TNI/Polri</option>
+              <option value="Guru/Dosen" data-i18n="form.options.job.teacher">Guru/Dosen</option>
+              <option value="Pegawai Swasta" data-i18n="form.options.job.privateEmployee">Pegawai Swasta</option>
+              <option value="Wiraswasta" data-i18n="form.options.job.entrepreneur">Wiraswasta</option>
+              <option value="Petani" data-i18n="form.options.job.farmer">Petani</option>
+              <option value="Pedagang" data-i18n="form.options.job.trader">Pedagang</option>
+              <option value="Ibu Rumah Tangga" data-i18n="form.options.job.housewife">Ibu Rumah Tangga</option>
+              <option value="Buruh" data-i18n="form.options.job.laborer">Buruh</option>
+              <option value="Pensiunan" data-i18n="form.options.job.retired">Pensiunan</option>
+              <option value="Tidak Bekerja" data-i18n="form.options.job.unemployed">Tidak Bekerja</option>
+              <option value="Lainnya" data-i18n="form.options.job.other">Lainnya</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <span data-i18n="form.fields.teleponOrtu.label">No Telepon Orang Tua</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="tel" class="form-control" name="teleponOrtu" required />
+          </div>
+
+          <!-- Upload Berkas -->
+          <div class="col-span-full mt-4">
+            <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3">
+              <i class="bi bi-file-earmark-arrow-up"></i> <span data-i18n="form.documents.title">Upload Berkas</span>
+              <span class="text-muted" data-i18n="form.documents.optionalTag">(Opsional)</span>
+            </h5>
+            <p class="text-muted small" data-i18n="form.documents.note">
+              Format: PDF, JPG, PNG. Maksimal 2MB per file.
+            </p>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <i class="bi bi-file-pdf"></i> <span data-i18n="form.documents.fields.ijazah.label">Scan Ijazah
+                Terakhir</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="file" class="form-control" name="fileIjazah" accept=".pdf,.jpg,.jpeg,.png" required />
+            <small class="text-muted" data-i18n="form.documents.fields.ijazah.helper">PDF, JPG, atau PNG (max
+              2MB)</small>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <i class="bi bi-file-pdf"></i> <span data-i18n="form.documents.fields.akta.label">Scan Akta
+                Kelahiran</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="file" class="form-control" name="fileAkta" accept=".pdf,.jpg,.jpeg,.png" required />
+            <small class="text-muted" data-i18n="form.documents.fields.akta.helper">PDF, JPG, atau PNG (max 2MB)</small>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <i class="bi bi-image"></i> <span data-i18n="form.documents.fields.foto.label">Pas Foto 3x4</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="file" class="form-control" name="fileFoto" accept=".jpg,.jpeg,.png" required />
+            <small class="text-muted" data-i18n="form.documents.fields.foto.helper">JPG atau PNG (max 2MB)</small>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <i class="bi bi-file-medical"></i> <span data-i18n="form.documents.fields.bpjs.label">Kartu BPJS</span>
+              <span class="text-muted" data-i18n="form.documents.optionalTag">(Opsional)</span>
+            </label>
+            <input type="file" class="form-control" name="fileBPJS" accept=".pdf,.jpg,.jpeg,.png" />
+            <small class="text-muted" data-i18n="form.documents.fields.bpjs.helper">PDF, JPG, atau PNG (max 2MB) - Tidak
+              wajib</small>
+          </div>
         </div>
-        <div class="p-6 text-center">
-          <div class="mb-4">
-            <i class="bi bi-check-circle-fill text-green-600" style="font-size: 3rem"></i>
-          </div>
-          <h4 class="mb-2" data-i18n="form.modals.success.headline">🎉 Selamat!</h4>
-          <p class="mb-3" data-i18n="form.modals.success.description">Pendaftaran Anda telah berhasil disimpan.</p>
-          <div class="mb-3 rounded-lg bg-blue-50 border border-blue-200 px-4 py-3">
-            <strong data-i18n="form.modals.success.nisnLabel">NISN Anda:</strong>
-            <h3 class="text-blue-700 font-bold mb-2" id="regNo"></h3>
-            <button class="inline-flex items-center gap-2 border border-blue-600 text-blue-700 hover:bg-blue-600 hover:text-white px-3 py-2 rounded" id="btnSalinReg" onclick="salinNISN()">
-              <i class="bi bi-clipboard"></i> <span data-i18n="form.buttons.copyNisn">Salin NISN</span>
-            </button>
-          </div>
-          <p class="text-gray-500 text-sm"><i class="bi bi-info-circle"></i> <span data-i18n="form.modals.success.reminder">Simpan NISN ini untuk tracking status pendaftaran Anda.</span></p>
-        </div>
-        <div class="px-6 py-4 flex flex-col sm:flex-row gap-2 justify-center border-t border-gray-100 rounded-b-2xl">
-          <a href="/cek-status.html" class="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg w-full sm:w-auto">
-            <i class="bi bi-search"></i> <span data-i18n="form.buttons.checkStatus">Cek Status Pendaftaran</span>
+
+        <div class="mt-4 flex flex-col sm:flex-row gap-2">
+          <button id="btnLanjutKonfirmasi"
+            class="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-5 py-3 rounded-lg w-full sm:w-auto"
+            type="button">
+            <i class="bi bi-check-circle"></i> <span data-i18n="form.buttons.review">Lanjut ke Konfirmasi</span>
+          </button>
+          <a href="/"
+            class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-lg w-full sm:w-auto">
+            <i class="bi bi-arrow-left"></i> <span data-i18n="form.buttons.back">Kembali</span>
           </a>
-          <button type="button" class="inline-flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-3 rounded-lg w-full sm:w-auto" onclick="window.location.reload()">
-            <i class="bi bi-arrow-clockwise"></i> <span data-i18n="form.buttons.registerAgain">Daftar Lagi</span>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Modal Sukses -->
+  <div id="modalSukses" class="modal-hidden fixed inset-0 z-50 flex items-center justify-center">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-lg w-[92vw]">
+      <div class="px-6 py-4 bg-green-600 text-white rounded-t-2xl">
+        <h5 class="font-semibold"><i class="bi bi-check-circle-fill"></i> <span
+            data-i18n="form.modals.success.title">Pendaftaran Berhasil!</span></h5>
+      </div>
+      <div class="p-6 text-center">
+        <div class="mb-4">
+          <i class="bi bi-check-circle-fill text-green-600" style="font-size: 3rem"></i>
+        </div>
+        <h4 class="mb-2" data-i18n="form.modals.success.headline">🎉 Selamat!</h4>
+        <p class="mb-3" data-i18n="form.modals.success.description">Pendaftaran Anda telah berhasil disimpan.</p>
+        <div class="mb-3 rounded-lg bg-blue-50 border border-blue-200 px-4 py-3">
+          <strong data-i18n="form.modals.success.nisnLabel">NISN Anda:</strong>
+          <h3 class="text-blue-700 font-bold mb-2" id="regNo"></h3>
+          <button
+            class="inline-flex items-center gap-2 border border-blue-600 text-blue-700 hover:bg-blue-600 hover:text-white px-3 py-2 rounded"
+            id="btnSalinReg" onclick="salinNISN()">
+            <i class="bi bi-clipboard"></i> <span data-i18n="form.buttons.copyNisn">Salin NISN</span>
           </button>
         </div>
+        <p class="text-gray-500 text-sm"><i class="bi bi-info-circle"></i> <span
+            data-i18n="form.modals.success.reminder">Simpan NISN ini untuk tracking status pendaftaran Anda.</span></p>
+      </div>
+      <div class="px-6 py-4 flex flex-col sm:flex-row gap-2 justify-center border-t border-gray-100 rounded-b-2xl">
+        <a href="/cek-status.html"
+          class="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg w-full sm:w-auto">
+          <i class="bi bi-search"></i> <span data-i18n="form.buttons.checkStatus">Cek Status Pendaftaran</span>
+        </a>
+        <button type="button"
+          class="inline-flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-3 rounded-lg w-full sm:w-auto"
+          onclick="window.location.reload()">
+          <i class="bi bi-arrow-clockwise"></i> <span data-i18n="form.buttons.registerAgain">Daftar Lagi</span>
+        </button>
       </div>
     </div>
+  </div>
 
-    <!-- Modal Konfirmasi -->
-    <div id="modalKonfirmasi" class="modal-hidden fixed inset-0 z-50 flex items-center justify-center">
-      <div class="absolute inset-0 bg-black/50" onclick="document.getElementById('modalKonfirmasi').classList.remove('modal-visible'); document.getElementById('modalKonfirmasi').classList.add('modal-hidden');"></div>
-      <div class="relative bg-white rounded-2xl shadow-2xl max-w-5xl w-[92vw] max-h-[85vh] overflow-y-auto">
-        <div class="px-6 py-4 bg-brand-600 text-white rounded-t-2xl flex items-center justify-between">
-          <h5 class="font-semibold"><i class="bi bi-clipboard-check"></i> <span data-i18n="form.modals.confirm.title">Konfirmasi Data Pendaftaran</span></h5>
-          <button class="text-white/90 hover:text-white" onclick="document.getElementById('modalKonfirmasi').classList.remove('modal-visible'); document.getElementById('modalKonfirmasi').classList.add('modal-hidden');"><i class="bi bi-x-lg"></i></button>
-        </div>
-        <div class="p-6">
-          <div class="mb-3 rounded-lg bg-yellow-50 border border-yellow-200 text-yellow-900 px-4 py-3"><i class="bi bi-exclamation-triangle"></i> <strong data-i18n="form.modals.confirm.alertTitle">Perhatian!</strong> <span data-i18n="form.modals.confirm.alertText">Pastikan semua data sudah benar sebelum mengirim.</span></div>
-          <div id="konfirmasiContent"></div>
-        </div>
-        <div class="px-6 py-4 flex flex-col-reverse sm:flex-row gap-2 border-t border-gray-100 rounded-b-2xl">
-          <button type="button" class="inline-flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-3 rounded-lg w-full sm:w-auto" onclick="document.getElementById('modalKonfirmasi').classList.remove('modal-visible'); document.getElementById('modalKonfirmasi').classList.add('modal-hidden');">
-            <i class="bi bi-pencil"></i> <span data-i18n="form.buttons.editData">Edit Data</span>
-          </button>
-          <button id="btnKonfirmasiKirim" type="button" class="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-5 py-3 rounded-lg w-full sm:w-auto" onclick="submitFinal()">
-            <i class="bi bi-send"></i> <span data-i18n="form.buttons.submit">Ya, Kirim Pendaftaran</span>
-          </button>
-        </div>
+  <!-- Modal Konfirmasi -->
+  <div id="modalKonfirmasi" class="modal-hidden fixed inset-0 z-50 flex items-center justify-center">
+    <div class="absolute inset-0 bg-black/50"
+      onclick="document.getElementById('modalKonfirmasi').classList.remove('modal-visible'); document.getElementById('modalKonfirmasi').classList.add('modal-hidden');">
+    </div>
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-5xl w-[92vw] max-h-[85vh] overflow-y-auto">
+      <div class="px-6 py-4 bg-brand-600 text-white rounded-t-2xl flex items-center justify-between">
+        <h5 class="font-semibold"><i class="bi bi-clipboard-check"></i> <span
+            data-i18n="form.modals.confirm.title">Konfirmasi Data Pendaftaran</span></h5>
+        <button class="text-white/90 hover:text-white"
+          onclick="document.getElementById('modalKonfirmasi').classList.remove('modal-visible'); document.getElementById('modalKonfirmasi').classList.add('modal-hidden');"><i
+            class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="p-6">
+        <div class="mb-3 rounded-lg bg-yellow-50 border border-yellow-200 text-yellow-900 px-4 py-3"><i
+            class="bi bi-exclamation-triangle"></i> <strong
+            data-i18n="form.modals.confirm.alertTitle">Perhatian!</strong> <span
+            data-i18n="form.modals.confirm.alertText">Pastikan semua data sudah benar sebelum mengirim.</span></div>
+        <div id="konfirmasiContent"></div>
+      </div>
+      <div class="px-6 py-4 flex flex-col-reverse sm:flex-row gap-2 border-t border-gray-100 rounded-b-2xl">
+        <button type="button"
+          class="inline-flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-3 rounded-lg w-full sm:w-auto"
+          onclick="document.getElementById('modalKonfirmasi').classList.remove('modal-visible'); document.getElementById('modalKonfirmasi').classList.add('modal-hidden');">
+          <i class="bi bi-pencil"></i> <span data-i18n="form.buttons.editData">Edit Data</span>
+        </button>
+        <button id="btnKonfirmasiKirim" type="button"
+          class="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-5 py-3 rounded-lg w-full sm:w-auto"
+          onclick="submitFinal()">
+          <i class="bi bi-send"></i> <span data-i18n="form.buttons.submit">Ya, Kirim Pendaftaran</span>
+        </button>
       </div>
     </div>
+  </div>
 
-    <!-- FOOTER -->
-    <footer class="bg-white text-gray-600 py-6 shadow-2xl border-t border-gray-200 mt-auto">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p class="text-sm"><span data-i18n="footer.copyright">© 2025/2026 Pondok Pesantren Al Ikhsan Beji. All rights reserved.</span> <span class="hidden sm:inline" data-i18n="footer.credit">Development by Tim IT Pesantren</span></p>
-      </div>
-    </footer>
+  <!-- FOOTER -->
+  <footer class="bg-white text-gray-600 py-6 shadow-2xl border-t border-gray-200 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-sm"><span data-i18n="footer.copyright">© 2025/2026 Pondok Pesantren Al Ikhsan Beji. All rights
+          reserved.</span> <span class="hidden sm:inline" data-i18n="footer.credit">Development by Tim IT
+          Pesantren</span></p>
+    </div>
+  </footer>
 
-    <!-- Vendors JS (optional) -->
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script>
-      // Shim toastr -> toastify agar kompatibel dgn snippet lama
-      window.toastr = {
-        success(msg){ Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#10b981', color: '#fff' }}).showToast(); },
-        error(msg){ Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#ef4444', color: '#fff' }}).showToast(); },
-        warning(msg){ Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#f59e0b', color: '#fff' }}).showToast(); },
-        info(msg){ Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#3b82f6', color: '#fff' }}).showToast(); }
+  <!-- Vendors JS (optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script>
+    // Shim toastr -> toastify agar kompatibel dgn snippet lama
+    window.toastr = {
+      success(msg) { Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#10b981', color: '#fff' } }).showToast(); },
+      error(msg) { Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#ef4444', color: '#fff' } }).showToast(); },
+      warning(msg) { Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#f59e0b', color: '#fff' } }).showToast(); },
+      info(msg) { Toastify({ text: msg, duration: 4000, close: true, gravity: 'top', position: 'right', style: { background: '#3b82f6', color: '#fff' } }).showToast(); }
+    }
+  </script>
+
+  <!-- Custom scripts for form functionality -->
+  <script>
+    const form = document.getElementById("formPendaftar");
+    let formDataGlobal = null;
+
+    const translate = (key, replacements) =>
+      typeof window.__ === "function" ? window.__(key, replacements) : key;
+
+    const getFileLabel = (type) => {
+      const map = {
+        ijazah: "form.review.files.ijazah",
+        akta: "form.review.files.akta",
+        foto: "form.review.files.foto",
+        bpjs: "form.review.files.bpjs"
+      };
+      const normalized = (type || "").toLowerCase();
+      const key = map[normalized];
+      return key ? translate(key) : type;
+    };
+
+    const OPTION_LABELS = {
+      gender: {
+        L: "form.options.gender.male",
+        P: "form.options.gender.female"
+      },
+      education: {
+        SD: "form.options.education.sdMi",
+        SMP: "form.options.education.smpMts",
+        SMA: "form.options.education.smaMa"
+      },
+      planLevel: {
+        MTs: "form.options.planLevel.mts",
+        MA: "form.options.planLevel.ma",
+        Kuliah: "form.options.planLevel.college"
+      },
+      planProgram: {
+        "Asrama Putra Induk": "form.options.planProgram.putraInduk",
+        "Asrama Putra Tahfidz": "form.options.planProgram.putraTahfidz",
+        "Asrama Putri": "form.options.planProgram.putri",
+        "Hanya Sekolah": "form.options.planProgram.nonAsrama"
+      },
+      parentStatus: {
+        Hidup: "form.options.parentStatus.alive",
+        Meninggal: "form.options.parentStatus.deceased"
+      },
+      job: {
+        PNS: "form.options.job.pns",
+        "TNI/Polri": "form.options.job.tniPolri",
+        "Guru/Dosen": "form.options.job.teacher",
+        "Pegawai Swasta": "form.options.job.privateEmployee",
+        Wiraswasta: "form.options.job.entrepreneur",
+        Petani: "form.options.job.farmer",
+        Nelayan: "form.options.job.fisherman",
+        Pedagang: "form.options.job.trader",
+        Buruh: "form.options.job.laborer",
+        Sopir: "form.options.job.driver",
+        Tukang: "form.options.job.craftsman",
+        Pensiunan: "form.options.job.retired",
+        "Tidak Bekerja": "form.options.job.unemployed",
+        "Ibu Rumah Tangga": "form.options.job.housewife",
+        Lainnya: "form.options.job.other"
       }
-    </script>
+    };
 
-    <!-- Custom scripts for form functionality -->
-    <script>
-      const form = document.getElementById("formPendaftar");
-      let formDataGlobal = null;
+    const translateOptionValue = (category, value) => {
+      if (!value) return "-";
+      const key = OPTION_LABELS[category]?.[value];
+      return key ? translate(key) : value;
+    };
 
-      const translate = (key, replacements) =>
-        typeof window.__ === "function" ? window.__(key, replacements) : key;
+    // Fungsi untuk mengontrol pilihan Rencana Program berdasarkan Rencana Tingkat
+    function handleTingkatChange() {
+      const tingkatSelect = document.getElementById("rencanaTingkat");
+      const programSelect = document.getElementById("rencanaProgram");
+      const hanyaSekolahOption =
+        document.getElementById("optionHanyaSekolah");
 
-      const getFileLabel = (type) => {
-        const map = {
-          ijazah: "form.review.files.ijazah",
-          akta: "form.review.files.akta",
-          foto: "form.review.files.foto",
-          bpjs: "form.review.files.bpjs"
-        };
-        const normalized = (type || "").toLowerCase();
-        const key = map[normalized];
-        return key ? translate(key) : type;
-      };
+      if (tingkatSelect.value === "Kuliah") {
+        hanyaSekolahOption.disabled = true;
+        hanyaSekolahOption.style.display = "none";
 
-      const OPTION_LABELS = {
-        gender: {
-          L: "form.options.gender.male",
-          P: "form.options.gender.female"
-        },
-        education: {
-          SD: "form.options.education.sdMi",
-          SMP: "form.options.education.smpMts",
-          SMA: "form.options.education.smaMa"
-        },
-        planLevel: {
-          MTs: "form.options.planLevel.mts",
-          MA: "form.options.planLevel.ma",
-          Kuliah: "form.options.planLevel.college"
-        },
-        planProgram: {
-          "Asrama Putra Induk": "form.options.planProgram.putraInduk",
-          "Asrama Putra Tahfidz": "form.options.planProgram.putraTahfidz",
-          "Asrama Putri": "form.options.planProgram.putri",
-          "Hanya Sekolah": "form.options.planProgram.nonAsrama"
-        },
-        parentStatus: {
-          Hidup: "form.options.parentStatus.alive",
-          Meninggal: "form.options.parentStatus.deceased"
-        },
-        job: {
-          PNS: "form.options.job.pns",
-          "TNI/Polri": "form.options.job.tniPolri",
-          "Guru/Dosen": "form.options.job.teacher",
-          "Pegawai Swasta": "form.options.job.privateEmployee",
-          Wiraswasta: "form.options.job.entrepreneur",
-          Petani: "form.options.job.farmer",
-          Nelayan: "form.options.job.fisherman",
-          Pedagang: "form.options.job.trader",
-          Buruh: "form.options.job.laborer",
-          Sopir: "form.options.job.driver",
-          Tukang: "form.options.job.craftsman",
-          Pensiunan: "form.options.job.retired",
-          "Tidak Bekerja": "form.options.job.unemployed",
-          "Ibu Rumah Tangga": "form.options.job.housewife",
-          Lainnya: "form.options.job.other"
+        if (programSelect.value === "Hanya Sekolah") {
+          programSelect.value = "";
         }
-      };
-
-      const translateOptionValue = (category, value) => {
-        if (!value) return "-";
-        const key = OPTION_LABELS[category]?.[value];
-        return key ? translate(key) : value;
-      };
-
-      // Fungsi untuk mengontrol pilihan Rencana Program berdasarkan Rencana Tingkat
-      function handleTingkatChange() {
-        const tingkatSelect = document.getElementById("rencanaTingkat");
-        const programSelect = document.getElementById("rencanaProgram");
-        const hanyaSekolahOption =
-          document.getElementById("optionHanyaSekolah");
-
-        if (tingkatSelect.value === "Kuliah") {
-          hanyaSekolahOption.disabled = true;
-          hanyaSekolahOption.style.display = "none";
-
-          if (programSelect.value === "Hanya Sekolah") {
-            programSelect.value = "";
-          }
-        } else {
-          hanyaSekolahOption.disabled = false;
-          hanyaSekolahOption.style.display = "block";
-        }
+      } else {
+        hanyaSekolahOption.disabled = false;
+        hanyaSekolahOption.style.display = "block";
       }
+    }
 
-      // Data wilayah Indonesia (provinsi dan kota/kabupaten)
-      const wilayahIndonesia = {
-        Aceh: [
-          "Banda Aceh",
-          "Sabang",
-          "Lhokseumawe",
-          "Langsa",
-          "Aceh Besar",
-          "Aceh Barat",
-          "Aceh Selatan",
-          "Aceh Tengah",
-          "Aceh Timur",
-          "Aceh Utara",
-        ],
-        "Sumatera Utara": [
-          "Medan",
-          "Binjai",
-          "Pematang Siantar",
-          "Tebing Tinggi",
-          "Tanjung Balai",
-          "Deli Serdang",
-          "Karo",
-          "Labuhanbatu",
-          "Simalungun",
-          "Tapanuli Utara",
-        ],
-        "Sumatera Barat": [
-          "Padang",
-          "Bukittinggi",
-          "Padang Panjang",
-          "Payakumbuh",
-          "Solok",
-          "Agam",
-          "Lima Puluh Kota",
-          "Pasaman",
-          "Sijunjung",
-          "Tanah Datar",
-        ],
-        Riau: [
-          "Pekanbaru",
-          "Dumai",
-          "Bengkalis",
-          "Indragiri Hilir",
-          "Kampar",
-          "Pelalawan",
-          "Rokan Hilir",
-          "Rokan Hulu",
-          "Siak",
-          "Kuantan Singingi",
-        ],
-        "Kepulauan Riau": [
-          "Batam",
-          "Tanjung Pinang",
-          "Bintan",
-          "Karimun",
-          "Lingga",
-          "Natuna",
-          "Kepulauan Anambas",
-        ],
-        Jambi: [
-          "Jambi",
-          "Sungai Penuh",
-          "Batang Hari",
-          "Bungo",
-          "Kerinci",
-          "Merangin",
-          "Muaro Jambi",
-          "Sarolangun",
-          "Tanjung Jabung Barat",
-          "Tanjung Jabung Timur",
-          "Tebo",
-        ],
-        "Sumatera Selatan": [
-          "Palembang",
-          "Lubuklinggau",
-          "Pagar Alam",
-          "Prabumulih",
-          "Banyuasin",
-          "Empat Lawang",
-          "Lahat",
-          "Muara Enim",
-          "Musi Banyuasin",
-          "Ogan Ilir",
-          "Ogan Komering Ilir",
-          "Ogan Komering Ulu",
-        ],
-        "Bangka Belitung": [
-          "Pangkal Pinang",
-          "Bangka",
-          "Bangka Barat",
-          "Bangka Selatan",
-          "Bangka Tengah",
-          "Belitung",
-          "Belitung Timur",
-        ],
-        Bengkulu: [
-          "Bengkulu",
-          "Bengkulu Selatan",
-          "Bengkulu Tengah",
-          "Bengkulu Utara",
-          "Kaur",
-          "Kepahiang",
-          "Lebong",
-          "Mukomuko",
-          "Rejang Lebong",
-          "Seluma",
-        ],
-        Lampung: [
-          "Bandar Lampung",
-          "Metro",
-          "Lampung Barat",
-          "Lampung Selatan",
-          "Lampung Tengah",
-          "Lampung Timur",
-          "Lampung Utara",
-          "Pesawaran",
-          "Pringsewu",
-          "Tanggamus",
-          "Tulang Bawang",
-          "Way Kanan",
-        ],
-        "DKI Jakarta": [
-          "Jakarta Pusat",
-          "Jakarta Utara",
-          "Jakarta Barat",
-          "Jakarta Selatan",
-          "Jakarta Timur",
-          "Kepulauan Seribu",
-        ],
-        Banten: [
-          "Tangerang",
-          "Tangerang Selatan",
-          "Cilegon",
-          "Serang",
-          "Lebak",
-          "Pandeglang",
-        ],
-        "Jawa Barat": [
-          "Bandung",
-          "Bekasi",
-          "Bogor",
-          "Cimahi",
-          "Cirebon",
-          "Depok",
-          "Sukabumi",
-          "Tasikmalaya",
-          "Bandung Barat",
-          "Ciamis",
-          "Cianjur",
-          "Garut",
-          "Indramayu",
-          "Karawang",
-          "Kuningan",
-          "Majalengka",
-          "Purwakarta",
-          "Subang",
-          "Sumedang",
-        ],
-        "Jawa Tengah": [
-          "Semarang",
-          "Magelang",
-          "Pekalongan",
-          "Salatiga",
-          "Surakarta",
-          "Tegal",
-          "Banjarnegara",
-          "Banyumas",
-          "Batang",
-          "Blora",
-          "Boyolali",
-          "Brebes",
-          "Cilacap",
-          "Demak",
-          "Grobogan",
-          "Jepara",
-          "Karanganyar",
-          "Kebumen",
-          "Kendal",
-          "Klaten",
-          "Kudus",
-          "Pati",
-          "Pemalang",
-          "Purbalingga",
-          "Purworejo",
-          "Rembang",
-          "Sragen",
-          "Sukoharjo",
-          "Temanggung",
-          "Wonogiri",
-          "Wonosobo",
-        ],
-        "DI Yogyakarta": [
-          "Yogyakarta",
-          "Bantul",
-          "Gunungkidul",
-          "Kulon Progo",
-          "Sleman",
-        ],
-        "Jawa Timur": [
-          "Surabaya",
-          "Batu",
-          "Blitar",
-          "Kediri",
-          "Madiun",
-          "Malang",
-          "Mojokerto",
-          "Pasuruan",
-          "Probolinggo",
-          "Bangkalan",
-          "Banyuwangi",
-          "Bojonegoro",
-          "Bondowoso",
-          "Gresik",
-          "Jember",
-          "Jombang",
-          "Lamongan",
-          "Lumajang",
-          "Magetan",
-          "Mojokerto",
-          "Nganjuk",
-          "Ngawi",
-          "Pacitan",
-          "Pamekasan",
-          "Pasuruan",
-          "Ponorogo",
-          "Probolinggo",
-          "Sampang",
-          "Sidoarjo",
-          "Situbondo",
-          "Sumenep",
-          "Trenggalek",
-          "Tuban",
-          "Tulungagung",
-        ],
-        Bali: [
-          "Denpasar",
-          "Badung",
-          "Bangli",
-          "Buleleng",
-          "Gianyar",
-          "Jembrana",
-          "Karangasem",
-          "Klungkung",
-          "Tabanan",
-        ],
-        "Nusa Tenggara Barat": [
-          "Mataram",
-          "Bima",
-          "Dompu",
-          "Lombok Barat",
-          "Lombok Tengah",
-          "Lombok Timur",
-          "Lombok Utara",
-          "Sumbawa",
-          "Sumbawa Barat",
-        ],
-        "Nusa Tenggara Timur": [
-          "Kupang",
-          "Alor",
-          "Belu",
-          "Ende",
-          "Flores Timur",
-          "Kupang",
-          "Lembata",
-          "Manggarai",
-          "Manggarai Barat",
-          "Manggarai Timur",
-          "Nagekeo",
-          "Ngada",
-          "Rote Ndao",
-          "Sabu Raijua",
-          "Sikka",
-          "Sumba Barat",
-          "Sumba Tengah",
-          "Sumba Timur",
-          "Timor Tengah Selatan",
-          "Timor Tengah Utara",
-        ],
-        "Kalimantan Barat": [
-          "Pontianak",
-          "Singkawang",
-          "Bengkayang",
-          "Kapuas Hulu",
-          "Kayong Utara",
-          "Ketapang",
-          "Kubu Raya",
-          "Landak",
-          "Melawi",
-          "Sambas",
-          "Sanggau",
-          "Sekadau",
-          "Sintang",
-        ],
-        "Kalimantan Tengah": [
-          "Palangkaraya",
-          "Barito Selatan",
-          "Barito Timur",
-          "Barito Utara",
-          "Gunung Mas",
-          "Kapuas",
-          "Katingan",
-          "Kotawaringin Barat",
-          "Kotawaringin Timur",
-          "Lamandau",
-          "Murung Raya",
-          "Pulang Pisau",
-          "Seruyan",
-          "Sukamara",
-        ],
-        "Kalimantan Selatan": [
-          "Banjarmasin",
-          "Banjarbaru",
-          "Balangan",
-          "Banjar",
-          "Barito Kuala",
-          "Hulu Sungai Selatan",
-          "Hulu Sungai Tengah",
-          "Hulu Sungai Utara",
-          "Kotabaru",
-          "Tabalong",
-          "Tanah Bumbu",
-          "Tanah Laut",
-          "Tapin",
-        ],
-        "Kalimantan Timur": [
-          "Balikpapan",
-          "Bontang",
-          "Samarinda",
-          "Berau",
-          "Kutai Barat",
-          "Kutai Kartanegara",
-          "Kutai Timur",
-          "Mahakam Ulu",
-          "Paser",
-          "Penajam Paser Utara",
-        ],
-        "Kalimantan Utara": [
-          "Tarakan",
-          "Bulungan",
-          "Malinau",
-          "Nunukan",
-          "Tana Tidung",
-        ],
-        "Sulawesi Utara": [
-          "Manado",
-          "Bitung",
-          "Kotamobagu",
-          "Tomohon",
-          "Bolaang Mongondow",
-          "Bolaang Mongondow Selatan",
-          "Bolaang Mongondow Timur",
-          "Bolaang Mongondow Utara",
-          "Kepulauan Sangihe",
-          "Kepulauan Siau Tagulandang Biaro",
-          "Kepulauan Talaud",
-          "Minahasa",
-          "Minahasa Selatan",
-          "Minahasa Tenggara",
-          "Minahasa Utara",
-        ],
-        "Sulawesi Barat": [
-          "Majene",
-          "Mamasa",
-          "Mamuju",
-          "Mamuju Tengah",
-          "Pasangkayu",
-          "Polewali Mandar",
-        ],
-        "Sulawesi Tengah": [
-          "Palu",
-          "Banggai",
-          "Banggai Kepulauan",
-          "Banggai Laut",
-          "Buol",
-          "Donggala",
-          "Morowali",
-          "Morowali Utara",
-          "Parigi Moutong",
-          "Poso",
-          "Sigi",
-          "Tojo Una-Una",
-          "Toli-Toli",
-        ],
-        "Sulawesi Tenggara": [
-          "Kendari",
-          "Bau-Bau",
-          "Bombana",
-          "Buton",
-          "Buton Selatan",
-          "Buton Tengah",
-          "Buton Utara",
-          "Kolaka",
-          "Kolaka Timur",
-          "Kolaka Utara",
-          "Konawe",
-          "Konawe Kepulauan",
-          "Konawe Selatan",
-          "Konawe Utara",
-          "Muna",
-          "Muna Barat",
-          "Wakatobi",
-        ],
-        "Sulawesi Selatan": [
-          "Makassar",
-          "Palopo",
-          "Parepare",
-          "Bantaeng",
-          "Barru",
-          "Bone",
-          "Bulukumba",
-          "Enrekang",
-          "Gowa",
-          "Jeneponto",
-          "Kepulauan Selayar",
-          "Luwu",
-          "Luwu Timur",
-          "Luwu Utara",
-          "Maros",
-          "Pangkajene dan Kepulauan",
-          "Pinrang",
-          "Sidenreng Rappang",
-          "Sinjai",
-          "Soppeng",
-          "Takalar",
-          "Tana Toraja",
-          "Toraja Utara",
-          "Wajo",
-        ],
-        Gorontalo: [
-          "Gorontalo",
-          "Boalemo",
-          "Bone Bolango",
-          "Gorontalo Utara",
-          "Pohuwato",
-        ],
-        Maluku: [
-          "Ambon",
-          "Tual",
-          "Buru",
-          "Buru Selatan",
-          "Kepulauan Aru",
-          "Maluku Barat Daya",
-          "Maluku Tengah",
-          "Maluku Tenggara",
-          "Maluku Tenggara Barat",
-          "Seram Bagian Barat",
-          "Seram Bagian Timur",
-        ],
-        "Maluku Utara": [
-          "Ternate",
-          "Tidore Kepulauan",
-          "Halmahera Barat",
-          "Halmahera Tengah",
-          "Halmahera Timur",
-          "Halmahera Selatan",
-          "Halmahera Utara",
-          "Kepulauan Sula",
-          "Pulau Morotai",
-          "Pulau Taliabu",
-        ],
-        Papua: [
-          "Jayapura",
-          "Asmat",
-          "Biak Numfor",
-          "Boven Digoel",
-          "Deiyai",
-          "Dogiyai",
-          "Intan Jaya",
-          "Jayapura",
-          "Jayawijaya",
-          "Keerom",
-          "Kepulauan Yapen",
-          "Lanny Jaya",
-          "Mamberamo Raya",
-          "Mamberamo Tengah",
-          "Mappi",
-          "Merauke",
-          "Mimika",
-          "Nabire",
-          "Nduga",
-          "Paniai",
-          "Pegunungan Bintang",
-          "Puncak",
-          "Puncak Jaya",
-          "Sarmi",
-          "Supiori",
-          "Tolikara",
-          "Waropen",
-          "Yahukimo",
-          "Yalimo",
-        ],
-        "Papua Barat": [
-          "Manokwari",
-          "Sorong",
-          "Fakfak",
-          "Kaimana",
-          "Manokwari Selatan",
-          "Maybrat",
-          "Pegunungan Arfak",
-          "Raja Ampat",
-          "Sorong Selatan",
-          "Tambrauw",
-          "Teluk Bintuni",
-          "Teluk Wondama",
-        ],
-        "Papua Selatan": ["Merauke", "Asmat", "Boven Digoel", "Mappi"],
-        "Papua Tengah": [
-          "Nabire",
-          "Dogiyai",
-          "Intan Jaya",
-          "Mimika",
-          "Paniai",
-          "Puncak",
-          "Puncak Jaya",
-          "Deiyai",
-        ],
-        "Papua Pegunungan": [
-          "Jayawijaya",
-          "Lanny Jaya",
-          "Mamberamo Tengah",
-          "Nduga",
-          "Tolikara",
-          "Yalimo",
-          "Yahukimo",
-          "Pegunungan Bintang",
-        ],
-      };
+    // Data wilayah Indonesia (provinsi dan kota/kabupaten)
+    const wilayahIndonesia = {
+      Aceh: [
+        "Banda Aceh",
+        "Sabang",
+        "Lhokseumawe",
+        "Langsa",
+        "Aceh Besar",
+        "Aceh Barat",
+        "Aceh Selatan",
+        "Aceh Tengah",
+        "Aceh Timur",
+        "Aceh Utara",
+      ],
+      "Sumatera Utara": [
+        "Medan",
+        "Binjai",
+        "Pematang Siantar",
+        "Tebing Tinggi",
+        "Tanjung Balai",
+        "Deli Serdang",
+        "Karo",
+        "Labuhanbatu",
+        "Simalungun",
+        "Tapanuli Utara",
+      ],
+      "Sumatera Barat": [
+        "Padang",
+        "Bukittinggi",
+        "Padang Panjang",
+        "Payakumbuh",
+        "Solok",
+        "Agam",
+        "Lima Puluh Kota",
+        "Pasaman",
+        "Sijunjung",
+        "Tanah Datar",
+      ],
+      Riau: [
+        "Pekanbaru",
+        "Dumai",
+        "Bengkalis",
+        "Indragiri Hilir",
+        "Kampar",
+        "Pelalawan",
+        "Rokan Hilir",
+        "Rokan Hulu",
+        "Siak",
+        "Kuantan Singingi",
+      ],
+      "Kepulauan Riau": [
+        "Batam",
+        "Tanjung Pinang",
+        "Bintan",
+        "Karimun",
+        "Lingga",
+        "Natuna",
+        "Kepulauan Anambas",
+      ],
+      Jambi: [
+        "Jambi",
+        "Sungai Penuh",
+        "Batang Hari",
+        "Bungo",
+        "Kerinci",
+        "Merangin",
+        "Muaro Jambi",
+        "Sarolangun",
+        "Tanjung Jabung Barat",
+        "Tanjung Jabung Timur",
+        "Tebo",
+      ],
+      "Sumatera Selatan": [
+        "Palembang",
+        "Lubuklinggau",
+        "Pagar Alam",
+        "Prabumulih",
+        "Banyuasin",
+        "Empat Lawang",
+        "Lahat",
+        "Muara Enim",
+        "Musi Banyuasin",
+        "Ogan Ilir",
+        "Ogan Komering Ilir",
+        "Ogan Komering Ulu",
+      ],
+      "Bangka Belitung": [
+        "Pangkal Pinang",
+        "Bangka",
+        "Bangka Barat",
+        "Bangka Selatan",
+        "Bangka Tengah",
+        "Belitung",
+        "Belitung Timur",
+      ],
+      Bengkulu: [
+        "Bengkulu",
+        "Bengkulu Selatan",
+        "Bengkulu Tengah",
+        "Bengkulu Utara",
+        "Kaur",
+        "Kepahiang",
+        "Lebong",
+        "Mukomuko",
+        "Rejang Lebong",
+        "Seluma",
+      ],
+      Lampung: [
+        "Bandar Lampung",
+        "Metro",
+        "Lampung Barat",
+        "Lampung Selatan",
+        "Lampung Tengah",
+        "Lampung Timur",
+        "Lampung Utara",
+        "Pesawaran",
+        "Pringsewu",
+        "Tanggamus",
+        "Tulang Bawang",
+        "Way Kanan",
+      ],
+      "DKI Jakarta": [
+        "Jakarta Pusat",
+        "Jakarta Utara",
+        "Jakarta Barat",
+        "Jakarta Selatan",
+        "Jakarta Timur",
+        "Kepulauan Seribu",
+      ],
+      Banten: [
+        "Tangerang",
+        "Tangerang Selatan",
+        "Cilegon",
+        "Serang",
+        "Lebak",
+        "Pandeglang",
+      ],
+      "Jawa Barat": [
+        "Bandung",
+        "Bekasi",
+        "Bogor",
+        "Cimahi",
+        "Cirebon",
+        "Depok",
+        "Sukabumi",
+        "Tasikmalaya",
+        "Bandung Barat",
+        "Ciamis",
+        "Cianjur",
+        "Garut",
+        "Indramayu",
+        "Karawang",
+        "Kuningan",
+        "Majalengka",
+        "Purwakarta",
+        "Subang",
+        "Sumedang",
+      ],
+      "Jawa Tengah": [
+        "Semarang",
+        "Magelang",
+        "Pekalongan",
+        "Salatiga",
+        "Surakarta",
+        "Tegal",
+        "Banjarnegara",
+        "Banyumas",
+        "Batang",
+        "Blora",
+        "Boyolali",
+        "Brebes",
+        "Cilacap",
+        "Demak",
+        "Grobogan",
+        "Jepara",
+        "Karanganyar",
+        "Kebumen",
+        "Kendal",
+        "Klaten",
+        "Kudus",
+        "Pati",
+        "Pemalang",
+        "Purbalingga",
+        "Purworejo",
+        "Rembang",
+        "Sragen",
+        "Sukoharjo",
+        "Temanggung",
+        "Wonogiri",
+        "Wonosobo",
+      ],
+      "DI Yogyakarta": [
+        "Yogyakarta",
+        "Bantul",
+        "Gunungkidul",
+        "Kulon Progo",
+        "Sleman",
+      ],
+      "Jawa Timur": [
+        "Surabaya",
+        "Batu",
+        "Blitar",
+        "Kediri",
+        "Madiun",
+        "Malang",
+        "Mojokerto",
+        "Pasuruan",
+        "Probolinggo",
+        "Bangkalan",
+        "Banyuwangi",
+        "Bojonegoro",
+        "Bondowoso",
+        "Gresik",
+        "Jember",
+        "Jombang",
+        "Lamongan",
+        "Lumajang",
+        "Magetan",
+        "Mojokerto",
+        "Nganjuk",
+        "Ngawi",
+        "Pacitan",
+        "Pamekasan",
+        "Pasuruan",
+        "Ponorogo",
+        "Probolinggo",
+        "Sampang",
+        "Sidoarjo",
+        "Situbondo",
+        "Sumenep",
+        "Trenggalek",
+        "Tuban",
+        "Tulungagung",
+      ],
+      Bali: [
+        "Denpasar",
+        "Badung",
+        "Bangli",
+        "Buleleng",
+        "Gianyar",
+        "Jembrana",
+        "Karangasem",
+        "Klungkung",
+        "Tabanan",
+      ],
+      "Nusa Tenggara Barat": [
+        "Mataram",
+        "Bima",
+        "Dompu",
+        "Lombok Barat",
+        "Lombok Tengah",
+        "Lombok Timur",
+        "Lombok Utara",
+        "Sumbawa",
+        "Sumbawa Barat",
+      ],
+      "Nusa Tenggara Timur": [
+        "Kupang",
+        "Alor",
+        "Belu",
+        "Ende",
+        "Flores Timur",
+        "Kupang",
+        "Lembata",
+        "Manggarai",
+        "Manggarai Barat",
+        "Manggarai Timur",
+        "Nagekeo",
+        "Ngada",
+        "Rote Ndao",
+        "Sabu Raijua",
+        "Sikka",
+        "Sumba Barat",
+        "Sumba Tengah",
+        "Sumba Timur",
+        "Timor Tengah Selatan",
+        "Timor Tengah Utara",
+      ],
+      "Kalimantan Barat": [
+        "Pontianak",
+        "Singkawang",
+        "Bengkayang",
+        "Kapuas Hulu",
+        "Kayong Utara",
+        "Ketapang",
+        "Kubu Raya",
+        "Landak",
+        "Melawi",
+        "Sambas",
+        "Sanggau",
+        "Sekadau",
+        "Sintang",
+      ],
+      "Kalimantan Tengah": [
+        "Palangkaraya",
+        "Barito Selatan",
+        "Barito Timur",
+        "Barito Utara",
+        "Gunung Mas",
+        "Kapuas",
+        "Katingan",
+        "Kotawaringin Barat",
+        "Kotawaringin Timur",
+        "Lamandau",
+        "Murung Raya",
+        "Pulang Pisau",
+        "Seruyan",
+        "Sukamara",
+      ],
+      "Kalimantan Selatan": [
+        "Banjarmasin",
+        "Banjarbaru",
+        "Balangan",
+        "Banjar",
+        "Barito Kuala",
+        "Hulu Sungai Selatan",
+        "Hulu Sungai Tengah",
+        "Hulu Sungai Utara",
+        "Kotabaru",
+        "Tabalong",
+        "Tanah Bumbu",
+        "Tanah Laut",
+        "Tapin",
+      ],
+      "Kalimantan Timur": [
+        "Balikpapan",
+        "Bontang",
+        "Samarinda",
+        "Berau",
+        "Kutai Barat",
+        "Kutai Kartanegara",
+        "Kutai Timur",
+        "Mahakam Ulu",
+        "Paser",
+        "Penajam Paser Utara",
+      ],
+      "Kalimantan Utara": [
+        "Tarakan",
+        "Bulungan",
+        "Malinau",
+        "Nunukan",
+        "Tana Tidung",
+      ],
+      "Sulawesi Utara": [
+        "Manado",
+        "Bitung",
+        "Kotamobagu",
+        "Tomohon",
+        "Bolaang Mongondow",
+        "Bolaang Mongondow Selatan",
+        "Bolaang Mongondow Timur",
+        "Bolaang Mongondow Utara",
+        "Kepulauan Sangihe",
+        "Kepulauan Siau Tagulandang Biaro",
+        "Kepulauan Talaud",
+        "Minahasa",
+        "Minahasa Selatan",
+        "Minahasa Tenggara",
+        "Minahasa Utara",
+      ],
+      "Sulawesi Barat": [
+        "Majene",
+        "Mamasa",
+        "Mamuju",
+        "Mamuju Tengah",
+        "Pasangkayu",
+        "Polewali Mandar",
+      ],
+      "Sulawesi Tengah": [
+        "Palu",
+        "Banggai",
+        "Banggai Kepulauan",
+        "Banggai Laut",
+        "Buol",
+        "Donggala",
+        "Morowali",
+        "Morowali Utara",
+        "Parigi Moutong",
+        "Poso",
+        "Sigi",
+        "Tojo Una-Una",
+        "Toli-Toli",
+      ],
+      "Sulawesi Tenggara": [
+        "Kendari",
+        "Bau-Bau",
+        "Bombana",
+        "Buton",
+        "Buton Selatan",
+        "Buton Tengah",
+        "Buton Utara",
+        "Kolaka",
+        "Kolaka Timur",
+        "Kolaka Utara",
+        "Konawe",
+        "Konawe Kepulauan",
+        "Konawe Selatan",
+        "Konawe Utara",
+        "Muna",
+        "Muna Barat",
+        "Wakatobi",
+      ],
+      "Sulawesi Selatan": [
+        "Makassar",
+        "Palopo",
+        "Parepare",
+        "Bantaeng",
+        "Barru",
+        "Bone",
+        "Bulukumba",
+        "Enrekang",
+        "Gowa",
+        "Jeneponto",
+        "Kepulauan Selayar",
+        "Luwu",
+        "Luwu Timur",
+        "Luwu Utara",
+        "Maros",
+        "Pangkajene dan Kepulauan",
+        "Pinrang",
+        "Sidenreng Rappang",
+        "Sinjai",
+        "Soppeng",
+        "Takalar",
+        "Tana Toraja",
+        "Toraja Utara",
+        "Wajo",
+      ],
+      Gorontalo: [
+        "Gorontalo",
+        "Boalemo",
+        "Bone Bolango",
+        "Gorontalo Utara",
+        "Pohuwato",
+      ],
+      Maluku: [
+        "Ambon",
+        "Tual",
+        "Buru",
+        "Buru Selatan",
+        "Kepulauan Aru",
+        "Maluku Barat Daya",
+        "Maluku Tengah",
+        "Maluku Tenggara",
+        "Maluku Tenggara Barat",
+        "Seram Bagian Barat",
+        "Seram Bagian Timur",
+      ],
+      "Maluku Utara": [
+        "Ternate",
+        "Tidore Kepulauan",
+        "Halmahera Barat",
+        "Halmahera Tengah",
+        "Halmahera Timur",
+        "Halmahera Selatan",
+        "Halmahera Utara",
+        "Kepulauan Sula",
+        "Pulau Morotai",
+        "Pulau Taliabu",
+      ],
+      Papua: [
+        "Jayapura",
+        "Asmat",
+        "Biak Numfor",
+        "Boven Digoel",
+        "Deiyai",
+        "Dogiyai",
+        "Intan Jaya",
+        "Jayapura",
+        "Jayawijaya",
+        "Keerom",
+        "Kepulauan Yapen",
+        "Lanny Jaya",
+        "Mamberamo Raya",
+        "Mamberamo Tengah",
+        "Mappi",
+        "Merauke",
+        "Mimika",
+        "Nabire",
+        "Nduga",
+        "Paniai",
+        "Pegunungan Bintang",
+        "Puncak",
+        "Puncak Jaya",
+        "Sarmi",
+        "Supiori",
+        "Tolikara",
+        "Waropen",
+        "Yahukimo",
+        "Yalimo",
+      ],
+      "Papua Barat": [
+        "Manokwari",
+        "Sorong",
+        "Fakfak",
+        "Kaimana",
+        "Manokwari Selatan",
+        "Maybrat",
+        "Pegunungan Arfak",
+        "Raja Ampat",
+        "Sorong Selatan",
+        "Tambrauw",
+        "Teluk Bintuni",
+        "Teluk Wondama",
+      ],
+      "Papua Selatan": ["Merauke", "Asmat", "Boven Digoel", "Mappi"],
+      "Papua Tengah": [
+        "Nabire",
+        "Dogiyai",
+        "Intan Jaya",
+        "Mimika",
+        "Paniai",
+        "Puncak",
+        "Puncak Jaya",
+        "Deiyai",
+      ],
+      "Papua Pegunungan": [
+        "Jayawijaya",
+        "Lanny Jaya",
+        "Mamberamo Tengah",
+        "Nduga",
+        "Tolikara",
+        "Yalimo",
+        "Yahukimo",
+        "Pegunungan Bintang",
+      ],
+    };
 
-      // Populate provinsi dropdown untuk tempat lahir
-      const provinsiTempatLahirSelect = document.getElementById(
-        "provinsiTempatLahir"
-      );
-      const tempatLahirSelect = document.getElementById("tempatLahir");
+    // Populate provinsi dropdown untuk tempat lahir
+    const provinsiTempatLahirSelect = document.getElementById(
+      "provinsiTempatLahir"
+    );
+    const tempatLahirSelect = document.getElementById("tempatLahir");
 
-      Object.keys(wilayahIndonesia)
-        .sort()
-        .forEach((prov) => {
-          const option = document.createElement("option");
-          option.value = prov;
-          option.textContent = prov;
-          provinsiTempatLahirSelect.appendChild(option);
-        });
-
-      // Event listener untuk provinsi tempat lahir
-      provinsiTempatLahirSelect.addEventListener("change", function () {
-        const selectedProv = this.value;
-        tempatLahirSelect.innerHTML = `<option value="">${translate("form.options.selectCity")}</option>`;
-        tempatLahirSelect.disabled = false;
-
-        if (selectedProv && wilayahIndonesia[selectedProv]) {
-          wilayahIndonesia[selectedProv].sort().forEach((kota) => {
-            const option = document.createElement("option");
-            option.value = kota;
-            option.textContent = kota;
-            tempatLahirSelect.appendChild(option);
-          });
-        } else {
-          tempatLahirSelect.disabled = true;
-          tempatLahirSelect.innerHTML = `<option value="">${translate("form.options.selectProvinceFirst")}</option>`;
-        }
+    Object.keys(wilayahIndonesia)
+      .sort()
+      .forEach((prov) => {
+        const option = document.createElement("option");
+        option.value = prov;
+        option.textContent = prov;
+        provinsiTempatLahirSelect.appendChild(option);
       });
 
-      // Alamat wilayah dengan API Indonesia
-      const provinsiAlamatSelect = document.getElementById("provinsiAlamat");
-      const kotaAlamatSelect = document.getElementById("kotaAlamat");
-      const kecamatanAlamatSelect = document.getElementById("kecamatanAlamat");
-      const desaAlamatSelect = document.getElementById("desaAlamat");
+    // Event listener untuk provinsi tempat lahir
+    provinsiTempatLahirSelect.addEventListener("change", function () {
+      const selectedProv = this.value;
+      tempatLahirSelect.innerHTML = `<option value="">${translate("form.options.selectCity")}</option>`;
+      tempatLahirSelect.disabled = false;
 
-      const WILAYAH_API_BASES = [
-        "https://emsifa.github.io/api-wilayah-indonesia/api",
-        "https://www.emsifa.com/api-wilayah-indonesia/api",
-        "https://kanglerian.github.io/api-wilayah-indonesia/api",
-      ];
-      const WILAYAH_CACHE_PREFIX = "wilayah-cache::";
-      const WILAYAH_CACHE_TTL = 1000 * 60 * 60 * 24 * 7; // 7 days
+      if (selectedProv && wilayahIndonesia[selectedProv]) {
+        wilayahIndonesia[selectedProv].sort().forEach((kota) => {
+          const option = document.createElement("option");
+          option.value = kota;
+          option.textContent = kota;
+          tempatLahirSelect.appendChild(option);
+        });
+      } else {
+        tempatLahirSelect.disabled = true;
+        tempatLahirSelect.innerHTML = `<option value="">${translate("form.options.selectProvinceFirst")}</option>`;
+      }
+    });
 
-      const getWilayahStorage = () => {
-        try {
-          if (typeof window !== "undefined" && window.localStorage) {
-            return window.localStorage;
-          }
-        } catch (error) {
-          console.warn("[Wilayah] localStorage unavailable", error);
+    // Alamat wilayah dengan API Indonesia
+    const provinsiAlamatSelect = document.getElementById("provinsiAlamat");
+    const kotaAlamatSelect = document.getElementById("kotaAlamat");
+    const kecamatanAlamatSelect = document.getElementById("kecamatanAlamat");
+    const desaAlamatSelect = document.getElementById("desaAlamat");
+
+    const WILAYAH_API_BASES = [
+      "https://emsifa.github.io/api-wilayah-indonesia/api",
+      "https://www.emsifa.com/api-wilayah-indonesia/api",
+      "https://kanglerian.github.io/api-wilayah-indonesia/api",
+    ];
+    const WILAYAH_CACHE_PREFIX = "wilayah-cache::";
+    const WILAYAH_CACHE_TTL = 1000 * 60 * 60 * 24 * 7; // 7 days
+
+    const getWilayahStorage = () => {
+      try {
+        if (typeof window !== "undefined" && window.localStorage) {
+          return window.localStorage;
         }
+      } catch (error) {
+        console.warn("[Wilayah] localStorage unavailable", error);
+      }
+      return null;
+    };
+
+    const readWilayahCache = (path) => {
+      const storage = getWilayahStorage();
+      if (!storage) return null;
+      try {
+        const raw = storage.getItem(`${WILAYAH_CACHE_PREFIX}${path}`);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== "object") return null;
+        return parsed;
+      } catch (error) {
+        console.warn(`[Wilayah] Failed reading cache for ${path}`, error);
         return null;
-      };
+      }
+    };
 
-      const readWilayahCache = (path) => {
-        const storage = getWilayahStorage();
-        if (!storage) return null;
-        try {
-          const raw = storage.getItem(`${WILAYAH_CACHE_PREFIX}${path}`);
-          if (!raw) return null;
-          const parsed = JSON.parse(raw);
-          if (!parsed || typeof parsed !== "object") return null;
-          return parsed;
-        } catch (error) {
-          console.warn(`[Wilayah] Failed reading cache for ${path}`, error);
-          return null;
-        }
-      };
+    const writeWilayahCache = (path, payload, source) => {
+      const storage = getWilayahStorage();
+      if (!storage) return;
+      try {
+        const now = Date.now();
+        storage.setItem(
+          `${WILAYAH_CACHE_PREFIX}${path}`,
+          JSON.stringify({
+            payload,
+            source,
+            updatedAt: now,
+            expiredAt: now + WILAYAH_CACHE_TTL,
+          })
+        );
+      } catch (error) {
+        console.warn(`[Wilayah] Failed writing cache for ${path}`, error);
+      }
+    };
 
-      const writeWilayahCache = (path, payload, source) => {
-        const storage = getWilayahStorage();
-        if (!storage) return;
-        try {
-          const now = Date.now();
-          storage.setItem(
-            `${WILAYAH_CACHE_PREFIX}${path}`,
-            JSON.stringify({
-              payload,
-              source,
-              updatedAt: now,
-              expiredAt: now + WILAYAH_CACHE_TTL,
-            })
-          );
-        } catch (error) {
-          console.warn(`[Wilayah] Failed writing cache for ${path}`, error);
-        }
-      };
+    // Helper untuk fetch JSON dengan error handling
+    async function safeJsonFetch(url) {
+      const response = await fetch(url, { cache: "no-cache" });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const contentType = response.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        const text = await response.text();
+        throw new Error(`Unexpected response: ${text.slice(0, 50)}...`);
+      }
+      return response.json();
+    }
 
-      // Helper untuk fetch JSON dengan error handling
-      async function safeJsonFetch(url) {
-        const response = await fetch(url, { cache: "no-cache" });
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
-        const contentType = response.headers.get("content-type") || "";
-        if (!contentType.includes("application/json")) {
-          const text = await response.text();
-          throw new Error(`Unexpected response: ${text.slice(0, 50)}...`);
-        }
-        return response.json();
+    async function fetchWilayahJson(resourcePath) {
+      const now = Date.now();
+      const cache = readWilayahCache(resourcePath);
+      const hasFreshCache =
+        cache && typeof cache.expiredAt === "number" && cache.expiredAt > now;
+      if (hasFreshCache) {
+        return cache.payload;
       }
 
-      async function fetchWilayahJson(resourcePath) {
-        const now = Date.now();
-        const cache = readWilayahCache(resourcePath);
-        const hasFreshCache =
-          cache && typeof cache.expiredAt === "number" && cache.expiredAt > now;
-        if (hasFreshCache) {
-          return cache.payload;
-        }
-
-        let lastError;
-        for (const base of WILAYAH_API_BASES) {
-          try {
-            const data = await safeJsonFetch(`${base}${resourcePath}`);
-            writeWilayahCache(resourcePath, data, base);
-            if (base !== WILAYAH_API_BASES[0]) {
-              console.warn(
-                `[Wilayah] ${resourcePath} loaded via backup source: ${base}`
-              );
-            }
-            return data;
-          } catch (error) {
-            lastError = error;
+      let lastError;
+      for (const base of WILAYAH_API_BASES) {
+        try {
+          const data = await safeJsonFetch(`${base}${resourcePath}`);
+          writeWilayahCache(resourcePath, data, base);
+          if (base !== WILAYAH_API_BASES[0]) {
             console.warn(
-              `[Wilayah] Failed loading ${resourcePath} from ${base}`,
-              error
+              `[Wilayah] ${resourcePath} loaded via backup source: ${base}`
             );
           }
-        }
-
-        if (cache?.payload) {
+          return data;
+        } catch (error) {
+          lastError = error;
           console.warn(
-            `[Wilayah] Serving stale cache for ${resourcePath} after fetch failures`
+            `[Wilayah] Failed loading ${resourcePath} from ${base}`,
+            error
           );
-          return cache.payload;
-        }
-
-        throw lastError || new Error("Failed to load wilayah data");
-      }
-
-      // Load provinsi dari API
-      async function loadProvinsi() {
-        try {
-          const provinsi = await fetchWilayahJson(`/provinces.json`);
-
-          provinsi.forEach((prov) => {
-            const option = document.createElement("option");
-            option.value = prov.id;
-            option.textContent = prov.name;
-            option.dataset.name = prov.name;
-            provinsiAlamatSelect.appendChild(option);
-          });
-        } catch (error) {
-          console.error("Error loading provinsi:", error);
-          toastr.error(translate("form.messages.loadProvinceError"));
         }
       }
 
-      // Load kota/kabupaten berdasarkan provinsi
-      async function loadKota(provinsiId) {
-        try {
-          kotaAlamatSelect.innerHTML = `<option value="">${translate("form.options.loading")}</option>`;
-          const kota = await fetchWilayahJson(`/regencies/${provinsiId}.json`);
-
-          kotaAlamatSelect.innerHTML = `<option value="">${translate("form.options.selectCity")}</option>`;
-          kota.forEach((k) => {
-            const option = document.createElement("option");
-            option.value = k.id;
-            option.textContent = k.name;
-            option.dataset.name = k.name;
-            kotaAlamatSelect.appendChild(option);
-          });
-          kotaAlamatSelect.disabled = false;
-        } catch (error) {
-          console.error("Error loading kota:", error);
-          toastr.error(translate("form.messages.loadCityError"));
-        }
+      if (cache?.payload) {
+        console.warn(
+          `[Wilayah] Serving stale cache for ${resourcePath} after fetch failures`
+        );
+        return cache.payload;
       }
 
-      // Load kecamatan berdasarkan kota
-      async function loadKecamatan(kotaId) {
-        try {
-          kecamatanAlamatSelect.innerHTML =
-            `<option value="">${translate("form.options.loading")}</option>`;
-          const kecamatan = await fetchWilayahJson(`/districts/${kotaId}.json`);
+      throw lastError || new Error("Failed to load wilayah data");
+    }
 
-          kecamatanAlamatSelect.innerHTML =
-            `<option value="">${translate("form.options.selectDistrict")}</option>`;
-          kecamatan.forEach((kec) => {
-            const option = document.createElement("option");
-            option.value = kec.id;
-            option.textContent = kec.name;
-            option.dataset.name = kec.name;
-            kecamatanAlamatSelect.appendChild(option);
-          });
-          kecamatanAlamatSelect.disabled = false;
-        } catch (error) {
-          console.error("Error loading kecamatan:", error);
-          toastr.error(translate("form.messages.loadDistrictError"));
-        }
-      }
+    // Load provinsi dari API
+    async function loadProvinsi() {
+      try {
+        const provinsi = await fetchWilayahJson(`/provinces.json`);
 
-      // Load desa/kelurahan berdasarkan kecamatan
-      async function loadDesa(kecamatanId) {
-        try {
-          desaAlamatSelect.innerHTML = `<option value="">${translate("form.options.loading")}</option>`;
-          const desa = await fetchWilayahJson(`/villages/${kecamatanId}.json`);
-
-          desaAlamatSelect.innerHTML =
-            `<option value="">${translate("form.options.selectVillage")}</option>`;
-          desa.forEach((d) => {
-            const option = document.createElement("option");
-            option.value = d.name;
-            option.textContent = d.name;
-            desaAlamatSelect.appendChild(option);
-          });
-          desaAlamatSelect.disabled = false;
-        } catch (error) {
-          console.error("Error loading desa:", error);
-          toastr.error(translate("form.messages.loadVillageError"));
-        }
-      }
-
-      // Event listeners untuk dropdown alamat
-      provinsiAlamatSelect.addEventListener("change", function () {
-        const provinsiId = this.value;
-        const provinsiName = this.options[this.selectedIndex].dataset.name;
-
-        document.querySelector('input[name="provinsi"]')?.remove();
-        if (provinsiName) {
-          const hiddenInput = document.createElement("input");
-          hiddenInput.type = "hidden";
-          hiddenInput.name = "provinsi";
-          hiddenInput.value = provinsiName;
-          form.appendChild(hiddenInput);
-        }
-
-        kotaAlamatSelect.innerHTML =
-          `<option value="">${translate("form.options.selectProvinceFirst")}</option>`;
-        kotaAlamatSelect.disabled = true;
-        kecamatanAlamatSelect.innerHTML =
-          `<option value="">${translate("form.options.selectCityFirst")}</option>`;
-        kecamatanAlamatSelect.disabled = true;
-        desaAlamatSelect.innerHTML =
-          `<option value="">${translate("form.options.selectDistrictFirst")}</option>`;
-        desaAlamatSelect.disabled = true;
-
-        if (provinsiId) {
-          loadKota(provinsiId);
-        }
-      });
-
-      kotaAlamatSelect.addEventListener("change", function () {
-        const kotaId = this.value;
-        const kotaName = this.options[this.selectedIndex].dataset.name;
-
-        document.querySelector('input[name="kotaKabupaten"]')?.remove();
-        if (kotaName) {
-          const hiddenInput = document.createElement("input");
-          hiddenInput.type = "hidden";
-          hiddenInput.name = "kotaKabupaten";
-          hiddenInput.value = kotaName;
-          form.appendChild(hiddenInput);
-        }
-
-        kecamatanAlamatSelect.innerHTML =
-          `<option value="">${translate("form.options.selectCityFirst")}</option>`;
-        kecamatanAlamatSelect.disabled = true;
-        desaAlamatSelect.innerHTML =
-          `<option value="">${translate("form.options.selectDistrictFirst")}</option>`;
-        desaAlamatSelect.disabled = true;
-
-        if (kotaId) {
-          loadKecamatan(kotaId);
-        }
-      });
-
-      kecamatanAlamatSelect.addEventListener("change", function () {
-        const kecamatanId = this.value;
-        const kecamatanName = this.options[this.selectedIndex].dataset.name;
-
-        document.querySelector('input[name="kecamatan"]')?.remove();
-        if (kecamatanName) {
-          const hiddenInput = document.createElement("input");
-          hiddenInput.type = "hidden";
-          hiddenInput.name = "kecamatan";
-          hiddenInput.value = kecamatanName;
-          form.appendChild(hiddenInput);
-        }
-
-        desaAlamatSelect.innerHTML =
-          `<option value="">${translate("form.options.selectDistrictFirst")}</option>`;
-        desaAlamatSelect.disabled = true;
-
-        if (kecamatanId) {
-          loadDesa(kecamatanId);
-        }
-      });
-
-      // Load provinsi saat halaman dimuat
-      loadProvinsi();
-
-      // Attach event listener to konfirmasi button
-      const btnKonfirmasi = document.getElementById('btnLanjutKonfirmasi');
-      if (btnKonfirmasi) {
-        btnKonfirmasi.addEventListener('click', function(e) {
-          e.preventDefault();
-          console.log('[BUTTON] Konfirmasi button clicked via event listener');
-          showKonfirmasi();
+        provinsi.forEach((prov) => {
+          const option = document.createElement("option");
+          option.value = prov.id;
+          option.textContent = prov.name;
+          option.dataset.name = prov.name;
+          provinsiAlamatSelect.appendChild(option);
         });
-        console.log('[INIT] Konfirmasi button event listener attached');
-      } else {
-        console.error('[INIT] Konfirmasi button not found!');
+      } catch (error) {
+        console.error("Error loading provinsi:", error);
+        toastr.error(translate("form.messages.loadProvinceError"));
+      }
+    }
+
+    // Load kota/kabupaten berdasarkan provinsi
+    async function loadKota(provinsiId) {
+      try {
+        kotaAlamatSelect.innerHTML = `<option value="">${translate("form.options.loading")}</option>`;
+        const kota = await fetchWilayahJson(`/regencies/${provinsiId}.json`);
+
+        kotaAlamatSelect.innerHTML = `<option value="">${translate("form.options.selectCity")}</option>`;
+        kota.forEach((k) => {
+          const option = document.createElement("option");
+          option.value = k.id;
+          option.textContent = k.name;
+          option.dataset.name = k.name;
+          kotaAlamatSelect.appendChild(option);
+        });
+        kotaAlamatSelect.disabled = false;
+      } catch (error) {
+        console.error("Error loading kota:", error);
+        toastr.error(translate("form.messages.loadCityError"));
+      }
+    }
+
+    // Load kecamatan berdasarkan kota
+    async function loadKecamatan(kotaId) {
+      try {
+        kecamatanAlamatSelect.innerHTML =
+          `<option value="">${translate("form.options.loading")}</option>`;
+        const kecamatan = await fetchWilayahJson(`/districts/${kotaId}.json`);
+
+        kecamatanAlamatSelect.innerHTML =
+          `<option value="">${translate("form.options.selectDistrict")}</option>`;
+        kecamatan.forEach((kec) => {
+          const option = document.createElement("option");
+          option.value = kec.id;
+          option.textContent = kec.name;
+          option.dataset.name = kec.name;
+          kecamatanAlamatSelect.appendChild(option);
+        });
+        kecamatanAlamatSelect.disabled = false;
+      } catch (error) {
+        console.error("Error loading kecamatan:", error);
+        toastr.error(translate("form.messages.loadDistrictError"));
+      }
+    }
+
+    // Load desa/kelurahan berdasarkan kecamatan
+    async function loadDesa(kecamatanId) {
+      try {
+        desaAlamatSelect.innerHTML = `<option value="">${translate("form.options.loading")}</option>`;
+        const desa = await fetchWilayahJson(`/villages/${kecamatanId}.json`);
+
+        desaAlamatSelect.innerHTML =
+          `<option value="">${translate("form.options.selectVillage")}</option>`;
+        desa.forEach((d) => {
+          const option = document.createElement("option");
+          option.value = d.name;
+          option.textContent = d.name;
+          desaAlamatSelect.appendChild(option);
+        });
+        desaAlamatSelect.disabled = false;
+      } catch (error) {
+        console.error("Error loading desa:", error);
+        toastr.error(translate("form.messages.loadVillageError"));
+      }
+    }
+
+    // Event listeners untuk dropdown alamat
+    provinsiAlamatSelect.addEventListener("change", function () {
+      const provinsiId = this.value;
+      const provinsiName = this.options[this.selectedIndex].dataset.name;
+
+      document.querySelector('input[name="provinsi"]')?.remove();
+      if (provinsiName) {
+        const hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = "provinsi";
+        hiddenInput.value = provinsiName;
+        form.appendChild(hiddenInput);
       }
 
-      // Function to show konfirmasi modal
-      function showKonfirmasi() {
-        console.log('[KONFIRMASI] Function called');
-        
-        // Validate form first
-        if (!form.checkValidity()) {
-          console.warn('[KONFIRMASI] Form validation failed');
-          form.classList.add("was-validated");
-          
-          // Find first invalid field
-          const invalidField = form.querySelector(':invalid');
-          if (invalidField) {
-            const fieldName = invalidField.name || invalidField.id || 'Unknown';
-            console.warn('[KONFIRMASI] First invalid field:', fieldName, invalidField);
-            invalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            invalidField.focus();
-          }
-          
-          toastr.error(translate("form.messages.validationRequired"));
-          return;
-        }
-        
-        console.log('[KONFIRMASI] Form valid, building modal...');
+      kotaAlamatSelect.innerHTML =
+        `<option value="">${translate("form.options.selectProvinceFirst")}</option>`;
+      kotaAlamatSelect.disabled = true;
+      kecamatanAlamatSelect.innerHTML =
+        `<option value="">${translate("form.options.selectCityFirst")}</option>`;
+      kecamatanAlamatSelect.disabled = true;
+      desaAlamatSelect.innerHTML =
+        `<option value="">${translate("form.options.selectDistrictFirst")}</option>`;
+      desaAlamatSelect.disabled = true;
 
-        try {
-          const formData = new FormData(form);
-          formDataGlobal = formData;
+      if (provinsiId) {
+        loadKota(provinsiId);
+      }
+    });
+
+    kotaAlamatSelect.addEventListener("change", function () {
+      const kotaId = this.value;
+      const kotaName = this.options[this.selectedIndex].dataset.name;
+
+      document.querySelector('input[name="kotaKabupaten"]')?.remove();
+      if (kotaName) {
+        const hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = "kotaKabupaten";
+        hiddenInput.value = kotaName;
+        form.appendChild(hiddenInput);
+      }
+
+      kecamatanAlamatSelect.innerHTML =
+        `<option value="">${translate("form.options.selectCityFirst")}</option>`;
+      kecamatanAlamatSelect.disabled = true;
+      desaAlamatSelect.innerHTML =
+        `<option value="">${translate("form.options.selectDistrictFirst")}</option>`;
+      desaAlamatSelect.disabled = true;
+
+      if (kotaId) {
+        loadKecamatan(kotaId);
+      }
+    });
+
+    kecamatanAlamatSelect.addEventListener("change", function () {
+      const kecamatanId = this.value;
+      const kecamatanName = this.options[this.selectedIndex].dataset.name;
+
+      document.querySelector('input[name="kecamatan"]')?.remove();
+      if (kecamatanName) {
+        const hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = "kecamatan";
+        hiddenInput.value = kecamatanName;
+        form.appendChild(hiddenInput);
+      }
+
+      desaAlamatSelect.innerHTML =
+        `<option value="">${translate("form.options.selectDistrictFirst")}</option>`;
+      desaAlamatSelect.disabled = true;
+
+      if (kecamatanId) {
+        loadDesa(kecamatanId);
+      }
+    });
+
+    // Load provinsi saat halaman dimuat
+    loadProvinsi();
+
+    // Attach event listener to konfirmasi button
+    const btnKonfirmasi = document.getElementById('btnLanjutKonfirmasi');
+    if (btnKonfirmasi) {
+      btnKonfirmasi.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log('[BUTTON] Konfirmasi button clicked via event listener');
+        showKonfirmasi();
+      });
+      console.log('[INIT] Konfirmasi button event listener attached');
+    } else {
+      console.error('[INIT] Konfirmasi button not found!');
+    }
+
+    // --- GELOMBANG LOGIC ---
+    let activeGelombangName = "";
+
+    async function loadActiveGelombang() {
+      const input = document.getElementById("gelombangInput");
+      const status = document.getElementById("gelombangStatus");
+
+      try {
+        const res = await fetch("/api/gelombang_active");
+        const json = await res.json();
+
+        if (json.ok && json.data) {
+          activeGelombangName = json.data.nama;
+          input.value = activeGelombangName;
+          status.textContent = `Gelombang Aktif: ${json.data.nama}`;
+          status.className = "form-text text-green-600 font-medium";
+        } else {
+          input.value = "TIDAK ADA GELOMBANG AKTIF";
+          status.textContent = "Mohon maaf, pendaftaran sedang ditutup.";
+          status.className = "form-text text-red-600 font-bold";
+          // Disable submit button if no wave
+          document.getElementById("btnKonfirmasiKirim").disabled = true; // Changed from btnSubmit
+        }
+      } catch (e) {
+        console.error("Failed to load gelombang:", e);
+        input.value = "Error memuat data";
+      }
+    }
+
+    // Call on load
+    loadActiveGelombang();
+
+    // --- END GELOMBANG LOGIC ---
+
+    // Function to show konfirmasi modal
+    function showKonfirmasi() {
+      console.log('[KONFIRMASI] Function called');
+
+      // Validate form first
+      if (!form.checkValidity()) {
+        console.warn('[KONFIRMASI] Form validation failed');
+        form.classList.add("was-validated");
+
+        // Find first invalid field
+        const invalidField = form.querySelector(':invalid');
+        if (invalidField) {
+          const fieldName = invalidField.name || invalidField.id || 'Unknown';
+          console.warn('[KONFIRMASI] First invalid field:', fieldName, invalidField);
+          invalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          invalidField.focus();
+        }
+
+        toastr.error(translate("form.messages.validationRequired"));
+        return;
+      }
+
+      console.log('[KONFIRMASI] Form valid, building modal...');
+
+      try {
+        const formData = new FormData(form);
+        formDataGlobal = formData;
 
         // Build konfirmasi HTML
         let html = `
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div class="col-span-full bg-yellow-50 p-3 rounded border border-yellow-200 mb-2">
+              <p class="font-semibold text-yellow-800">Gelombang Pendaftaran</p>
+              <p id="conf-gelombang" class="text-lg font-bold text-brand-700">${activeGelombangName || "-"}</p>
+            </div>
+
             <!-- Data Calon Santri -->
             <div class="col-span-full">
               <h6 class="bg-brand-600 text-white p-2 rounded">
@@ -2062,668 +2064,672 @@
 
         html += `</div>`;
 
-          document.getElementById("konfirmasiContent").innerHTML = html;
-          console.log('[KONFIRMASI] HTML set, opening modal...');
-          
-          // PURE CSS CLASS APPROACH - NO ALPINE DEPENDENCY
-          const modalEl = document.getElementById('modalKonfirmasi');
-          
-          if (modalEl) {
-            // Remove hidden class, add visible class
-            modalEl.classList.remove('modal-hidden');
-            modalEl.classList.add('modal-visible');
-            console.log('[KONFIRMASI] ✓✓ Modal shown via CSS class (PURE DOM)');
-            
-            // Also set Alpine store if available (for close button)
-            if (window.Alpine && Alpine.store && Alpine.store('modals')) {
-              Alpine.store('modals').showKonfirmasi = true;
-              console.log('[KONFIRMASI] ✓ Alpine store also set');
-            }
-          } else {
-            console.error('[KONFIRMASI] ❌ Modal element #modalKonfirmasi not found!');
-            alert(translate("form.messages.alertModalMissing"));
-          }
-        } catch (error) {
-          console.error('[KONFIRMASI] Error:', error);
-          toastr.error(`${translate("form.messages.submitErrorGeneric")}: ${error.message}`);
-        }
-      }
+        document.getElementById("konfirmasiContent").innerHTML = html;
+        console.log('[KONFIRMASI] HTML set, opening modal...');
 
-      // Function to convert file to base64
-      function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = () => {
-            const base64 = reader.result.split(",")[1];
-            resolve(base64);
-          };
-          reader.onerror = (error) => reject(error);
-        });
-      }
+        // PURE CSS CLASS APPROACH - NO ALPINE DEPENDENCY
+        const modalEl = document.getElementById('modalKonfirmasi');
 
-      // FIXED: Client-side image compression with proper async/await
-      async function compressClientSide(file, targetBytes = 1 * 1024 * 1024) {
-        console.log('[COMPRESS_START]', file.name, '→', (file.size / 1024 / 1024).toFixed(2), 'MB');
-        
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          
-          reader.onload = async (event) => {
-            try {
-              const img = new Image();
-              
-              // Wrap image loading in Promise
-              await new Promise((resolveImg, rejectImg) => {
-                img.onload = () => resolveImg(true);
-                img.onerror = () => rejectImg(new Error('Failed to load image'));
-                img.src = event.target.result;
-              });
+        if (modalEl) {
+          // Remove hidden class, add visible class
+          modalEl.classList.remove('modal-hidden');
+          modalEl.classList.add('modal-visible');
+          console.log('[KONFIRMASI] ✓✓ Modal shown via CSS class (PURE DOM)');
 
-              // Image loaded successfully, now process
-              const canvas = document.createElement('canvas');
-              const ctx = canvas.getContext('2d');
-
-              let width = img.width;
-              let height = img.height;
-              const maxDim = 1600;
-
-              console.log('[COMPRESS] Original:', width, 'x', height);
-
-              // Resize if needed
-              if (width > height) {
-                if (width > maxDim) {
-                  height *= maxDim / width;
-                  width = maxDim;
-                }
-              } else {
-                if (height > maxDim) {
-                  width *= maxDim / height;
-                  height = maxDim;
-                }
-              }
-
-              canvas.width = width;
-              canvas.height = height;
-
-              // Fill white background for PNG
-              if (file.type === 'image/png') {
-                ctx.fillStyle = '#FFFFFF';
-                ctx.fillRect(0, 0, width, height);
-              }
-
-              ctx.drawImage(img, 0, 0, width, height);
-
-              const originalExt = file.name.split('.').pop().toLowerCase();
-              let finalMimeType = file.type;
-
-              // Helper: Promisify canvas.toBlob
-              const toBlobPromise = (mimeType, quality) => {
-                return new Promise((res) => {
-                  canvas.toBlob((blob) => res(blob), mimeType, quality);
-                });
-              };
-
-              let outputBlob = null;
-
-              // JPEG compression
-              if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
-                finalMimeType = 'image/jpeg';
-                let quality = 0.9;
-                
-                console.log('[COMPRESS] JPEG compression loop...');
-                
-                // Try decreasing quality
-                while (quality >= 0.3) {
-                  outputBlob = await toBlobPromise(finalMimeType, quality);
-                  
-                  const sizeMB = (outputBlob.size / 1024 / 1024).toFixed(2);
-                  console.log('[COMPRESS] Q=' + quality.toFixed(1), '→', sizeMB, 'MB');
-                  
-                  if (outputBlob.size <= targetBytes) {
-                    console.log('[COMPRESS] ✓ Target reached!');
-                    break;
-                  }
-                  quality -= 0.1;
-                }
-                
-                // Final fallback
-                if (!outputBlob || outputBlob.size > targetBytes) {
-                  console.warn('[COMPRESS] Using minimum quality');
-                  outputBlob = await toBlobPromise(finalMimeType, 0.3);
-                }
-              } 
-              // PNG compression
-              else if (file.type === 'image/png') {
-                console.log('[COMPRESS] PNG processing...');
-                finalMimeType = 'image/png';
-                outputBlob = await toBlobPromise(finalMimeType, 1.0);
-                
-                // Convert to JPEG if PNG is too large
-                if (outputBlob.size > targetBytes) {
-                  console.log('[COMPRESS] PNG → JPEG conversion...');
-                  finalMimeType = 'image/jpeg';
-                  outputBlob = await toBlobPromise(finalMimeType, 0.8);
-                }
-              } 
-              // Not an image
-              else {
-                console.log('[COMPRESS] Not a compressible type, using original');
-                outputBlob = file;
-                finalMimeType = file.type;
-              }
-
-              if (!outputBlob) {
-                throw new Error('Failed to create compressed blob');
-              }
-
-              const finalSizeKB = (outputBlob.size / 1024).toFixed(2);
-              const reduction = (((file.size - outputBlob.size) / file.size) * 100).toFixed(1);
-              
-              console.log('[COMPRESS_END] Final:', finalSizeKB, 'KB (−' + reduction + '%)');
-
-              resolve({
-                blob: outputBlob,
-                ext: finalMimeType === 'image/jpeg' ? 'jpg' : originalExt,
-                mime: finalMimeType,
-                alreadyCompressed: true,
-              });
-              
-            } catch (error) {
-              console.error('[COMPRESS_ERROR]', error);
-              reject(error);
-            }
-          };
-          
-          reader.onerror = (error) => {
-            console.error('[COMPRESS_ERROR] FileReader:', error);
-            reject(error);
-          };
-          
-          reader.readAsDataURL(file);
-        });
-      }
-
-      // Function to copy NISN to clipboard
-      function salinNISN() {
-        const regNo = document.getElementById("regNo").textContent;
-        const btnSalin = document.getElementById("btnSalinReg");
-
-        navigator.clipboard
-          .writeText(regNo)
-          .then(() => {
-            const originalHTML = btnSalin.innerHTML;
-            btnSalin.innerHTML =
-              `<i class="bi bi-check-circle-fill"></i> ${translate("form.messages.copySuccess")}`;
-            btnSalin.classList.remove("btn-outline-primary");
-            btnSalin.classList.add("btn-success");
-
-            setTimeout(() => {
-              btnSalin.innerHTML = originalHTML;
-              btnSalin.classList.remove("btn-success");
-              btnSalin.classList.add("btn-outline-primary");
-            }, 2000);
-          })
-          .catch((err) => {
-            toastr.error(translate("form.messages.copyFailed", { error: err }));
-          });
-      }
-
-      // Function to upload file via backend API with timeout
-      async function uploadFile(file, type, nisn) {
-        if (!file) {
-          console.log(`[UPLOAD] No file provided for ${type}, skipping`);
-          return null;
-        }
-
-        // Validate file object
-        if (!(file instanceof Blob) && !(file instanceof File)) {
-          console.error(`[UPLOAD] Invalid file object for ${type}:`, file);
-          throw new Error(translate("form.errors.fileInvalid", { type: getFileLabel(type) }));
-        }
-
-        // Validate file size
-        if (!file.size || file.size === 0) {
-          console.error(`[UPLOAD] File ${type} is empty (0 bytes)`);
-          throw new Error(translate("form.errors.fileEmpty", { type: getFileLabel(type) }));
-        }
-
-        if (!nisn || nisn.length !== 10 || !/^[0-9]{10}$/.test(nisn)) {
-          throw new Error(translate("form.messages.submitErrorNisn"));
-        }
-        
-        console.log(`[UPLOAD] Validating ${type}: ${file.name || 'unnamed'} (${(file.size / 1024).toFixed(2)} KB)`);
-
-        let processedFile = file;
-        let fileExtension = file.name.split('.').pop().toLowerCase();
-        let finalMimeType = file.type;
-        let alreadyCompressed = false;
-
-        const imageMimes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
-        const isImage = imageMimes.includes(file.type.toLowerCase());
-        
-        if (isImage) {
-          console.log(`[COMPRESS] Mengkompresi gambar ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)...`);
-          try {
-            const compressedResult = await compressClientSide(file);
-            
-            if (!compressedResult || !compressedResult.blob) {
-              throw new Error(translate("form.errors.compressionFailed", { type: getFileLabel(type) }));
-            }
-            
-            processedFile = compressedResult.blob;
-            fileExtension = compressedResult.ext;
-            finalMimeType = compressedResult.mime;
-            alreadyCompressed = compressedResult.alreadyCompressed;
-            
-            console.log(`[COMPRESS] ✓ Gambar ${file.name} selesai dikompresi. Ukuran: ${(processedFile.size / 1024).toFixed(2)} KB`);
-          } catch (compressError) {
-            console.error(`[COMPRESS] ❌ Gagal kompresi untuk ${file.name}:`, compressError);
-            console.warn(`[COMPRESS] ⚠️ Menggunakan file asli tanpa kompresi.`);
-            processedFile = file;
-            alreadyCompressed = false;
+          // Also set Alpine store if available (for close button)
+          if (window.Alpine && Alpine.store && Alpine.store('modals')) {
+            Alpine.store('modals').showKonfirmasi = true;
+            console.log('[KONFIRMASI] ✓ Alpine store also set');
           }
         } else {
-          console.log(`[COMPRESS] File ${file.name} bukan gambar, tidak dikompresi.`);
+          console.error('[KONFIRMASI] ❌ Modal element #modalKonfirmasi not found!');
+          alert(translate("form.messages.alertModalMissing"));
         }
+      } catch (error) {
+        console.error('[KONFIRMASI] Error:', error);
+        toastr.error(`${translate("form.messages.submitErrorGeneric")}: ${error.message}`);
+      }
+    }
 
-        const MAX_CLIENT_SIZE_BYTES = 2 * 1024 * 1024; // 2MB
-        if (processedFile.size > MAX_CLIENT_SIZE_BYTES) {
-          throw new Error(translate("form.errors.fileTooLarge", {
-            type: getFileLabel(type),
-            size: (processedFile.size / 1024 / 1024).toFixed(2)
-          }));
-        }
+    // Function to convert file to base64
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          const base64 = reader.result.split(",")[1];
+          resolve(base64);
+        };
+        reader.onerror = (error) => reject(error);
+      });
+    }
 
-        console.log(`[UPLOAD] Uploading ${type}: ${file.name} (${(processedFile.size / 1024).toFixed(2)} KB)`);
+    // FIXED: Client-side image compression with proper async/await
+    async function compressClientSide(file, targetBytes = 1 * 1024 * 1024) {
+      console.log('[COMPRESS_START]', file.name, '→', (file.size / 1024 / 1024).toFixed(2), 'MB');
 
-        try {
-          // Convert to base64
-          console.log(`[UPLOAD] Converting ${type} to base64...`);
-          const base64Data = await fileToBase64(processedFile);
-          
-          if (!base64Data || base64Data.length === 0) {
-            throw new Error(translate("form.errors.base64Failed", { type: getFileLabel(type) }));
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = async (event) => {
+          try {
+            const img = new Image();
+
+            // Wrap image loading in Promise
+            await new Promise((resolveImg, rejectImg) => {
+              img.onload = () => resolveImg(true);
+              img.onerror = () => rejectImg(new Error('Failed to load image'));
+              img.src = event.target.result;
+            });
+
+            // Image loaded successfully, now process
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            let width = img.width;
+            let height = img.height;
+            const maxDim = 1600;
+
+            console.log('[COMPRESS] Original:', width, 'x', height);
+
+            // Resize if needed
+            if (width > height) {
+              if (width > maxDim) {
+                height *= maxDim / width;
+                width = maxDim;
+              }
+            } else {
+              if (height > maxDim) {
+                width *= maxDim / height;
+                height = maxDim;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            // Fill white background for PNG
+            if (file.type === 'image/png') {
+              ctx.fillStyle = '#FFFFFF';
+              ctx.fillRect(0, 0, width, height);
+            }
+
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const originalExt = file.name.split('.').pop().toLowerCase();
+            let finalMimeType = file.type;
+
+            // Helper: Promisify canvas.toBlob
+            const toBlobPromise = (mimeType, quality) => {
+              return new Promise((res) => {
+                canvas.toBlob((blob) => res(blob), mimeType, quality);
+              });
+            };
+
+            let outputBlob = null;
+
+            // JPEG compression
+            if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
+              finalMimeType = 'image/jpeg';
+              let quality = 0.9;
+
+              console.log('[COMPRESS] JPEG compression loop...');
+
+              // Try decreasing quality
+              while (quality >= 0.3) {
+                outputBlob = await toBlobPromise(finalMimeType, quality);
+
+                const sizeMB = (outputBlob.size / 1024 / 1024).toFixed(2);
+                console.log('[COMPRESS] Q=' + quality.toFixed(1), '→', sizeMB, 'MB');
+
+                if (outputBlob.size <= targetBytes) {
+                  console.log('[COMPRESS] ✓ Target reached!');
+                  break;
+                }
+                quality -= 0.1;
+              }
+
+              // Final fallback
+              if (!outputBlob || outputBlob.size > targetBytes) {
+                console.warn('[COMPRESS] Using minimum quality');
+                outputBlob = await toBlobPromise(finalMimeType, 0.3);
+              }
+            }
+            // PNG compression
+            else if (file.type === 'image/png') {
+              console.log('[COMPRESS] PNG processing...');
+              finalMimeType = 'image/png';
+              outputBlob = await toBlobPromise(finalMimeType, 1.0);
+
+              // Convert to JPEG if PNG is too large
+              if (outputBlob.size > targetBytes) {
+                console.log('[COMPRESS] PNG → JPEG conversion...');
+                finalMimeType = 'image/jpeg';
+                outputBlob = await toBlobPromise(finalMimeType, 0.8);
+              }
+            }
+            // Not an image
+            else {
+              console.log('[COMPRESS] Not a compressible type, using original');
+              outputBlob = file;
+              finalMimeType = file.type;
+            }
+
+            if (!outputBlob) {
+              throw new Error('Failed to create compressed blob');
+            }
+
+            const finalSizeKB = (outputBlob.size / 1024).toFixed(2);
+            const reduction = (((file.size - outputBlob.size) / file.size) * 100).toFixed(1);
+
+            console.log('[COMPRESS_END] Final:', finalSizeKB, 'KB (−' + reduction + '%)');
+
+            resolve({
+              blob: outputBlob,
+              ext: finalMimeType === 'image/jpeg' ? 'jpg' : originalExt,
+              mime: finalMimeType,
+              alreadyCompressed: true,
+            });
+
+          } catch (error) {
+            console.error('[COMPRESS_ERROR]', error);
+            reject(error);
           }
-          
-          console.log(`[UPLOAD] Base64 length: ${base64Data.length} chars`);
-          
-          const finalFileName = `${nisn}_${type}.${fileExtension}`;
-          console.log(`[UPLOAD] Final filename: ${finalFileName}`);
+        };
 
-          // Create AbortController for timeout
-          const controller = new AbortController();
-          const timeout = setTimeout(() => controller.abort(), 60000); // 60s timeout
+        reader.onerror = (error) => {
+          console.error('[COMPRESS_ERROR] FileReader:', error);
+          reject(error);
+        };
 
-          const response = await fetch("/api/upload_file", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              file: base64Data,
-              fileName: finalFileName,
-              fileType: type,
-              mimeType: finalMimeType,
-              nisn: nisn,
-              alreadyCompressed: alreadyCompressed
-            }),
-            signal: controller.signal
-          });
+        reader.readAsDataURL(file);
+      });
+    }
 
-          clearTimeout(timeout);
+    // Function to copy NISN to clipboard
+    function salinNISN() {
+      const regNo = document.getElementById("regNo").textContent;
+      const btnSalin = document.getElementById("btnSalinReg");
 
-          const result = await response.json();
-          console.log(`[UPLOAD] ✓ ${type} result:`, result);
+      navigator.clipboard
+        .writeText(regNo)
+        .then(() => {
+          const originalHTML = btnSalin.innerHTML;
+          btnSalin.innerHTML =
+            `<i class="bi bi-check-circle-fill"></i> ${translate("form.messages.copySuccess")}`;
+          btnSalin.classList.remove("btn-outline-primary");
+          btnSalin.classList.add("btn-success");
 
-          if (!response.ok) {
-            throw new Error(result.error || translate("form.errors.uploadFailed", { type: getFileLabel(type), message: `HTTP ${response.status}` }));
-          }
-          if (!result.ok) {
-            throw new Error(result.error || translate("form.errors.uploadFailed", { type: getFileLabel(type), message: translate("form.messages.submitErrorGeneric") }));
-          }
+          setTimeout(() => {
+            btnSalin.innerHTML = originalHTML;
+            btnSalin.classList.remove("btn-success");
+            btnSalin.classList.add("btn-outline-primary");
+          }, 2000);
+        })
+        .catch((err) => {
+          toastr.error(translate("form.messages.copyFailed", { error: err }));
+        });
+    }
 
-          return result.url;
-        } catch (error) {
-          if (error.name === 'AbortError') {
-            throw new Error(translate("form.errors.uploadTimeout", { type: getFileLabel(type) }));
-          }
-          throw error;
-        }
+    // Function to upload file via backend API with timeout
+    async function uploadFile(file, type, nisn) {
+      if (!file) {
+        console.log(`[UPLOAD] No file provided for ${type}, skipping`);
+        return null;
       }
 
-      // Function to submit final
-      async function submitFinal() {
-        const submitBtn = document.querySelector('#btnKonfirmasiKirim');
-        const originalText = submitBtn.innerHTML;
+      // Validate file object
+      if (!(file instanceof Blob) && !(file instanceof File)) {
+        console.error(`[UPLOAD] Invalid file object for ${type}:`, file);
+        throw new Error(translate("form.errors.fileInvalid", { type: getFileLabel(type) }));
+      }
 
-        submitBtn.disabled = true;
-        submitBtn.innerHTML =
-          `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.sending")}`;
+      // Validate file size
+      if (!file.size || file.size === 0) {
+        console.error(`[UPLOAD] File ${type} is empty (0 bytes)`);
+        throw new Error(translate("form.errors.fileEmpty", { type: getFileLabel(type) }));
+      }
 
+      if (!nisn || nisn.length !== 10 || !/^[0-9]{10}$/.test(nisn)) {
+        throw new Error(translate("form.messages.submitErrorNisn"));
+      }
+
+      console.log(`[UPLOAD] Validating ${type}: ${file.name || 'unnamed'} (${(file.size / 1024).toFixed(2)} KB)`);
+
+      let processedFile = file;
+      let fileExtension = file.name.split('.').pop().toLowerCase();
+      let finalMimeType = file.type;
+      let alreadyCompressed = false;
+
+      const imageMimes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+      const isImage = imageMimes.includes(file.type.toLowerCase());
+
+      if (isImage) {
+        console.log(`[COMPRESS] Mengkompresi gambar ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)...`);
         try {
-          const formData = formDataGlobal;
-          const data = {};
+          const compressedResult = await compressClientSide(file);
 
-          for (let [key, value] of formData.entries()) {
-            if (!key.startsWith("file")) {
-              data[key] = value;
-            }
+          if (!compressedResult || !compressedResult.blob) {
+            throw new Error(translate("form.errors.compressionFailed", { type: getFileLabel(type) }));
           }
 
-          console.log("[SUBMIT] Data yang akan dikirim:", data);
-          console.log("[SUBMIT] Total fields:", Object.keys(data).length);
+          processedFile = compressedResult.blob;
+          fileExtension = compressedResult.ext;
+          finalMimeType = compressedResult.mime;
+          alreadyCompressed = compressedResult.alreadyCompressed;
+
+          console.log(`[COMPRESS] ✓ Gambar ${file.name} selesai dikompresi. Ukuran: ${(processedFile.size / 1024).toFixed(2)} KB`);
+        } catch (compressError) {
+          console.error(`[COMPRESS] ❌ Gagal kompresi untuk ${file.name}:`, compressError);
+          console.warn(`[COMPRESS] ⚠️ Menggunakan file asli tanpa kompresi.`);
+          processedFile = file;
+          alreadyCompressed = false;
+        }
+      } else {
+        console.log(`[COMPRESS] File ${file.name} bukan gambar, tidak dikompresi.`);
+      }
+
+      const MAX_CLIENT_SIZE_BYTES = 2 * 1024 * 1024; // 2MB
+      if (processedFile.size > MAX_CLIENT_SIZE_BYTES) {
+        throw new Error(translate("form.errors.fileTooLarge", {
+          type: getFileLabel(type),
+          size: (processedFile.size / 1024 / 1024).toFixed(2)
+        }));
+      }
+
+      console.log(`[UPLOAD] Uploading ${type}: ${file.name} (${(processedFile.size / 1024).toFixed(2)} KB)`);
+
+      try {
+        // Convert to base64
+        console.log(`[UPLOAD] Converting ${type} to base64...`);
+        const base64Data = await fileToBase64(processedFile);
+
+        if (!base64Data || base64Data.length === 0) {
+          throw new Error(translate("form.errors.base64Failed", { type: getFileLabel(type) }));
+        }
+
+        console.log(`[UPLOAD] Base64 length: ${base64Data.length} chars`);
+
+        const finalFileName = `${nisn}_${type}.${fileExtension}`;
+        console.log(`[UPLOAD] Final filename: ${finalFileName}`);
+
+        // Create AbortController for timeout
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 60000); // 60s timeout
+
+        const response = await fetch("/api/upload_file", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            file: base64Data,
+            fileName: finalFileName,
+            fileType: type,
+            mimeType: finalMimeType,
+            nisn: nisn,
+            alreadyCompressed: alreadyCompressed
+          }),
+          signal: controller.signal
+        });
+
+        clearTimeout(timeout);
+
+        const result = await response.json();
+        console.log(`[UPLOAD] ✓ ${type} result:`, result);
+
+        if (!response.ok) {
+          throw new Error(result.error || translate("form.errors.uploadFailed", { type: getFileLabel(type), message: `HTTP ${response.status}` }));
+        }
+        if (!result.ok) {
+          throw new Error(result.error || translate("form.errors.uploadFailed", { type: getFileLabel(type), message: translate("form.messages.submitErrorGeneric") }));
+        }
+
+        return result.url;
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          throw new Error(translate("form.errors.uploadTimeout", { type: getFileLabel(type) }));
+        }
+        throw error;
+      }
+    }
+
+    // Function to submit final
+    async function submitFinal() {
+      const submitBtn = document.querySelector('#btnKonfirmasiKirim');
+      const originalText = submitBtn.innerHTML;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML =
+        `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.sending")}`;
+
+      try {
+        const formData = formDataGlobal;
+        const data = {};
+
+        for (let [key, value] of formData.entries()) {
+          if (!key.startsWith("file")) {
+            data[key] = value;
+          }
+        }
+
+        // Add gelombang explicitly
+        data["gelombang"] = activeGelombangName || "";
+
+        console.log("[SUBMIT] Data yang akan dikirim:", data);
+        console.log("[SUBMIT] Total fields:", Object.keys(data).length);
 
         submitBtn.innerHTML =
           `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.saving")}`;
 
-          console.log("[SUBMIT] Sending POST to /api/pendaftar_create...");
-          const res = await fetch("/api/pendaftar_create", {
+        console.log("[SUBMIT] Sending POST to /api/pendaftar_create...");
+        const res = await fetch("/api/pendaftar_create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        console.log("[SUBMIT] Response status:", res.status);
+        console.log("[SUBMIT] Response headers:", Object.fromEntries(res.headers.entries()));
+
+        const responseText = await res.text();
+        console.log("[SUBMIT] Raw response text:", responseText);
+
+        let json;
+        try {
+          json = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error("[SUBMIT] ❌ Failed to parse JSON:", parseError);
+          console.error("[SUBMIT] Response was:", responseText);
+          throw new Error(translate("form.errors.serverInvalidJson", { snippet: responseText.substring(0, 100) }));
+        }
+
+        console.log("[SUBMIT] Parsed response:", json);
+        console.log("[SUBMIT] json.ok =", json.ok);
+        console.log("[SUBMIT] json.nisn =", json.nisn);
+        console.log("[SUBMIT] json.id =", json.id);
+
+        if (!json.ok) {
+          console.error("[SUBMIT] ❌ Server returned ok=false");
+          console.error("[SUBMIT] Error:", json.error);
+          console.error("[SUBMIT] Details:", json.details);
+          throw new Error(json.error || translate("form.messages.submitErrorGeneric"));
+        }
+
+        console.log("[SUBMIT] ✓ Data berhasil disimpan!");
+
+        const nisn = json.nisn;
+        const pendaftarId = json.id;
+
+        console.log("[SUBMIT] Extracted NISN:", nisn, "Type:", typeof nisn);
+        console.log("[SUBMIT] Extracted ID:", pendaftarId, "Type:", typeof pendaftarId);
+
+        if (!nisn) {
+          console.error("[SUBMIT] ❌ NISN is null/undefined/empty!");
+          console.error("[SUBMIT] Full response object:", JSON.stringify(json, null, 2));
+          throw new Error(translate("form.errors.nisnMissing"));
+        }
+
+        console.log("NISN:", nisn);
+        console.log("Pendaftar ID:", pendaftarId);
+
+        const fileIjazah = formData.get("fileIjazah");
+        const fileAkta = formData.get("fileAkta");
+        const fileFoto = formData.get("fileFoto");
+        const fileBPJS = formData.get("fileBPJS");
+
+        const fileUrls = {};
+
+        console.log("[UPLOAD] Mulai upload files...");
+
+        if (fileIjazah?.size > 0) {
+          console.log("[UPLOAD] Processing Ijazah...");
+          submitBtn.innerHTML =
+            `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.upload.ijazah")}`;
+          try {
+            fileUrls.file_ijazah = await uploadFile(fileIjazah, "ijazah", nisn);
+            console.log("[UPLOAD] ✓ Ijazah berhasil");
+          } catch (uploadError) {
+            console.error("[UPLOAD] ❌ Ijazah gagal:", uploadError);
+            throw uploadError;
+          }
+        }
+
+        if (fileAkta?.size > 0) {
+          console.log("[UPLOAD] Processing Akta...");
+          submitBtn.innerHTML =
+            `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.upload.akta")}`;
+          try {
+            fileUrls.file_akta = await uploadFile(fileAkta, "akta", nisn);
+            console.log("[UPLOAD] ✓ Akta berhasil");
+          } catch (uploadError) {
+            console.error("[UPLOAD] ❌ Akta gagal:", uploadError);
+            throw uploadError;
+          }
+        }
+
+        if (fileFoto?.size > 0) {
+          console.log("[UPLOAD] Processing Foto...");
+          submitBtn.innerHTML =
+            `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.upload.foto")}`;
+          try {
+            fileUrls.file_foto = await uploadFile(fileFoto, "foto", nisn);
+            console.log("[UPLOAD] ✓ Foto berhasil");
+          } catch (uploadError) {
+            console.error("[UPLOAD] ❌ Foto gagal:", uploadError);
+            throw uploadError;
+          }
+        }
+
+        if (fileBPJS?.size > 0) {
+          console.log("[UPLOAD] Processing BPJS...");
+          submitBtn.innerHTML =
+            `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.upload.bpjs")}`;
+          try {
+            fileUrls.file_bpjs = await uploadFile(fileBPJS, "bpjs", nisn);
+            console.log("[UPLOAD] ✓ BPJS berhasil");
+          } catch (uploadError) {
+            console.error("[UPLOAD] ❌ BPJS gagal:", uploadError);
+            throw uploadError;
+          }
+        }
+
+        console.log("[UPLOAD] ✓ Semua file selesai diupload!");
+
+        if (Object.keys(fileUrls).length > 0) {
+          submitBtn.innerHTML =
+            `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.finalizing")}`;
+
+          const updateRes = await fetch("/api/pendaftar_update_files", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
+            body: JSON.stringify({
+              id: pendaftarId,
+              ...fileUrls,
+            }),
           });
 
-          console.log("[SUBMIT] Response status:", res.status);
-          console.log("[SUBMIT] Response headers:", Object.fromEntries(res.headers.entries()));
-          
-          const responseText = await res.text();
-          console.log("[SUBMIT] Raw response text:", responseText);
-          
-          let json;
+          const updateJson = await updateRes.json();
+          if (!updateJson.ok) {
+            console.warn("Warning: File URLs not saved", updateJson.error);
+          }
+        }
+
+        // Hide konfirmasi modal (PURE CSS)
+        const modalKonfirmasi = document.getElementById('modalKonfirmasi');
+        if (modalKonfirmasi) {
+          modalKonfirmasi.classList.remove('modal-visible');
+          modalKonfirmasi.classList.add('modal-hidden');
+        }
+
+        // Set NISN dan show success modal
+        document.getElementById("regNo").textContent = nisn;
+
+        // Reset form
+        form.reset();
+        form.classList.remove("was-validated");
+
+        // Show success modal (PURE CSS)
+        const modalSukses = document.getElementById('modalSukses');
+        if (modalSukses) {
+          modalSukses.classList.remove('modal-hidden');
+          modalSukses.classList.add('modal-visible');
+        }
+      } catch (error) {
+        console.error("=".repeat(80));
+        console.error("❌ SUBMIT ERROR DETAILS:");
+        console.error("=".repeat(80));
+        console.error("Error Type:", error.constructor.name);
+        console.error("Error Message:", error.message);
+        console.error("Error Stack:", error.stack);
+        console.error("=".repeat(80));
+
+        let errorMsg = error.message || translate("form.messages.submitErrorGeneric");
+        const normalizedMsg = (errorMsg || "").toLowerCase();
+
+        if (normalizedMsg.includes("timeout")) {
+          errorMsg = translate("form.messages.submitErrorTimeout");
+        } else if (normalizedMsg.includes("networkerror") || normalizedMsg.includes("failed to fetch")) {
+          errorMsg = translate("form.messages.submitErrorNetwork");
+        } else if (normalizedMsg.includes("nisn tidak diterima")) {
+          errorMsg = translate("form.errors.nisnMissing");
+        }
+
+        const errorTitle = translate("form.messages.submitErrorTitle");
+        toastr.error(`❌ ${errorMsg}`, errorTitle, {
+          timeOut: 10000,
+          closeButton: true,
+          progressBar: true
+        });
+
+        // Alert for critical errors
+        const alertMessage = translate("form.messages.uploadAlert", { message: errorMsg });
+        if (normalizedMsg.includes("upload") || normalizedMsg.includes("kompres") || normalizedMsg.includes("compress")) {
+          alert(alertMessage);
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+    });
+
+    // Load data from localStorage if editing
+    window.addEventListener("load", () => {
+      if (window.location.hash === "#edit") {
+        const editData = localStorage.getItem("editPendaftaran");
+        if (editData) {
           try {
-            json = JSON.parse(responseText);
-          } catch (parseError) {
-            console.error("[SUBMIT] ❌ Failed to parse JSON:", parseError);
-            console.error("[SUBMIT] Response was:", responseText);
-            throw new Error(translate("form.errors.serverInvalidJson", { snippet: responseText.substring(0, 100) }));
-          }
-          
-          console.log("[SUBMIT] Parsed response:", json);
-          console.log("[SUBMIT] json.ok =", json.ok);
-          console.log("[SUBMIT] json.nisn =", json.nisn);
-          console.log("[SUBMIT] json.id =", json.id);
+            const data = JSON.parse(editData);
+            console.log("Loading edit data:", data);
 
-          if (!json.ok) {
-            console.error("[SUBMIT] ❌ Server returned ok=false");
-            console.error("[SUBMIT] Error:", json.error);
-            console.error("[SUBMIT] Details:", json.details);
-            throw new Error(json.error || translate("form.messages.submitErrorGeneric"));
-          }
-          
-          console.log("[SUBMIT] ✓ Data berhasil disimpan!");
+            if (data.nik)
+              document.querySelector('[name="nikCalon"]').value = data.nik;
+            if (data.nisn)
+              document.querySelector('[name="nisn"]').value = data.nisn;
+            if (data.nama)
+              document.querySelector('[name="namaLengkap"]').value =
+                data.nama;
 
-          const nisn = json.nisn;
-          const pendaftarId = json.id;
-
-          console.log("[SUBMIT] Extracted NISN:", nisn, "Type:", typeof nisn);
-          console.log("[SUBMIT] Extracted ID:", pendaftarId, "Type:", typeof pendaftarId);
-
-          if (!nisn) {
-            console.error("[SUBMIT] ❌ NISN is null/undefined/empty!");
-            console.error("[SUBMIT] Full response object:", JSON.stringify(json, null, 2));
-            throw new Error(translate("form.errors.nisnMissing"));
-          }
-
-          console.log("NISN:", nisn);
-          console.log("Pendaftar ID:", pendaftarId);
-
-          const fileIjazah = formData.get("fileIjazah");
-          const fileAkta = formData.get("fileAkta");
-          const fileFoto = formData.get("fileFoto");
-          const fileBPJS = formData.get("fileBPJS");
-
-          const fileUrls = {};
-
-          console.log("[UPLOAD] Mulai upload files...");
-          
-          if (fileIjazah?.size > 0) {
-            console.log("[UPLOAD] Processing Ijazah...");
-            submitBtn.innerHTML =
-              `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.upload.ijazah")}`;
-            try {
-              fileUrls.file_ijazah = await uploadFile(fileIjazah, "ijazah", nisn);
-              console.log("[UPLOAD] ✓ Ijazah berhasil");
-            } catch (uploadError) {
-              console.error("[UPLOAD] ❌ Ijazah gagal:", uploadError);
-              throw uploadError;
+            if (data.provinsiTempatLahir) {
+              const provinsiSelect = document.querySelector(
+                '[name="provinsiTempatLahir"]');
+              provinsiSelect.value = data.provinsiTempatLahir;
+              provinsiSelect.dispatchEvent(new Event("change"));
+              setTimeout(() => {
+                if (data.tempatLahir) {
+                  document.querySelector('[name="tempatLahir"]').value =
+                    data.tempatLahir;
+                }
+              }, 100);
             }
-          }
 
-          if (fileAkta?.size > 0) {
-            console.log("[UPLOAD] Processing Akta...");
-            submitBtn.innerHTML =
-              `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.upload.akta")}`;
-            try {
-              fileUrls.file_akta = await uploadFile(fileAkta, "akta", nisn);
-              console.log("[UPLOAD] ✓ Akta berhasil");
-            } catch (uploadError) {
-              console.error("[UPLOAD] ❌ Akta gagal:", uploadError);
-              throw uploadError;
+            if (data.tanggalLahir)
+              document.querySelector('[name="tanggalLahir"]').value =
+                data.tanggalLahir;
+            if (data.jenisKelamin)
+              document.querySelector('[name="jenisKelamin"]').value =
+                data.jenisKelamin;
+            if (data.teleponOrtu)
+              document.querySelector('[name="teleponOrtu"]').value =
+                data.teleponOrtu;
+
+            if (data.alamatJalan)
+              document.querySelector('[name="alamatJalan"]').value =
+                data.alamatJalan;
+
+            if (data.provinsi) {
+              const provinsiSelect =
+                document.querySelector('[name="provinsi"]');
+              provinsiSelect.value = data.provinsi;
+              provinsiSelect.dispatchEvent(new Event("change"));
+
+              setTimeout(() => {
+                if (data.kotaKabupaten) {
+                  const kotaSelect = document.querySelector(
+                    '[name="kotaKabupaten"]');
+                  kotaSelect.value = data.kotaKabupaten;
+                  kotaSelect.dispatchEvent(new Event("change"));
+
+                  setTimeout(() => {
+                    if (data.kecamatan) {
+                      const kecamatanSelect =
+                        document.querySelector('[name="kecamatan"]');
+                      kecamatanSelect.value = data.kecamatan;
+                      kecamatanSelect.dispatchEvent(new Event("change"));
+
+                      setTimeout(() => {
+                        if (data.desa) {
+                          document.querySelector('[name="desa"]').value =
+                            data.desa;
+                        }
+                      }, 100);
+                    }
+                  }, 100);
+                }
+              }, 100);
             }
+
+            if (data.ijazahFormalTerakhir)
+              document.querySelector('[name="ijazahFormalTerakhir"]').value =
+                data.ijazahFormalTerakhir;
+            if (data.rencanaProgram)
+              document.querySelector('[name="rencanaProgram"]').value =
+                data.rencanaProgram;
+            if (data.rencanaDomisili)
+              document.querySelector('[name="rencanaDomisili"]').value =
+                data.rencanaDomisili;
+            if (data.rencanaTingkat)
+              document.querySelector('[name="rencanaTingkat"]').value =
+                data.rencanaTingkat;
+
+            if (data.nikAyah)
+              document.querySelector('[name="nikAyah"]').value = data.nikAyah;
+            if (data.namaAyah)
+              document.querySelector('[name="namaAyah"]').value =
+                data.namaAyah;
+            if (data.nikIbu)
+              document.querySelector('[name="nikIbu"]').value = data.nikIbu;
+            if (data.namaIbu)
+              document.querySelector('[name="namaIbu"]').value = data.namaIbu;
+
+            localStorage.removeItem("editPendaftaran");
+
+            toastr.info(translate("form.messages.repairMode"));
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          } catch (error) {
+            console.error("Error loading edit data:", error);
+            localStorage.removeItem("editPendaftaran");
           }
-
-          if (fileFoto?.size > 0) {
-            console.log("[UPLOAD] Processing Foto...");
-            submitBtn.innerHTML =
-              `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.upload.foto")}`;
-            try {
-              fileUrls.file_foto = await uploadFile(fileFoto, "foto", nisn);
-              console.log("[UPLOAD] ✓ Foto berhasil");
-            } catch (uploadError) {
-              console.error("[UPLOAD] ❌ Foto gagal:", uploadError);
-              throw uploadError;
-            }
-          }
-
-          if (fileBPJS?.size > 0) {
-            console.log("[UPLOAD] Processing BPJS...");
-            submitBtn.innerHTML =
-              `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.upload.bpjs")}`;
-            try {
-              fileUrls.file_bpjs = await uploadFile(fileBPJS, "bpjs", nisn);
-              console.log("[UPLOAD] ✓ BPJS berhasil");
-            } catch (uploadError) {
-              console.error("[UPLOAD] ❌ BPJS gagal:", uploadError);
-              throw uploadError;
-            }
-          }
-          
-          console.log("[UPLOAD] ✓ Semua file selesai diupload!");
-
-          if (Object.keys(fileUrls).length > 0) {
-            submitBtn.innerHTML =
-              `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.finalizing")}`;
-
-            const updateRes = await fetch("/api/pendaftar_update_files", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                id: pendaftarId,
-                ...fileUrls,
-              }),
-            });
-
-            const updateJson = await updateRes.json();
-            if (!updateJson.ok) {
-              console.warn("Warning: File URLs not saved", updateJson.error);
-            }
-          }
-
-          // Hide konfirmasi modal (PURE CSS)
-          const modalKonfirmasi = document.getElementById('modalKonfirmasi');
-          if (modalKonfirmasi) {
-            modalKonfirmasi.classList.remove('modal-visible');
-            modalKonfirmasi.classList.add('modal-hidden');
-          }
-
-          // Set NISN dan show success modal
-          document.getElementById("regNo").textContent = nisn;
-
-          // Reset form
-          form.reset();
-          form.classList.remove("was-validated");
-
-          // Show success modal (PURE CSS)
-          const modalSukses = document.getElementById('modalSukses');
-          if (modalSukses) {
-            modalSukses.classList.remove('modal-hidden');
-            modalSukses.classList.add('modal-visible');
-          }
-        } catch (error) {
-          console.error("=".repeat(80));
-          console.error("❌ SUBMIT ERROR DETAILS:");
-          console.error("=".repeat(80));
-          console.error("Error Type:", error.constructor.name);
-          console.error("Error Message:", error.message);
-          console.error("Error Stack:", error.stack);
-          console.error("=".repeat(80));
-
-          let errorMsg = error.message || translate("form.messages.submitErrorGeneric");
-          const normalizedMsg = (errorMsg || "").toLowerCase();
-
-          if (normalizedMsg.includes("timeout")) {
-            errorMsg = translate("form.messages.submitErrorTimeout");
-          } else if (normalizedMsg.includes("networkerror") || normalizedMsg.includes("failed to fetch")) {
-            errorMsg = translate("form.messages.submitErrorNetwork");
-          } else if (normalizedMsg.includes("nisn tidak diterima")) {
-            errorMsg = translate("form.errors.nisnMissing");
-          }
-          
-          const errorTitle = translate("form.messages.submitErrorTitle");
-          toastr.error(`❌ ${errorMsg}`, errorTitle, {
-            timeOut: 10000,
-            closeButton: true,
-            progressBar: true
-          });
-          
-          // Alert for critical errors
-          const alertMessage = translate("form.messages.uploadAlert", { message: errorMsg });
-          if (normalizedMsg.includes("upload") || normalizedMsg.includes("kompres") || normalizedMsg.includes("compress")) {
-            alert(alertMessage);
-          }
-        } finally {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalText;
         }
       }
-
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-      });
-
-      // Load data from localStorage if editing
-      window.addEventListener("load", () => {
-        if (window.location.hash === "#edit") {
-          const editData = localStorage.getItem("editPendaftaran");
-          if (editData) {
-            try {
-              const data = JSON.parse(editData);
-              console.log("Loading edit data:", data);
-
-              if (data.nik)
-                document.querySelector('[name="nikCalon"]').value = data.nik;
-              if (data.nisn)
-                document.querySelector('[name="nisn"]').value = data.nisn;
-              if (data.nama)
-                document.querySelector('[name="namaLengkap"]').value =
-                  data.nama;
-
-              if (data.provinsiTempatLahir) {
-                const provinsiSelect = document.querySelector(
-                  '[name="provinsiTempatLahir"]');
-                provinsiSelect.value = data.provinsiTempatLahir;
-                provinsiSelect.dispatchEvent(new Event("change"));
-                setTimeout(() => {
-                  if (data.tempatLahir) {
-                    document.querySelector('[name="tempatLahir"]').value =
-                      data.tempatLahir;
-                  }
-                }, 100);
-              }
-
-              if (data.tanggalLahir)
-                document.querySelector('[name="tanggalLahir"]').value =
-                  data.tanggalLahir;
-              if (data.jenisKelamin)
-                document.querySelector('[name="jenisKelamin"]').value =
-                  data.jenisKelamin;
-              if (data.teleponOrtu)
-                document.querySelector('[name="teleponOrtu"]').value =
-                  data.teleponOrtu;
-
-              if (data.alamatJalan)
-                document.querySelector('[name="alamatJalan"]').value =
-                  data.alamatJalan;
-
-              if (data.provinsi) {
-                const provinsiSelect =
-                  document.querySelector('[name="provinsi"]');
-                provinsiSelect.value = data.provinsi;
-                provinsiSelect.dispatchEvent(new Event("change"));
-
-                setTimeout(() => {
-                  if (data.kotaKabupaten) {
-                    const kotaSelect = document.querySelector(
-                      '[name="kotaKabupaten"]');
-                    kotaSelect.value = data.kotaKabupaten;
-                    kotaSelect.dispatchEvent(new Event("change"));
-
-                    setTimeout(() => {
-                      if (data.kecamatan) {
-                        const kecamatanSelect =
-                          document.querySelector('[name="kecamatan"]');
-                        kecamatanSelect.value = data.kecamatan;
-                        kecamatanSelect.dispatchEvent(new Event("change"));
-
-                        setTimeout(() => {
-                          if (data.desa) {
-                            document.querySelector('[name="desa"]').value =
-                              data.desa;
-                          }
-                        }, 100);
-                      }
-                    }, 100);
-                  }
-                }, 100);
-              }
-
-              if (data.ijazahFormalTerakhir)
-                document.querySelector('[name="ijazahFormalTerakhir"]').value =
-                  data.ijazahFormalTerakhir;
-              if (data.rencanaProgram)
-                document.querySelector('[name="rencanaProgram"]').value =
-                  data.rencanaProgram;
-              if (data.rencanaDomisili)
-                document.querySelector('[name="rencanaDomisili"]').value =
-                  data.rencanaDomisili;
-              if (data.rencanaTingkat)
-                document.querySelector('[name="rencanaTingkat"]').value =
-                  data.rencanaTingkat;
-
-              if (data.nikAyah)
-                document.querySelector('[name="nikAyah"]').value = data.nikAyah;
-              if (data.namaAyah)
-                document.querySelector('[name="namaAyah"]').value =
-                  data.namaAyah;
-              if (data.nikIbu)
-                document.querySelector('[name="nikIbu"]').value = data.nikIbu;
-              if (data.namaIbu)
-                document.querySelector('[name="namaIbu"]').value = data.namaIbu;
-
-              localStorage.removeItem("editPendaftaran");
-
-              toastr.info(translate("form.messages.repairMode"));
-
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            } catch (error) {
-              console.error("Error loading edit data:", error);
-              localStorage.removeItem("editPendaftaran");
-            }
-          }
-        }
-      });
-    </script>
-    <script src="/assets/js/navbar.js" defer></script>
-    <script src="/assets/js/pwa.js" defer></script>
+    });
+  </script>
+  <script src="/assets/js/navbar.js" defer></script>
+  <script src="/assets/js/pwa.js" defer></script>
   <script src="/assets/js/install-button.js" defer></script>
-  </body>
+</body>
+
 </html>

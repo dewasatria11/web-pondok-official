@@ -117,7 +117,9 @@ class handler(BaseHTTPRequestHandler):
                 "nikibu": nik_ibu,
                 "statusibu": data["statusIbu"].strip(),
                 "pekerjaanibu": data["pekerjaanIbu"].strip(),
-                "statusberkas": "PENDING"  # Set default status
+                "pekerjaanibu": data["pekerjaanIbu"].strip(),
+                "statusberkas": "PENDING",  # Set default status
+                "gelombang": data.get("gelombang", "").strip() # Add gelombang
             }
             
             # Add optional fields if provided

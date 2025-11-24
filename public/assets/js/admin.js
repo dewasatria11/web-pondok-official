@@ -522,35 +522,35 @@
       actionsCell.innerHTML = renderPendaftarActions(pendaftarId, normalized);
     }
   }
-  
+
   async function loadPendaftar() {
     try {
       console.log('[PENDAFTAR] 📊 Loading page', currentPage, '(pageSize:', pageSize, ')');
-      
+
       // Show loading state in table
       const tbody = $("#pendaftarTable");
       if (tbody) {
         tbody.innerHTML = '<tr><td colspan="6" class="text-center"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Memuat data...</td></tr>';
       }
-      
+
       // Fetch pendaftar data dengan pagination - WITH TIMEOUT
       const url = `/api/pendaftar_list?page=${currentPage}&pageSize=${pageSize}`;
       console.log('[PENDAFTAR] → API:', url);
-      
+
       // Add timeout to prevent hanging
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
-      
+
       try {
         const r = await fetch(url, { signal: controller.signal });
         clearTimeout(timeoutId);
-        
+
         if (!r.ok) {
           throw new Error(`HTTP ${r.status}: ${r.statusText}`);
         }
-        
+
         const result = await r.json();
-        
+
         if (!(result.success && result.data)) {
           console.error("[PENDAFTAR] ❌ Failed to fetch data:", result);
           if (tbody) {
@@ -566,31 +566,29 @@
         console.log('[PENDAFTAR] Page:', currentPage, '| Page Size:', pageSize, '| Total:', totalData);
 
         allPendaftarData = result.data; // simpan untuk detail
-        
+
         // ✅ RENDER TABEL DULU (PRIORITY)
         console.log('[PENDAFTAR] 📋 Rendering table...');
         if (tbody) {
           // Calculate starting number based on current page
           const startNum = (currentPage - 1) * pageSize;
-        
+
           tbody.innerHTML = result.data
             .map((item, i) => {
               const normalizedStatus = normalizeStatusValue(item.status);
               return `
                 <tr data-pendaftar-id="${item.id}">
                   <td>${startNum + i + 1}</td>
-                  <td><strong>${
-                    item.nisn || item.nikcalon || item.nik || "-"
-                  }</strong></td>
+                  <td><strong>${item.nisn || item.nikcalon || item.nik || "-"
+                }</strong></td>
                   <td>${item.nama}</td>
                   <td class="pendaftar-status-cell">${renderPendaftarStatusBadge(
-                    normalizedStatus
-                  )}</td>
+                  normalizedStatus
+                )}</td>
                   <td>${formatIDDate(item.createdat)}</td>
                   <td class="pendaftar-actions-cell">
-                    <button class="btn btn-sm btn-secondary" onclick="lihatDetail(${
-                      item.id
-                    })" title="Lihat Detail & Berkas">
+                    <button class="btn btn-sm btn-secondary" onclick="lihatDetail(${item.id
+                })" title="Lihat Detail & Berkas">
                       <i class="bi bi-eye"></i>
                     </button>
                     ${renderPendaftarActions(item.id, normalizedStatus)}
@@ -599,23 +597,23 @@
               `;
             })
             .join("");
-          
+
           console.log('[PENDAFTAR] ✅ Table rendered successfully');
         }
-        
+
         // Update pagination controls
         updatePaginationUI();
-        
+
         // ✅ LOAD STATISTIK SECARA TERPISAH (NON-BLOCKING)
         // Jangan tunggu statistik selesai, biar tabel sudah bisa diklik
         setTimeout(() => {
           console.log('[PENDAFTAR] 📊 Loading statistics in background...');
           loadStatistikData();
         }, 100);
-        
+
       } catch (fetchError) {
         clearTimeout(timeoutId);
-        
+
         if (fetchError.name === 'AbortError') {
           console.error("[PENDAFTAR] ⏱️ Request timeout setelah 10 detik");
           if (tbody) {
@@ -637,30 +635,30 @@
       }
     }
   }
-  
+
   // Fungsi terpisah untuk load statistik (non-blocking)
   async function loadStatistikData() {
     try {
       const now = Date.now();
-      
+
       // Gunakan cache jika masih valid
       if (cachedAllDataForStats && cachedVerifiedPayments && (now - lastStatsFetchTime < STATS_CACHE_DURATION)) {
         console.log('[STATISTIK] Using cached data');
         calculateAndUpdateStatistics(cachedAllDataForStats, cachedVerifiedPayments);
         return;
       }
-      
+
       console.log('[STATISTIK] Fetching fresh data...');
-      
+
       // Fetch ALL data untuk statistik (tanpa pagination)
       const rAll = await fetch("/api/pendaftar_list?page=1&pageSize=1000");
       const resultAll = await rAll.json();
       const allDataForStats = resultAll.success && resultAll.data ? resultAll.data : [];
-      
+
       // Fetch pembayaran data untuk sinkronisasi statistik
       const rPembayaran = await fetch("/api/pembayaran_list");
       const pembayaranResult = await rPembayaran.json();
-      
+
       // Create map of verified payments by NISN/NIK
       const verifiedPayments = new Map();
       if (pembayaranResult.success && pembayaranResult.data) {
@@ -673,296 +671,296 @@
           }
         });
       }
-      
+
       // Cache hasil
       cachedAllDataForStats = allDataForStats;
       cachedVerifiedPayments = verifiedPayments;
       lastStatsFetchTime = now;
-      
+
       // Calculate dan update statistik
       calculateAndUpdateStatistics(allDataForStats, verifiedPayments);
-      
+
     } catch (error) {
       console.error('[STATISTIK] Error loading statistics:', error);
       // Jangan throw error, biar tabel tetap bisa dipakai
     }
   }
-  
+
   // Fungsi untuk calculate dan update statistik
   function calculateAndUpdateStatistics(allDataForStats, verifiedPayments) {
     console.log('[STATISTIK] Calculating statistics...');
-    
+
     // Helper function to check if payment is verified
     const hasVerifiedPayment = (d) => {
-        const identifiers = [
-          d.nisn,
-          d.nikcalon,
-          d.nik
-        ].filter(Boolean);
-        
-        // Check if any identifier matches verified payments
-        const isVerified = identifiers.some(key => verifiedPayments.has(key));
-        
-        // Debug logging for first few items
-        if (window.debugStatistik && identifiers.length > 0) {
-          console.log("[MATCH DEBUG]", {
-            nama: d.nama,
-            identifiers,
-            isVerified,
-            hasInMap: identifiers.map(id => ({ id, exists: verifiedPayments.has(id) }))
-          });
-        }
-        
-        return isVerified;
-      };
+      const identifiers = [
+        d.nisn,
+        d.nikcalon,
+        d.nik
+      ].filter(Boolean);
 
-      // Kartu statistik
-      const setText = (id, val) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = val;
-      };
-      
-      // Debug: Check data structure and field mapping
-      console.log("[STATISTIK] 🔍 Data structure analysis:");
-      console.log("[STATISTIK]   → Total pendaftar (ALL DATA):", allDataForStats.length);
-      
-      if (allDataForStats.length > 0) {
-        const sample = allDataForStats[0];
-        console.log("[STATISTIK]   → Sample pendaftar fields:", Object.keys(sample));
-        console.log("[STATISTIK]   → Sample status values:", allDataForStats.map(d => d.status).slice(0, 5));
-        console.log("[STATISTIK]   → Sample rencana_program values:", allDataForStats.map(d => d.rencana_program || d.rencanaprogram).slice(0, 5));
-        console.log("[STATISTIK]   → Sample rencanatingkat values:", allDataForStats.map(d => d.rencanatingkat).slice(0, 5));
-      }
+      // Check if any identifier matches verified payments
+      const isVerified = identifiers.some(key => verifiedPayments.has(key));
 
-      // Total count = all pendaftar (dari total API, bukan hanya halaman saat ini)
-      setText("totalCount", totalData);
-      console.log("[STATISTIK] ✅ Set totalCount to:", totalData);
-      
-      // Status counts (gunakan ALL DATA untuk statistik yang akurat)
-      const pendingCount = allDataForStats.filter((d) => d.status === "pending").length;
-      const revisiCount = allDataForStats.filter((d) => d.status === "revisi").length;
-      const diterimaCount = allDataForStats.filter((d) => d.status === "diterima").length;
-      const ditolakCount = allDataForStats.filter((d) => d.status === "ditolak").length;
-      
-      setText("pendingCount", pendingCount);
-      setText("revisiCount", revisiCount);
-      setText("diterimaCount", diterimaCount);
-      setText("ditolakCount", ditolakCount);
-      
-      console.log("[STATISTIK] ✅ Status counts set:");
-      console.log("[STATISTIK]   → Pending:", pendingCount);
-      console.log("[STATISTIK]   → Revisi:", revisiCount);
-      console.log("[STATISTIK]   → Diterima:", diterimaCount);
-      console.log("[STATISTIK]   → Ditolak:", ditolakCount);
-
-      // Breakdown program/jenjang
-      const getRencanaProgram = (d) => {
-        const program = d.rencana_program || d.rencanaProgram || d.rencanakelas || d.rencanaprogram || "";
-        return program.trim(); // Trim whitespace
-      };
-      
-      const getJenjang = (d) => {
-        const jenjang = d.rencanatingkat || d.rencanaTingkat || "";
-        return jenjang.trim(); // Trim whitespace
-      };
-      
-      // REVISI: Gunakan SEMUA pendaftar untuk statistik, bukan hanya yang verified
-      const allPendaftar = allDataForStats; // Gunakan SEMUA data untuk statistik (bukan hanya halaman saat ini)
-      
-      console.log("[STATISTIK] ========================================");
-      console.log("[STATISTIK] Total pendaftar (ALL DATA):", allDataForStats.length);
-      console.log("[STATISTIK] Menggunakan SEMUA pendaftar untuk statistik (bukan hanya verified)");
-      console.log("[STATISTIK] Verified payments map size:", verifiedPayments.size);
-      console.log("[STATISTIK] Pendaftar dengan pembayaran VERIFIED:", allDataForStats.filter(hasVerifiedPayment).length);
-      
-      // Debug: Log sample data for statistics verification
-      if (allPendaftar.length > 0) {
-        console.log("[STATISTIK] Sample pendaftar pertama:", {
-          nama: allPendaftar[0].nama,
-          nisn: allPendaftar[0].nisn,
-          nik: allPendaftar[0].nik,
-          nikcalon: allPendaftar[0].nikcalon,
-          rencana_program: getRencanaProgram(allPendaftar[0]),
-          rencanatingkat: getJenjang(allPendaftar[0]),
-          jeniskelamin: allPendaftar[0].jeniskelamin
+      // Debug logging for first few items
+      if (window.debugStatistik && identifiers.length > 0) {
+        console.log("[MATCH DEBUG]", {
+          nama: d.nama,
+          identifiers,
+          isVerified,
+          hasInMap: identifiers.map(id => ({ id, exists: verifiedPayments.has(id) }))
         });
       }
-      
-      console.log("[STATISTIK] ========================================");
-      console.log("💡 Tip: Statistik sekarang menggunakan SEMUA pendaftar (bukan hanya verified)");
 
-      // REVISI: Hitung SEMUA pendaftar untuk breakdown statistics
-      console.log("[STATISTIK] 🔍 Calculating breakdown statistics...");
-      console.log("[STATISTIK]   → Total pendaftar count:", allPendaftar.length);
-      
-      const putraIndukMts = allPendaftar.filter(
-        (d) => {
-          const program = getRencanaProgram(d);
-          const jenjang = getJenjang(d);
-          const isMatch = program === "Asrama Putra Induk" && jenjang === "MTs";
-          return isMatch;
-        }
-      ).length;
-      const putraIndukMa = allPendaftar.filter(
-        (d) => {
-          const program = getRencanaProgram(d);
-          const jenjang = getJenjang(d);
-          const isMatch = program === "Asrama Putra Induk" && jenjang === "MA";
-          return isMatch;
-        }
-      ).length;
-      const putraIndukKuliah = allPendaftar.filter(
-        (d) => {
-          const program = getRencanaProgram(d);
-          const jenjang = getJenjang(d);
-          const isMatch = program === "Asrama Putra Induk" && jenjang === "Kuliah";
-          return isMatch;
-        }
-      ).length;
-      const putraIndukTotal = putraIndukMts + putraIndukMa + putraIndukKuliah;
+      return isVerified;
+    };
 
-      const putraTahfidzMts = allPendaftar.filter(
-        (d) => {
-          const program = getRencanaProgram(d);
-          const jenjang = getJenjang(d);
-          const isMatch = program === "Asrama Putra Tahfidz" && jenjang === "MTs";
-          return isMatch;
-        }
-      ).length;
-      const putraTahfidzMa = allPendaftar.filter(
-        (d) => {
-          const program = getRencanaProgram(d);
-          const jenjang = getJenjang(d);
-          const isMatch = program === "Asrama Putra Tahfidz" && jenjang === "MA";
-          return isMatch;
-        }
-      ).length;
-      const putraTahfidzKuliah = allPendaftar.filter(
-        (d) => {
-          const program = getRencanaProgram(d);
-          const jenjang = getJenjang(d);
-          const isMatch = program === "Asrama Putra Tahfidz" && jenjang === "Kuliah";
-          return isMatch;
-        }
-      ).length;
-      const putraTahfidzTotal =
-        putraTahfidzMts + putraTahfidzMa + putraTahfidzKuliah;
+    // Kartu statistik
+    const setText = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
 
-      const putriMts = allPendaftar.filter(
-        (d) => {
-          const program = getRencanaProgram(d);
-          const jenjang = getJenjang(d);
-          const isMatch = program === "Asrama Putri" && jenjang === "MTs";
-          return isMatch;
-        }
-      ).length;
-      const putriMa = allPendaftar.filter(
-        (d) => {
-          const program = getRencanaProgram(d);
-          const jenjang = getJenjang(d);
-          const isMatch = program === "Asrama Putri" && jenjang === "MA";
-          return isMatch;
-        }
-      ).length;
-      const putriKuliah = allPendaftar.filter(
-        (d) => {
-          const program = getRencanaProgram(d);
-          const jenjang = getJenjang(d);
-          const isMatch = program === "Asrama Putri" && jenjang === "Kuliah";
-          return isMatch;
-        }
-      ).length;
-      const putriTotal = putriMts + putriMa + putriKuliah;
+    // Debug: Check data structure and field mapping
+    console.log("[STATISTIK] 🔍 Data structure analysis:");
+    console.log("[STATISTIK]   → Total pendaftar (ALL DATA):", allDataForStats.length);
 
-      const hanyaSekolahMtsL = allPendaftar.filter(
-        (d) => {
-          const program = getRencanaProgram(d);
-          const jenjang = getJenjang(d);
-          const isGenderMatch = (d.jeniskelamin && d.jeniskelamin.trim().toUpperCase() === "L") || (d.jenisKelamin && d.jenisKelamin.trim().toUpperCase() === "L");
-          const isMatch = program === "Hanya Sekolah" && jenjang === "MTs" && isGenderMatch;
-          return isMatch;
-        }
-      ).length;
-      const hanyaSekolahMtsP = allPendaftar.filter(
-        (d) => {
-          const program = getRencanaProgram(d);
-          const jenjang = getJenjang(d);
-          const isGenderMatch = (d.jeniskelamin && d.jeniskelamin.trim().toUpperCase() === "P") || (d.jenisKelamin && d.jenisKelamin.trim().toUpperCase() === "P");
-          const isMatch = program === "Hanya Sekolah" && jenjang === "MTs" && isGenderMatch;
-          return isMatch;
-        }
-      ).length;
-      const hanyaSekolahMaL = allPendaftar.filter(
-        (d) => {
-          const program = getRencanaProgram(d);
-          const jenjang = getJenjang(d);
-          const isGenderMatch = (d.jeniskelamin && d.jeniskelamin.trim().toUpperCase() === "L") || (d.jenisKelamin && d.jenisKelamin.trim().toUpperCase() === "L");
-          const isMatch = program === "Hanya Sekolah" && jenjang === "MA" && isGenderMatch;
-          return isMatch;
-        }
-      ).length;
-      const hanyaSekolahMaP = allPendaftar.filter(
-        (d) => {
-          const program = getRencanaProgram(d);
-          const jenjang = getJenjang(d);
-          const isGenderMatch = (d.jeniskelamin && d.jeniskelamin.trim().toUpperCase() === "P") || (d.jenisKelamin && d.jenisKelamin.trim().toUpperCase() === "P");
-          const isMatch = program === "Hanya Sekolah" && jenjang === "MA" && isGenderMatch;
-          return isMatch;
-        }
-      ).length;
-      const hanyaSekolahTotal =
-        hanyaSekolahMtsL + hanyaSekolahMtsP + hanyaSekolahMaL + hanyaSekolahMaP;
+    if (allDataForStats.length > 0) {
+      const sample = allDataForStats[0];
+      console.log("[STATISTIK]   → Sample pendaftar fields:", Object.keys(sample));
+      console.log("[STATISTIK]   → Sample status values:", allDataForStats.map(d => d.status).slice(0, 5));
+      console.log("[STATISTIK]   → Sample rencana_program values:", allDataForStats.map(d => d.rencana_program || d.rencanaprogram).slice(0, 5));
+      console.log("[STATISTIK]   → Sample rencanatingkat values:", allDataForStats.map(d => d.rencanatingkat).slice(0, 5));
+    }
 
-      // Debug: Log calculated statistics (SEMUA PENDAFTAR)
-      console.log("[STATISTIK] Hasil perhitungan (SEMUA PENDAFTAR):");
-      console.log("Asrama Putra Induk:", { MTs: putraIndukMts, MA: putraIndukMa, Kuliah: putraIndukKuliah, Total: putraIndukTotal });
-      console.log("Asrama Putra Tahfidz:", { MTs: putraTahfidzMts, MA: putraTahfidzMa, Kuliah: putraTahfidzKuliah, Total: putraTahfidzTotal });
-      console.log("Asrama Putri:", { MTs: putriMts, MA: putriMa, Kuliah: putriKuliah, Total: putriTotal });
-      console.log("Hanya Sekolah:", { 
-        MTs_L: hanyaSekolahMtsL, 
-        MTs_P: hanyaSekolahMtsP, 
-        MA_L: hanyaSekolahMaL, 
-        MA_P: hanyaSekolahMaP, 
-        Total: hanyaSekolahTotal 
+    // Total count = all pendaftar (dari total API, bukan hanya halaman saat ini)
+    setText("totalCount", totalData);
+    console.log("[STATISTIK] ✅ Set totalCount to:", totalData);
+
+    // Status counts (gunakan ALL DATA untuk statistik yang akurat)
+    const pendingCount = allDataForStats.filter((d) => d.status === "pending").length;
+    const revisiCount = allDataForStats.filter((d) => d.status === "revisi").length;
+    const diterimaCount = allDataForStats.filter((d) => d.status === "diterima").length;
+    const ditolakCount = allDataForStats.filter((d) => d.status === "ditolak").length;
+
+    setText("pendingCount", pendingCount);
+    setText("revisiCount", revisiCount);
+    setText("diterimaCount", diterimaCount);
+    setText("ditolakCount", ditolakCount);
+
+    console.log("[STATISTIK] ✅ Status counts set:");
+    console.log("[STATISTIK]   → Pending:", pendingCount);
+    console.log("[STATISTIK]   → Revisi:", revisiCount);
+    console.log("[STATISTIK]   → Diterima:", diterimaCount);
+    console.log("[STATISTIK]   → Ditolak:", ditolakCount);
+
+    // Breakdown program/jenjang
+    const getRencanaProgram = (d) => {
+      const program = d.rencana_program || d.rencanaProgram || d.rencanakelas || d.rencanaprogram || "";
+      return program.trim(); // Trim whitespace
+    };
+
+    const getJenjang = (d) => {
+      const jenjang = d.rencanatingkat || d.rencanaTingkat || "";
+      return jenjang.trim(); // Trim whitespace
+    };
+
+    // REVISI: Gunakan SEMUA pendaftar untuk statistik, bukan hanya yang verified
+    const allPendaftar = allDataForStats; // Gunakan SEMUA data untuk statistik (bukan hanya halaman saat ini)
+
+    console.log("[STATISTIK] ========================================");
+    console.log("[STATISTIK] Total pendaftar (ALL DATA):", allDataForStats.length);
+    console.log("[STATISTIK] Menggunakan SEMUA pendaftar untuk statistik (bukan hanya verified)");
+    console.log("[STATISTIK] Verified payments map size:", verifiedPayments.size);
+    console.log("[STATISTIK] Pendaftar dengan pembayaran VERIFIED:", allDataForStats.filter(hasVerifiedPayment).length);
+
+    // Debug: Log sample data for statistics verification
+    if (allPendaftar.length > 0) {
+      console.log("[STATISTIK] Sample pendaftar pertama:", {
+        nama: allPendaftar[0].nama,
+        nisn: allPendaftar[0].nisn,
+        nik: allPendaftar[0].nik,
+        nikcalon: allPendaftar[0].nikcalon,
+        rencana_program: getRencanaProgram(allPendaftar[0]),
+        rencanatingkat: getJenjang(allPendaftar[0]),
+        jeniskelamin: allPendaftar[0].jeniskelamin
       });
-      console.log("[STATISTIK] ========================================");
+    }
 
-      // Pasang ke DOM
-      const mapSet = (m) =>
-        Object.entries(m).forEach(([id, val]) => setText(id, val));
-      mapSet({
-        putraIndukMts,
-        putraIndukMa,
-        putraIndukKuliah,
-        putraIndukTotal,
-        putraTahfidzMts,
-        putraTahfidzMa,
-        putraTahfidzKuliah,
-        putraTahfidzTotal,
-        putriMts,
-        putriMa,
-        putriKuliah,
-        putriTotal,
-        hanyaSekolahMtsL,
-        hanyaSekolahMtsP,
-        hanyaSekolahMaL,
-        hanyaSekolahMaP,
-        hanyaSekolahTotal,
-      });
+    console.log("[STATISTIK] ========================================");
+    console.log("💡 Tip: Statistik sekarang menggunakan SEMUA pendaftar (bukan hanya verified)");
 
-      const upd = $("#updateTimePendaftar");
-      if (upd)
-        upd.textContent = `Data update: ${new Date().toLocaleTimeString(
-          "id-ID"
-        )}`;
+    // REVISI: Hitung SEMUA pendaftar untuk breakdown statistics
+    console.log("[STATISTIK] 🔍 Calculating breakdown statistics...");
+    console.log("[STATISTIK]   → Total pendaftar count:", allPendaftar.length);
 
-      const upd2 = $("#updateTimeStatistik");
-      if (upd2)
-        upd2.textContent = `Data update: ${new Date().toLocaleTimeString(
-          "id-ID"
-        )}`;
-      
-      console.log('[STATISTIK] ✅ Statistics updated successfully');
+    const putraIndukMts = allPendaftar.filter(
+      (d) => {
+        const program = getRencanaProgram(d);
+        const jenjang = getJenjang(d);
+        const isMatch = program === "Asrama Putra Induk" && jenjang === "MTs";
+        return isMatch;
+      }
+    ).length;
+    const putraIndukMa = allPendaftar.filter(
+      (d) => {
+        const program = getRencanaProgram(d);
+        const jenjang = getJenjang(d);
+        const isMatch = program === "Asrama Putra Induk" && jenjang === "MA";
+        return isMatch;
+      }
+    ).length;
+    const putraIndukKuliah = allPendaftar.filter(
+      (d) => {
+        const program = getRencanaProgram(d);
+        const jenjang = getJenjang(d);
+        const isMatch = program === "Asrama Putra Induk" && jenjang === "Kuliah";
+        return isMatch;
+      }
+    ).length;
+    const putraIndukTotal = putraIndukMts + putraIndukMa + putraIndukKuliah;
+
+    const putraTahfidzMts = allPendaftar.filter(
+      (d) => {
+        const program = getRencanaProgram(d);
+        const jenjang = getJenjang(d);
+        const isMatch = program === "Asrama Putra Tahfidz" && jenjang === "MTs";
+        return isMatch;
+      }
+    ).length;
+    const putraTahfidzMa = allPendaftar.filter(
+      (d) => {
+        const program = getRencanaProgram(d);
+        const jenjang = getJenjang(d);
+        const isMatch = program === "Asrama Putra Tahfidz" && jenjang === "MA";
+        return isMatch;
+      }
+    ).length;
+    const putraTahfidzKuliah = allPendaftar.filter(
+      (d) => {
+        const program = getRencanaProgram(d);
+        const jenjang = getJenjang(d);
+        const isMatch = program === "Asrama Putra Tahfidz" && jenjang === "Kuliah";
+        return isMatch;
+      }
+    ).length;
+    const putraTahfidzTotal =
+      putraTahfidzMts + putraTahfidzMa + putraTahfidzKuliah;
+
+    const putriMts = allPendaftar.filter(
+      (d) => {
+        const program = getRencanaProgram(d);
+        const jenjang = getJenjang(d);
+        const isMatch = program === "Asrama Putri" && jenjang === "MTs";
+        return isMatch;
+      }
+    ).length;
+    const putriMa = allPendaftar.filter(
+      (d) => {
+        const program = getRencanaProgram(d);
+        const jenjang = getJenjang(d);
+        const isMatch = program === "Asrama Putri" && jenjang === "MA";
+        return isMatch;
+      }
+    ).length;
+    const putriKuliah = allPendaftar.filter(
+      (d) => {
+        const program = getRencanaProgram(d);
+        const jenjang = getJenjang(d);
+        const isMatch = program === "Asrama Putri" && jenjang === "Kuliah";
+        return isMatch;
+      }
+    ).length;
+    const putriTotal = putriMts + putriMa + putriKuliah;
+
+    const hanyaSekolahMtsL = allPendaftar.filter(
+      (d) => {
+        const program = getRencanaProgram(d);
+        const jenjang = getJenjang(d);
+        const isGenderMatch = (d.jeniskelamin && d.jeniskelamin.trim().toUpperCase() === "L") || (d.jenisKelamin && d.jenisKelamin.trim().toUpperCase() === "L");
+        const isMatch = program === "Hanya Sekolah" && jenjang === "MTs" && isGenderMatch;
+        return isMatch;
+      }
+    ).length;
+    const hanyaSekolahMtsP = allPendaftar.filter(
+      (d) => {
+        const program = getRencanaProgram(d);
+        const jenjang = getJenjang(d);
+        const isGenderMatch = (d.jeniskelamin && d.jeniskelamin.trim().toUpperCase() === "P") || (d.jenisKelamin && d.jenisKelamin.trim().toUpperCase() === "P");
+        const isMatch = program === "Hanya Sekolah" && jenjang === "MTs" && isGenderMatch;
+        return isMatch;
+      }
+    ).length;
+    const hanyaSekolahMaL = allPendaftar.filter(
+      (d) => {
+        const program = getRencanaProgram(d);
+        const jenjang = getJenjang(d);
+        const isGenderMatch = (d.jeniskelamin && d.jeniskelamin.trim().toUpperCase() === "L") || (d.jenisKelamin && d.jenisKelamin.trim().toUpperCase() === "L");
+        const isMatch = program === "Hanya Sekolah" && jenjang === "MA" && isGenderMatch;
+        return isMatch;
+      }
+    ).length;
+    const hanyaSekolahMaP = allPendaftar.filter(
+      (d) => {
+        const program = getRencanaProgram(d);
+        const jenjang = getJenjang(d);
+        const isGenderMatch = (d.jeniskelamin && d.jeniskelamin.trim().toUpperCase() === "P") || (d.jenisKelamin && d.jenisKelamin.trim().toUpperCase() === "P");
+        const isMatch = program === "Hanya Sekolah" && jenjang === "MA" && isGenderMatch;
+        return isMatch;
+      }
+    ).length;
+    const hanyaSekolahTotal =
+      hanyaSekolahMtsL + hanyaSekolahMtsP + hanyaSekolahMaL + hanyaSekolahMaP;
+
+    // Debug: Log calculated statistics (SEMUA PENDAFTAR)
+    console.log("[STATISTIK] Hasil perhitungan (SEMUA PENDAFTAR):");
+    console.log("Asrama Putra Induk:", { MTs: putraIndukMts, MA: putraIndukMa, Kuliah: putraIndukKuliah, Total: putraIndukTotal });
+    console.log("Asrama Putra Tahfidz:", { MTs: putraTahfidzMts, MA: putraTahfidzMa, Kuliah: putraTahfidzKuliah, Total: putraTahfidzTotal });
+    console.log("Asrama Putri:", { MTs: putriMts, MA: putriMa, Kuliah: putriKuliah, Total: putriTotal });
+    console.log("Hanya Sekolah:", {
+      MTs_L: hanyaSekolahMtsL,
+      MTs_P: hanyaSekolahMtsP,
+      MA_L: hanyaSekolahMaL,
+      MA_P: hanyaSekolahMaP,
+      Total: hanyaSekolahTotal
+    });
+    console.log("[STATISTIK] ========================================");
+
+    // Pasang ke DOM
+    const mapSet = (m) =>
+      Object.entries(m).forEach(([id, val]) => setText(id, val));
+    mapSet({
+      putraIndukMts,
+      putraIndukMa,
+      putraIndukKuliah,
+      putraIndukTotal,
+      putraTahfidzMts,
+      putraTahfidzMa,
+      putraTahfidzKuliah,
+      putraTahfidzTotal,
+      putriMts,
+      putriMa,
+      putriKuliah,
+      putriTotal,
+      hanyaSekolahMtsL,
+      hanyaSekolahMtsP,
+      hanyaSekolahMaL,
+      hanyaSekolahMaP,
+      hanyaSekolahTotal,
+    });
+
+    const upd = $("#updateTimePendaftar");
+    if (upd)
+      upd.textContent = `Data update: ${new Date().toLocaleTimeString(
+        "id-ID"
+      )}`;
+
+    const upd2 = $("#updateTimeStatistik");
+    if (upd2)
+      upd2.textContent = `Data update: ${new Date().toLocaleTimeString(
+        "id-ID"
+      )}`;
+
+    console.log('[STATISTIK] ✅ Statistics updated successfully');
   }
 
   /* =========================
@@ -988,11 +986,11 @@
     // Update button states
     const btnPrev = $("#btnPrevPage");
     const btnNext = $("#btnNextPage");
-    
+
     if (btnPrev) {
       btnPrev.disabled = currentPage === 1;
     }
-    
+
     if (btnNext) {
       btnNext.disabled = currentPage >= totalPages;
     }
@@ -1080,14 +1078,14 @@
               raw === "VERIFIED"
                 ? "Verified"
                 : raw === "REJECTED"
-                ? "Rejected"
-                : "Pending";
+                  ? "Rejected"
+                  : "Pending";
             paymentBadgeClass =
               raw === "VERIFIED"
                 ? "success"
                 : raw === "REJECTED"
-                ? "danger"
-                : "warning";
+                  ? "danger"
+                  : "warning";
           }
         }
       } catch (e) {
@@ -1100,130 +1098,107 @@
           <div class="col-12"><h6 class="bg-success text-white p-2 rounded">
             <i class="bi bi-card-checklist"></i> Data Registrasi
           </h6></div>
-          <div class="col-md-4"><strong>Tanggal Daftar:</strong><br>${formatIDDatetime(
-            pendaftar.createdat
-          )}</div>
-          <div class="col-md-4"><strong>Status Berkas:</strong><br>${badge(
-            pendaftar.statusberkas || "PENDING",
-            pendaftar.statusberkas === "PENDING"
-              ? "warning"
-              : pendaftar.statusberkas === "REVISI"
-              ? "info"
-              : pendaftar.statusberkas === "DITERIMA"
+          <div class="col-md-6"><strong>Gelombang:</strong><br><span class="badge bg-info text-dark">${pendaftar.gelombang || "-"}</span></div>
+          <div class="col-md-6"><strong>Tanggal Daftar:</strong><br>${formatIDDatetime(
+        pendaftar.createdat
+      )}</div>
+          <div class="col-md-6"><strong>Status Berkas:</strong><br>${badge(
+        pendaftar.statusberkas || "PENDING",
+        pendaftar.statusberkas === "PENDING"
+          ? "warning"
+          : pendaftar.statusberkas === "REVISI"
+            ? "info"
+            : pendaftar.statusberkas === "DITERIMA"
               ? "success"
               : "danger"
-          )}</div>
-          <div class="col-md-4"><strong>Status Pembayaran:</strong><br>${badge(
-            paymentStatus,
-            paymentBadgeClass
-          )}</div>
-          <div class="col-md-12"><strong>Alasan/Catatan:</strong><br>${
-            pendaftar.alasan || "-"
-          }</div>
+      )}</div>
+          <div class="col-md-6"><strong>Status Pembayaran:</strong><br>${badge(
+        paymentStatus,
+        paymentBadgeClass
+      )}</div>
+          <div class="col-md-12"><strong>Alasan/Catatan:</strong><br>${pendaftar.alasan || "-"
+        }</div>
 
           <div class="col-12 mt-3"><h6 class="bg-success text-white p-2 rounded">
             <i class="bi bi-person"></i> Data Calon Siswa
           </h6></div>
-          <div class="col-md-6"><strong>NISN:</strong><br><span class="badge bg-primary">${
-            pendaftar.nisn || pendaftar.nikcalon || pendaftar.nik || "-"
-          }</span></div>
-          <div class="col-md-6"><strong>NIK:</strong><br>${
-            pendaftar.nikcalon || pendaftar.nik || "-"
-          }</div>
-          <div class="col-md-12"><strong>Nama Lengkap:</strong><br><span class="fs-5 text-primary">${
-            pendaftar.namalengkap || "-"
-          }</span></div>
-          <div class="col-md-6"><strong>Tempat Lahir:</strong><br>${
-            pendaftar.tempatlahir || "-"
-          }${
-        pendaftar.provinsitempatlahir
+          <div class="col-md-6"><strong>NISN:</strong><br><span class="badge bg-primary">${pendaftar.nisn || pendaftar.nikcalon || pendaftar.nik || "-"
+        }</span></div>
+          <div class="col-md-6"><strong>NIK:</strong><br>${pendaftar.nikcalon || pendaftar.nik || "-"
+        }</div>
+          <div class="col-md-12"><strong>Nama Lengkap:</strong><br><span class="fs-5 text-primary">${pendaftar.namalengkap || "-"
+        }</span></div>
+          <div class="col-md-6"><strong>Tempat Lahir:</strong><br>${pendaftar.tempatlahir || "-"
+        }${pendaftar.provinsitempatlahir
           ? ", " + pendaftar.provinsitempatlahir
           : ""
-      }</div>
-          <div class="col-md-6"><strong>Tanggal Lahir:</strong><br>${
-            pendaftar.tanggallahir || "-"
-          }</div>
-          <div class="col-md-6"><strong>Jenis Kelamin:</strong><br>${
-            pendaftar.jeniskelamin === "L"
-              ? "Laki-laki"
-              : pendaftar.jeniskelamin === "P"
-              ? "Perempuan"
-              : "-"
-          }</div>
-          <div class="col-md-6"><strong>Telepon Orang Tua:</strong><br>${
-            pendaftar.telepon_orang_tua
-              ? `<a href="https://wa.me/62${pendaftar.telepon_orang_tua.replace(
-                  /^0/,
-                  ""
-                )}" target="_blank">
-                   <i class="bi bi-whatsapp text-success"></i> ${
-                     pendaftar.telepon_orang_tua
-                   }
+        }</div>
+          <div class="col-md-6"><strong>Tanggal Lahir:</strong><br>${pendaftar.tanggallahir || "-"
+        }</div>
+          <div class="col-md-6"><strong>Jenis Kelamin:</strong><br>${pendaftar.jeniskelamin === "L"
+          ? "Laki-laki"
+          : pendaftar.jeniskelamin === "P"
+            ? "Perempuan"
+            : "-"
+        }</div>
+          <div class="col-md-6"><strong>Telepon Orang Tua:</strong><br>${pendaftar.telepon_orang_tua
+          ? `<a href="https://wa.me/62${pendaftar.telepon_orang_tua.replace(
+            /^0/,
+            ""
+          )}" target="_blank">
+                   <i class="bi bi-whatsapp text-success"></i> ${pendaftar.telepon_orang_tua
+          }
                  </a>`
-              : "-"
-          }</div>
+          : "-"
+        }</div>
 
           <div class="col-12 mt-3"><h6 class="bg-success text-white p-2 rounded">
             <i class="bi bi-geo-alt"></i> Alamat Lengkap
           </h6></div>
-          <div class="col-md-12"><strong>Alamat Jalan:</strong><br>${
-            pendaftar.alamatjalan || "-"
-          }</div>
-          <div class="col-md-6"><strong>Desa/Kelurahan:</strong><br>${
-            pendaftar.desa || "-"
-          }</div>
-          <div class="col-md-6"><strong>Kecamatan:</strong><br>${
-            pendaftar.kecamatan || "-"
-          }</div>
-          <div class="col-md-6"><strong>Kabupaten/Kota:</strong><br>${
-            pendaftar.kotakabupaten || pendaftar.kabkota || "-"
-          }</div>
-          <div class="col-md-6"><strong>Provinsi:</strong><br>${
-            pendaftar.provinsi || "-"
-          }</div>
+          <div class="col-md-12"><strong>Alamat Jalan:</strong><br>${pendaftar.alamatjalan || "-"
+        }</div>
+          <div class="col-md-6"><strong>Desa/Kelurahan:</strong><br>${pendaftar.desa || "-"
+        }</div>
+          <div class="col-md-6"><strong>Kecamatan:</strong><br>${pendaftar.kecamatan || "-"
+        }</div>
+          <div class="col-md-6"><strong>Kabupaten/Kota:</strong><br>${pendaftar.kotakabupaten || pendaftar.kabkota || "-"
+        }</div>
+          <div class="col-md-6"><strong>Provinsi:</strong><br>${pendaftar.provinsi || "-"
+        }</div>
 
           <div class="col-12 mt-3"><h6 class="bg-success text-white p-2 rounded">
             <i class="bi bi-mortarboard"></i> Pendidikan & Rencana
           </h6></div>
-          <div class="col-md-6"><strong>Ijazah Formal Terakhir:</strong><br>${
-            pendaftar.ijazahformalterakhir || "-"
-          }</div>
-          <div class="col-md-6"><strong>Rencana Tingkat:</strong><br>${
-            pendaftar.rencanatingkat || "-"
-          }</div>
-          <div class="col-md-6"><strong>Rencana Program:</strong><br>${
-            pendaftar.rencanaprogram || "-"
-          }</div>
+          <div class="col-md-6"><strong>Ijazah Formal Terakhir:</strong><br>${pendaftar.ijazahformalterakhir || "-"
+        }</div>
+          <div class="col-md-6"><strong>Rencana Tingkat:</strong><br>${pendaftar.rencanatingkat || "-"
+        }</div>
+          <div class="col-md-6"><strong>Rencana Program:</strong><br>${pendaftar.rencanaprogram || "-"
+        }</div>
 
           <div class="col-12 mt-3"><h6 class="bg-success text-white p-2 rounded">
             <i class="bi bi-people"></i> Data Orang Tua
           </h6></div>
-          <div class="col-md-6"><strong>Nama Ayah:</strong><br>${
-            pendaftar.namaayah || "-"
-          }</div>
-          <div class="col-md-6"><strong>NIK Ayah:</strong><br>${
-            pendaftar.nikayah || "-"
-          }</div>
+          <div class="col-md-6"><strong>Nama Ayah:</strong><br>${pendaftar.namaayah || "-"
+        }</div>
+          <div class="col-md-6"><strong>NIK Ayah:</strong><br>${pendaftar.nikayah || "-"
+        }</div>
           <div class="col-md-6"><strong>Status Ayah:</strong><br>${badge(
-            pendaftar.statusayah || "-",
-            pendaftar.statusayah === "Hidup" ? "success" : "secondary"
-          )}</div>
-          <div class="col-md-6"><strong>Pekerjaan Ayah:</strong><br>${
-            pendaftar.pekerjaanayah || "-"
-          }</div>
-          <div class="col-md-6"><strong>Nama Ibu:</strong><br>${
-            pendaftar.namaibu || "-"
-          }</div>
-          <div class="col-md-6"><strong>NIK Ibu:</strong><br>${
-            pendaftar.nikibu || "-"
-          }</div>
+          pendaftar.statusayah || "-",
+          pendaftar.statusayah === "Hidup" ? "success" : "secondary"
+        )}</div>
+          <div class="col-md-6"><strong>Pekerjaan Ayah:</strong><br>${pendaftar.pekerjaanayah || "-"
+        }</div>
+          <div class="col-md-6"><strong>Nama Ibu:</strong><br>${pendaftar.namaibu || "-"
+        }</div>
+          <div class="col-md-6"><strong>NIK Ibu:</strong><br>${pendaftar.nikibu || "-"
+        }</div>
           <div class="col-md-6"><strong>Status Ibu:</strong><br>${badge(
-            pendaftar.statusibu || "-",
-            pendaftar.statusibu === "Hidup" ? "success" : "secondary"
-          )}</div>
-          <div class="col-md-6"><strong>Pekerjaan Ibu:</strong><br>${
-            pendaftar.pekerjaanibu || "-"
-          }</div>
+          pendaftar.statusibu || "-",
+          pendaftar.statusibu === "Hidup" ? "success" : "secondary"
+        )}</div>
+          <div class="col-md-6"><strong>Pekerjaan Ibu:</strong><br>${pendaftar.pekerjaanibu || "-"
+        }</div>
 
           <div class="col-12 mt-3"><h6 class="bg-success text-white p-2 rounded">
             <i class="bi bi-file-earmark-arrow-up"></i> Berkas Upload
@@ -1338,7 +1313,7 @@
     // Hapus modal lama jika ada
     const oldModal = document.getElementById('whatsappNotifModal');
     if (oldModal) oldModal.remove();
-    
+
     // Buat modal baru
     const modalHTML = `
       <div class="modal fade" id="whatsappNotifModal" tabindex="-1" aria-labelledby="whatsappNotifModalLabel" aria-hidden="true">
@@ -1383,15 +1358,15 @@
         </div>
       </div>
     `;
-    
+
     // Append ke body
     document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
+
     // Show modal
     const modalEl = document.getElementById('whatsappNotifModal');
     const modal = new bootstrap.Modal(modalEl);
     modal.show();
-    
+
     // Cleanup saat modal ditutup
     modalEl.addEventListener('hidden.bs.modal', function () {
       modalEl.remove();
@@ -1403,7 +1378,7 @@
     // Hapus modal lama jika ada
     const oldModal = document.getElementById('whatsappNotifModalPembayaran');
     if (oldModal) oldModal.remove();
-    
+
     // Buat modal baru
     const modalHTML = `
       <div class="modal fade" id="whatsappNotifModalPembayaran" tabindex="-1" aria-labelledby="whatsappNotifModalPembayaranLabel" aria-hidden="true">
@@ -1448,15 +1423,15 @@
         </div>
       </div>
     `;
-    
+
     // Append ke body
     document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
+
     // Show modal
     const modalEl = document.getElementById('whatsappNotifModalPembayaran');
     const modal = new bootstrap.Modal(modalEl);
     modal.show();
-    
+
     // Cleanup saat modal ditutup
     modalEl.addEventListener('hidden.bs.modal', function () {
       modalEl.remove();
@@ -1485,29 +1460,29 @@
         if (modal) modal.hide();
 
         updatePendaftarRowStatus(id, status);
-        
+
         invalidateStatisticsCache();
         loadPendaftar();
-        
+
         // 📱 WHATSAPP MANUAL - Tampilkan modal konfirmasi (ANTI POPUP BLOCKER!)
         if (status.toUpperCase() === 'DITERIMA' && result.pendaftar) {
           const { nama, nisn, telepon } = result.pendaftar;
-          
+
           console.log('[VERIFIKASI] Pendaftar data received:', result.pendaftar);
           console.log('[VERIFIKASI] Phone number:', telepon);
-          
+
           if (telepon && nama) {
             // Format nomor telepon (hapus karakter non-digit)
             let phone = telepon.replace(/\D/g, '');
-            
+
             // Tambah 62 jika dimulai dengan 0
             if (phone.startsWith('0')) {
               phone = '62' + phone.substring(1);
             }
-            
+
             // Template pesan WhatsApp
             const message = encodeURIComponent(
-`Assalamualaikum Wr. Wb.
+              `Assalamualaikum Wr. Wb.
 
 ✅ *Pendaftaran PPDSB Telah DIVERIFIKASI*
 
@@ -1525,11 +1500,11 @@ https://www.alikhsan-beji.app/cek-status.html
 Jazakumullahu khairan,
 *PONDOK PESANTREN AL IKHSAN BEJI*`
             );
-            
+
             const waWeb = `https://wa.me/${phone}?text=${message}`;
-            
+
             console.log('[VERIFIKASI] Preparing WhatsApp for:', nama, phone);
-            
+
             // Tampilkan modal WhatsApp (100% tidak kena popup blocker!)
             showWhatsAppModal(nama, nisn, phone, waWeb);
           } else {
@@ -1550,7 +1525,7 @@ Jazakumullahu khairan,
   /* =========================
      DOWNLOAD FOTO ZIP
      ========================= */
-  
+
   /**
    * Helper function to create slug from name
    */
@@ -1599,48 +1574,48 @@ Jazakumullahu khairan,
     try {
       // Build query string
       const params = new URLSearchParams();
-      
+
       if (filters.status) {
         params.append('status', filters.status);
       }
-      
+
       if (filters.date_from) {
         params.append('date_from', filters.date_from);
       }
-      
+
       if (filters.date_to) {
         params.append('date_to', filters.date_to);
       }
-      
+
       if (filters.only) {
         params.append('only', filters.only);
       }
-      
+
       const queryString = params.toString();
       const url = `/api/pendaftar_download_zip${queryString ? '?' + queryString : ''}`;
-      
+
       // Fetch ZIP generation endpoint (silent, no notification)
       console.log('[ZIP] Requesting:', url);
       console.log('[ZIP] ⏳ Generating ZIP file...');
-      
+
       const response = await fetch(url);
       const result = await response.json();
-      
+
       console.log('[ZIP] Response:', result);
-      
+
       if (!result.ok || !result.download_url) {
         throw new Error(result.error || result.message || 'Gagal membuat file ZIP');
       }
-      
+
       // Success - log details and start download
       console.log('[ZIP] ✓ ZIP ready:', result.filename, `(${result.size_mb} MB)`);
       console.log('[ZIP] ✓ Total files:', result.success_count, '/', result.total_files);
       console.log('[ZIP] ✓ Download URL:', result.download_url);
       console.log('[ZIP] ✓ Expires in:', result.expires_in);
-      
+
       // Redirect to signed download URL (silent download)
       window.location.href = result.download_url;
-      
+
       console.log('[ZIP] ✓ Download initiated via storage URL');
     } catch (error) {
       console.error('Error downloading ZIP:', error);
@@ -1758,23 +1733,23 @@ Jazakumullahu khairan,
 
     return null;
   }
-  
+
   async function loadPembayaran() {
     try {
       console.log('[PEMBAYARAN] 💳 Loading payment data...');
-      
+
       // Show loading state
       const tbody = $("#pembayaranTableBody");
       if (tbody && !pembayaranLoadedOnce) {
         tbody.innerHTML = '<tr><td colspan="7" class="text-center"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Memuat data pembayaran...</td></tr>';
       }
-      
+
       const r = await fetch("/api/pembayaran_list");
       const result = await r.json();
-      
+
       pembayaranLoadedOnce = true;
       console.log('[PEMBAYARAN] ✅ Data loaded:', result.data?.length || 0, 'items');
-      
+
       if (!(result.success && result.data)) return;
 
       // Tabel (tbody already declared above)
@@ -1786,8 +1761,8 @@ Jazakumullahu khairan,
               raw === "VERIFIED"
                 ? "success"
                 : raw === "REJECTED"
-                ? "danger"
-                : "warning";
+                  ? "danger"
+                  : "warning";
             return `
             <tr>
               <td>${i + 1}</td>
@@ -1795,18 +1770,17 @@ Jazakumullahu khairan,
               <td>${item.nama_lengkap || "-"}</td>
               <td>${rupiah(item.jumlah)}</td>
               <td>${badge(
-                raw === "VERIFIED"
-                  ? "Verified"
-                  : raw === "REJECTED"
+              raw === "VERIFIED"
+                ? "Verified"
+                : raw === "REJECTED"
                   ? "Rejected"
                   : "Pending",
-                cls
-              )}</td>
+              cls
+            )}</td>
               <td>${formatIDDate(item.tanggal_upload)}</td>
               <td>
-                <button class="btn btn-sm btn-success" onclick="loadPembayaranDetail('${
-                  item.nisn || item.nik
-                }')">Lihat Detail</button>
+                <button class="btn btn-sm btn-success" onclick="loadPembayaranDetail('${item.nisn || item.nik
+              }')">Lihat Detail</button>
               </td>
             </tr>
           `;
@@ -1872,14 +1846,14 @@ Jazakumullahu khairan,
       raw === "VERIFIED"
         ? "success"
         : raw === "REJECTED"
-        ? "danger"
-        : "warning";
+          ? "danger"
+          : "warning";
     const txt =
       raw === "VERIFIED"
         ? "Verified"
         : raw === "REJECTED"
-        ? "Rejected"
-        : "Pending";
+          ? "Rejected"
+          : "Pending";
     const statusEl = $("#detail-status");
     if (statusEl) statusEl.innerHTML = badge(txt, cls);
 
@@ -2035,7 +2009,7 @@ Jazakumullahu khairan,
             );
 
             const waWeb = `https://wa.me/${phone}?text=${message}`;
-            
+
             showWhatsAppModalPembayaran(
               namaLengkap,
               nisnDisplay,
@@ -2147,11 +2121,11 @@ Jazakumullahu khairan,
       console.error('[GELOMBANG] ❌ Container #gelombangContainer not found!');
       return;
     }
-    
+
     console.log('[GELOMBANG] ========================================');
     console.log('[GELOMBANG] 📊 Loading gelombang data', forceRefresh ? '(FORCE REFRESH)' : '(normal load)');
     console.log('[GELOMBANG] ========================================');
-    
+
     // Show loading state
     container.innerHTML = `
       <div class="text-center py-5">
@@ -2161,53 +2135,53 @@ Jazakumullahu khairan,
         <p class="text-muted mt-3"><i class="bi bi-arrow-repeat"></i> ${forceRefresh ? 'Memperbarui' : 'Memuat'} data gelombang...</p>
       </div>
     `;
-    
+
     try {
       // Fetch gelombang data from API endpoint
       const cacheBuster = forceRefresh ? `?_t=${Date.now()}` : '';
       const url = `/api/get_gelombang_list${cacheBuster}`;
-      
+
       console.log('[GELOMBANG] Step 1: Fetching from', url);
       const response = await fetch(url);
-      
+
       console.log('[GELOMBANG] Step 2: Response received');
       console.log('[GELOMBANG]   → Status:', response.status, response.statusText);
       console.log('[GELOMBANG]   → Headers:', Object.fromEntries(response.headers.entries()));
-      
+
       if (!response.ok) {
         const errorText = await response.text();
         console.error('[GELOMBANG] ❌ HTTP Error:', errorText);
         throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
-      
+
       const result = await response.json();
       console.log('[GELOMBANG] Step 3: JSON parsed successfully');
       console.log('[GELOMBANG]   → Result:', result);
-      
+
       if (!result.ok) {
         console.error('[GELOMBANG] ❌ API returned ok=false');
         throw new Error(result.error || 'API returned ok=false');
       }
-      
+
       if (!result.data || !Array.isArray(result.data)) {
         console.error('[GELOMBANG] ❌ Invalid data format:', result);
         throw new Error('Invalid data format: expected array');
       }
-      
+
       if (result.data.length === 0) {
         console.warn('[GELOMBANG] ⚠️ No gelombang data found');
         throw new Error('No gelombang data found in database');
       }
-      
+
       console.log('[GELOMBANG] Step 4: Data validation passed');
       console.log('[GELOMBANG]   → Count:', result.data.length, 'gelombang');
       console.log('[GELOMBANG]   → Data:');
       console.table(result.data);
-      
+
       // Count active gelombang
       const activeCount = result.data.filter(g => g.is_active === true).length;
       console.log('[GELOMBANG]   → Active count:', activeCount);
-      
+
       if (activeCount === 0) {
         console.warn('[GELOMBANG] ⚠️ WARNING: No active gelombang!');
       } else if (activeCount > 1) {
@@ -2216,22 +2190,22 @@ Jazakumullahu khairan,
         const activeGelombang = result.data.find(g => g.is_active === true);
         console.log('[GELOMBANG]   ✅ Active:', activeGelombang.nama, '(ID', activeGelombang.id + ')');
       }
-      
+
       console.log('[GELOMBANG] Step 5: Storing data and rendering...');
       currentGelombangData = result.data;
       renderGelombangForms(result.data);
-      
+
       console.log('[GELOMBANG] ========================================');
       console.log('[GELOMBANG] ✅ SUCCESS: Data loaded and rendered!');
       console.log('[GELOMBANG] ========================================');
-      
+
     } catch (error) {
       console.log('[GELOMBANG] ========================================');
       console.error('[GELOMBANG] ❌ ERROR loading data:', error);
       console.error('[GELOMBANG] ❌ Error message:', error.message);
       console.error('[GELOMBANG] ❌ Error stack:', error.stack);
       console.log('[GELOMBANG] ========================================');
-      
+
       container.innerHTML = `
         <div class="alert alert-danger">
           <i class="bi bi-exclamation-triangle"></i> 
@@ -2255,25 +2229,25 @@ Jazakumullahu khairan,
       console.error('[GELOMBANG] ❌ renderGelombangForms: Container not found!');
       return;
     }
-    
+
     console.log('[GELOMBANG] ----------------------------------------');
     console.log('[GELOMBANG] 🎨 RENDERING gelombang forms');
     console.log('[GELOMBANG] ----------------------------------------');
     console.log('[GELOMBANG] Input data:', gelombangList);
-    
+
     if (!gelombangList || gelombangList.length === 0) {
       console.error('[GELOMBANG] ❌ No data to render!');
       container.innerHTML = '<div class="alert alert-warning">Tidak ada data gelombang</div>';
       return;
     }
-    
+
     const formsHTML = gelombangList.map((gelombang, index) => {
       // Use is_active from database as source of truth
       const isActive = gelombang.is_active === true;
-      
+
       // Map is_active to UI colors
       let statusColor, statusBadge, borderColor, buttonHTML;
-      
+
       if (isActive) {
         statusColor = 'success';  // Green
         statusBadge = 'Aktif';
@@ -2293,7 +2267,7 @@ Jazakumullahu khairan,
           </button>
         `;
       }
-      
+
       console.log(`[GELOMBANG] ${gelombang.nama}:`, {
         id: gelombang.id,
         is_active: isActive,
@@ -2301,7 +2275,7 @@ Jazakumullahu khairan,
         borderColor: borderColor,
         button: isActive ? 'DISABLED (Aktif)' : 'ENABLED (Jadikan Aktif)'
       });
-      
+
       return `
         <div class="card mb-3 border-${borderColor}">
           <div class="card-header bg-${borderColor} bg-opacity-10 d-flex justify-content-between align-items-center">
@@ -2338,10 +2312,10 @@ Jazakumullahu khairan,
         </div>
       `;
     }).join('');
-    
+
     console.log('[GELOMBANG] Setting container.innerHTML with', gelombangList.length, 'forms');
     container.innerHTML = formsHTML;
-    
+
     console.log('[GELOMBANG] ----------------------------------------');
     console.log('[GELOMBANG] ✅ RENDER COMPLETE!');
     console.log('[GELOMBANG] ----------------------------------------');
@@ -2353,30 +2327,30 @@ Jazakumullahu khairan,
   async function updateGelombang(id) {
     // Ensure ID is a number
     id = parseInt(id, 10);
-    
+
     const startDate = document.getElementById(`start_date_${id}`).value;
     const endDate = document.getElementById(`end_date_${id}`).value;
     const tahunAjaran = document.getElementById(`tahun_ajaran_${id}`).value;
-    
+
     // Validate
     if (!startDate || !endDate || !tahunAjaran) {
       safeToastr.error('Semua field harus diisi!');
       return;
     }
-    
+
     if (new Date(startDate) > new Date(endDate)) {
       safeToastr.error('Tanggal mulai harus lebih kecil atau sama dengan tanggal akhir!');
       return;
     }
-    
+
     console.log('[GELOMBANG] Updating gelombang:', id, { startDate, endDate, tahunAjaran });
-    
+
     // Find the button and show minimal loading state
     const button = event.target.closest('button');
     const originalHTML = button.innerHTML;
     button.disabled = true;
     button.innerHTML = '<i class="bi bi-check-circle"></i> Menyimpan...';
-    
+
     try {
       const response = await fetch('/api/update_gelombang', {
         method: 'POST',
@@ -2388,15 +2362,15 @@ Jazakumullahu khairan,
           tahun_ajaran: tahunAjaran
         })
       });
-      
+
       const result = await response.json();
-      
+
       console.log('[GELOMBANG] Update response:', result);
-      
+
       if (!result.ok) {
         throw new Error(result.error || 'Gagal mengupdate gelombang');
       }
-      
+
       // Update local data cache
       const gelombangIndex = currentGelombangData.findIndex(g => g.id === id);
       if (gelombangIndex !== -1) {
@@ -2404,14 +2378,14 @@ Jazakumullahu khairan,
         currentGelombangData[gelombangIndex].end_date = endDate;
         currentGelombangData[gelombangIndex].tahun_ajaran = tahunAjaran;
       }
-      
+
       // Success notification (FAST)
       safeToastr.success('✓ Perubahan berhasil disimpan!');
-      
+
       // Restore button immediately
       button.disabled = false;
       button.innerHTML = originalHTML;
-      
+
       // Visual feedback: quick pulse animation
       const card = button.closest('.card');
       if (card) {
@@ -2420,11 +2394,11 @@ Jazakumullahu khairan,
           card.style.animation = '';
         }, 500);
       }
-      
+
     } catch (error) {
       console.error('[GELOMBANG] Error updating:', error);
       safeToastr.error(`✗ Gagal menyimpan: ${error.message}`);
-      
+
       // Restore button
       button.disabled = false;
       button.innerHTML = originalHTML;
@@ -2439,24 +2413,24 @@ Jazakumullahu khairan,
   async function setGelombangActive(id) {
     // Ensure ID is a number (convert from string if needed)
     id = parseInt(id, 10);
-    
+
     // Validation
     if (!id || isNaN(id)) {
       console.error('[GELOMBANG] ❌ Invalid ID:', id);
       alert('Error: ID gelombang tidak valid');
       return;
     }
-    
+
     // Confirmation dialog
     if (!confirm(`Jadikan Gelombang ${id} aktif?\n\nGelombang lain akan otomatis dinonaktifkan.`)) {
       console.log('[GELOMBANG] ⏹️ User cancelled activation');
       return;
     }
-    
+
     console.log('[GELOMBANG] ========================================');
     console.log('[GELOMBANG] 🚀 START: Activating Gelombang', id);
     console.log('[GELOMBANG] ========================================');
-    
+
     // Show loading overlay to prevent multiple clicks
     const container = document.getElementById('gelombangContainer');
     const originalContent = container ? container.innerHTML : '';
@@ -2464,11 +2438,11 @@ Jazakumullahu khairan,
       container.style.opacity = '0.6';
       container.style.pointerEvents = 'none';
     }
-    
+
     try {
       console.log('[GELOMBANG] Step 1: Calling API /api/set_gelombang_active');
       console.log('[GELOMBANG]   → Request payload:', { id: id });
-      
+
       // Call API endpoint to set gelombang active
       const response = await fetch('/api/set_gelombang_active', {
         method: 'POST',
@@ -2477,28 +2451,28 @@ Jazakumullahu khairan,
         },
         body: JSON.stringify({ id: id })
       });
-      
+
       console.log('[GELOMBANG]   → Response status:', response.status, response.statusText);
-      
+
       if (!response.ok) {
         const errorText = await response.text();
         console.error('[GELOMBANG] ❌ HTTP Error Response:', errorText);
         throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
-      
+
       const result = await response.json();
       console.log('[GELOMBANG] Step 2: API Response received:', result);
-      
+
       // Check if result has proper structure
       if (result.ok === false) {
         console.error('[GELOMBANG] ❌ API returned ok=false:', result);
         throw new Error(result.error || result.message || 'Failed to activate gelombang');
       }
-      
+
       // SUCCESS: If result.ok is true OR if response.ok is true (backend succeeded)
       console.log('[GELOMBANG] ✅ Step 2 SUCCESS - API call completed');
       console.log('[GELOMBANG]   → Activated:', result.data || result);
-      
+
       // Step 3: Broadcast to other tabs via localStorage
       console.log('[GELOMBANG] Step 3: Broadcasting to other tabs via localStorage');
       const updatePayload = {
@@ -2507,30 +2481,30 @@ Jazakumullahu khairan,
         action: 'gelombang_activated',
         source: 'admin'
       };
-      
+
       // Remove old value first (ensures storage event fires in other tabs)
       localStorage.removeItem('gelombang_update');
-      
+
       // Wait a bit then set new value
       await new Promise(resolve => setTimeout(resolve, 50));
       localStorage.setItem('gelombang_update', JSON.stringify(updatePayload));
       console.log('[GELOMBANG]   ✅ Broadcast sent:', updatePayload);
-      
+
       // Step 4: Trigger custom event for same-window sync
       console.log('[GELOMBANG] Step 4: Dispatching custom event');
-      window.dispatchEvent(new CustomEvent('gelombangUpdated', { 
-        detail: updatePayload 
+      window.dispatchEvent(new CustomEvent('gelombangUpdated', {
+        detail: updatePayload
       }));
       console.log('[GELOMBANG]   ✅ Custom event dispatched');
-      
+
       // Step 5: RELOAD data from database to ensure UI is accurate
       console.log('[GELOMBANG] Step 5: Reloading data from database (force refresh)');
       console.log('[GELOMBANG]   → Calling loadGelombangData(true)...');
-      
+
       try {
         await loadGelombangData(true);
         console.log('[GELOMBANG]   ✅ Data reloaded successfully');
-        
+
         // Verify UI was updated
         const updatedContainer = document.getElementById('gelombangContainer');
         if (updatedContainer) {
@@ -2541,23 +2515,23 @@ Jazakumullahu khairan,
         console.error('[GELOMBANG]   ❌ Failed to reload data:', reloadError);
         throw reloadError; // Re-throw to trigger error handling
       }
-      
+
       console.log('[GELOMBANG] ========================================');
       console.log('[GELOMBANG] ✅ SUCCESS: Gelombang', id, 'is now ACTIVE');
       console.log('[GELOMBANG] ========================================');
-      
+
       // Restore container interaction (loadGelombangData will update content)
       if (container) {
         container.style.opacity = '1';
         container.style.pointerEvents = 'auto';
       }
-      
+
       // Optional: success notification (disabled to avoid third-party issues)
       // Intentionally no toast/alert to keep UX quiet and avoid library errors
-      
+
       // No need for location.reload() - loadGelombangData(true) already refreshed the UI
       console.log('[GELOMBANG] ✅ UI updated successfully - staying on Gelombang tab');
-      
+
       // Final verification - check if UI actually updated
       setTimeout(() => {
         const finalContainer = document.getElementById('gelombangContainer');
@@ -2567,7 +2541,7 @@ Jazakumullahu khairan,
           console.log('[GELOMBANG] 🔍 Final verification:');
           console.log('[GELOMBANG]   → Active cards (green border):', activeCards.length);
           console.log('[GELOMBANG]   → Inactive cards (gray border):', inactiveCards.length);
-          
+
           if (activeCards.length === 1) {
             console.log('[GELOMBANG] ✅ UI refresh successful - exactly 1 active gelombang');
           } else {
@@ -2575,7 +2549,7 @@ Jazakumullahu khairan,
           }
         }
       }, 1000);
-      
+
       // Enforce a secondary refresh to be extra safe
       setTimeout(async () => {
         try {
@@ -2585,22 +2559,22 @@ Jazakumullahu khairan,
           console.warn('[GELOMBANG] ⚠️ Secondary refresh (success path) failed');
         }
       }, 800);
-      
+
     } catch (error) {
       console.log('[GELOMBANG] ========================================');
       console.error('[GELOMBANG] ❌ ERROR during activation:', error);
       console.error('[GELOMBANG] ❌ Error message:', error.message);
       console.error('[GELOMBANG] ❌ Error stack:', error.stack);
       console.log('[GELOMBANG] ========================================');
-      
+
       // Restore container interaction on error
       if (container) {
         container.style.opacity = '1';
         container.style.pointerEvents = 'auto';
       }
-      
+
       // Silent mode: do not show error toast/alert; rely on auto-refresh fallback
-      
+
       // Rollback: Force reload from database
       console.log('[GELOMBANG] 🔄 Rollback: Reloading data from database...');
       try {
@@ -2608,7 +2582,7 @@ Jazakumullahu khairan,
         console.log('[GELOMBANG]   ✅ Rollback complete');
       } catch (rollbackError) {
         console.error('[GELOMBANG]   ❌ Rollback failed:', rollbackError);
-        
+
         // Last resort: manual page refresh
         console.log('[GELOMBANG] 🔄 Last resort: Manual page refresh in 1.5 seconds...');
         setTimeout(() => {
@@ -2616,7 +2590,7 @@ Jazakumullahu khairan,
           location.reload();
         }, 1500);
       }
-      
+
       // Enforce a second refresh attempt to make sure UI updates
       setTimeout(async () => {
         try {
@@ -2628,7 +2602,7 @@ Jazakumullahu khairan,
       }, 800);
     }
   }
-  
+
   /**
    * Helper: Extract gelombang ID from card element
    */
@@ -2640,7 +2614,7 @@ Jazakumullahu khairan,
     }
     return null;
   }
-  
+
   // Expose gelombang functions
   window.loadGelombangData = loadGelombangData;
   window.setGelombangActive = setGelombangActive;
@@ -2648,20 +2622,20 @@ Jazakumullahu khairan,
   /* =========================
      8) HERO SLIDER MANAGEMENT
      ========================= */
-  
+
   /**
    * Load and display hero images
    */
   async function loadHeroImages() {
     try {
       console.log('[HERO] Loading hero images...');
-      
+
       const container = $('#heroImagesContainer');
       if (!container) {
         console.warn('[HERO] Container not found');
         return;
       }
-      
+
       // Show loading
       container.innerHTML = `
         <div class="text-center py-5">
@@ -2671,23 +2645,23 @@ Jazakumullahu khairan,
           <p class="text-muted mt-3">Memuat hero images...</p>
         </div>
       `;
-      
+
       const response = await fetch('/api/hero_images_list');
       const result = await response.json();
-      
+
       if (!result.ok) {
         throw new Error(result.error || 'Failed to load hero images');
       }
-      
+
       const heroImages = result.data || [];
       console.log('[HERO] Loaded', heroImages.length, 'images');
-      
+
       // Update count
       const countEl = $('#heroImageCount');
       if (countEl) {
         countEl.textContent = heroImages.length;
       }
-      
+
       if (heroImages.length === 0) {
         container.innerHTML = `
           <div class="text-center py-5">
@@ -2697,7 +2671,7 @@ Jazakumullahu khairan,
         `;
         return;
       }
-      
+
       // Render hero images grid with fade-in animation
       // Add CSS for fade-in animation if not already added
       if (!document.getElementById('heroImagesAnimationStyle')) {
@@ -2717,9 +2691,9 @@ Jazakumullahu khairan,
         `;
         document.head.appendChild(style);
       }
-      
+
       let html = '<div class="row g-3">';
-      
+
       heroImages.forEach((image, index) => {
         html += `
           <div class="col-md-4" data-image-id="${image.id}" style="animation: fadeInUp 0.4s ease-out ${index * 0.1}s both;">
@@ -2753,19 +2727,19 @@ Jazakumullahu khairan,
           </div>
         `;
       });
-      
+
       html += '</div>';
-      
+
       // Smooth update: fade out old content, then fade in new content
       container.style.opacity = '0.5';
       container.style.transition = 'opacity 0.2s';
-      
+
       setTimeout(() => {
         container.innerHTML = html;
         container.style.opacity = '1';
         console.log('[HERO] ✅ Images rendered');
       }, 150);
-      
+
     } catch (error) {
       console.error('[HERO] Error:', error);
       const container = $('#heroImagesContainer');
@@ -2778,35 +2752,35 @@ Jazakumullahu khairan,
       }
     }
   }
-  
+
   /**
    * Handle hero image upload form
    */
   function initHeroUpload() {
     try {
       console.log('[HERO] Initializing upload form...');
-      
+
       const form = document.getElementById('heroUploadForm');
       const input = document.getElementById('heroImageInput');
       const preview = document.getElementById('heroImagePreview');
       const previewImg = document.getElementById('heroPreviewImg');
-      
+
       if (!form) {
         console.warn('[HERO] Upload form not found in DOM');
         return;
       }
-      
+
       if (!input) {
         console.warn('[HERO] Upload input not found in DOM');
         return;
       }
-      
+
       // Check if already initialized to prevent duplicate listeners
       if (form.dataset.initialized === 'true') {
         console.log('[HERO] Form already initialized, skipping');
         return;
       }
-      
+
       // Image preview on file select
       input.addEventListener('change', (e) => {
         const file = e.target.files[0];
@@ -2814,7 +2788,7 @@ Jazakumullahu khairan,
           if (preview) preview.style.display = 'none';
           return;
         }
-        
+
         // Validate file size (5MB)
         if (file.size > 5 * 1024 * 1024) {
           alert('❌ File terlalu besar! Maksimal 5 MB.');
@@ -2822,7 +2796,7 @@ Jazakumullahu khairan,
           if (preview) preview.style.display = 'none';
           return;
         }
-        
+
         // Show preview
         const reader = new FileReader();
         reader.onload = (event) => {
@@ -2835,39 +2809,39 @@ Jazakumullahu khairan,
         };
         reader.readAsDataURL(file);
       });
-      
+
       // Handle form submit
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const file = input.files[0];
         if (!file) {
           alert('❌ Pilih gambar terlebih dahulu!');
           return;
         }
-        
+
         const btn = document.getElementById('btnUploadHero');
         let originalText = '<i class="bi bi-upload"></i> Upload Gambar';
-        
+
         try {
           if (btn) {
             originalText = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Uploading...';
           }
-          
+
           console.log('[HERO] Uploading image:', file.name, 'Size:', file.size, 'bytes');
-          
+
           // Validate file type
           if (!file.type.startsWith('image/')) {
             throw new Error('File harus berupa gambar');
           }
-          
+
           // Convert to base64
           console.log('[HERO] Converting to base64...');
           const base64 = await fileToBase64(file);
           console.log('[HERO] Base64 conversion complete, length:', base64.length);
-          
+
           // Upload to API
           console.log('[HERO] Uploading to API...');
           const response = await fetch('/api/hero_images_upload', {
@@ -2880,61 +2854,61 @@ Jazakumullahu khairan,
               filename: file.name
             })
           });
-          
+
           const result = await response.json();
-          
+
           if (!result.ok) {
             throw new Error(result.error || 'Upload failed');
           }
-          
+
           console.log('[HERO] ✅ Upload successful');
-          
+
           // Reset form immediately for better UX
           form.reset();
           if (preview) preview.style.display = 'none';
-          
+
           // Restore button state
           if (btn) {
             btn.disabled = false;
             btn.innerHTML = originalText;
           }
-          
+
           // Reload images immediately (without waiting for notification)
           await loadHeroImages();
-          
+
           // Scroll to images container to show the new image
           const container = document.getElementById('heroImagesContainer');
           if (container) {
             container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }
-          
+
           // Show success notification after UI update
           safeToastr.success('✅ Hero image berhasil diupload dan ditambahkan!');
-          
+
         } catch (error) {
           console.error('[HERO] Upload error:', error);
           console.error('[HERO] Error stack:', error.stack);
-          
+
           const errorMsg = error.message || 'Unknown error';
           alert('❌ Error upload: ' + errorMsg);
-          
+
           if (btn) {
             btn.disabled = false;
             btn.innerHTML = originalText;
           }
         }
       });
-      
+
       // Mark as initialized
       form.dataset.initialized = 'true';
       console.log('[HERO] ✅ Upload form initialized successfully');
-      
+
     } catch (error) {
       console.error('[HERO] Error in initHeroUpload:', error);
       console.error('[HERO] Error stack:', error.stack);
     }
   }
-  
+
   /**
    * Delete hero image
    */
@@ -2942,36 +2916,36 @@ Jazakumullahu khairan,
     if (!confirm('⚠️ Apakah Anda yakin ingin menghapus hero image ini?\n\nGambar akan langsung terhapus dari slider.')) {
       return;
     }
-    
+
     // Find the image card element for immediate UI update
-    const imageCard = event?.target?.closest?.('.col-md-4') || 
-                     document.querySelector(`[data-image-id="${imageId}"]`);
-    
+    const imageCard = event?.target?.closest?.('.col-md-4') ||
+      document.querySelector(`[data-image-id="${imageId}"]`);
+
     // Store reference for animation
     let cardElement = imageCard;
-    
+
     try {
       console.log('[HERO] Deleting image ID:', imageId);
-      
+
       // Start fade-out animation immediately (optimistic UI update)
       if (cardElement) {
         cardElement.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
         cardElement.style.opacity = '0';
         cardElement.style.transform = 'scale(0.9)';
       }
-      
+
       const response = await fetch(`/api/hero_images_delete?id=${imageId}`, {
         method: 'DELETE'
       });
-      
+
       const result = await response.json();
-      
+
       if (!result.ok) {
         throw new Error(result.error || 'Delete failed');
       }
-      
+
       console.log('[HERO] ✅ Image deleted');
-      
+
       // Remove element from DOM after animation
       if (cardElement) {
         setTimeout(() => {
@@ -2980,46 +2954,46 @@ Jazakumullahu khairan,
           }
         }, 300);
       }
-      
+
       // Reload images to sync with server and update counts
       await loadHeroImages();
-      
+
       // Show success notification
       safeToastr.success('✅ Hero image berhasil dihapus!');
-      
+
     } catch (error) {
       console.error('[HERO] Delete error:', error);
-      
+
       // Revert animation on error
       if (cardElement) {
         cardElement.style.transition = 'opacity 0.3s ease-in, transform 0.3s ease-in';
         cardElement.style.opacity = '1';
         cardElement.style.transform = 'scale(1)';
       }
-      
+
       safeToastr.error('❌ Error delete: ' + error.message);
-      
+
       // Reload images on error to ensure consistency
       await loadHeroImages();
     }
   }
-  
+
   /**
    * Reset hero upload form
    */
   function resetHeroForm() {
     const form = $('#heroUploadForm');
     const preview = $('#heroImagePreview');
-    
+
     if (form) {
       form.reset();
     }
-    
+
     if (preview) {
       preview.style.display = 'none';
     }
   }
-  
+
   /**
    * Helper: Convert file to base64
    */
@@ -3031,7 +3005,7 @@ Jazakumullahu khairan,
       reader.readAsDataURL(file);
     });
   }
-  
+
   // Expose hero functions
   window.loadHeroImages = loadHeroImages;
   window.deleteHeroImage = deleteHeroImage;
@@ -3040,7 +3014,7 @@ Jazakumullahu khairan,
   /* =========================
      10) WHY SECTION MANAGEMENT
      ========================= */
-  
+
   const WHY_SECTION_LANGS = ['id', 'en'];
   const WHY_SECTION_LABEL = {
     id: { name: 'Bahasa Indonesia', flag: '🇮🇩' },
@@ -3561,20 +3535,18 @@ Jazakumullahu khairan,
             </td>
             <td>
               <strong>${escapeHtml(item.title || "")}</strong>
-              ${
-                item.title_en && item.title_en !== item.title
-                  ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.title_en)}</div>`
-                  : ""
-              }
+              ${item.title_en && item.title_en !== item.title
+            ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.title_en)}</div>`
+            : ""
+          }
             </td>
             <td>
               ${escapeHtml(item.description || "")}
-              ${
-                item.description_en &&
-                item.description_en !== item.description
-                  ? `<div class="text-muted small mt-1"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.description_en)}</div>`
-                  : ""
-              }
+              ${item.description_en &&
+            item.description_en !== item.description
+            ? `<div class="text-muted small mt-1"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.description_en)}</div>`
+            : ""
+          }
             </td>
             <td>
               <div class="btn-group btn-group-sm">
@@ -3885,11 +3857,10 @@ Jazakumullahu khairan,
             </td>
             <td>
               <strong>${escapeHtml(item.name || "")}</strong>
-              ${
-                item.name_en && item.name_en !== item.name
-                  ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.name_en)}</div>`
-                  : ""
-              }
+              ${item.name_en && item.name_en !== item.name
+            ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.name_en)}</div>`
+            : ""
+          }
             </td>
             <td>
               <div class="btn-group btn-group-sm">
@@ -4192,19 +4163,17 @@ Jazakumullahu khairan,
             </td>
             <td>
               <div class="fw-semibold">${escapeHtml(item.label || "")}</div>
-              ${
-                item.label_en && item.label_en !== item.label
-                  ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.label_en)}</div>`
-                  : ""
-              }
+              ${item.label_en && item.label_en !== item.label
+            ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.label_en)}</div>`
+            : ""
+          }
             </td>
             <td>
               <div>${escapeHtml(item.amount || "")}</div>
-              ${
-                item.amount_en && item.amount_en !== item.amount
-                  ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.amount_en)}</div>`
-                  : ""
-              }
+              ${item.amount_en && item.amount_en !== item.amount
+            ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.amount_en)}</div>`
+            : ""
+          }
             </td>
             <td>
               <div class="btn-group btn-group-sm">
@@ -4532,19 +4501,17 @@ Jazakumullahu khairan,
             </td>
             <td>
               <div class="fw-semibold">${escapeHtml(item.title || "")}</div>
-              ${
-                item.title_en && item.title_en !== item.title
-                  ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.title_en)}</div>`
-                  : ""
-              }
+              ${item.title_en && item.title_en !== item.title
+            ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.title_en)}</div>`
+            : ""
+          }
               <div class="text-muted small mt-1">
                 ${escapeHtml(item.description || "")}
-                ${
-                  item.description_en &&
-                  item.description_en !== item.description
-                    ? `<div><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.description_en)}</div>`
-                    : ""
-                }
+                ${item.description_en &&
+            item.description_en !== item.description
+            ? `<div><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.description_en)}</div>`
+            : ""
+          }
               </div>
             </td>
             <td>
@@ -4880,25 +4847,22 @@ Jazakumullahu khairan,
             </td>
             <td>
               <div class="fw-semibold">${escapeHtml(item.title || "")}</div>
-              ${
-                item.title_en && item.title_en !== item.title
-                  ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.title_en)}</div>`
-                  : ""
-              }
+              ${item.title_en && item.title_en !== item.title
+            ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.title_en)}</div>`
+            : ""
+          }
               <div class="text-muted small">${escapeHtml(item.item_type || "info")}</div>
             </td>
             <td>
               <div>${escapeHtml(item.value || "")}</div>
-              ${
-                item.value_en && item.value_en !== item.value
-                  ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.value_en)}</div>`
-                  : ""
-              }
-              ${
-                item.link_url
-                  ? `<div class="small text-muted text-truncate" style="max-width:220px;" title="${escapeHtml(item.link_url)}">${escapeHtml(item.link_url)}</div>`
-                  : ""
-              }
+              ${item.value_en && item.value_en !== item.value
+            ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.value_en)}</div>`
+            : ""
+          }
+              ${item.link_url
+            ? `<div class="small text-muted text-truncate" style="max-width:220px;" title="${escapeHtml(item.link_url)}">${escapeHtml(item.link_url)}</div>`
+            : ""
+          }
             </td>
             <td>
               <div class="btn-group btn-group-sm">
@@ -5499,11 +5463,11 @@ Jazakumullahu khairan,
     const fileInput = $("#beritaImageFile");
     const urlInput = $("#beritaImageUrl");
     const previewDiv = $("#beritaImagePreview");
-    
+
     if (fileInput) fileInput.value = "";
     if (urlInput) urlInput.value = "";
     if (previewDiv) previewDiv.style.display = "none";
-    
+
     safeToastr.info("Gambar dihapus");
   }
 
@@ -5568,37 +5532,37 @@ Jazakumullahu khairan,
       return;
     }
 
-        const formatDateForTable = (dateStr) => {
-          if (!dateStr) return '<span class="text-muted">-</span>';
-          try {
-            const date = new Date(dateStr);
-            if (isNaN(date.getTime())) return '<span class="text-muted">-</span>';
-            return date.toLocaleDateString('id-ID', { 
-              day: 'numeric', 
-              month: 'short', 
-              year: 'numeric' 
-            });
-          } catch {
-            return '<span class="text-muted">-</span>';
-          }
-        };
+    const formatDateForTable = (dateStr) => {
+      if (!dateStr) return '<span class="text-muted">-</span>';
+      try {
+        const date = new Date(dateStr);
+        if (isNaN(date.getTime())) return '<span class="text-muted">-</span>';
+        return date.toLocaleDateString('id-ID', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric'
+        });
+      } catch {
+        return '<span class="text-muted">-</span>';
+      }
+    };
 
-        const rows = beritaItemsData
-          .map((item, index) => {
-            const orderNumber = index + 1;
-            const disableUp = index === 0 ? "disabled" : "";
-            const disableDown =
-              index === beritaItemsData.length - 1 ? "disabled" : "";
-            const statusBadge = item.is_published
-              ? '<span class="badge bg-success">Published</span>'
-              : '<span class="badge bg-secondary">Draft</span>';
-            const titleDisplay = escapeHtml(item.title || item.title_en || "");
-            const titleEnDisplay =
-              item.title_en && item.title_en !== item.title
-                ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.title_en)}</div>`
-                : "";
-            const publishedDate = formatDateForTable(item.published_date);
-            return `
+    const rows = beritaItemsData
+      .map((item, index) => {
+        const orderNumber = index + 1;
+        const disableUp = index === 0 ? "disabled" : "";
+        const disableDown =
+          index === beritaItemsData.length - 1 ? "disabled" : "";
+        const statusBadge = item.is_published
+          ? '<span class="badge bg-success">Published</span>'
+          : '<span class="badge bg-secondary">Draft</span>';
+        const titleDisplay = escapeHtml(item.title || item.title_en || "");
+        const titleEnDisplay =
+          item.title_en && item.title_en !== item.title
+            ? `<div class="text-muted small"><span aria-hidden="true">🇬🇧</span> ${escapeHtml(item.title_en)}</div>`
+            : "";
+        const publishedDate = formatDateForTable(item.published_date);
+        return `
               <tr data-id="${item.id}">
                 <td>
                   <span class="badge bg-dark">${orderNumber}</span>
@@ -5614,11 +5578,10 @@ Jazakumullahu khairan,
                 <td>
                   <div class="fw-semibold">${titleDisplay}</div>
                   ${titleEnDisplay}
-                  ${
-                    item.image_url
-                      ? `<div class="small text-muted mt-1"><i class="bi bi-image"></i> Dengan gambar</div>`
-                      : ""
-                  }
+                  ${item.image_url
+            ? `<div class="small text-muted mt-1"><i class="bi bi-image"></i> Dengan gambar</div>`
+            : ""
+          }
                 </td>
                 <td>
                   <div class="small">${publishedDate}</div>
@@ -5628,8 +5591,8 @@ Jazakumullahu khairan,
                 <td>
                   <div class="btn-group btn-group-sm">
                     <button type="button" class="btn btn-warning" onclick="editBeritaItem(${item.id})">
-                      <i class="bi bi-pencil"></i> Edit
-                    </button>
+                    <i class="bi bi-pencil"></i> <span class="d-none d-md-inline">Edit</span>
+                  </button>
                     <button type="button" class="btn btn-danger" onclick="deleteBeritaItem(${item.id})">
                       <i class="bi bi-trash"></i>
                     </button>
@@ -5637,8 +5600,8 @@ Jazakumullahu khairan,
                 </td>
               </tr>
             `;
-          })
-          .join("");
+      })
+      .join("");
 
     tbody.innerHTML = rows;
   }
@@ -5675,7 +5638,7 @@ Jazakumullahu khairan,
 
       if (uploadError) {
         console.error("[BERITA] Upload error:", uploadError);
-        
+
         // More specific error messages
         if (uploadError.message?.includes("Bucket not found")) {
           throw new Error("Bucket 'hero-images' tidak ditemukan. Pastikan bucket sudah dibuat di Supabase.");
@@ -5702,7 +5665,7 @@ Jazakumullahu khairan,
 
       const publicUrl = urlData.publicUrl;
       console.log("[BERITA] ✅ Upload success! Public URL:", publicUrl);
-      
+
       return publicUrl;
     } catch (error) {
       console.error("[BERITA] Upload error:", error);
@@ -5747,14 +5710,14 @@ Jazakumullahu khairan,
         try {
           imageUrl = await uploadBeritaImage(file);
           console.log("[BERITA] Image uploaded, URL:", imageUrl);
-          
+
           // Store URL in hidden field for future edits
           const urlInput = $("#beritaImageUrl");
           if (urlInput) {
             urlInput.value = imageUrl;
             console.log("[BERITA] URL stored in hidden field");
           }
-          
+
           // Update preview with uploaded image URL
           const previewImg = $("#beritaPreviewImg");
           const previewDiv = $("#beritaImagePreview");
@@ -5784,7 +5747,7 @@ Jazakumullahu khairan,
         is_published: isPublished,
         published_date: publishedDate,
       };
-      
+
       let message = "Berita ditambahkan";
       if (id) {
         payload.id = id;
@@ -5809,7 +5772,7 @@ Jazakumullahu khairan,
         })
       );
       await loadBeritaItems();
-      
+
       // Keep preview if image was uploaded
       if (imageUrl) {
         const previewImg = $("#beritaPreviewImg");
@@ -5819,7 +5782,7 @@ Jazakumullahu khairan,
           previewDiv.style.display = "block";
         }
       }
-      
+
       resetBeritaForm();
     } catch (error) {
       console.error("[BERITA] Submit error:", error);
@@ -5848,11 +5811,11 @@ Jazakumullahu khairan,
         contentField.value =
           normalized[lang === "en" ? "content_en" : "content"] || "";
     });
-    
+
     // Handle image
     const imgField = $("#beritaImageUrl");
     if (imgField) imgField.value = item.image_url || "";
-    
+
     // Show existing image preview
     if (item.image_url) {
       const previewImg = $("#beritaPreviewImg");
@@ -5862,7 +5825,7 @@ Jazakumullahu khairan,
         previewDiv.style.display = "block";
       }
     }
-    
+
     const pubField = $("#beritaIsPublished");
     if (pubField) pubField.checked = Boolean(item.is_published);
     const dateField = $("#beritaPublishedDate");
@@ -5970,12 +5933,12 @@ Jazakumullahu khairan,
      ========================= */
   document.addEventListener("DOMContentLoaded", () => {
     console.log("[ADMIN] 🚀 Page loaded - initializing...");
-    
+
     // ✅ ONLY load active tab (pendaftar)
     // Other tabs will lazy-load when clicked via switchTab()
     console.log("[ADMIN] 📊 Loading initial data: Pendaftar only");
     loadPendaftar();
-    
+
     // ❌ REMOVED: loadPembayaran() - will lazy load on tab switch
     console.log("[ADMIN] ✅ Initial load complete (lazy loading enabled for other tabs)");
   });
