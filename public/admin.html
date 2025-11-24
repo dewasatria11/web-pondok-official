@@ -2705,23 +2705,33 @@
                 </div>
                 <div class="card-body">
                   <form id="qrisSettingsForm">
-                    <div class="mb-3">
-                      <label class="form-label">Kode QRIS (String/Payload)</label>
-                      <textarea class="form-control font-monospace" id="payment-qris-data" rows="3"
-                        placeholder="Contoh: 00020101021226590014ID.CO.GO-JEK..."></textarea>
-                      <small class="text-muted">Scan QRIS asli Anda dengan aplikasi scanner teks, lalu copy kodenya ke
-                        sini. Ini diperlukan untuk generate QR otomatis dengan nominal.</small>
+                    <div class="mb-3 d-none">
+                      <label class="form-label">Kode QRIS (Terisi Otomatis)</label>
+                      <textarea class="form-control font-monospace bg-light" id="payment-qris-data" rows="3"
+                        placeholder="Akan terisi otomatis setelah upload gambar..." readonly></textarea>
+                      <small class="text-muted">Kode ini otomatis diekstrak dari gambar yang Anda upload. Jika kosong,
+                        pastikan gambar QRIS jelas.</small>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label">Upload Gambar QRIS (Opsional/Backup)</label>
+                      <label class="form-label">Upload Gambar QRIS</label>
                       <input type="file" class="form-control" id="payment-qris-file" accept="image/*">
-                      <small class="text-muted">Upload gambar QRIS terbaru.</small>
+                      <small class="text-muted">Pilih gambar QRIS dari galeri. Sistem akan otomatis membaca
+                        kodenya.</small>
                     </div>
                     <div class="mb-3 text-center p-3 border rounded bg-light">
                       <p class="mb-2 text-muted">Preview QRIS Saat Ini:</p>
                       <img id="payment-qris-preview" src="" alt="QRIS Preview" class="img-fluid rounded shadow-sm"
                         style="max-height: 200px; display: none;">
                       <p id="payment-qris-none" class="text-muted small fst-italic mt-2">Belum ada gambar QRIS</p>
+
+                      <!-- Status Indicator -->
+                      <div id="qris-data-status" class="mt-2" style="display:none">
+                        <span class="badge bg-success"><i class="bi bi-check-circle"></i> Data QRIS Terbaca</span>
+                      </div>
+                      <div id="qris-data-missing" class="mt-2" style="display:none">
+                        <span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle"></i> Data QRIS
+                          Tidak Terbaca (Hanya Gambar)</span>
+                      </div>
                     </div>
                     <div class="mb-3">
                       <label class="form-label">Nominal QRIS (Rp)</label>

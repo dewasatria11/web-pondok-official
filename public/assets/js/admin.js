@@ -5958,15 +5958,28 @@ Jazakumullahu khairan,
 
         const preview = $("#payment-qris-preview");
         const noneMsg = $("#payment-qris-none");
+        const statusOk = $("#qris-data-status");
+        const statusMissing = $("#qris-data-missing");
 
         if (preview && noneMsg) {
           if (d.qris_image_url) {
             preview.src = d.qris_image_url;
             preview.style.display = "block";
             noneMsg.style.display = "none";
+
+            // Check data status
+            if (d.qris_data) {
+              if (statusOk) statusOk.style.display = "block";
+              if (statusMissing) statusMissing.style.display = "none";
+            } else {
+              if (statusOk) statusOk.style.display = "none";
+              if (statusMissing) statusMissing.style.display = "block";
+            }
           } else {
             preview.style.display = "none";
             noneMsg.style.display = "block";
+            if (statusOk) statusOk.style.display = "none";
+            if (statusMissing) statusMissing.style.display = "none";
           }
         }
       }
@@ -6059,6 +6072,8 @@ Jazakumullahu khairan,
             const code = jsQR(imageData.data, imageData.width, imageData.height);
 
             const qrisDataInput = document.getElementById("payment-qris-data");
+            const statusOk = document.getElementById("qris-data-status");
+            const statusMissing = document.getElementById("qris-data-missing");
 
             if (code && qrisDataInput) {
               console.log("[QRIS] Auto-scan success:", code.data);
@@ -6066,6 +6081,11 @@ Jazakumullahu khairan,
               if (typeof safeToastr !== 'undefined') {
                 safeToastr.success("QRIS berhasil discan otomatis!");
               }
+
+              // Show OK status
+              if (statusOk) statusOk.style.display = "block";
+              if (statusMissing) statusMissing.style.display = "none";
+
               // Highlight the input to show it changed
               qrisDataInput.style.borderColor = "#198754";
               qrisDataInput.style.backgroundColor = "#f8fffb";
@@ -6076,8 +6096,14 @@ Jazakumullahu khairan,
             } else {
               console.warn("[QRIS] No QR code found in image");
               if (typeof safeToastr !== 'undefined') {
-                safeToastr.warning("QR Code tidak terdeteksi otomatis. Silakan copy manual jika perlu.");
+                safeToastr.warning("QR Code tidak terdeteksi otomatis. Gambar akan disimpan sebagai statis.");
               }
+              // Clear data if any
+              if (qrisDataInput) qrisDataInput.value = "";
+
+              // Show Missing status
+              if (statusOk) statusOk.style.display = "none";
+              if (statusMissing) statusMissing.style.display = "block";
             }
           };
           img.src = result;
