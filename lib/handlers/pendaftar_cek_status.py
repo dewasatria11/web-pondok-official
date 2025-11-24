@@ -6,8 +6,7 @@ from lib._supabase import supabase_client
 from typing import Any, Dict
 
 class handler(BaseHTTPRequestHandler):
-    @staticmethod
-    def do_GET(request_handler):
+    def do_GET(self):
         """
         GET /api/pendaftar_cek_status?nisn=1234567890
         Response: { ok: true, data: {...} | null }
@@ -15,23 +14,23 @@ class handler(BaseHTTPRequestHandler):
         def send_json(code: int, payload: Dict[str, Any]) -> None:
             """Send JSON response"""
             try:
-                request_handler.send_response(code)
-                request_handler.send_header("Content-Type", "application/json")
-                request_handler.send_header("Access-Control-Allow-Origin", "*")
-                request_handler.end_headers()
-                request_handler.wfile.write(json.dumps(payload, default=str).encode())
+                self.send_response(code)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps(payload, default=str).encode())
             except Exception as e:
                 print(f"Error sending JSON: {e}")
         
         try:
-            print(f"[CEK_STATUS] Request path: {request_handler.path}")
+            print(f"[CEK_STATUS] Request path: {self.path}")
             
             # Helper to normalize NISN/NIK (keep digits only)
             def normalize_nisn(value: str) -> str:
                 return "".join(ch for ch in value if ch.isdigit())
 
             # Parse query parameters
-            parsed = urlparse(request_handler.path)
+            parsed = urlparse(self.path)
             params = parse_qs(parsed.query)
             raw_nisn = (params.get("nisn", [""])[0] or "").strip()
             normalized_nisn = normalize_nisn(raw_nisn)
@@ -199,11 +198,10 @@ class handler(BaseHTTPRequestHandler):
                 "detail": str(e)
             })
 
-    @staticmethod
-    def do_OPTIONS(request_handler):
+    def do_OPTIONS(self):
         """Handle CORS preflight"""
-        request_handler.send_response(200)
-        request_handler.send_header("Access-Control-Allow-Origin", "*")
-        request_handler.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
-        request_handler.send_header("Access-Control-Allow-Headers", "Content-Type")
-        request_handler.end_headers()
+        self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()

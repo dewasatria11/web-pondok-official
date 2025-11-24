@@ -7,8 +7,7 @@ import json
 from lib._supabase import supabase_client
 
 class handler(BaseHTTPRequestHandler):
-    @staticmethod
-    def do_GET(request_handler):
+    def do_GET(self):
         try:
             print("[WHY_SECTION_LIST] Fetching Why Section content...")
             
@@ -71,12 +70,12 @@ class handler(BaseHTTPRequestHandler):
                     raise db_error
             
             # Send success response
-            request_handler.send_response(200)
-            request_handler.send_header("Content-type", "application/json")
-            request_handler.send_header("Access-Control-Allow-Origin", "*")
-            request_handler.end_headers()
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
             
-            request_handler.wfile.write(json.dumps(response).encode())
+            self.wfile.write(json.dumps(response).encode())
             print("[WHY_SECTION_LIST] ✅ Success")
             
         except Exception as e:
@@ -85,10 +84,10 @@ class handler(BaseHTTPRequestHandler):
             traceback.print_exc()
             
             # Send error response with default data as fallback
-            request_handler.send_response(200)  # Return 200 with error flag instead of 500
-            request_handler.send_header("Content-type", "application/json")
-            request_handler.send_header("Access-Control-Allow-Origin", "*")
-            request_handler.end_headers()
+            self.send_response(200)  # Return 200 with error flag instead of 500
+            self.send_header("Content-type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
             
             # Return default content even on error (graceful degradation)
             fallback_payload = {
@@ -100,16 +99,15 @@ class handler(BaseHTTPRequestHandler):
                 "content_en": default_data["content_en"]
             }
 
-            request_handler.wfile.write(json.dumps({
+            self.wfile.write(json.dumps({
                 "ok": True,
                 "data": fallback_payload,
                 "error": str(e)  # Include error for debugging
             }).encode())
     
-    @staticmethod
-    def do_OPTIONS(request_handler):
-        request_handler.send_response(200)
-        request_handler.send_header("Access-Control-Allow-Origin", "*")
-        request_handler.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
-        request_handler.send_header("Access-Control-Allow-Headers", "Content-Type")
-        request_handler.end_headers()
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()

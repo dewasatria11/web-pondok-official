@@ -25,8 +25,7 @@ def _get_admin_client():
 
 
 class handler(BaseHTTPRequestHandler):
-    @staticmethod
-    def do_GET(request_handler):
+    def do_GET(self):
         try:
             supa = _get_public_client()
             result = (
@@ -37,19 +36,18 @@ class handler(BaseHTTPRequestHandler):
             )
 
             data = result.data or []
-            send_json(request_handler, 200, {"ok": True, "data": data})
+            send_json(self, 200, {"ok": True, "data": data})
         except Exception as exc:
             print(f"[ALUR_STEPS][GET] Error: {exc}")
             send_json(
-                request_handler,
+                self,
                 500,
                 {"ok": False, "error": f"Gagal mengambil data: {exc}"},
             )
 
-    @staticmethod
-    def do_POST(request_handler):
+    def do_POST(self):
         try:
-            payload = read_json_body(request_handler)
+            payload = read_json_body(self)
             title = (payload.get("title") or "").strip()
             description = (payload.get("description") or "").strip()
             title_en = (payload.get("title_en") or "").strip()
@@ -89,22 +87,21 @@ class handler(BaseHTTPRequestHandler):
             created = result.data[0] if result.data else insert_payload
 
             send_json(
-                request_handler,
+                self,
                 200,
                 {"ok": True, "message": "Alur berhasil dibuat", "data": created},
             )
         except Exception as exc:
             print(f"[ALUR_STEPS][POST] Error: {exc}")
             send_json(
-                request_handler,
+                self,
                 400,
                 {"ok": False, "error": str(exc)},
             )
 
-    @staticmethod
-    def do_PUT(request_handler):
+    def do_PUT(self):
         try:
-            payload = read_json_body(request_handler)
+            payload = read_json_body(self)
 
             # Bulk reorder support
             items = payload.get("items")
@@ -131,7 +128,7 @@ class handler(BaseHTTPRequestHandler):
                         updated.append(res.data[0])
 
                 send_json(
-                    request_handler,
+                    self,
                     200,
                     {
                         "ok": True,
@@ -172,22 +169,21 @@ class handler(BaseHTTPRequestHandler):
 
             updated = result.data[0] if result.data else None
             send_json(
-                request_handler,
+                self,
                 200,
                 {"ok": True, "message": "Alur berhasil diperbarui", "data": updated},
             )
         except Exception as exc:
             print(f"[ALUR_STEPS][PUT] Error: {exc}")
             send_json(
-                request_handler,
+                self,
                 400,
                 {"ok": False, "error": str(exc)},
             )
 
-    @staticmethod
-    def do_DELETE(request_handler):
+    def do_DELETE(self):
         try:
-            payload = read_json_body(request_handler)
+            payload = read_json_body(self)
             item_id = payload.get("id")
             if not item_id:
                 raise ValueError("Parameter id wajib disertakan")
@@ -196,18 +192,17 @@ class handler(BaseHTTPRequestHandler):
             admin_client.table(TABLE_NAME).delete().eq("id", item_id).execute()
 
             send_json(
-                request_handler,
+                self,
                 200,
                 {"ok": True, "message": "Alur berhasil dihapus"},
             )
         except Exception as exc:
             print(f"[ALUR_STEPS][DELETE] Error: {exc}")
             send_json(
-                request_handler,
+                self,
                 400,
                 {"ok": False, "error": str(exc)},
             )
 
-    @staticmethod
-    def do_OPTIONS(request_handler):
-        allow_cors(request_handler, ["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+    def do_OPTIONS(self):
+        allow_cors(self, ["GET", "POST", "PUT", "DELETE", "OPTIONS"])

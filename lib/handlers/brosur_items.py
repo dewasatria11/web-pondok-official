@@ -25,8 +25,7 @@ def _admin():
 
 
 class handler(BaseHTTPRequestHandler):
-    @staticmethod
-    def do_GET(request_handler):
+    def do_GET(self):
         try:
             result = (
                 _public()
@@ -35,17 +34,16 @@ class handler(BaseHTTPRequestHandler):
                 .order(ORDER_FIELD, desc=False)
                 .execute()
             )
-            send_json(request_handler, 200, {"ok": True, "data": result.data or []})
+            send_json(self, 200, {"ok": True, "data": result.data or []})
         except Exception as exc:
             print(f"[BROSUR_ITEMS][GET] Error: {exc}")
             send_json(
-                request_handler, 500, {"ok": False, "error": f"Gagal mengambil data: {exc}"}
+                self, 500, {"ok": False, "error": f"Gagal mengambil data: {exc}"}
             )
 
-    @staticmethod
-    def do_POST(request_handler):
+    def do_POST(self):
         try:
-            payload = read_json_body(request_handler)
+            payload = read_json_body(self)
             title = (payload.get("title") or "").strip()
             description = (payload.get("description") or "").strip()
             button_label = (payload.get("button_label") or "Unduh PDF").strip()
@@ -95,18 +93,17 @@ class handler(BaseHTTPRequestHandler):
             created = result.data[0] if result.data else insert_payload
 
             send_json(
-                request_handler,
+                self,
                 200,
                 {"ok": True, "message": "Brosur berhasil ditambahkan", "data": created},
             )
         except Exception as exc:
             print(f"[BROSUR_ITEMS][POST] Error: {exc}")
-            send_json(request_handler, 400, {"ok": False, "error": str(exc)})
+            send_json(self, 400, {"ok": False, "error": str(exc)})
 
-    @staticmethod
-    def do_PUT(request_handler):
+    def do_PUT(self):
         try:
-            payload = read_json_body(request_handler)
+            payload = read_json_body(self)
 
             items = payload.get("items")
             if isinstance(items, list):
@@ -128,7 +125,7 @@ class handler(BaseHTTPRequestHandler):
                         updated.append(res.data[0])
 
                 send_json(
-                    request_handler,
+                    self,
                     200,
                     {
                         "ok": True,
@@ -177,32 +174,30 @@ class handler(BaseHTTPRequestHandler):
             updated = result.data[0] if result.data else None
 
             send_json(
-                request_handler,
+                self,
                 200,
                 {"ok": True, "message": "Brosur berhasil diperbarui", "data": updated},
             )
         except Exception as exc:
             print(f"[BROSUR_ITEMS][PUT] Error: {exc}")
-            send_json(request_handler, 400, {"ok": False, "error": str(exc)})
+            send_json(self, 400, {"ok": False, "error": str(exc)})
 
-    @staticmethod
-    def do_DELETE(request_handler):
+    def do_DELETE(self):
         try:
-            payload = read_json_body(request_handler)
+            payload = read_json_body(self)
             item_id = payload.get("id")
             if not item_id:
                 raise ValueError("Parameter id wajib disertakan")
 
             _admin().table(TABLE_NAME).delete().eq("id", item_id).execute()
             send_json(
-                request_handler,
+                self,
                 200,
                 {"ok": True, "message": "Brosur berhasil dihapus"},
             )
         except Exception as exc:
             print(f"[BROSUR_ITEMS][DELETE] Error: {exc}")
-            send_json(request_handler, 400, {"ok": False, "error": str(exc)})
+            send_json(self, 400, {"ok": False, "error": str(exc)})
 
-    @staticmethod
-    def do_OPTIONS(request_handler):
-        allow_cors(request_handler, ["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+    def do_OPTIONS(self):
+        allow_cors(self, ["GET", "POST", "PUT", "DELETE", "OPTIONS"])

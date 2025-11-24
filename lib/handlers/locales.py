@@ -98,10 +98,9 @@ def _send_response(handler, status: int, body: str | None, etag: str | None):
 
 
 class handler(BaseHTTPRequestHandler):
-    @staticmethod
-    def do_GET(request_handler):
+    def do_GET(self):
         try:
-            parsed = urlparse(request_handler.path)
+            parsed = urlparse(self.path)
             query = parse_qs(parsed.query)
             lang_param = (query.get("lang") or query.get("LANG") or [""])[0].lower()
             lang = lang_param if _is_supported_lang(lang_param) else "id"
@@ -110,10 +109,10 @@ class handler(BaseHTTPRequestHandler):
             cached = _locale_cache.get(lang)
 
             if cached and cached["expires"] > now:
-                if request_handler.headers.get("If-None-Match") == cached["etag"]:
-                    _send_response(request_handler, 304, None, cached["etag"])
+                if self.headers.get("If-None-Match") == cached["etag"]:
+                    _send_response(self, 304, None, cached["etag"])
                     return
-                _send_response(request_handler, 200, cached["body"], cached["etag"])
+                _send_response(self, 200, cached["body"], cached["etag"])
                 return
 
             supa = supabase_client(service_role=True)
@@ -136,21 +135,20 @@ class handler(BaseHTTPRequestHandler):
                 "expires": now + CACHE_TTL_SECONDS,
             }
 
-            if request_handler.headers.get("If-None-Match") == etag:
-                _send_response(request_handler, 304, None, etag)
+            if self.headers.get("If-None-Match") == etag:
+                _send_response(self, 304, None, etag)
                 return
 
-            _send_response(request_handler, 200, body, etag)
+            _send_response(self, 200, body, etag)
         except Exception as exc:
             error_body = json.dumps(
                 {"error": getattr(exc, "message", str(exc)) or "server error"}
             )
-            _send_response(request_handler, 500, error_body, None)
+            _send_response(self, 500, error_body, None)
 
-    @staticmethod
-    def do_OPTIONS(request_handler):
-        request_handler.send_response(200)
-        request_handler.send_header("Access-Control-Allow-Origin", "*")
-        request_handler.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
-        request_handler.send_header("Access-Control-Allow-Headers", "Content-Type")
-        request_handler.end_headers()
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()

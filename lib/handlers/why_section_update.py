@@ -7,11 +7,10 @@ import json
 from lib._supabase import supabase_client
 
 class handler(BaseHTTPRequestHandler):
-    @staticmethod
-    def do_POST(request_handler):
+    def do_POST(self):
         try:
-            content_length = int(request_handler.headers.get('Content-Length', 0))
-            body = request_handler.rfile.read(content_length)
+            content_length = int(self.headers.get('Content-Length', 0))
+            body = self.rfile.read(content_length)
             data = json.loads(body.decode('utf-8'))
             
             print("[WHY_SECTION_UPDATE] Updating Why Section content...")
@@ -56,10 +55,10 @@ class handler(BaseHTTPRequestHandler):
                 print("[WHY_SECTION_UPDATE] ✅ Inserted new record")
             
             # Send success response
-            request_handler.send_response(200)
-            request_handler.send_header("Content-type", "application/json")
-            request_handler.send_header("Access-Control-Allow-Origin", "*")
-            request_handler.end_headers()
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
             
             response = {
                 "ok": True,
@@ -67,7 +66,7 @@ class handler(BaseHTTPRequestHandler):
                 "data": result.data[0] if result.data else update_data
             }
             
-            request_handler.wfile.write(json.dumps(response).encode())
+            self.wfile.write(json.dumps(response).encode())
             print("[WHY_SECTION_UPDATE] ✅ Success")
             
         except Exception as e:
@@ -75,20 +74,19 @@ class handler(BaseHTTPRequestHandler):
             import traceback
             traceback.print_exc()
             
-            request_handler.send_response(500)
-            request_handler.send_header("Content-type", "application/json")
-            request_handler.send_header("Access-Control-Allow-Origin", "*")
-            request_handler.end_headers()
+            self.send_response(500)
+            self.send_header("Content-type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
             
-            request_handler.wfile.write(json.dumps({
+            self.wfile.write(json.dumps({
                 "ok": False,
                 "error": str(e)
             }).encode())
     
-    @staticmethod
-    def do_OPTIONS(request_handler):
-        request_handler.send_response(200)
-        request_handler.send_header("Access-Control-Allow-Origin", "*")
-        request_handler.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
-        request_handler.send_header("Access-Control-Allow-Headers", "Content-Type")
-        request_handler.end_headers()
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()

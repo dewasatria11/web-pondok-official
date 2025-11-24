@@ -28,8 +28,7 @@ def _get_admin_client():
 
 
 class handler(BaseHTTPRequestHandler):
-    @staticmethod
-    def do_GET(request_handler):
+    def do_GET(self):
         """
         GET /api/berita_items
         Query params:
@@ -38,7 +37,7 @@ class handler(BaseHTTPRequestHandler):
         """
         try:
             from urllib.parse import urlparse, parse_qs
-            parsed = urlparse(request_handler.path)
+            parsed = urlparse(self.path)
             params = parse_qs(parsed.query)
             published_only = params.get('published_only', ['false'])[0].lower() == 'true'
             
@@ -74,20 +73,19 @@ class handler(BaseHTTPRequestHandler):
                     ), reverse=True)
 
             data = result.data or []
-            send_json(request_handler, 200, {"ok": True, "data": data})
+            send_json(self, 200, {"ok": True, "data": data})
             
         except Exception as exc:
             print(f"[BERITA_ITEMS][GET] Error: {exc}")
             import traceback
             traceback.print_exc()
             send_json(
-                request_handler,
+                self,
                 500,
                 {"ok": False, "error": f"Gagal mengambil data berita: {exc}"},
             )
 
-    @staticmethod
-    def do_POST(request_handler):
+    def do_POST(self):
         """
         POST /api/berita_items
         Body: {
@@ -101,7 +99,7 @@ class handler(BaseHTTPRequestHandler):
         }
         """
         try:
-            payload = read_json_body(request_handler)
+            payload = read_json_body(self)
             
             # Validate required fields
             title_id = (payload.get("title_id") or "").strip()
@@ -161,23 +159,22 @@ class handler(BaseHTTPRequestHandler):
             created = result.data[0] if result.data else insert_payload
 
             send_json(
-                request_handler,
+                self,
                 200,
                 {"ok": True, "message": "Berita berhasil dibuat", "data": created},
             )
             
         except ValueError as exc:
             print(f"[BERITA_ITEMS][POST] Validation error: {exc}")
-            send_json(request_handler, 400, {"ok": False, "error": str(exc)})
+            send_json(self, 400, {"ok": False, "error": str(exc)})
             
         except Exception as exc:
             print(f"[BERITA_ITEMS][POST] Error: {exc}")
             import traceback
             traceback.print_exc()
-            send_json(request_handler, 500, {"ok": False, "error": str(exc)})
+            send_json(self, 500, {"ok": False, "error": str(exc)})
 
-    @staticmethod
-    def do_PUT(request_handler):
+    def do_PUT(self):
         """
         PUT /api/berita_items
         
@@ -197,7 +194,7 @@ class handler(BaseHTTPRequestHandler):
           }
         """
         try:
-            payload = read_json_body(request_handler)
+            payload = read_json_body(self)
 
             # Bulk reorder support
             items = payload.get("items")
@@ -224,7 +221,7 @@ class handler(BaseHTTPRequestHandler):
                         updated.append(res.data[0])
 
                 send_json(
-                    request_handler,
+                    self,
                     200,
                     {
                         "ok": True,
@@ -302,29 +299,28 @@ class handler(BaseHTTPRequestHandler):
                 raise ValueError(f"Berita dengan id {item_id} tidak ditemukan")
                 
             send_json(
-                request_handler,
+                self,
                 200,
                 {"ok": True, "message": "Berita berhasil diperbarui", "data": updated},
             )
             
         except ValueError as exc:
             print(f"[BERITA_ITEMS][PUT] Validation error: {exc}")
-            send_json(request_handler, 400, {"ok": False, "error": str(exc)})
+            send_json(self, 400, {"ok": False, "error": str(exc)})
             
         except Exception as exc:
             print(f"[BERITA_ITEMS][PUT] Error: {exc}")
             import traceback
             traceback.print_exc()
-            send_json(request_handler, 500, {"ok": False, "error": str(exc)})
+            send_json(self, 500, {"ok": False, "error": str(exc)})
 
-    @staticmethod
-    def do_DELETE(request_handler):
+    def do_DELETE(self):
         """
         DELETE /api/berita_items
         Body: { "id": 1 }
         """
         try:
-            payload = read_json_body(request_handler)
+            payload = read_json_body(self)
             item_id = payload.get("id")
             if not item_id:
                 raise ValueError("Parameter id wajib disertakan")
@@ -336,23 +332,22 @@ class handler(BaseHTTPRequestHandler):
                 raise ValueError(f"Berita dengan id {item_id} tidak ditemukan")
 
             send_json(
-                request_handler,
+                self,
                 200,
                 {"ok": True, "message": "Berita berhasil dihapus"},
             )
             
         except ValueError as exc:
             print(f"[BERITA_ITEMS][DELETE] Validation error: {exc}")
-            send_json(request_handler, 400, {"ok": False, "error": str(exc)})
+            send_json(self, 400, {"ok": False, "error": str(exc)})
             
         except Exception as exc:
             print(f"[BERITA_ITEMS][DELETE] Error: {exc}")
             import traceback
             traceback.print_exc()
-            send_json(request_handler, 500, {"ok": False, "error": str(exc)})
+            send_json(self, 500, {"ok": False, "error": str(exc)})
 
-    @staticmethod
-    def do_OPTIONS(request_handler):
+    def do_OPTIONS(self):
         """Handle CORS preflight"""
-        allow_cors(request_handler, ["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+        allow_cors(self, ["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 

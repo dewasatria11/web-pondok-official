@@ -21,37 +21,36 @@ def _unauthorized(handler):
 
 
 class handler(BaseHTTPRequestHandler):
-    @staticmethod
-    def do_POST(request_handler):
-        if request_handler.command != "POST":
-            handler._method_not_allowed(request_handler)
+    def do_POST(self):
+        if self.command != "POST":
+            self._method_not_allowed()
             return
 
-        auth_header = request_handler.headers.get("Authorization", "")
+        auth_header = self.headers.get("Authorization", "")
         token = auth_header[7:] if auth_header.lower().startswith("bearer ") else None
         if not token or token != ADMIN_API_TOKEN:
-            _unauthorized(request_handler)
+            _unauthorized(self)
             return
 
         try:
-            content_length = int(request_handler.headers.get("Content-Length", 0))
-            raw_body = request_handler.rfile.read(content_length) if content_length else b""
+            content_length = int(self.headers.get("Content-Length", 0))
+            raw_body = self.rfile.read(content_length) if content_length else b""
             payload = json.loads(raw_body.decode("utf-8") or "{}") if raw_body else {}
         except json.JSONDecodeError:
-            request_handler.send_response(400)
-            request_handler.send_header("Content-Type", "application/json")
-            request_handler.send_header("Access-Control-Allow-Origin", "*")
-            request_handler.end_headers()
-            request_handler.wfile.write(json.dumps({"error": "Invalid JSON body"}).encode("utf-8"))
+            self.send_response(400)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(json.dumps({"error": "Invalid JSON body"}).encode("utf-8"))
             return
 
         slug = payload.get("slug")
         if not slug or not isinstance(slug, str):
-            request_handler.send_response(400)
-            request_handler.send_header("Content-Type", "application/json")
-            request_handler.send_header("Access-Control-Allow-Origin", "*")
-            request_handler.end_headers()
-            request_handler.wfile.write(json.dumps({"error": "Invalid slug"}).encode("utf-8"))
+            self.send_response(400)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(json.dumps({"error": "Invalid slug"}).encode("utf-8"))
             return
 
         try:
@@ -95,31 +94,29 @@ class handler(BaseHTTPRequestHandler):
                     on_conflict="section_id,locale",
                 ).execute()
 
-            request_handler.send_response(200)
-            request_handler.send_header("Content-Type", "application/json")
-            request_handler.send_header("Access-Control-Allow-Origin", "*")
-            request_handler.end_headers()
-            request_handler.wfile.write(json.dumps({"ok": True, "section_id": section_id}).encode("utf-8"))
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(json.dumps({"ok": True, "section_id": section_id}).encode("utf-8"))
 
         except Exception as exc:
-            request_handler.send_response(500)
-            request_handler.send_header("Content-Type", "application/json")
-            request_handler.send_header("Access-Control-Allow-Origin", "*")
-            request_handler.end_headers()
-            request_handler.wfile.write(json.dumps({"error": str(exc) or "server error"}).encode("utf-8"))
+            self.send_response(500)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(json.dumps({"error": str(exc) or "server error"}).encode("utf-8"))
 
-    @staticmethod
-    def do_OPTIONS(request_handler):
-        request_handler.send_response(200)
-        request_handler.send_header("Access-Control-Allow-Origin", "*")
-        request_handler.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
-        request_handler.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-        request_handler.end_headers()
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+        self.end_headers()
 
-    @staticmethod
-    def _method_not_allowed(request_handler):
-        request_handler.send_response(405)
-        request_handler.send_header("Content-Type", "application/json")
-        request_handler.send_header("Access-Control-Allow-Origin", "*")
-        request_handler.end_headers()
-        request_handler.wfile.write(json.dumps({"error": "Method not allowed"}).encode("utf-8"))
+    def _method_not_allowed(self):
+        self.send_response(405)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(json.dumps({"error": "Method not allowed"}).encode("utf-8"))

@@ -40,8 +40,7 @@ def _normalize_row(row):
 
 
 class handler(BaseHTTPRequestHandler):
-    @staticmethod
-    def do_GET(request_handler):
+    def do_GET(self):
         try:
             result = (
                 _public_client()
@@ -52,22 +51,21 @@ class handler(BaseHTTPRequestHandler):
             )
             row = result.data[0] if result and result.data else None
             send_json(
-                request_handler,
+                self,
                 200,
                 {"ok": True, "data": _normalize_row(row)},
             )
         except Exception as exc:
             print(f"[MAINTENANCE][GET] Error: {exc}")
             send_json(
-                request_handler,
+                self,
                 500,
                 {"ok": False, "error": "Gagal memuat status maintenance"},
             )
 
-    @staticmethod
-    def do_POST(request_handler):
+    def do_POST(self):
         try:
-            payload = read_json_body(request_handler)
+            payload = read_json_body(self)
             active = bool(payload.get("active"))
             message = (payload.get("message") or "").strip()
             updated_by = (payload.get("updatedBy") or payload.get("updated_by") or "").strip()
@@ -96,20 +94,19 @@ class handler(BaseHTTPRequestHandler):
                 data = result.data[0] if result.data else record
 
             send_json(
-                request_handler,
+                self,
                 200,
                 {"ok": True, "message": "Status maintenance diperbarui", "data": _normalize_row(data)},
             )
         except ValueError as exc:
-            send_json(request_handler, 400, {"ok": False, "error": str(exc)})
+            send_json(self, 400, {"ok": False, "error": str(exc)})
         except Exception as exc:
             print(f"[MAINTENANCE][POST] Error: {exc}")
             send_json(
-                request_handler,
+                self,
                 500,
                 {"ok": False, "error": "Gagal menyimpan status maintenance"},
             )
 
-    @staticmethod
-    def do_OPTIONS(request_handler):
-        allow_cors(request_handler, ["GET", "POST", "OPTIONS"])
+    def do_OPTIONS(self):
+        allow_cors(self, ["GET", "POST", "OPTIONS"])

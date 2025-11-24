@@ -19,22 +19,20 @@ def _admin():
 
 
 class handler(BaseHTTPRequestHandler):
-    @staticmethod
-    def do_GET(request_handler):
+    def do_GET(self):
         try:
             result = _public().table(TABLE_NAME).select("*").limit(1).execute()
             data = result.data[0] if result.data else {}
-            send_json(request_handler, 200, {"ok": True, "data": data})
+            send_json(self, 200, {"ok": True, "data": data})
         except Exception as exc:
             print(f"[KONTAK_SETTINGS][GET] Error: {exc}")
             send_json(
-                request_handler, 500, {"ok": False, "error": f"Gagal mengambil data: {exc}"}
+                self, 500, {"ok": False, "error": f"Gagal mengambil data: {exc}"}
             )
 
-    @staticmethod
-    def do_POST(request_handler):
+    def do_POST(self):
         try:
-            payload = read_json_body(request_handler)
+            payload = read_json_body(self)
             map_url = (payload.get("map_embed_url") or "").strip()
             if not map_url:
                 raise ValueError("map_embed_url wajib diisi")
@@ -60,14 +58,13 @@ class handler(BaseHTTPRequestHandler):
                 data = result.data[0] if result.data else {"map_embed_url": map_url}
 
             send_json(
-                request_handler,
+                self,
                 200,
                 {"ok": True, "message": "Pengaturan kontak tersimpan", "data": data},
             )
         except Exception as exc:
             print(f"[KONTAK_SETTINGS][POST] Error: {exc}")
-            send_json(request_handler, 400, {"ok": False, "error": str(exc)})
+            send_json(self, 400, {"ok": False, "error": str(exc)})
 
-    @staticmethod
-    def do_OPTIONS(request_handler):
-        allow_cors(request_handler, ["GET", "POST", "OPTIONS"])
+    def do_OPTIONS(self):
+        allow_cors(self, ["GET", "POST", "OPTIONS"])

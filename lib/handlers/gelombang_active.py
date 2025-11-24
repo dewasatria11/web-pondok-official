@@ -30,8 +30,7 @@ def _send_json(request_handler, code: int, payload: Dict[str, Any]) -> None:
 
 
 class handler(BaseHTTPRequestHandler):
-    @staticmethod
-    def do_GET(request_handler):
+    def do_GET(self):
         """
         GET /api/gelombang_active
         Returns: { ok: true, data: { id, nama, start_date, end_date, tahun_ajaran, is_active, urutan } | null }
@@ -62,7 +61,7 @@ class handler(BaseHTTPRequestHandler):
             else:
                 print("[GELOMBANG_ACTIVE] No active gelombang found")
             
-            return _send_json(request_handler, 200, {
+            return _send_json(self, 200, {
                 "ok": True,
                 "data": active_gelombang
             })
@@ -71,13 +70,12 @@ class handler(BaseHTTPRequestHandler):
             print(f"[GELOMBANG_ACTIVE] Error: {str(e)}")
             import traceback
             traceback.print_exc()
-            return _send_json(request_handler, 500, {
+            return _send_json(self, 500, {
                 "ok": False,
                 "error": str(e)
             })
     
-    @staticmethod
-    def do_OPTIONS(request_handler):
+    def do_OPTIONS(self):
         """Handle CORS preflight"""
-        return _send_json(request_handler, 204, {})
+        return _send_json(self, 204, {})
 
