@@ -768,7 +768,6 @@
           <div class="col-span-full mt-4">
             <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3">
               <i class="bi bi-file-earmark-arrow-up"></i> <span data-i18n="form.documents.title">Upload Berkas</span>
-              <span class="text-muted" data-i18n="form.documents.optionalTag">(Opsional)</span>
             </h5>
             <p class="text-muted small" data-i18n="form.documents.note">
               Format: PDF, JPG, PNG. Maksimal 2MB per file.
@@ -777,7 +776,7 @@
 
           <div class="col-md-6">
             <label class="form-label">
-              <i class="bi bi-file-pdf"></i> <span data-i18n="form.documents.fields.ijazah.label">Scan Ijazah
+              <i class="bi bi-file-pdf"></i> <span>Foto Ijazah
                 Terakhir</span>
               <span class="text-danger">*</span>
             </label>
@@ -788,7 +787,7 @@
 
           <div class="col-md-6">
             <label class="form-label">
-              <i class="bi bi-file-pdf"></i> <span data-i18n="form.documents.fields.akta.label">Scan Akta
+              <i class="bi bi-file-pdf"></i> <span>Foto Akta
                 Kelahiran</span>
               <span class="text-danger">*</span>
             </label>
@@ -803,6 +802,15 @@
             </label>
             <input type="file" class="form-control" name="fileFoto" accept=".jpg,.jpeg,.png" required />
             <small class="text-muted" data-i18n="form.documents.fields.foto.helper">JPG atau PNG (max 2MB)</small>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">
+              <i class="bi bi-card-image"></i> <span>Foto Kartu Keluarga</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="file" class="form-control" name="fileKK" accept=".jpg,.jpeg,.png,.pdf" required />
+            <small class="text-muted">PDF, JPG, atau PNG (max 2MB)</small>
           </div>
 
           <div class="col-md-6">
@@ -1882,8 +1890,7 @@
         if (json.ok && json.data) {
           activeGelombangName = json.data.nama;
           input.value = activeGelombangName;
-          status.textContent = `Gelombang Aktif: ${json.data.nama}`;
-          status.className = "form-text text-green-600 font-medium";
+
         } else {
           input.value = "TIDAK ADA GELOMBANG AKTIF";
           status.textContent = "Mohon maaf, pendaftaran sedang ditutup.";
@@ -2034,6 +2041,7 @@
           { key: "fileIjazah", labelKey: "form.review.files.ijazah" },
           { key: "fileAkta", labelKey: "form.review.files.akta" },
           { key: "fileFoto", labelKey: "form.review.files.foto" },
+          { key: "fileKK", labelKey: "Foto Kartu Keluarga" },
           { key: "fileBPJS", labelKey: "form.review.files.bpjs" },
         ];
 
@@ -2515,6 +2523,20 @@
             console.log("[UPLOAD] ✓ Foto berhasil");
           } catch (uploadError) {
             console.error("[UPLOAD] ❌ Foto gagal:", uploadError);
+            throw uploadError;
+          }
+        }
+
+        const fileKK = formData.get("fileKK");
+        if (fileKK?.size > 0) {
+          console.log("[UPLOAD] Processing KK...");
+          submitBtn.innerHTML =
+            `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>Upload Kartu Keluarga...`;
+          try {
+            fileUrls.file_kk = await uploadFile(fileKK, "kk", nisn);
+            console.log("[UPLOAD] ✓ KK berhasil");
+          } catch (uploadError) {
+            console.error("[UPLOAD] ❌ KK gagal:", uploadError);
             throw uploadError;
           }
         }

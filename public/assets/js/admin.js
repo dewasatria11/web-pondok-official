@@ -1212,6 +1212,7 @@
         { key: "file_ijazah", label: "Scan Ijazah", icon: "file-pdf" },
         { key: "file_akta", label: "Scan Akta Kelahiran", icon: "file-pdf" },
         { key: "file_foto", label: "Pas Foto 3x4", icon: "image" },
+        { key: "file_kk", label: "Foto Kartu Keluarga", icon: "card-image" },
         { key: "file_bpjs", label: "Kartu BPJS (Opsional)", icon: "file-pdf" },
       ];
       let hasFiles = false;

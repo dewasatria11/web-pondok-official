@@ -37,6 +37,7 @@ class handler(BaseHTTPRequestHandler):
                     file_akta,
                     file_ijazah,
                     file_foto,
+                    file_kk,
                     file_bpjs
                 """)
                 .execute()
@@ -77,6 +78,7 @@ class handler(BaseHTTPRequestHandler):
                 has_file_akta = has_file(item.get('file_akta'))
                 has_file_ijazah = has_file(item.get('file_ijazah'))
                 has_file_foto = has_file(item.get('file_foto'))
+                has_file_kk = has_file(item.get('file_kk'))
                 has_file_bpjs = has_file(item.get('file_bpjs'))
                 
                 rows.append({
@@ -94,6 +96,7 @@ class handler(BaseHTTPRequestHandler):
                     'has_file_akta': has_file_akta,
                     'has_file_ijazah': has_file_ijazah,
                     'has_file_foto': has_file_foto,
+                    'has_file_kk': has_file_kk,
                     'has_file_bpjs': has_file_bpjs,
                 })
             
@@ -121,6 +124,7 @@ class handler(BaseHTTPRequestHandler):
                 'file_akta',  # FIXED: was 'file_akte', should be 'file_akta' to match database
                 'file_ijazah',
                 'file_foto',
+                'file_kk',
                 'file_bpjs'
             ]
 
