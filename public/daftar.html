@@ -13,6 +13,8 @@
     content="Formulir Pendaftaran, PPDSB, Pondok Pesantren Al Ikhsan Beji, Pendaftaran Santri Baru, Beji, Depok" />
   <meta name="theme-color" content="#14532d" />
 
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
@@ -822,6 +824,10 @@
             <small class="text-muted" data-i18n="form.documents.fields.bpjs.helper">PDF, JPG, atau PNG (max 2MB) - Tidak
               wajib</small>
           </div>
+        </div>
+
+        <div class="mt-4">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAACDDkC6MDnS8Ozbo"></div>
         </div>
 
         <div class="mt-4 flex flex-col sm:flex-row gap-2">
@@ -2413,11 +2419,19 @@
         const formData = formDataGlobal;
         const data = {};
 
+        const captchaToken =
+          formData.get("cf-turnstile-response") || formData.get("cf_turnstile_response");
+        if (!captchaToken) {
+          throw new Error("Verifikasi CAPTCHA diperlukan. Silakan selesaikan kotak keamanan.");
+        }
+
         for (let [key, value] of formData.entries()) {
           if (!key.startsWith("file")) {
             data[key] = value;
           }
         }
+
+        data["cf-turnstile-response"] = captchaToken;
 
         // Add gelombang explicitly
         data["gelombang"] = activeGelombangName || "";

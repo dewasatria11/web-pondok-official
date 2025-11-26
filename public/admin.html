@@ -2435,8 +2435,19 @@
                     </div>
 
                     <div class="mb-3">
-                      <label for="brosurButtonUrl" class="form-label">URL Unduhan</label>
-                      <input type="url" class="form-control" id="brosurButtonUrl" placeholder="https://...pdf">
+                      <label for="brosurFile" class="form-label">Upload PDF Brosur</label>
+                      <input type="file" class="form-control" id="brosurFile" accept="application/pdf">
+                      <small class="text-muted d-block mt-1" id="brosurUploadHelp">
+                        Unggah file PDF (maks 8MB). URL unduhan akan diisi otomatis setelah upload.
+                      </small>
+                      <input type="hidden" id="brosurFilePath">
+                      <input type="hidden" id="brosurFileSize">
+                      <input type="hidden" id="brosurFileMime" value="application/pdf">
+                    </div>
+                    <div class="mb-3">
+                      <label for="brosurButtonUrl" class="form-label">URL Unduhan (Otomatis)</label>
+                      <input type="url" class="form-control" id="brosurButtonUrl" placeholder="Hasil upload PDF"
+                        readonly>
                     </div>
                     <div class="mb-3">
                       <label for="brosurIconClass" class="form-label">Kelas Ikon</label>

@@ -51,6 +51,9 @@ class handler(BaseHTTPRequestHandler):
             description_en = (payload.get("description_en") or "").strip()
             button_label_en = (payload.get("button_label_en") or "Download PDF").strip()
             button_url = (payload.get("button_url") or "").strip()
+            file_path = (payload.get("file_path") or "").strip()
+            file_mime = (payload.get("file_mime") or "").strip()
+            file_size = payload.get("file_size")
             icon_class = (payload.get("icon_class") or "bi bi-file-earmark-arrow-down").strip()
             order_index = payload.get(ORDER_FIELD)
 
@@ -86,6 +89,9 @@ class handler(BaseHTTPRequestHandler):
                 "description_en": description_en,
                 "button_label_en": button_label_en or "Download PDF",
                 "button_url": button_url,
+                "file_path": file_path or None,
+                "file_mime": file_mime or None,
+                "file_size": file_size if file_size is not None else None,
                 "icon_class": icon_class or "bi bi-file-earmark-arrow-down",
                 ORDER_FIELD: order_index,
             }
@@ -154,6 +160,13 @@ class handler(BaseHTTPRequestHandler):
                 update_fields["button_label_en"] = payload["button_label_en"].strip() or "Download PDF"
             if "button_url" in payload and payload["button_url"]:
                 update_fields["button_url"] = payload["button_url"].strip()
+            if "file_path" in payload:
+                update_fields["file_path"] = (payload.get("file_path") or "").strip() or None
+            if "file_mime" in payload:
+                update_fields["file_mime"] = (payload.get("file_mime") or "").strip() or None
+            if "file_size" in payload:
+                file_size_val = payload.get("file_size")
+                update_fields["file_size"] = int(file_size_val) if file_size_val is not None else None
             if "icon_class" in payload and payload["icon_class"]:
                 update_fields["icon_class"] = payload["icon_class"].strip()
             if ORDER_FIELD in payload and payload[ORDER_FIELD] is not None:

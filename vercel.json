@@ -130,6 +130,10 @@
       "destination": "/api/index?action=brosur_items"
     },
     {
+      "source": "/api/brosur_upload",
+      "destination": "/api/index?action=brosur_upload"
+    },
+    {
       "source": "/api/kontak_items",
       "destination": "/api/index?action=kontak_items"
     },

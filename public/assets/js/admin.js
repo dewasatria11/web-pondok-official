@@ -4363,6 +4363,23 @@ Jazakumullahu khairan,
     button_label_en: resolveBrosurField(record, "button_label", "en"),
   });
 
+  const setBrosurUploadHelp = (text) => {
+    const helpEl = $("#brosurUploadHelp");
+    if (helpEl) helpEl.textContent = text;
+  };
+
+  const formatBytes = (bytes = 0) => {
+    if (!bytes || Number.isNaN(bytes)) return "";
+    const units = ["B", "KB", "MB", "GB"];
+    let size = bytes;
+    let unit = 0;
+    while (size >= 1024 && unit < units.length - 1) {
+      size /= 1024;
+      unit += 1;
+    }
+    return `${size.toFixed(size >= 10 || size === Math.floor(size) ? 0 : 1)} ${units[unit]}`;
+  };
+
   const collectBrosurValues = () =>
     BROSUR_LANGS.reduce((acc, lang) => {
       acc[lang] = {
@@ -4400,6 +4417,14 @@ Jazakumullahu khairan,
     if (form) form.reset();
     const idField = $("#brosurId");
     if (idField) idField.value = "";
+    const filePathField = $("#brosurFilePath");
+    const fileSizeField = $("#brosurFileSize");
+    const fileMimeField = $("#brosurFileMime");
+    const fileInput = $("#brosurFile");
+    if (filePathField) filePathField.value = "";
+    if (fileSizeField) fileSizeField.value = "";
+    if (fileMimeField) fileMimeField.value = "application/pdf";
+    if (fileInput) fileInput.value = "";
     BROSUR_LANGS.forEach((lang) => {
       const titleField = getBrosurInput("title", lang);
       if (titleField) titleField.value = "";
@@ -4417,6 +4442,7 @@ Jazakumullahu khairan,
     if (urlField) urlField.value = "";
     const btn = $("#btnSaveBrosur");
     if (btn) btn.innerHTML = '<i class="bi bi-save"></i> Simpan Brosur';
+    setBrosurUploadHelp("Unggah file PDF (maks 8MB). URL unduhan akan diisi otomatis setelah upload.");
     setBrosurActiveLang("id");
   }
 
@@ -4441,6 +4467,18 @@ Jazakumullahu khairan,
     });
     const urlField = $("#brosurButtonUrl");
     if (urlField) urlField.value = item.button_url || "";
+    const filePathField = $("#brosurFilePath");
+    if (filePathField) filePathField.value = item.file_path || "";
+    const fileSizeField = $("#brosurFileSize");
+    if (fileSizeField) fileSizeField.value = item.file_size || "";
+    const fileMimeField = $("#brosurFileMime");
+    if (fileMimeField) fileMimeField.value = item.file_mime || "application/pdf";
+    const fileName = (item.file_path || "").split("/").pop() || "";
+    if (fileName) {
+      setBrosurUploadHelp(`File tersimpan: ${fileName}${item.file_size ? ` (${formatBytes(item.file_size)})` : ""}`);
+    } else {
+      setBrosurUploadHelp("Unggah file PDF (maks 8MB). URL unduhan akan diisi otomatis setelah upload.");
+    }
     const iconField = $("#brosurIconClass");
     if (iconField) iconField.value = item.icon_class || "bi bi-file-earmark-arrow-down";
     const btn = $("#btnSaveBrosur");
@@ -4544,6 +4582,9 @@ Jazakumullahu khairan,
     const id = parseId($("#brosurId")?.value);
     const values = collectBrosurValues();
     const buttonUrl = ($("#brosurButtonUrl")?.value || "").trim();
+    const filePath = ($("#brosurFilePath")?.value || "").trim();
+    const fileSize = parseInt($("#brosurFileSize")?.value || "0", 10) || null;
+    const fileMime = ($("#brosurFileMime")?.value || "").trim() || "application/pdf";
     const iconClass = ($("#brosurIconClass")?.value || "").trim();
 
     const missing = BROSUR_LANGS.filter(
@@ -4579,6 +4620,9 @@ Jazakumullahu khairan,
         description_en: values.en.description,
         button_label_en: values.en.button_label || "Download PDF",
         button_url: buttonUrl,
+        file_path: filePath || null,
+        file_size: fileSize,
+        file_mime: fileMime || null,
         icon_class: iconClass || "bi bi-file-earmark-arrow-down",
       };
       let message = "Brosur ditambahkan";
@@ -4685,6 +4729,70 @@ Jazakumullahu khairan,
       "Urutan brosur diperbarui",
       loadBrosurItems
     );
+  }
+
+  async function handleBrosurFileChange(event) {
+    const input = event?.target;
+    const file = input?.files?.[0];
+    if (!file) {
+      setBrosurUploadHelp("Unggah file PDF (maks 8MB). URL unduhan akan diisi otomatis setelah upload.");
+      return;
+    }
+
+    const isPdf =
+      file.type === "application/pdf" ||
+      file.name.toLowerCase().endsWith(".pdf");
+    if (!isPdf) {
+      safeToastr.warning("Hanya file PDF yang diperbolehkan");
+      input.value = "";
+      return;
+    }
+    const maxBytes = 8 * 1024 * 1024;
+    if (file.size > maxBytes) {
+      safeToastr.warning("Ukuran PDF maksimal 8MB");
+      input.value = "";
+      return;
+    }
+
+    try {
+      setBrosurUploadHelp(`Mengunggah ${file.name} (${formatBytes(file.size)})...`);
+      input.disabled = true;
+      const base64 = await fileToBase64(file);
+      const result = await jsonRequest("/api/brosur_upload", {
+        method: "POST",
+        body: {
+          file: base64,
+          fileName: file.name,
+        },
+      });
+
+      $("#brosurButtonUrl")?.setAttribute("value", result.url || "");
+      const urlField = $("#brosurButtonUrl");
+      if (urlField) urlField.value = result.url || "";
+      const pathField = $("#brosurFilePath");
+      if (pathField) pathField.value = result.path || "";
+      const sizeField = $("#brosurFileSize");
+      if (sizeField) sizeField.value = result.size || file.size || "";
+      const mimeField = $("#brosurFileMime");
+      if (mimeField) mimeField.value = result.mime || "application/pdf";
+
+      setBrosurUploadHelp(`File tersimpan: ${file.name} (${formatBytes(result.size || file.size)})`);
+      safeToastr.success("PDF berhasil diupload, URL sudah diisi otomatis.");
+    } catch (error) {
+      console.error("[BROSUR] Upload error:", error);
+      safeToastr.error(error.message || "Gagal upload brosur");
+      input.value = "";
+      $("#brosurButtonUrl")?.setAttribute("value", "");
+      const urlField = $("#brosurButtonUrl");
+      if (urlField) urlField.value = "";
+      $("#brosurFilePath")?.setAttribute("value", "");
+      $("#brosurFileSize")?.setAttribute("value", "");
+      const mimeField = $("#brosurFileMime");
+      if (mimeField) mimeField.value = "application/pdf";
+      setBrosurUploadHelp("Unggah file PDF (maks 8MB). URL unduhan akan diisi otomatis setelah upload.");
+    } finally {
+      if (input) input.disabled = false;
+    }
   }
 
   /* ---------- Kontak ---------- */
@@ -5266,6 +5374,7 @@ Jazakumullahu khairan,
           setBrosurActiveLang(button.dataset.brosurLangButton)
         );
       });
+    $("#brosurFile")?.addEventListener("change", handleBrosurFileChange);
     setBrosurActiveLang("id");
 
     $("#kontakForm")?.addEventListener("submit", handleKontakSubmit);

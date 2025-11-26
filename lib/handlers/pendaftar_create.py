@@ -1,8 +1,30 @@
 from http.server import BaseHTTPRequestHandler
 import json
 import re
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
+import requests
 from lib._supabase import supabase_client
+
+
+def verify_turnstile(token: str) -> Tuple[bool, str]:
+    """
+    Verifikasi token Cloudflare Turnstile.
+    Return (success, message)
+    """
+    secret_key = "0x4AAAAAACDDkPTYaJhn5UrQqHPSd5xEEEE"
+    url = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
+
+    if not token:
+        return False, "Token CAPTCHA tidak ditemukan"
+
+    try:
+        resp = requests.post(url, data={"secret": secret_key, "response": token}, timeout=10)
+        resp.raise_for_status()
+        result = resp.json()
+        return bool(result.get("success")), result.get("error-codes", [])
+    except Exception as exc:
+        print(f"[TURNSTILE] Error: {exc}")
+        return False, "Gagal memverifikasi CAPTCHA"
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -16,6 +38,21 @@ class handler(BaseHTTPRequestHandler):
             content_length = int(self.headers.get('Content-Length', 0))
             body = self.rfile.read(content_length).decode('utf-8')
             data = json.loads(body)
+
+            # Verify Cloudflare Turnstile
+            captcha_token = data.get("cf-turnstile-response") or data.get("cf_turnstile_response")
+            is_human, captcha_message = verify_turnstile(captcha_token)
+            if not is_human:
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "ok": False,
+                    "error": "Verifikasi CAPTCHA gagal. Silakan coba lagi.",
+                    "details": captcha_message
+                }).encode())
+                return
             
             # Validasi data wajib (NIK Calon is optional based on schema)
             required_fields = [

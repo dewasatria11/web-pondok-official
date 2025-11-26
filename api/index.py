@@ -204,6 +204,13 @@ class handler(BaseHTTPRequestHandler):
                 else:
                     BrosurItemsHandler.do_OPTIONS(self)
 
+            elif action == 'brosur_upload':
+                from lib.handlers.brosur_upload import handler as BrosurUploadHandler
+                if self.command == 'POST':
+                    BrosurUploadHandler.do_POST(self)
+                else:
+                    BrosurUploadHandler.do_OPTIONS(self)
+
             elif action == 'kontak_items':
                 from lib.handlers.kontak_items import handler as KontakItemsHandler
                 if self.command == 'GET':
