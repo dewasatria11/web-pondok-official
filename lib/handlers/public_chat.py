@@ -2,78 +2,39 @@ from http.server import BaseHTTPRequestHandler
 from lib._supabase import supabase_client
 from lib.handlers._crud_helpers import send_json, read_json_body, allow_cors
 
+def handle_chat_search(supa, query_text):
+    """
+    Cari jawaban lewat RPC PostgreSQL `search_faq`.
+    Jika skor kemiripan teratas di bawah ambang batas, anggap tidak ada jawaban.
+    """
+    try:
+        response = supa.rpc('search_faq', {'query_text': query_text}).execute()
+        matches = response.data or []
+
+        if not matches:
+            return []
+
+        try:
+            top_score = float(matches[0].get('similarity_score') or 0)
+        except (TypeError, ValueError):
+            top_score = 0
+
+        return matches if top_score > 0.25 else []
+    except Exception as e:
+        print(f"Error searching FAQ: {e}")
+        return []
+
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
         try:
             body = read_json_body(self)
             query = body.get("query", "").strip()
-            
+
             if not query:
                 return send_json(self, 400, {"ok": False, "error": "Query is required"})
 
-            supa = supabase_client() # Anon key is fine for reading
-            
-            # 1. Primary Search: Full Text Search on 'question'
-            # Good for natural language queries
-            try:
-                res = supa.table("faq_kb") \
-                    .select("*") \
-                    .textSearch("question", query, {"type": "websearch", "config": "indonesian"}) \
-                    .limit(3) \
-                    .execute()
-                matches = res.data
-            except Exception as ts_err:
-                print(f"Primary search error: {ts_err}")
-                matches = []
-            
-            # 2. Secondary Search: Full Text Search on 'keywords'
-            # If question didn't match, maybe keywords will
-            if not matches:
-                try:
-                    res_kw = supa.table("faq_kb") \
-                        .select("*") \
-                        .textSearch("keywords", query, {"type": "websearch", "config": "indonesian"}) \
-                        .limit(3) \
-                        .execute()
-                    matches = res_kw.data
-                except Exception as kw_err:
-                    print(f"Secondary search error: {kw_err}")
-                    matches = []
-
-            # 3. Fallback: Word-based partial match (AND logic)
-            # Splits query into words and ensures ALL words exist in either question OR keywords
-            if not matches:
-                # Sanitize and split words
-                words = [w for w in "".join(c for c in query if c.isalnum() or c.isspace()).split() if len(w) >= 2]
-                
-                if words:
-                    try:
-                        req = supa.table("faq_kb").select("*")
-                        for word in words:
-                            # Use % for wildcard. If * caused 500, we revert to %.
-                            # We sanitize word to avoid injection or syntax errors.
-                            req = req.or_(f"question.ilike.%{word}%,keywords.ilike.%{word}%")
-                        
-                        res_fallback = req.limit(3).execute()
-                        matches = res_fallback.data
-                    except Exception as fallback_err:
-                        print(f"Fallback search error: {fallback_err}")
-                        # Continue to next fallback if this fails
-
-            # 4. Last Resort: Any word match (OR logic)
-            if not matches and len(words) > 1:
-                 try:
-                     req = supa.table("faq_kb").select("*")
-                     or_conditions = []
-                     for word in words:
-                         or_conditions.append(f"question.ilike.%{word}%")
-                         or_conditions.append(f"keywords.ilike.%{word}%")
-                     
-                     req = req.or_(",".join(or_conditions))
-                     res_last = req.limit(1).execute()
-                     matches = res_last.data
-                 except Exception as last_err:
-                     print(f"Last resort search error: {last_err}")
+            supa = supabase_client()  # Anon key is fine for reading
+            matches = handle_chat_search(supa, query)
 
             return send_json(self, 200, {
                 "ok": True,
