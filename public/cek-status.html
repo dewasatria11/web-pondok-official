@@ -310,12 +310,24 @@
     .payment-notification {
       animation: payment-pulse 2s ease-in-out 3;
     }
+
+    /* Tambah jarak vertikal modal agar tidak menempel ke navbar pada layar kecil */
+    .modal-panel {
+      margin-top: 24px;
+      margin-bottom: 24px;
+    }
+    @media (min-width: 768px) {
+      .modal-panel {
+        margin-top: 32px;
+        margin-bottom: 32px;
+      }
+    }
   </style>
 </head>
 
 <body class="min-h-screen flex flex-col bg-gray-100 text-gray-800">
   <!-- HEADER -->
-  <header class="relative z-50">
+  <header class="relative z-0">
     <div id="superHeader" class="bg-yellow-300 text-gray-900 text-xs tracking-wide">
       <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 lg:px-8 py-1.5">
         <button type="button"
@@ -344,7 +356,7 @@
     </div>
   </header>
   <!-- NAVBAR -->
-  <nav class="sticky top-0 z-[10] bg-white/95 backdrop-blur supports-backdrop-blur:bg-white/85 shadow-lg"
+  <nav class="sticky top-0 z-[20] bg-white/95 backdrop-blur supports-backdrop-blur:bg-white/85 shadow-lg"
     data-nav-root>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16 min-h-[64px]">
@@ -471,7 +483,7 @@
       <h1 class="hero-title" data-i18n="cekStatus.hero.title">
         Cek Status Pendaftaran Santri
       </h1>
-      <p class="hero-desc" data-i18n="cekStatus.hero.subtitle">
+      <p class="hero-desc text-yellow-200" data-i18n="cekStatus.hero.subtitle">
         Masukkan NISN Anda untuk melihat status terbaru pendaftaran Pondok Pesantren Al Ikhsan Beji.
       </p>
     </div>
@@ -519,10 +531,10 @@
 
   <!-- Modal: Hasil Cek Status -->
   <div id="modalCekStatus" class="modal-hidden fixed inset-0 z-[1000] flex items-center justify-center">
-    <div class="absolute inset-0 bg-black/50"
+    <div class="absolute inset-0 bg-black/70"
       onclick="document.getElementById('modalCekStatus').classList.remove('modal-visible'); document.getElementById('modalCekStatus').classList.add('modal-hidden');">
     </div>
-    <div class="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-[92vw] max-h-[85vh] overflow-y-auto">
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-[92vw] max-h-[85vh] overflow-y-auto modal-panel">
       <div
         class="px-6 py-4 bg-gradient-to-br from-brand-700 to-brand-800 text-white rounded-t-2xl flex items-center justify-between">
         <h5 class="font-semibold"><i class="bi bi-clipboard-check"></i> <span data-i18n="cekStatus.modal.title">Hasil
@@ -610,8 +622,8 @@
 
   <!-- Modal: Bukti Pembayaran -->
   <div id="paymentProofModal" class="modal-hidden fixed inset-0 z-[1001] flex items-center justify-center">
-    <div class="absolute inset-0 bg-black/60" data-close-payment-modal></div>
-    <div class="relative bg-white w-full max-w-5xl mx-4 rounded-2xl shadow-2xl overflow-hidden">
+    <div class="absolute inset-0 bg-black/70" data-close-payment-modal></div>
+    <div class="relative bg-white w-full max-w-5xl mx-4 rounded-2xl shadow-2xl overflow-hidden modal-panel">
       <div class="flex items-center justify-between px-6 py-4 bg-emerald-700 text-white">
         <div>
           <h5 class="font-semibold text-lg" data-i18n="cekStatus.payment.modal.title">Detail Bukti Pembayaran</h5>
