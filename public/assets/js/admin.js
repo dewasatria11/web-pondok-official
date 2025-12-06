@@ -384,13 +384,12 @@
     } else if (tab === "pendaftar") {
       loadPendaftar();
     } else if (tab === "statistik") {
-      // Statistik sudah auto-update dari loadPendaftar()
-      // Hanya reload jika belum ada data
+      console.log("[STATISTIK] Opening statistik tab, refreshing charts for visible layout");
+      // Pastikan data terload saat tab dibuka supaya Chart.js mendapatkan lebar yang benar
+      loadStatistikData(true);
       if (allPendaftarData.length === 0) {
-        console.log("[STATISTIK] No cached data, loading...");
+        console.log("[STATISTIK] No cached data, loading pendaftar...");
         loadPendaftar();
-      } else {
-        console.log("[STATISTIK] Using cached data:", allPendaftarData.length, "items");
       }
     } else if (tab === "gelombang") {
       // Load gelombang data
@@ -443,6 +442,24 @@
   let cachedVerifiedPayments = null;
   let lastStatsFetchTime = 0;
   const STATS_CACHE_DURATION = 60000; // 1 menit
+
+  const isStatistikTabVisible = () => {
+    const tab = document.getElementById("tab-statistik");
+    return !!tab && tab.style.display !== "none";
+  };
+
+  function scheduleStatChartResize() {
+    if (!isStatistikTabVisible()) return;
+    requestAnimationFrame(() => {
+      if (!window.__chartStore) return;
+      Object.values(window.__chartStore).forEach((chart) => {
+        if (chart && typeof chart.resize === "function") {
+          chart.resize();
+          chart.update("resize");
+        }
+      });
+    });
+  }
 
   function invalidateStatisticsCache() {
     cachedAllDataForStats = null;
@@ -639,18 +656,30 @@
   }
 
   // Fungsi terpisah untuk load statistik (non-blocking)
-  async function loadStatistikData() {
+  async function loadStatistikData(forceRefresh = false) {
     try {
       const now = Date.now();
+      const hasCache = cachedAllDataForStats && cachedVerifiedPayments;
+      const cacheFresh = hasCache && (now - lastStatsFetchTime < STATS_CACHE_DURATION);
 
       // Gunakan cache jika masih valid
-      if (cachedAllDataForStats && cachedVerifiedPayments && (now - lastStatsFetchTime < STATS_CACHE_DURATION)) {
+      if (cacheFresh && !forceRefresh) {
         console.log('[STATISTIK] Using cached data');
         calculateAndUpdateStatistics(cachedAllDataForStats, cachedVerifiedPayments);
+        scheduleStatChartResize();
         return;
       }
 
-      console.log('[STATISTIK] Fetching fresh data...');
+      if (forceRefresh && hasCache) {
+        console.log('[STATISTIK] Using cached data (force refresh for visible tab)');
+        calculateAndUpdateStatistics(cachedAllDataForStats, cachedVerifiedPayments);
+        scheduleStatChartResize();
+        if (cacheFresh) {
+          return;
+        }
+      }
+
+      console.log('[STATISTIK] Fetching fresh data' + (forceRefresh ? ' (forced refresh)' : '') + '...');
 
       // Fetch ALL data untuk statistik (tanpa pagination)
       const rAll = await fetch("/api/pendaftar_list?page=1&pageSize=1000");
@@ -677,10 +706,11 @@
       // Cache hasil
       cachedAllDataForStats = allDataForStats;
       cachedVerifiedPayments = verifiedPayments;
-      lastStatsFetchTime = now;
+      lastStatsFetchTime = Date.now();
 
       // Calculate dan update statistik
       calculateAndUpdateStatistics(allDataForStats, verifiedPayments);
+      scheduleStatChartResize();
 
     } catch (error) {
       console.error('[STATISTIK] Error loading statistics:', error);
