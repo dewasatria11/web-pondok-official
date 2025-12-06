@@ -1269,11 +1269,6 @@
             <i class="bi bi-tools"></i> Mode Maintenance
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-tab="faq" onclick="switchTab('faq')">
-            <i class="bi bi-chat-dots-fill"></i> FAQ Bot
-          </a>
-        </li>
       </ul>
 
       <!-- Sidebar Footer Buttons - Fixed at reasonable position -->
@@ -1298,33 +1293,6 @@
     <!-- Main Content -->
     <main class="flex-grow-1">
       <section class="content-area">
-        <!-- Tab: FAQ Bot -->
-        <div id="tab-faq" class="tab-content" style="display:none;">
-          <div class="page-header">
-            <h2><i class="bi bi-chat-dots-fill"></i> FAQ Chatbot</h2>
-            <p>Kelola pengetahuan (Knowledge Base) untuk chatbot otomatis.</p>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <i class="bi bi-upload"></i> Import FAQ dari CSV
-            </div>
-            <div class="card-body">
-              <div class="alert alert-info">
-                <strong>Format CSV:</strong> File harus memiliki kolom:
-                <code>Question, Answer, Keywords (opsional)</code>.<br>
-                Upload file CSV untuk <strong>mengganti semua</strong> data FAQ yang ada saat ini.
-              </div>
-              <div class="mb-3">
-                <label for="faqCsvFile" class="form-label">Pilih File CSV</label>
-                <input class="form-control" type="file" id="faqCsvFile" accept=".csv">
-              </div>
-              <button id="btnUploadFaq" class="btn btn-primary" onclick="uploadFaqCsv()">
-                <i class="bi bi-cloud-upload"></i> Upload & Replace All
-              </button>
-            </div>
-          </div>
-        </div>
-
         <!-- Tab: Pendaftar -->
         <div id="tab-pendaftar" class="tab-content active">
           <div class="page-header d-flex justify-content-between align-items-center">
@@ -3142,7 +3110,6 @@
 
   <!-- Admin JS (load last, after all dependencies) - Async to prevent blocking -->
   <script defer src="/assets/js/admin.js?v=brosur_upload_2"></script>
-  <script defer src="/assets/js/admin_faq.js"></script>
   <script defer src="/assets/js/pwa.js"></script>
 
   <!-- DEBUG: Test if admin.js loaded successfully -->
@@ -3183,6 +3150,144 @@
       }
     });
   </script>
+
+  <style>
+  #chat-bubble {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #1e88e5;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 9999;
+  }
+
+  #chat-box {
+    position: fixed;
+    bottom: 95px;
+    right: 20px;
+    width: 320px;
+    height: 420px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 9999;
+    border: 1px solid #ddd;
+  }
+
+  #chat-header {
+    background: #1e88e5;
+    color: white;
+    padding: 12px;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  #chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 14px;
+  }
+
+  .msg-user {
+    background: #e0f2ff;
+    padding: 8px 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    text-align: right;
+  }
+
+  .msg-bot {
+    background: #f1f1f1;
+    padding: 8px 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    text-align: left;
+  }
+
+  #chat-input-area {
+    display: flex;
+    border-top: 1px solid #ddd;
+  }
+
+  #chat-input {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  #chat-send {
+    width: 60px;
+    border: none;
+    background: #1e88e5;
+    color: white;
+    cursor: pointer;
+  }
+</style>
+
+<div id="chat-bubble">💬</div>
+
+<div id="chat-box">
+  <div id="chat-header">Chat Pondok</div>
+  <div id="chat-messages"></div>
+
+  <div id="chat-input-area">
+    <input type="text" id="chat-input" placeholder="Tulis pesan...">
+    <button id="chat-send">Kirim</button>
+  </div>
+</div>
+
+<script>
+  const bubble = document.getElementById("chat-bubble");
+  const box = document.getElementById("chat-box");
+  const messages = document.getElementById("chat-messages");
+  const input = document.getElementById("chat-input");
+  const sendBtn = document.getElementById("chat-send");
+
+  bubble.onclick = () => {
+    box.style.display = box.style.display === "flex" ? "none" : "flex";
+  };
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    messages.innerHTML += `<div class="msg-user">${text}</div>`;
+    messages.scrollTop = messages.scrollHeight;
+    input.value = "";
+
+    const res = await fetch("https://pondok-chatbot.dewasatriaaa.workers.dev/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text })
+    });
+
+    const data = await res.json();
+    const reply = data.reply || "Maaf, terjadi kesalahan.";
+
+    messages.innerHTML += `<div class="msg-bot">${reply}</div>`;
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  sendBtn.onclick = sendMessage;
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") sendMessage();
+  });
+</script>
+
 </body>
 
 </html>
