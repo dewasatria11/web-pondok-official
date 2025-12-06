@@ -391,6 +391,9 @@
         console.log("[STATISTIK] No cached data, loading pendaftar...");
         loadPendaftar();
       }
+      setTimeout(() => {
+        scheduleStatChartResize();
+      }, 150);
     } else if (tab === "gelombang") {
       // Load gelombang data
       loadGelombangData();
@@ -442,6 +445,7 @@
   let cachedVerifiedPayments = null;
   let lastStatsFetchTime = 0;
   const STATS_CACHE_DURATION = 60000; // 1 menit
+  let latestStatChartData = null;
 
   const isStatistikTabVisible = () => {
     const tab = document.getElementById("tab-statistik");
@@ -460,6 +464,11 @@
       });
     });
   }
+
+  // Pastikan grafik ikut menyesuaikan saat window diubah ukurannya (desktop)
+  window.addEventListener("resize", () => {
+    scheduleStatChartResize();
+  });
 
   function invalidateStatisticsCache() {
     cachedAllDataForStats = null;
@@ -711,6 +720,7 @@
       // Calculate dan update statistik
       calculateAndUpdateStatistics(allDataForStats, verifiedPayments);
       scheduleStatChartResize();
+      renderCachedChartsIfVisible();
 
     } catch (error) {
       console.error('[STATISTIK] Error loading statistics:', error);
@@ -980,6 +990,22 @@
     console.log("Gender (total):", { L: totalGenderL, P: totalGenderP });
     console.log("[STATISTIK] ========================================");
 
+    // Simpan payload grafik agar bisa dirender ulang saat tab terlihat
+    latestStatChartData = {
+      asrama: {
+        data: [totalAsrama, hanyaSekolahTotal],
+        labels: ["Asrama", "Non Asrama"],
+        colors: ["#4caf50", "#ff9800"],
+        title: "Asrama vs Non Asrama",
+      },
+      gender: {
+        data: [totalGenderL, totalGenderP],
+        labels: ["Laki-laki", "Perempuan"],
+        colors: ["#2196f3", "#e91e63"],
+        title: "Komposisi Gender",
+      },
+    };
+
     // Pasang ke DOM
     const mapSet = (m) =>
       Object.entries(m).forEach(([id, val]) => setText(id, val));
@@ -1016,6 +1042,14 @@
         "id-ID"
       )}`;
 
+    // Render charts (hanya jika tab terlihat)
+    renderCachedChartsIfVisible();
+  }
+
+  function renderCachedChartsIfVisible() {
+    if (!isStatistikTabVisible()) return;
+    if (!latestStatChartData) return;
+
     // Render charts
     const renderPie = (ctx, data, labels, colors, existingChartRef, title) => {
       if (!ctx) return existingChartRef;
@@ -1024,7 +1058,11 @@
         existingChartRef.data.datasets[0].data = data;
         existingChartRef.data.datasets[0].backgroundColor = colors;
         existingChartRef.options.plugins.title.text = title;
-        existingChartRef.update();
+        // Force resize + update to fix charts yang dibuat saat tab tersembunyi
+        if (typeof existingChartRef.resize === "function") {
+          existingChartRef.resize();
+        }
+        existingChartRef.update("resize");
         return existingChartRef;
       }
       return new Chart(ctx, {

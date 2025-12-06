@@ -466,6 +466,27 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
     }
 
+    /* Chart Containers */
+    .chart-card-body {
+      position: relative;
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chart-card-body canvas {
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 240px;
+    }
+
+    @media (min-width: 1200px) {
+      .chart-card-body {
+        min-height: 340px;
+      }
+    }
+
 
     /* ============================================
        RESPONSIVE DESIGN (Mobile-First Approach)
@@ -1525,8 +1546,8 @@
                     <div class="card-header" style="background:var(--info-gradient)">
                       <h5 class="mb-0 text-white"><i class="bi bi-people-fill"></i> Asrama vs Non Asrama</h5>
                     </div>
-                    <div class="card-body">
-                      <canvas id="chartAsrama" height="200" aria-label="Chart Asrama" role="img"></canvas>
+                    <div class="card-body chart-card-body">
+                      <canvas id="chartAsrama" aria-label="Chart Asrama" role="img"></canvas>
                     </div>
                   </div>
                 </div>
@@ -1535,8 +1556,8 @@
                     <div class="card-header" style="background:var(--info-gradient)">
                       <h5 class="mb-0 text-white"><i class="bi bi-gender-ambiguous"></i> Gender (L vs P)</h5>
                     </div>
-                    <div class="card-body">
-                      <canvas id="chartGender" height="200" aria-label="Chart Gender" role="img"></canvas>
+                    <div class="card-body chart-card-body">
+                      <canvas id="chartGender" aria-label="Chart Gender" role="img"></canvas>
                     </div>
                   </div>
                 </div>
