@@ -416,6 +416,12 @@
       overflow: hidden;
     }
 
+    /* Hide navbar and header when modal is open */
+    body.modal-open nav,
+    body.modal-open header {
+      display: none !important;
+    }
+
     /* Mobile responsive modal */
     @media (max-width: 640px) {
       .modal-layer {
