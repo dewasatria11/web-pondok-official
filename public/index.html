@@ -773,75 +773,119 @@
 
   <!-- MAIN -->
   <main class="flex-1">
-    <!-- HERO SECTION - SMPDISS Style -->
-    <section class="hero-smpdiss" id="heroSection">
-      <!-- Mint/Green Gradient Background -->
-      <div class="hero-bg-gradient"></div>
+    <!-- HERO SECTION - SMPDISS Style Carousel -->
+    <section class="hero-carousel" id="heroSection">
+      <!-- Light Mint/Green Background -->
+      <div class="hero-bg"></div>
 
       <!-- Decorative Elements -->
-      <div class="hero-decoration hero-decoration-1"></div>
-      <div class="hero-decoration hero-decoration-2"></div>
+      <div class="hero-decor hero-decor-1"></div>
+      <div class="hero-decor hero-decor-2"></div>
 
-      <!-- Hero Main Content -->
-      <div class="hero-container">
-        <!-- Photo Card Section -->
-        <div class="hero-photo-section">
-          <!-- Left Arrow -->
-          <button type="button" class="hero-nav-arrow hero-nav-prev fade-in" aria-label="Previous slide">
-            <i class="bi bi-chevron-left"></i>
-          </button>
-
-          <!-- Photo Card -->
-          <div class="hero-photo-card fade-up">
-            <div class="hero-photo-frame">
-              <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=400&h=500&fit=crop"
-                alt="Santri Al Ikhsan Beji" loading="eager" />
-            </div>
-            <div class="hero-photo-badge">
-              <i class="bi bi-mortarboard-fill"></i>
-              <span>Santri Berprestasi</span>
-            </div>
+      <!-- Hero Main Container -->
+      <div class="hero-wrapper">
+        <!-- LEFT: Text Content Area -->
+        <div class="hero-text-area">
+          <!-- Slide 1 Text (Active by default) -->
+          <div class="hero-slide-text hero-slide-text--active" data-slide="0">
+            <p class="hero-arabic-text">العِلْمُ نُورٌ وَالجَهْلُ ظَلامٌ</p>
+            <h1 class="hero-title">
+              Penerimaan Peserta Didik Baru<br>
+              <span class="hero-title-highlight">MTs & MA Al Ikhsan Beji</span>
+            </h1>
+            <p class="hero-desc">
+              Bergabunglah menjadi santri Pondok Pesantren Al Ikhsan Beji.
+              Pendidikan islami terpadu dengan pembinaan akhlak, tahfidz Al-Qur'an,
+              dan ilmu pengetahuan yang membentuk generasi Qur'ani dan berprestasi.
+            </p>
+            <a href="/daftar.html" class="hero-cta">
+              <i class="bi bi-pencil-square"></i>
+              <span>Daftar Sekarang</span>
+            </a>
           </div>
 
-          <!-- Right Arrow -->
-          <button type="button" class="hero-nav-arrow hero-nav-next fade-in" aria-label="Next slide">
-            <i class="bi bi-chevron-right"></i>
-          </button>
-        </div>
+          <!-- Slide 2 Text -->
+          <div class="hero-slide-text" data-slide="1">
+            <p class="hero-arabic-text">مَنْ جَدَّ وَجَدَ</p>
+            <h1 class="hero-title">
+              Karakter Islami yang Kuat<br>
+              <span class="hero-title-highlight">& Prestasi Akademik Unggul</span>
+            </h1>
+            <p class="hero-desc">
+              Pembinaan akhlakul karimah, program tahfidz Al-Qur'an intensif,
+              dan disiplin santri yang membentuk pribadi berakhlak mulia
+              serta berprestasi di bidang akademik maupun non-akademik.
+            </p>
+            <a href="/brosur.html" class="hero-cta">
+              <i class="bi bi-book"></i>
+              <span>Lihat Program</span>
+            </a>
+          </div>
 
-        <!-- Text Content Section -->
-        <div class="hero-text-block">
-          <!-- Arabic Tagline -->
-          <p class="hero-arabic fade-in">العلم نور والجهل ظلام</p>
-
-          <!-- Main Headline -->
-          <h1 class="hero-headline fade-up">
-            <span class="hero-headline-main" data-i18n="hero.headingMain">Penerimaan Peserta Didik Baru</span>
-            <span class="hero-headline-highlight">Al Ikhsan Beji</span>
-          </h1>
-
-          <!-- Description -->
-          <p class="hero-description fade-up" data-i18n="hero.subtitle">
-            Bergabunglah menjadi santri Pondok Pesantren Al Ikhsan Beji.
-            Pendidikan islami terpadu dengan pembinaan akhlak, tahfidz Al-Qur'an,
-            dan ilmu pengetahuan yang membentuk generasi Qur'ani dan berprestasi.
-          </p>
-
-          <!-- CTA Button -->
-          <div class="hero-cta-wrapper fade-up">
-            <a href="/daftar.html" class="hero-cta-button">
-              <i class="bi bi-pencil-square"></i>
-              <span data-i18n="hero.ctaApply">Daftar Sekarang</span>
+          <!-- Slide 3 Text -->
+          <div class="hero-slide-text" data-slide="2">
+            <p class="hero-arabic-text">طَلَبُ العِلْمِ فَرِيضَةٌ</p>
+            <h1 class="hero-title">
+              Lingkungan Asrama Nyaman<br>
+              <span class="hero-title-highlight">& Wawasan Global</span>
+            </h1>
+            <p class="hero-desc">
+              Kehidupan berasrama yang mendidik, bimbingan ustadz/ustadzah profesional,
+              dan persiapan masa depan santri untuk menjadi pemimpin
+              yang siap menghadapi tantangan dunia modern.
+            </p>
+            <a href="/kontak.html" class="hero-cta">
+              <i class="bi bi-geo-alt"></i>
+              <span>Kunjungi Kami</span>
             </a>
           </div>
         </div>
 
-        <!-- Slider Dots -->
-        <div class="hero-slider-dots fade-in">
-          <button type="button" class="hero-dot active" aria-label="Slide 1"></button>
-          <button type="button" class="hero-dot" aria-label="Slide 2"></button>
-          <button type="button" class="hero-dot" aria-label="Slide 3"></button>
+        <!-- RIGHT: Image Card Area -->
+        <div class="hero-image-area">
+          <!-- Left Arrow (attached to card) -->
+          <button type="button" class="hero-arrow hero-arrow-prev" aria-label="Previous slide" id="heroPrev">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+
+          <!-- Image Card Container -->
+          <div class="hero-image-card">
+            <!-- Dark green background behind image -->
+            <div class="hero-image-bg"></div>
+
+            <!-- Slide Images -->
+            <!-- 
+              ================================
+              GANTI PATH GAMBAR DI BAWAH INI
+              dengan foto santri asli pesantren
+              ================================
+            -->
+            <div class="hero-slide-image hero-slide-image--active" data-slide="0">
+              <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=450&h=550&fit=crop"
+                alt="Santri Al Ikhsan Beji - Slide 1" loading="eager">
+            </div>
+            <div class="hero-slide-image" data-slide="1">
+              <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=450&h=550&fit=crop"
+                alt="Santri Al Ikhsan Beji - Slide 2" loading="lazy">
+            </div>
+            <div class="hero-slide-image" data-slide="2">
+              <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=450&h=550&fit=crop"
+                alt="Santri Al Ikhsan Beji - Slide 3" loading="lazy">
+            </div>
+          </div>
+
+          <!-- Right Arrow (attached to card) -->
+          <button type="button" class="hero-arrow hero-arrow-next" aria-label="Next slide" id="heroNext">
+            <i class="bi bi-chevron-right"></i>
+          </button>
         </div>
+      </div>
+
+      <!-- Slider Dots -->
+      <div class="hero-dots" id="heroDots">
+        <button type="button" class="hero-dot hero-dot--active" data-slide="0" aria-label="Go to slide 1"></button>
+        <button type="button" class="hero-dot" data-slide="1" aria-label="Go to slide 2"></button>
+        <button type="button" class="hero-dot" data-slide="2" aria-label="Go to slide 3"></button>
       </div>
 
       <!-- Wave Divider -->
@@ -2025,6 +2069,7 @@
   <script src="/assets/js/pwa.js" defer></script>
   <script src="/assets/js/install-button.js" defer></script>
   <script src="/assets/js/scroll-animations.js" defer></script>
+  <script src="/assets/js/hero-carousel.js" defer></script>
 
 
 
@@ -2173,7 +2218,7 @@
     }
   </style>
 
-  <div id="chat-bubble">💬</div>
+  <div id="chat-bubble"><i class="bi bi-whatsapp"></i></div>
 
   <div id="chat-box">
     <div id="chat-header">Chat Pondok</div>
