@@ -1265,6 +1265,11 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="#" data-tab="hero-carousel" onclick="switchTab('hero-carousel')">
+            <i class="bi bi-person-bounding-box"></i> Hero Carousel
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="#" data-tab="hero" onclick="switchTab('hero')">
             <i class="bi bi-images"></i> Hero Slider
           </a>
@@ -1896,6 +1901,103 @@
                     </table>
                   </div>
                   <small class="text-muted">Gunakan tombol panah untuk mengatur urutan berita.</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Hero Carousel (Gambar Santri di Hero Section) -->
+        <div id="tab-hero-carousel" class="tab-content" style="display:none">
+          <div class="page-header">
+            <h2><i class="bi bi-person-bounding-box"></i> Hero Carousel Management</h2>
+            <p>Kelola gambar santri PNG transparan yang muncul di <strong>hero section utama</strong> (carousel dengan 3
+              slide)</p>
+          </div>
+
+          <!-- Info Alert -->
+          <div class="alert alert-info mb-4">
+            <i class="bi bi-info-circle-fill"></i> <strong>Panduan Gambar:</strong>
+            <ul class="mb-0 mt-2">
+              <li><strong>Format:</strong> PNG dengan background transparan (recommended)</li>
+              <li><strong>Ukuran:</strong> Minimal 800x1000px untuk hasil terbaik</li>
+              <li><strong>Konten:</strong> Foto santri/siswa yang akan ditampilkan di hero section</li>
+              <li><strong>Posisi:</strong> Gambar akan muncul di kartu hijau di sebelah kanan teks hero</li>
+              <li>Maksimal <strong>3 gambar</strong> untuk 3 slide carousel</li>
+            </ul>
+          </div>
+
+          <!-- Upload Section -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="bi bi-cloud-upload"></i> Upload Gambar Santri</h5>
+            </div>
+            <div class="card-body">
+              <form id="heroCarouselUploadForm">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="heroCarouselImageInput" class="form-label">Pilih Gambar PNG</label>
+                      <input type="file" class="form-control" id="heroCarouselImageInput" accept="image/png,image/webp"
+                        required>
+                      <small class="text-muted">Format: PNG (transparan) atau WebP. Maks 5MB.</small>
+                    </div>
+                    <div class="mb-3">
+                      <label for="heroCarouselSlideOrder" class="form-label">Urutan Slide</label>
+                      <select class="form-select" id="heroCarouselSlideOrder">
+                        <option value="1">Slide 1</option>
+                        <option value="2">Slide 2</option>
+                        <option value="3">Slide 3</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="heroCarouselAltText" class="form-label">Alt Text (Deskripsi)</label>
+                      <input type="text" class="form-control" id="heroCarouselAltText"
+                        placeholder="Santri Al Ikhsan Beji" value="Santri Al Ikhsan Beji">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Preview:</label>
+                      <div id="heroCarouselImagePreview" class="border rounded p-3 text-center bg-light"
+                        style="min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                        <div class="text-muted">
+                          <i class="bi bi-image" style="font-size: 3rem;"></i>
+                          <p class="mb-0 mt-2">Pilih gambar untuk melihat preview</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex gap-2">
+                  <button type="submit" class="btn btn-primary" id="btnUploadHeroCarousel">
+                    <i class="bi bi-upload"></i> Upload Gambar
+                  </button>
+                  <button type="button" class="btn btn-secondary" onclick="resetHeroCarouselForm()">
+                    <i class="bi bi-x-circle"></i> Reset
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Hero Carousel Images List -->
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0"><i class="bi bi-collection"></i> Gambar Santri (<span
+                  id="heroCarouselImageCount">0</span>/3)</h5>
+              <button class="btn btn-sm btn-outline-light" onclick="loadHeroCarouselImages()">
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+              </button>
+            </div>
+            <div class="card-body">
+              <div id="heroCarouselImagesContainer">
+                <!-- Loading state -->
+                <div class="text-center py-5">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <p class="text-muted mt-3">Memuat gambar santri...</p>
                 </div>
               </div>
             </div>

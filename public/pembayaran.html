@@ -1290,6 +1290,12 @@
 
           console.log('[SUBMIT] File uploaded successfully, URL:', uploadResult.url);
 
+          // Detect payment method based on active tab
+          const isQrisTabActive = document.getElementById('pills-qris-tab').classList.contains('active') ||
+            document.getElementById('pills-qris').classList.contains('show');
+          const paymentMethod = isQrisTabActive ? 'qris' : 'bank';
+          console.log('[SUBMIT] Payment method detected:', paymentMethod);
+
           // Submit pembayaran data
           console.log('[SUBMIT] Submitting pembayaran data to /api/pembayaran_submit...');
           const response = await fetch("/api/pembayaran_submit", {
@@ -1302,6 +1308,7 @@
               nama_rekening: "",
               bukti_pembayaran: uploadResult.url,
               catatan: catatan,
+              metode_pembayaran: paymentMethod,
             }),
           });
 

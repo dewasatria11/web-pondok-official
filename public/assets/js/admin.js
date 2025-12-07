@@ -3310,6 +3310,386 @@ Jazakumullahu khairan,
   window.resetHeroForm = resetHeroForm;
 
   /* =========================
+     9) HERO CAROUSEL MANAGEMENT
+     (Gambar Santri PNG di Hero Section)
+     ========================= */
+
+  /**
+   * Load hero carousel images from Supabase
+   */
+  async function loadHeroCarouselImages() {
+    try {
+      console.log('[HERO_CAROUSEL] Loading hero carousel images...');
+
+      const container = document.getElementById('heroCarouselImagesContainer');
+      if (!container) {
+        console.warn('[HERO_CAROUSEL] Container not found');
+        return;
+      }
+
+      // Show loading
+      container.innerHTML = `
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="text-muted mt-3">Memuat gambar santri...</p>
+        </div>
+      `;
+
+      // Check if Supabase client is available
+      if (typeof window.supabase === 'undefined') {
+        throw new Error('Supabase client tidak tersedia');
+      }
+
+      // Fetch from Supabase table
+      const { data: heroImages, error } = await window.supabase
+        .from('hero_images')
+        .select('*')
+        .order('slide_order', { ascending: true });
+
+      if (error) {
+        throw error;
+      }
+
+      console.log('[HERO_CAROUSEL] Loaded', heroImages?.length || 0, 'images');
+
+      // Update count
+      const countEl = document.getElementById('heroCarouselImageCount');
+      if (countEl) {
+        countEl.textContent = heroImages?.length || 0;
+      }
+
+      if (!heroImages || heroImages.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-5">
+            <i class="bi bi-person-bounding-box text-muted" style="font-size: 3rem;"></i>
+            <p class="text-muted mt-3">Belum ada gambar santri. Upload gambar pertama!</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Render hero carousel images grid
+      let html = '<div class="row g-3">';
+
+      heroImages.forEach((image, index) => {
+        const statusBadge = image.is_active
+          ? '<span class="badge bg-success">Active</span>'
+          : '<span class="badge bg-secondary">Inactive</span>';
+
+        html += `
+          <div class="col-md-4" data-carousel-id="${image.id}">
+            <div class="card h-100 shadow-sm border-${image.is_active ? 'success' : 'secondary'}">
+              <div class="position-relative" style="background: linear-gradient(135deg, #0d9463, #065f46); border-radius: 8px 8px 0 0; padding: 20px;">
+                <img src="${image.image_url}" class="card-img-top" alt="${image.alt_text || 'Santri'}" 
+                  style="height: 200px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">
+                <div class="position-absolute top-0 start-0 m-2">
+                  <span class="badge bg-primary">Slide ${image.slide_order}</span>
+                </div>
+                <div class="position-absolute top-0 end-0 m-2">
+                  ${statusBadge}
+                </div>
+              </div>
+              <div class="card-body">
+                <p class="card-text small text-muted mb-2">
+                  <i class="bi bi-tag"></i> ${image.alt_text || 'Santri Al Ikhsan Beji'}
+                </p>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-primary flex-fill" onclick="window.open('${image.image_url}', '_blank')">
+                    <i class="bi bi-eye"></i> View
+                  </button>
+                  <button class="btn btn-sm btn-outline-warning" onclick="toggleHeroCarouselActive('${image.id}', ${!image.is_active})">
+                    <i class="bi bi-${image.is_active ? 'eye-slash' : 'eye'}"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" onclick="deleteHeroCarouselImage('${image.id}', '${image.image_url}')">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      html += '</div>';
+      container.innerHTML = html;
+      console.log('[HERO_CAROUSEL] ✅ Images rendered');
+
+    } catch (error) {
+      console.error('[HERO_CAROUSEL] Error:', error);
+      const container = document.getElementById('heroCarouselImagesContainer');
+      if (container) {
+        container.innerHTML = `
+          <div class="alert alert-danger">
+            <i class="bi bi-exclamation-triangle"></i> Error: ${error.message}
+          </div>
+        `;
+      }
+    }
+  }
+
+  /**
+   * Initialize hero carousel upload form
+   */
+  function initHeroCarouselUpload() {
+    try {
+      console.log('[HERO_CAROUSEL] Initializing upload form...');
+
+      const form = document.getElementById('heroCarouselUploadForm');
+      const input = document.getElementById('heroCarouselImageInput');
+      const preview = document.getElementById('heroCarouselImagePreview');
+
+      if (!form || !input) {
+        console.warn('[HERO_CAROUSEL] Form elements not found');
+        return;
+      }
+
+      if (form.dataset.initialized === 'true') {
+        console.log('[HERO_CAROUSEL] Form already initialized');
+        return;
+      }
+
+      // Image preview
+      input.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) {
+          preview.innerHTML = `
+            <div class="text-muted">
+              <i class="bi bi-image" style="font-size: 3rem;"></i>
+              <p class="mb-0 mt-2">Pilih gambar untuk melihat preview</p>
+            </div>
+          `;
+          return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+          alert('❌ File terlalu besar! Maksimal 5 MB.');
+          input.value = '';
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          preview.innerHTML = `
+            <img src="${event.target.result}" class="img-fluid rounded" style="max-height: 200px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">
+          `;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // Form submit
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const file = input.files[0];
+        if (!file) {
+          alert('❌ Pilih gambar terlebih dahulu!');
+          return;
+        }
+
+        const slideOrder = document.getElementById('heroCarouselSlideOrder').value;
+        const altText = document.getElementById('heroCarouselAltText').value || 'Santri Al Ikhsan Beji';
+        const btn = document.getElementById('btnUploadHeroCarousel');
+        const originalText = btn.innerHTML;
+
+        try {
+          btn.disabled = true;
+          btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Uploading...';
+
+          // Check if Supabase client is available
+          if (typeof window.supabase === 'undefined') {
+            throw new Error('Supabase client tidak tersedia');
+          }
+
+          // Generate unique filename
+          const timestamp = Date.now();
+          const ext = file.name.split('.').pop();
+          const filename = `santri_${slideOrder}_${timestamp}.${ext}`;
+
+          console.log('[HERO_CAROUSEL] Uploading:', filename);
+
+          // Upload to Supabase Storage
+          const { data: uploadData, error: uploadError } = await window.supabase.storage
+            .from('hero-images')
+            .upload(`carousel/${filename}`, file, {
+              cacheControl: '3600',
+              upsert: true
+            });
+
+          if (uploadError) {
+            throw uploadError;
+          }
+
+          // Get public URL
+          const { data: urlData } = window.supabase.storage
+            .from('hero-images')
+            .getPublicUrl(`carousel/${filename}`);
+
+          const imageUrl = urlData.publicUrl;
+          console.log('[HERO_CAROUSEL] Image URL:', imageUrl);
+
+          // Check if slide order already exists
+          const { data: existing } = await window.supabase
+            .from('hero_images')
+            .select('id')
+            .eq('slide_order', parseInt(slideOrder))
+            .single();
+
+          if (existing) {
+            // Update existing record
+            const { error: updateError } = await window.supabase
+              .from('hero_images')
+              .update({
+                image_url: imageUrl,
+                alt_text: altText,
+                updated_at: new Date().toISOString()
+              })
+              .eq('id', existing.id);
+
+            if (updateError) throw updateError;
+            console.log('[HERO_CAROUSEL] Updated existing slide', slideOrder);
+          } else {
+            // Insert new record
+            const { error: insertError } = await window.supabase
+              .from('hero_images')
+              .insert({
+                slide_order: parseInt(slideOrder),
+                image_url: imageUrl,
+                alt_text: altText,
+                is_active: true
+              });
+
+            if (insertError) throw insertError;
+            console.log('[HERO_CAROUSEL] Inserted new slide', slideOrder);
+          }
+
+          // Reset form and reload
+          form.reset();
+          preview.innerHTML = `
+            <div class="text-muted">
+              <i class="bi bi-image" style="font-size: 3rem;"></i>
+              <p class="mb-0 mt-2">Pilih gambar untuk melihat preview</p>
+            </div>
+          `;
+
+          await loadHeroCarouselImages();
+          safeToastr.success('✅ Gambar santri berhasil diupload!');
+
+        } catch (error) {
+          console.error('[HERO_CAROUSEL] Upload error:', error);
+          alert('❌ Error upload: ' + error.message);
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+        }
+      });
+
+      form.dataset.initialized = 'true';
+      console.log('[HERO_CAROUSEL] ✅ Upload form initialized');
+
+    } catch (error) {
+      console.error('[HERO_CAROUSEL] Init error:', error);
+    }
+  }
+
+  /**
+   * Delete hero carousel image
+   */
+  async function deleteHeroCarouselImage(imageId, imageUrl) {
+    if (!confirm('⚠️ Hapus gambar santri ini dari hero carousel?')) {
+      return;
+    }
+
+    try {
+      console.log('[HERO_CAROUSEL] Deleting:', imageId);
+
+      // Delete from database
+      const { error } = await window.supabase
+        .from('hero_images')
+        .delete()
+        .eq('id', imageId);
+
+      if (error) throw error;
+
+      // Also try to delete from storage (extract path from URL)
+      try {
+        const urlPath = new URL(imageUrl).pathname;
+        const storagePath = urlPath.split('/hero-images/')[1];
+        if (storagePath) {
+          await window.supabase.storage.from('hero-images').remove([storagePath]);
+        }
+      } catch (storageError) {
+        console.warn('[HERO_CAROUSEL] Storage cleanup failed:', storageError);
+      }
+
+      await loadHeroCarouselImages();
+      safeToastr.success('✅ Gambar santri berhasil dihapus!');
+
+    } catch (error) {
+      console.error('[HERO_CAROUSEL] Delete error:', error);
+      alert('❌ Error delete: ' + error.message);
+    }
+  }
+
+  /**
+   * Toggle hero carousel image active status
+   */
+  async function toggleHeroCarouselActive(imageId, isActive) {
+    try {
+      const { error } = await window.supabase
+        .from('hero_images')
+        .update({ is_active: isActive, updated_at: new Date().toISOString() })
+        .eq('id', imageId);
+
+      if (error) throw error;
+
+      await loadHeroCarouselImages();
+      safeToastr.success(isActive ? '✅ Gambar diaktifkan!' : '⏸️ Gambar dinonaktifkan!');
+
+    } catch (error) {
+      console.error('[HERO_CAROUSEL] Toggle error:', error);
+      alert('❌ Error: ' + error.message);
+    }
+  }
+
+  /**
+   * Reset hero carousel form
+   */
+  function resetHeroCarouselForm() {
+    const form = document.getElementById('heroCarouselUploadForm');
+    const preview = document.getElementById('heroCarouselImagePreview');
+
+    if (form) form.reset();
+    if (preview) {
+      preview.innerHTML = `
+        <div class="text-muted">
+          <i class="bi bi-image" style="font-size: 3rem;"></i>
+          <p class="mb-0 mt-2">Pilih gambar untuk melihat preview</p>
+        </div>
+      `;
+    }
+  }
+
+  // Expose hero carousel functions
+  window.loadHeroCarouselImages = loadHeroCarouselImages;
+  window.deleteHeroCarouselImage = deleteHeroCarouselImage;
+  window.toggleHeroCarouselActive = toggleHeroCarouselActive;
+  window.resetHeroCarouselForm = resetHeroCarouselForm;
+
+  // Initialize on tab switch
+  const originalSwitchTab = window.switchTab;
+  window.switchTab = function (tabName) {
+    if (typeof originalSwitchTab === 'function') {
+      originalSwitchTab(tabName);
+    }
+    if (tabName === 'hero-carousel') {
+      loadHeroCarouselImages();
+      initHeroCarouselUpload();
+    }
+  };
+
+  /* =========================
      10) WHY SECTION MANAGEMENT
      ========================= */
 
@@ -5660,17 +6040,17 @@ Jazakumullahu khairan,
       });
     setBiayaActiveLang("id");
 
-  $("#brosurForm")?.addEventListener("submit", handleBrosurSubmit);
-  $("#btnResetBrosur")?.addEventListener("click", resetBrosurForm);
-  document
-    .querySelectorAll("[data-brosur-lang-button]")
-    .forEach((button) => {
+    $("#brosurForm")?.addEventListener("submit", handleBrosurSubmit);
+    $("#btnResetBrosur")?.addEventListener("click", resetBrosurForm);
+    document
+      .querySelectorAll("[data-brosur-lang-button]")
+      .forEach((button) => {
         button.addEventListener("click", () =>
           setBrosurActiveLang(button.dataset.brosurLangButton)
         );
       });
-  $("#brosurFile")?.addEventListener("change", handleBrosurFileChange);
-  setBrosurActiveLang("id");
+    $("#brosurFile")?.addEventListener("change", handleBrosurFileChange);
+    setBrosurActiveLang("id");
 
     $("#kontakForm")?.addEventListener("submit", handleKontakSubmit);
     $("#btnResetKontak")?.addEventListener("click", resetKontakForm);
