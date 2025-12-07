@@ -30,6 +30,8 @@
   <title data-i18n="meta.title.home">Pondok Pesantren Al Ikhsan Beji | PPDB Online 2026/2027</title>
 
   <link rel="stylesheet" href="/assets/css/tailwind.css" />
+  <link rel="stylesheet" href="/assets/css/scroll-animations.css" />
+  <link rel="stylesheet" href="/assets/css/hero-section.css" />
   <script src="/i18n.js" defer></script>
 
   <!-- Bootstrap Icons -->
@@ -771,44 +773,114 @@
 
   <!-- MAIN -->
   <main class="flex-1">
-    <!-- HERO -->
-    <section class="hero-ppdb">
-      <div class="hero-inner">
-        <div class="hero-badge">
-          <i class="bi bi-calendar-event mr-2"></i>
-          <span data-i18n="hero.badge">PPDB Online 2026/2027</span>
+    <!-- HERO SECTION - Full Height (smpdiss.sch.id style) -->
+    <section class="hero-fullscreen" id="heroSection">
+      <!-- Background Image - GANTI URL DENGAN FOTO SEKOLAH ANDA -->
+      <div class="hero-background">
+        <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=1920&h=1080&fit=crop"
+          alt="Pondok Pesantren Al Ikhsan Beji" loading="eager" />
+      </div>
+
+      <!-- Gradient Overlay -->
+      <div class="hero-overlay"></div>
+
+      <!-- Decorative Pattern -->
+      <div class="hero-pattern"></div>
+
+      <!-- Hero Content -->
+      <div class="hero-content">
+        <!-- Badge PPDB -->
+        <div class="hero-year-badge reveal-item">
+          <i class="bi bi-calendar-check"></i>
+          <span data-i18n="hero.badge">PPDB 2026/2027 Dibuka!</span>
         </div>
-        <h1 class="hero-title" data-i18n="hero.headingMain">
-          PPDSB Al Ikhsan Beji – Pendaftaran MTs, MA & Pondok Pesantren
+
+        <!-- Main Title -->
+        <h1 class="hero-main-title reveal-item" data-i18n="hero.headingMain">
+          Penerimaan Peserta Didik Baru<br />
+          <span class="highlight">Al Ikhsan Beji</span>
         </h1>
-        <h2 class="hero-subtitle" data-i18n="hero.headingSub">
-          Penerimaan resmi untuk jenjang MTs, MA, dan Program Pondok Pesantren terintegrasi.
+
+        <!-- Subtitle -->
+        <h2 class="hero-subtitle reveal-item" data-i18n="hero.headingSub">
+          MTs, MA & Pondok Pesantren Terintegrasi
         </h2>
-        <p class="hero-desc" data-i18n="hero.subtitle">
-          Bergabunglah menjadi santri Pondok Pesantren Al Ikhsan Beji. Pendidikan islami terpadu dengan pembinaan
-          akhlak, tahfidz Al-Qur'an, dan ilmu pengetahuan yang membentuk generasi Qur'ani dan berprestasi.
+
+        <!-- Description -->
+        <p class="hero-description reveal-item" data-i18n="hero.subtitle">
+          Bergabunglah menjadi santri Pondok Pesantren Al Ikhsan Beji.
+          Pendidikan islami terpadu dengan pembinaan akhlak, tahfidz Al-Qur'an,
+          dan ilmu pengetahuan yang membentuk generasi Qur'ani dan berprestasi.
         </p>
-        <div class="hero-actions">
-          <a href="/daftar.html" class="btn-primary">
-            <span class="mr-2">✏️</span>
-            <span data-i18n="hero.ctaApply">Daftar Sekarang</span>
+
+        <!-- CTA Buttons -->
+        <div class="hero-buttons reveal-item">
+          <a href="/daftar.html" class="hero-btn hero-btn-primary">
+            <i class="bi bi-pencil-square"></i>
+            <span data-i18n="hero.ctaApply">Daftar PPDB</span>
           </a>
-          <a href="/cek-status.html" class="btn-secondary">
-            <span class="mr-2">🔍</span>
-            <span data-i18n="hero.ctaStatus">Cek Status</span>
+          <a href="/brosur.html" class="hero-btn hero-btn-secondary">
+            <i class="bi bi-building"></i>
+            <span data-i18n="hero.ctaProfile">Profil Sekolah</span>
           </a>
+        </div>
+
+        <!-- Highlight Boxes -->
+        <div class="hero-highlights reveal-item">
+          <!-- Highlight 1 -->
+          <div class="highlight-box">
+            <div class="highlight-icon">
+              <i class="bi bi-book"></i>
+            </div>
+            <div class="highlight-text">
+              <h4 data-i18n="hero.highlight1.title">Kurikulum Terintegrasi</h4>
+              <p data-i18n="hero.highlight1.desc">Perpaduan kurikulum nasional & pesantren</p>
+            </div>
+          </div>
+
+          <!-- Highlight 2 -->
+          <div class="highlight-box">
+            <div class="highlight-icon">
+              <i class="bi bi-moon-stars"></i>
+            </div>
+            <div class="highlight-text">
+              <h4 data-i18n="hero.highlight2.title">Pembinaan Karakter Islami</h4>
+              <p data-i18n="hero.highlight2.desc">Akhlakul karimah & tahfidz Al-Qur'an</p>
+            </div>
+          </div>
+
+          <!-- Highlight 3 -->
+          <div class="highlight-box">
+            <div class="highlight-icon">
+              <i class="bi bi-tree"></i>
+            </div>
+            <div class="highlight-text">
+              <h4 data-i18n="hero.highlight3.title">Lingkungan Nyaman</h4>
+              <p data-i18n="hero.highlight3.desc">Fasilitas modern & asri</p>
+            </div>
+          </div>
         </div>
       </div>
-      <svg class="hero-wave" viewBox="0 0 1440 320" aria-hidden="true" preserveAspectRatio="none">
-        <path fill="#ffffff" fill-opacity="1"
-          d="M0,224L48,213.3C96,203,192,181,288,176C384,171,480,181,576,192C672,203,768,213,864,202.7C960,192,1056,160,1152,160C1248,160,1344,192,1392,208L1440,224L1440,320L0,320Z">
-        </path>
-      </svg>
+
+      <!-- Scroll Indicator -->
+      <div class="hero-scroll-indicator">
+        <span>Scroll</span>
+        <i class="bi bi-chevron-double-down"></i>
+      </div>
+
+      <!-- Wave Divider -->
+      <div class="hero-wave">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+          <path fill="#ffffff"
+            d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z">
+          </path>
+        </svg>
+      </div>
     </section>
 
     <!-- SEO HEADING SECTION -->
     <section class="py-12 bg-white border-b border-gray-100">
-      <div class="container mx-auto px-4">
+      <div class="container mx-auto px-4 reveal reveal-fade-up">
         <div class="sr-only">
           <div>
             <h3 data-i18n="seo.headings.flow">Alur Pendaftaran</h3>
@@ -832,23 +904,23 @@
           </div>
         </div>
         <div class="flex flex-wrap items-center justify-center gap-3 quick-links text-sm">
-          <a href="/alur-pendaftaran.html">
+          <a href="/alur-pendaftaran.html" class="reveal reveal-fade-up delay-1">
             <i class="bi bi-arrow-right-circle"></i>
             <span data-i18n="seo.headings.flow">Alur Pendaftaran</span>
           </a>
-          <a href="/syarat-pendaftaran.html">
+          <a href="/syarat-pendaftaran.html" class="reveal reveal-fade-up delay-2">
             <i class="bi bi-check-circle"></i>
             <span data-i18n="seo.headings.requirements">Syarat Pendaftaran</span>
           </a>
-          <a href="/biaya.html">
+          <a href="/biaya.html" class="reveal reveal-fade-up delay-3">
             <i class="bi bi-cash-stack"></i>
             <span data-i18n="seo.headings.fees">Biaya Pendidikan</span>
           </a>
-          <a href="/brosur.html">
+          <a href="/brosur.html" class="reveal reveal-fade-up delay-4">
             <i class="bi bi-file-earmark-text"></i>
             <span data-i18n="seo.headings.brochure">Brosur PPDB</span>
           </a>
-          <a href="/kontak.html">
+          <a href="/kontak.html" class="reveal reveal-fade-up delay-5">
             <i class="bi bi-telephone-forward"></i>
             <span data-i18n="seo.headings.contact">Kontak & Informasi Lengkap</span>
           </a>
@@ -857,7 +929,7 @@
     </section>
 
     <!-- IMAGE SLIDER SECTION (Card Minimalis - Slide Animation) -->
-    <section class="py-8 bg-gray-50">
+    <section class="py-8 bg-gray-50 reveal reveal-zoom">
       <div id="imageSliderContainer">
         <div id="imageSlider">
           <div id="sliderTrack" class="slider-track">
@@ -870,7 +942,7 @@
     </section>
 
     <!-- WHY SECTION (Modern 2-Column Layout) -->
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-white reveal reveal-fade-up">
       <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
           <div id="whySectionContent" class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -887,8 +959,9 @@
 
     <!-- GELOMBANG PENDAFTARAN -->
     <section class="py-12 bg-gray-50">
+      <!-- Section header with reveal animation -->
       <div class="container mx-auto px-4">
-        <div class="flex justify-center mb-12">
+        <div class="flex justify-center mb-12 reveal reveal-fade-up">
           <div class="w-full lg:w-2/3 text-center">
             <h2 class="text-3xl lg:text-4xl font-bold mb-3 text-gray-800" data-i18n="sections.gelombang.title">Gelombang
               Pendaftaran</h2>
@@ -912,7 +985,7 @@
     <!-- BERITA & ARTIKEL -->
     <section class="py-16 bg-gray-50">
       <div class="container mx-auto px-4">
-        <div class="flex flex-col lg:flex-row items-start lg:items-center gap-4 mb-10">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center gap-4 mb-10 reveal reveal-fade-up">
           <div class="flex-1">
             <h2 class="text-3xl lg:text-4xl font-bold text-gray-900" data-i18n="sections.berita.title">Berita Terkini
             </h2>
@@ -930,7 +1003,7 @@
         </div>
 
         <!-- Dynamic Berita Cards -->
-        <div id="beritaContainer" class="news-grid mb-8">
+        <div id="beritaContainer" class="news-grid mb-8 reveal reveal-fade-up delay-2">
           <!-- Loading skeleton -->
           <div class="text-center py-12 col-span-full">
             <div class="animate-pulse">
@@ -945,7 +1018,7 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="bg-white text-gray-600 py-6 shadow-2xl border-t border-gray-200 mt-auto">
+  <footer class="bg-white text-gray-600 py-6 shadow-2xl border-t border-gray-200 mt-auto reveal reveal-fade-up">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <p class="text-sm"><span data-i18n="footer.copyright">© 2026/2027 Pondok Pesantren Al Ikhsan Beji. All rights
           reserved.</span> <span class="hidden sm:inline" data-i18n="footer.credit">Development by Tim IT
@@ -1975,206 +2048,224 @@
   <script src="/assets/js/navbar.js" defer></script>
   <script src="/assets/js/pwa.js" defer></script>
   <script src="/assets/js/install-button.js" defer></script>
+  <script src="/assets/js/scroll-animations.js" defer></script>
 
 
 
   <style>
-  /* Bubble */
-  #chat-bubble {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #2ecc71; /* hijau pondok */
-    color: white;
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    z-index: 9999;
-    transition: transform 0.2s;
-  }
-  #chat-bubble:hover {
-    transform: scale(1.1);
-  }
-
-  /* Chat Box */
-  #chat-box {
-    position: fixed;
-    bottom: 100px;
-    right: 20px;
-    width: 340px;
-    height: 460px;
-    background: white;
-    border-radius: 12px;
-    display: none;
-    flex-direction: column;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-    z-index: 9999;
-    border: 1px solid #dfdfdf;
-    overflow: hidden;
-  }
-
-  #chat-header {
-    background: #2ecc71;
-    color: white;
-    padding: 14px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-  }
-
-  #chat-messages {
-    flex: 1;
-    padding: 12px;
-    overflow-y: auto;
-    font-size: 15px;
-    background: #fafafa;
-  }
-
-  .msg-user {
-    background: #d4f9df;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    text-align: right;
-  }
-
-  .msg-bot {
-    background: #eeeeee;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    text-align: left;
-  }
-
-  #typing-indicator {
-    display: none;
-    font-style: italic;
-    color: #555;
-    margin: 0 12px 10px 12px;
-  }
-
-  /* Loading dots animation */
-  .dots::after {
-    content: " ...";
-    animation: dots 1.5s steps(4, end) infinite;
-  }
-
-  @keyframes dots {
-    0%, 20% { content: " ."; }
-    40% { content: " .."; }
-    60% { content: " ..."; }
-    80%, 100% { content: " ."; }
-  }
-
-  #chat-input-area {
-    display: flex;
-    border-top: 1px solid #ddd;
-  }
-
-  #chat-input {
-    flex: 1;
-    border: none;
-    padding: 12px;
-    font-size: 15px;
-  }
-
-  #chat-send {
-    width: 70px;
-    border: none;
-    background: #2ecc71;
-    color: white;
-    cursor: pointer;
-  }
-
-  @media (max-width: 640px) {
-    #chat-box {
-      width: calc(100vw - 32px);
-      height: 70vh;
-      right: 16px;
-      bottom: 90px;
-    }
+    /* Bubble */
     #chat-bubble {
-      right: 16px;
-      bottom: 16px;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #2ecc71;
+      /* hijau pondok */
+      color: white;
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+      transition: transform 0.2s;
     }
-  }
-</style>
 
-<div id="chat-bubble">💬</div>
+    #chat-bubble:hover {
+      transform: scale(1.1);
+    }
 
-<div id="chat-box">
-  <div id="chat-header">Chat Pondok</div>
-  <div id="chat-messages"></div>
-  <div id="typing-indicator">Bot sedang mengetik<span class="dots"></span></div>
-  <div id="chat-input-area">
-    <input type="text" id="chat-input" placeholder="Tulis pesan...">
-    <button id="chat-send">Kirim</button>
+    /* Chat Box */
+    #chat-box {
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      width: 340px;
+      height: 460px;
+      background: white;
+      border-radius: 12px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      z-index: 9999;
+      border: 1px solid #dfdfdf;
+      overflow: hidden;
+    }
+
+    #chat-header {
+      background: #2ecc71;
+      color: white;
+      padding: 14px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    #chat-messages {
+      flex: 1;
+      padding: 12px;
+      overflow-y: auto;
+      font-size: 15px;
+      background: #fafafa;
+    }
+
+    .msg-user {
+      background: #d4f9df;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      text-align: right;
+    }
+
+    .msg-bot {
+      background: #eeeeee;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    #typing-indicator {
+      display: none;
+      font-style: italic;
+      color: #555;
+      margin: 0 12px 10px 12px;
+    }
+
+    /* Loading dots animation */
+    .dots::after {
+      content: " ...";
+      animation: dots 1.5s steps(4, end) infinite;
+    }
+
+    @keyframes dots {
+
+      0%,
+      20% {
+        content: " .";
+      }
+
+      40% {
+        content: " ..";
+      }
+
+      60% {
+        content: " ...";
+      }
+
+      80%,
+      100% {
+        content: " .";
+      }
+    }
+
+    #chat-input-area {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    #chat-input {
+      flex: 1;
+      border: none;
+      padding: 12px;
+      font-size: 15px;
+    }
+
+    #chat-send {
+      width: 70px;
+      border: none;
+      background: #2ecc71;
+      color: white;
+      cursor: pointer;
+    }
+
+    @media (max-width: 640px) {
+      #chat-box {
+        width: calc(100vw - 32px);
+        height: 70vh;
+        right: 16px;
+        bottom: 90px;
+      }
+
+      #chat-bubble {
+        right: 16px;
+        bottom: 16px;
+      }
+    }
+  </style>
+
+  <div id="chat-bubble">💬</div>
+
+  <div id="chat-box">
+    <div id="chat-header">Chat Pondok</div>
+    <div id="chat-messages"></div>
+    <div id="typing-indicator">Bot sedang mengetik<span class="dots"></span></div>
+    <div id="chat-input-area">
+      <input type="text" id="chat-input" placeholder="Tulis pesan...">
+      <button id="chat-send">Kirim</button>
+    </div>
   </div>
-</div>
 
-<script>
-  const bubble = document.getElementById("chat-bubble");
-  const box = document.getElementById("chat-box");
-  const messages = document.getElementById("chat-messages");
-  const input = document.getElementById("chat-input");
-  const sendBtn = document.getElementById("chat-send");
-  const typing = document.getElementById("typing-indicator");
-  const API_URL = "https://pondok-chatbot.dewasatriaaa.workers.dev/";
+  <script>
+    const bubble = document.getElementById("chat-bubble");
+    const box = document.getElementById("chat-box");
+    const messages = document.getElementById("chat-messages");
+    const input = document.getElementById("chat-input");
+    const sendBtn = document.getElementById("chat-send");
+    const typing = document.getElementById("typing-indicator");
+    const API_URL = "https://pondok-chatbot.dewasatriaaa.workers.dev/";
 
-  const toggleChat = () => {
-    box.style.display = box.style.display === "flex" ? "none" : "flex";
-  };
+    const toggleChat = () => {
+      box.style.display = box.style.display === "flex" ? "none" : "flex";
+    };
 
-  const scrollToBottom = () => {
-    messages.scrollTop = messages.scrollHeight;
-  };
+    const scrollToBottom = () => {
+      messages.scrollTop = messages.scrollHeight;
+    };
 
-  function appendMessage(text, type) {
-    messages.innerHTML += `<div class="msg-${type}">${text}</div>`;
-    scrollToBottom();
-  }
-
-  function showTyping(show) {
-    typing.style.display = show ? "block" : "none";
-    scrollToBottom();
-  }
-
-  async function sendMessage() {
-    const text = input.value.trim();
-    if (!text) return;
-
-    appendMessage(text, "user");
-    input.value = "";
-    showTyping(true);
-
-    try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text })
-      });
-
-      const data = await res.json();
-      appendMessage(data.reply || "Maaf, terjadi kesalahan.", "bot");
-    } catch (err) {
-      appendMessage("Maaf, terjadi kesalahan koneksi.", "bot");
-    } finally {
-      showTyping(false);
+    function appendMessage(text, type) {
+      messages.innerHTML += `<div class="msg-${type}">${text}</div>`;
+      scrollToBottom();
     }
-  }
 
-  bubble.onclick = toggleChat;
-  sendBtn.onclick = sendMessage;
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") sendMessage();
-  });
-</script>
+    function showTyping(show) {
+      typing.style.display = show ? "block" : "none";
+      scrollToBottom();
+    }
+
+    async function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+
+      appendMessage(text, "user");
+      input.value = "";
+      showTyping(true);
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text })
+        });
+
+        const data = await res.json();
+        appendMessage(data.reply || "Maaf, terjadi kesalahan.", "bot");
+      } catch (err) {
+        appendMessage("Maaf, terjadi kesalahan koneksi.", "bot");
+      } finally {
+        showTyping(false);
+      }
+    }
+
+    bubble.onclick = toggleChat;
+    sendBtn.onclick = sendMessage;
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
 
 </body>
 

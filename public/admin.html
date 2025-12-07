@@ -488,6 +488,17 @@
       }
     }
 
+    .province-chart-row {
+      height: 100%;
+      width: 100%;
+    }
+
+    .province-chart-canvas {
+      min-height: 260px;
+      max-height: 360px;
+      width: 100% !important;
+    }
+
 
     /* ============================================
        RESPONSIVE DESIGN (Mobile-First Approach)
@@ -1538,7 +1549,6 @@
                 </div>
               </div>
             </div>
-
             <!-- Chart row -->
             <div class="col-12">
               <div class="row g-4">
@@ -1572,9 +1582,10 @@
                   <h5 class="mb-0 text-white"><i class="bi bi-geo-alt-fill"></i> Asal Provinsi Pendaftar</h5>
                 </div>
                 <div class="card-body chart-card-body">
-                  <div class="row w-100">
+                  <div class="row province-chart-row">
                     <div class="col-lg-8 mb-3 mb-lg-0">
-                      <canvas id="chartProvince" aria-label="Chart Asal Provinsi" role="img"></canvas>
+                      <canvas id="chartProvince" class="province-chart-canvas" aria-label="Chart Asal Provinsi"
+                        role="img"></canvas>
                     </div>
                     <div class="col-lg-4">
                       <h6 class="text-muted mb-2">Top Provinsi</h6>

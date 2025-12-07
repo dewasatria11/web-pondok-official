@@ -1,0 +1,225 @@
+/**
+ * ==============================================
+ * SCROLL REVEAL ANIMATIONS - Pondok Pesantren Al Ikhsan Beji
+ * ==============================================
+ * 
+ * Cara penggunaan:
+ * 1. Tambahkan class "reveal" ke elemen yang ingin dianimasikan
+ * 2. Tambahkan modifier: reveal-fade-up, reveal-fade-left, reveal-fade-right, reveal-zoom
+ * 3. Opsional: tambahkan delay-1, delay-2, delay-3, delay-4 untuk staggered animation
+ * 
+ * Contoh: <div class="reveal reveal-fade-up delay-2">Konten</div>
+ */
+
+/* =========================
+   Base Reveal Class
+   - Elemen disembunyikan sebelum masuk viewport
+   ========================= */
+.reveal {
+  opacity: 0;
+  transition: 
+    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+/* =========================
+   Animation Types
+   - Fade Up: muncul dari bawah
+   - Fade Left: muncul dari kiri
+   - Fade Right: muncul dari kanan
+   - Zoom: muncul dengan efek zoom
+   ========================= */
+
+/* Fade Up - Muncul dari bawah ke atas */
+.reveal-fade-up {
+  transform: translateY(40px);
+}
+
+/* Fade Left - Muncul dari kiri ke kanan */
+.reveal-fade-left {
+  transform: translateX(-40px);
+}
+
+/* Fade Right - Muncul dari kanan ke kiri */
+.reveal-fade-right {
+  transform: translateX(40px);
+}
+
+/* Zoom - Muncul dengan efek zoom */
+.reveal-zoom {
+  transform: scale(0.9);
+}
+
+/* =========================
+   Active State
+   - Class ini ditambahkan oleh JS saat elemen masuk viewport
+   ========================= */
+.reveal.reveal-active {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1);
+}
+
+/* =========================
+   Staggered Animation Delays
+   - Untuk animasi berurutan/cascading
+   ========================= */
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
+.delay-5 { transition-delay: 0.5s; }
+.delay-6 { transition-delay: 0.6s; }
+
+/* =========================
+   Accessibility: Reduced Motion
+   - Menonaktifkan animasi untuk pengguna yang sensitif
+   ========================= */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  
+  .reveal-fade-up,
+  .reveal-fade-left,
+  .reveal-fade-right,
+  .reveal-zoom {
+    transform: none;
+  }
+}
+
+/* =========================
+   Modern UI Enhancements
+   - Tambahan styling modern untuk website pesantren
+   ========================= */
+
+/* Glass morphism effect untuk cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Gradient text effect */
+.gradient-text {
+  background: linear-gradient(135deg, #047857 0%, #10b981 50%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Modern shadow for cards */
+.modern-shadow {
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 10px 15px -3px rgba(0, 0, 0, 0.08),
+    0 20px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+/* Hover lift effect */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 
+    0 10px 20px -5px rgba(0, 0, 0, 0.1),
+    0 20px 40px -10px rgba(0, 0, 0, 0.08);
+}
+
+/* Smooth underline animation for links */
+.animated-underline {
+  position: relative;
+}
+
+.animated-underline::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background: linear-gradient(90deg, #047857, #10b981);
+  transition: width 0.3s ease;
+}
+
+.animated-underline:hover::after {
+  width: 100%;
+}
+
+/* Icon container styling */
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  color: #047857;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.icon-container:hover {
+  transform: scale(1.1) rotate(5deg);
+  background: linear-gradient(135deg, #047857 0%, #10b981 100%);
+  color: white;
+}
+
+/* Section divider line */
+.section-divider {
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #047857, #10b981);
+  border-radius: 9999px;
+  margin: 0 auto;
+}
+
+/* Floating animation for decorative elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Pulse animation for CTAs */
+@keyframes pulse-soft {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(4, 120, 87, 0.4); }
+  50% { box-shadow: 0 0 0 15px rgba(4, 120, 87, 0); }
+}
+
+.pulse-cta {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* Modern badge styling */
+.modern-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
+}
+
+/* Card hover glow effect */
+.glow-hover {
+  transition: box-shadow 0.3s ease;
+}
+
+.glow-hover:hover {
+  box-shadow: 
+    0 0 20px rgba(4, 120, 87, 0.15),
+    0 10px 30px rgba(0, 0, 0, 0.1);
+}

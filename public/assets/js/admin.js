@@ -1012,7 +1012,7 @@
       (a, b) => b[1] - a[1]
     );
 
-    const topProvince = sortedProvince.slice(0, 8);
+    const topProvince = sortedProvince.slice(0, 10); // tampilkan 10 teratas
     const provinceLabels = topProvince.map(([name]) => name);
     const provinceData = topProvince.map(([, count]) => count);
 
@@ -1106,6 +1106,12 @@
 
     // Pastikan angka terakhir juga diterapkan ulang
     applyLatestStatNumbers();
+    // Pastikan konteks kanvas sudah ada (kadang tertunda rendernya)
+    const provCanvas = document.getElementById("chartProvince");
+    if (!provCanvas) {
+      setTimeout(renderCachedChartsIfVisible, 100);
+      return;
+    }
 
     // Render charts
     const renderPie = (ctx, data, labels, colors, chartKey, title) => {
