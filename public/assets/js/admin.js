@@ -3676,6 +3676,7 @@ Jazakumullahu khairan,
   window.deleteHeroCarouselImage = deleteHeroCarouselImage;
   window.toggleHeroCarouselActive = toggleHeroCarouselActive;
   window.resetHeroCarouselForm = resetHeroCarouselForm;
+  window.initHeroCarouselUpload = initHeroCarouselUpload;
 
   // Initialize on tab switch
   const originalSwitchTab = window.switchTab;
@@ -3684,10 +3685,21 @@ Jazakumullahu khairan,
       originalSwitchTab(tabName);
     }
     if (tabName === 'hero-carousel') {
+      setTimeout(() => {
+        loadHeroCarouselImages();
+        initHeroCarouselUpload();
+      }, 100);
+    }
+  };
+
+  // Also initialize on DOMContentLoaded if tab is already active
+  document.addEventListener('DOMContentLoaded', function () {
+    const heroCarouselTab = document.getElementById('tab-hero-carousel');
+    if (heroCarouselTab && heroCarouselTab.style.display !== 'none') {
       loadHeroCarouselImages();
       initHeroCarouselUpload();
     }
-  };
+  });
 
   /* =========================
      10) WHY SECTION MANAGEMENT
