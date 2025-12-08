@@ -3414,10 +3414,10 @@
           adminEmailEl.textContent = session.user.email;
         }
 
-        // Hide loading overlay
+        // Hide loading overlay with fade transition
         const pageLoadingOverlay = document.getElementById('pageLoadingOverlay');
         if (pageLoadingOverlay) {
-          pageLoadingOverlay.style.display = 'none';
+          pageLoadingOverlay.classList.add('hidden');
         }
 
         // ===== LOGOUT FUNCTIONALITY =====
@@ -3715,14 +3715,31 @@
 
   <!-- Client-side ZIP generation removed - now using server-side download -->
 
-  <!-- Page Loading Overlay -->
-  <div id="pageLoadingOverlay"
-    style="position:fixed;inset:0;background:rgba(255,255,255,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column">
-    <div class="spinner-border text-primary" role="status" style="width:4rem;height:4rem;border-width:0.4rem">
+  <!-- Page Loading Overlay with smooth transition -->
+  <style>
+    #pageLoadingOverlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0d9463 0%, #065f46 100%);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      transition: opacity 0.4s ease;
+    }
+
+    #pageLoadingOverlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+  <div id="pageLoadingOverlay">
+    <div class="spinner-border text-white" role="status" style="width:4rem;height:4rem;border-width:0.4rem">
       <span class="visually-hidden">Loading...</span>
     </div>
-    <p class="mt-3 text-muted fw-bold">Memuat Dashboard Admin...</p>
-    <p class="text-muted" style="font-size:0.85rem">Mohon tunggu sebentar</p>
+    <p class="mt-3 text-white fw-bold">Memeriksa sesi...</p>
+    <p class="text-white-50" style="font-size:0.85rem">Mohon tunggu sebentar</p>
   </div>
 
   <!-- jsQR for Auto-Scanning QRIS Images -->
