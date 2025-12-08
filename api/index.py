@@ -278,6 +278,17 @@ class handler(BaseHTTPRequestHandler):
                 else:
                     PaymentSettingsHandler.do_OPTIONS(self)
 
+            elif action == 'admin_users':
+                from lib.handlers.admin_users import handler as AdminUsersHandler
+                if self.command == 'GET':
+                    AdminUsersHandler.do_GET(self)
+                elif self.command == 'POST':
+                    AdminUsersHandler.do_POST(self)
+                elif self.command == 'DELETE':
+                    AdminUsersHandler.do_DELETE(self)
+                else:
+                    AdminUsersHandler.do_OPTIONS(self)
+
 
 
                     

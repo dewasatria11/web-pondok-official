@@ -1364,6 +1364,25 @@
             </ul>
           </div>
         </li>
+
+        <!-- ===== PENGATURAN (Dropdown Group) ===== -->
+        <li class="nav-item mb-1">
+          <a class="nav-link d-flex justify-content-between align-items-center" href="#" data-bs-toggle="collapse"
+            data-bs-target="#menuPengaturan" aria-expanded="false"
+            style="background: rgba(255,255,255,0.1); border-radius: 8px; font-weight: 600;">
+            <span><i class="bi bi-gear-fill me-2"></i>Pengaturan</span>
+            <i class="bi bi-chevron-down collapse-icon"></i>
+          </a>
+          <div class="collapse" id="menuPengaturan">
+            <ul class="nav flex-column ms-3 mt-1" style="border-left: 2px solid rgba(255,255,255,0.2);">
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="akun-admin" onclick="switchTab('akun-admin')">
+                  <i class="bi bi-person-plus-fill"></i> Kelola Akun Admin
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
       </ul>
 
       <!-- Sidebar Footer Buttons - Fixed at reasonable position -->
@@ -3055,6 +3074,128 @@
             </div>
           </div>
         </div>
+
+        <!-- Tab: Kelola Akun Admin -->
+        <div id="tab-akun-admin" class="tab-content" style="display:none">
+          <div class="page-header">
+            <h2><i class="bi bi-person-plus-fill"></i> Kelola Akun Admin</h2>
+            <p>Tambah akun admin baru untuk akses panel administrasi</p>
+          </div>
+
+          <div class="row g-4">
+            <!-- Form Tambah Akun -->
+            <div class="col-lg-5">
+              <div class="card border-0 shadow-sm">
+                <div class="card-header"
+                  style="background: linear-gradient(135deg, #0d9463 0%, #065f46 100%); color: white;">
+                  <h5 class="mb-0"><i class="bi bi-person-plus me-2"></i>Tambah Akun Admin Baru</h5>
+                </div>
+                <div class="card-body">
+                  <form id="formTambahAdmin" onsubmit="tambahAkunAdmin(event)">
+                    <div class="mb-3">
+                      <label class="form-label fw-semibold">
+                        <i class="bi bi-envelope me-1"></i> Email
+                      </label>
+                      <input type="email" class="form-control" id="newAdminEmail" required
+                        placeholder="contoh@email.com">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label fw-semibold">
+                        <i class="bi bi-lock me-1"></i> Password
+                      </label>
+                      <div class="input-group">
+                        <input type="password" class="form-control" id="newAdminPassword" required
+                          placeholder="Minimal 6 karakter" minlength="6">
+                        <button class="btn btn-outline-secondary" type="button" onclick="toggleNewAdminPassword()">
+                          <i class="bi bi-eye" id="iconTogglePassword"></i>
+                        </button>
+                      </div>
+                      <small class="text-muted">Password minimal 6 karakter</small>
+                    </div>
+                    <div class="mb-4">
+                      <label class="form-label fw-semibold">
+                        <i class="bi bi-lock-fill me-1"></i> Konfirmasi Password
+                      </label>
+                      <input type="password" class="form-control" id="newAdminPasswordConfirm" required
+                        placeholder="Ulangi password">
+                    </div>
+
+                    <div class="alert alert-danger d-none" id="alertTambahAdmin">
+                      <i class="bi bi-exclamation-triangle me-1"></i>
+                      <span id="alertTambahAdminText"></span>
+                    </div>
+
+                    <div class="alert alert-success d-none" id="alertSuksesAdmin">
+                      <i class="bi bi-check-circle me-1"></i>
+                      <span id="alertSuksesAdminText"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100" id="btnTambahAdmin">
+                      <i class="bi bi-plus-circle me-1"></i> Tambah Akun Admin
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Daftar Akun Admin -->
+            <div class="col-lg-7">
+              <div class="card border-0 shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0"><i class="bi bi-people me-2"></i>Daftar Akun Admin</h5>
+                  <button class="btn btn-outline-secondary btn-sm" onclick="loadAdminUsers()">
+                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                  </button>
+                </div>
+                <div class="card-body">
+                  <!-- Loading State -->
+                  <div id="adminUsersLoading" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-muted mt-2">Memuat daftar admin...</p>
+                  </div>
+
+                  <!-- Error State -->
+                  <div id="adminUsersError" class="alert alert-danger d-none">
+                    <i class="bi bi-exclamation-triangle me-1"></i>
+                    <span id="adminUsersErrorText"></span>
+                  </div>
+
+                  <!-- Users List -->
+                  <div id="adminUsersList" class="d-none">
+                    <div class="table-responsive">
+                      <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                          <tr>
+                            <th>Email</th>
+                            <th>Dibuat</th>
+                            <th>Terakhir Login</th>
+                            <th class="text-end">Aksi</th>
+                          </tr>
+                        </thead>
+                        <tbody id="adminUsersTableBody">
+                          <!-- Populated by JS -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <p class="text-muted small mt-2 mb-0">
+                      <i class="bi bi-info-circle me-1"></i>
+                      Total: <strong id="adminUsersCount">0</strong> akun admin
+                    </p>
+                  </div>
+
+                  <!-- Info saat ini login -->
+                  <div class="mt-3 p-3 bg-light rounded border-start border-success border-4">
+                    <h6 class="fw-semibold mb-1"><i class="bi bi-person-check me-1"></i> Anda login sebagai:</h6>
+                    <span class="badge bg-success fs-6" id="currentAdminEmailDisplay">-</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </section>
     </main>
   </div>
@@ -3334,6 +3475,242 @@
         console.error('[SUPABASE ADMIN] ❌ Initialization error:', error);
       }
     })();
+  </script>
+
+  <!-- Admin Account Management Script -->
+  <script>
+    // Toggle password visibility for new admin form
+    function toggleNewAdminPassword() {
+      const passwordInput = document.getElementById('newAdminPassword');
+      const icon = document.getElementById('iconTogglePassword');
+
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+      }
+    }
+
+    // Load admin users from backend API
+    async function loadAdminUsers() {
+      const loadingEl = document.getElementById('adminUsersLoading');
+      const errorEl = document.getElementById('adminUsersError');
+      const errorTextEl = document.getElementById('adminUsersErrorText');
+      const listEl = document.getElementById('adminUsersList');
+      const tableBodyEl = document.getElementById('adminUsersTableBody');
+      const countEl = document.getElementById('adminUsersCount');
+
+      // Show loading
+      loadingEl.classList.remove('d-none');
+      errorEl.classList.add('d-none');
+      listEl.classList.add('d-none');
+
+      try {
+        console.log('[ADMIN USERS] Loading users...');
+        const response = await fetch('/api/index?action=admin_users');
+        const data = await response.json();
+
+        if (!data.ok) {
+          throw new Error(data.error || 'Failed to load users');
+        }
+
+        const users = data.users || [];
+        console.log('[ADMIN USERS] Loaded', users.length, 'users');
+
+        // Get current user email
+        const currentEmail = document.getElementById('adminEmail')?.textContent || '';
+
+        // Render table
+        tableBodyEl.innerHTML = users.map(user => {
+          const isCurrentUser = user.email === currentEmail;
+          const createdDate = user.created_at ? new Date(user.created_at).toLocaleDateString('id-ID') : '-';
+          const lastLogin = user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString('id-ID', {
+            day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+          }) : 'Belum pernah';
+
+          return `
+            <tr class="${isCurrentUser ? 'table-success' : ''}">
+              <td>
+                <strong>${user.email}</strong>
+                ${isCurrentUser ? '<span class="badge bg-success ms-2">Anda</span>' : ''}
+              </td>
+              <td><small class="text-muted">${createdDate}</small></td>
+              <td><small class="text-muted">${lastLogin}</small></td>
+              <td class="text-end">
+                ${isCurrentUser ?
+              '<span class="text-muted small">-</span>' :
+              `<button class="btn btn-outline-danger btn-sm" onclick="deleteAdminUser('${user.id}', '${user.email}')" title="Hapus akun">
+                    <i class="bi bi-trash"></i>
+                  </button>`
+            }
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+        countEl.textContent = users.length;
+
+        // Show list
+        loadingEl.classList.add('d-none');
+        listEl.classList.remove('d-none');
+
+      } catch (error) {
+        console.error('[ADMIN USERS] Error:', error);
+        loadingEl.classList.add('d-none');
+        errorTextEl.textContent = error.message || 'Gagal memuat daftar admin';
+        errorEl.classList.remove('d-none');
+      }
+    }
+
+    // Delete admin user
+    async function deleteAdminUser(userId, email) {
+      if (!confirm(`Yakin ingin menghapus akun admin:\n${email}?`)) {
+        return;
+      }
+
+      try {
+        console.log('[ADMIN USERS] Deleting user:', userId);
+
+        const response = await fetch(`/api/index?action=admin_users&user_id=${userId}`, {
+          method: 'DELETE'
+        });
+        const data = await response.json();
+
+        if (!data.ok) {
+          throw new Error(data.error || 'Failed to delete user');
+        }
+
+        console.log('[ADMIN USERS] ✅ User deleted');
+
+        if (typeof toastr !== 'undefined') {
+          toastr.success('Akun admin berhasil dihapus', 'Berhasil');
+        }
+
+        // Reload list
+        loadAdminUsers();
+
+      } catch (error) {
+        console.error('[ADMIN USERS] Delete error:', error);
+        if (typeof toastr !== 'undefined') {
+          toastr.error(error.message || 'Gagal menghapus akun', 'Error');
+        } else {
+          alert('Error: ' + (error.message || 'Gagal menghapus akun'));
+        }
+      }
+    }
+
+    // Add new admin account using backend API
+    async function tambahAkunAdmin(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('newAdminEmail').value.trim();
+      const password = document.getElementById('newAdminPassword').value;
+      const passwordConfirm = document.getElementById('newAdminPasswordConfirm').value;
+      const btnTambah = document.getElementById('btnTambahAdmin');
+      const alertError = document.getElementById('alertTambahAdmin');
+      const alertErrorText = document.getElementById('alertTambahAdminText');
+      const alertSukses = document.getElementById('alertSuksesAdmin');
+      const alertSuksesText = document.getElementById('alertSuksesAdminText');
+
+      // Hide alerts
+      alertError.classList.add('d-none');
+      alertSukses.classList.add('d-none');
+
+      // Validate
+      if (!email || !password || !passwordConfirm) {
+        alertErrorText.textContent = 'Semua field harus diisi';
+        alertError.classList.remove('d-none');
+        return;
+      }
+
+      if (password.length < 6) {
+        alertErrorText.textContent = 'Password minimal 6 karakter';
+        alertError.classList.remove('d-none');
+        return;
+      }
+
+      if (password !== passwordConfirm) {
+        alertErrorText.textContent = 'Password dan konfirmasi tidak sama';
+        alertError.classList.remove('d-none');
+        return;
+      }
+
+      // Loading state
+      btnTambah.disabled = true;
+      btnTambah.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Memproses...';
+
+      try {
+        console.log('[ADMIN USERS] Creating new admin:', email);
+
+        // Use backend API instead of Supabase client
+        const response = await fetch('/api/index?action=admin_users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (!data.ok) {
+          throw new Error(data.error || 'Failed to create user');
+        }
+
+        console.log('[ADMIN USERS] ✅ Account created:', data.user);
+
+        // Show success message
+        alertSuksesText.textContent = 'Akun admin berhasil ditambahkan: ' + email;
+        alertSukses.classList.remove('d-none');
+
+        // Reset form
+        document.getElementById('formTambahAdmin').reset();
+
+        // Reload list
+        loadAdminUsers();
+
+        if (typeof toastr !== 'undefined') {
+          toastr.success('Akun admin baru berhasil ditambahkan!', 'Berhasil');
+        }
+
+      } catch (error) {
+        console.error('[ADMIN USERS] Error creating account:', error);
+
+        alertErrorText.textContent = error.message || 'Gagal membuat akun admin';
+        alertError.classList.remove('d-none');
+
+        if (typeof toastr !== 'undefined') {
+          toastr.error(error.message || 'Gagal membuat akun admin', 'Error');
+        }
+      } finally {
+        btnTambah.disabled = false;
+        btnTambah.innerHTML = '<i class="bi bi-plus-circle me-1"></i> Tambah Akun Admin';
+      }
+    }
+
+    // Load users when tab is shown
+    document.addEventListener('DOMContentLoaded', function () {
+      const originalSwitchTab = window.switchTab;
+      if (typeof originalSwitchTab === 'function') {
+        window.switchTab = function (tabName) {
+          originalSwitchTab(tabName);
+
+          if (tabName === 'akun-admin') {
+            // Update current admin email display
+            const emailDisplay = document.getElementById('currentAdminEmailDisplay');
+            const sidebarEmail = document.getElementById('adminEmail');
+            if (emailDisplay && sidebarEmail) {
+              emailDisplay.textContent = sidebarEmail.textContent || '-';
+            }
+
+            // Load admin users list
+            loadAdminUsers();
+          }
+        };
+      }
+    });
   </script>
 
   <!-- Client-side ZIP generation removed - now using server-side download -->
