@@ -2,263 +2,243 @@
 <html lang="id">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0d9463" />
-  <title>Login Admin - PPDSB Pondok Pesantren Al Ikhsan Beji</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Admin - PP Al Ikhsan Beji</title>
   <link rel="icon" href="/favicon.ico" sizes="any" />
-  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
   <link rel="manifest" href="/manifest.webmanifest" />
 
   <!-- Prevent Caching -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
 
-  <!-- Bootstrap 5 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Google: Inter (UI), Amiri (Arabic), & Rubik (Heading) -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@200;300;400;500;600&family=Rubik:wght@400;900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome untuk Ikon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pesantren: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            rubik: ['Rubik', 'sans-serif'],
+            serif: ['"Traditional Arabic"', '"Aref Ruqaa"', 'Amiri', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    :root {
-      --primary-green: #0d9463;
-      --dark-green: #065f46;
-      --light-green: #10b981;
-    }
-
-    body {
-      background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: "Segoe UI", "Roboto", Arial, sans-serif;
-      padding: 1rem;
-    }
-
-    .login-card {
-      max-width: 420px;
-      width: 100%;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      border-radius: 1.2rem;
-      overflow: hidden;
-      background: white;
-      animation: fadeInUp 0.7s cubic-bezier(0.39, 0.575, 0.565, 1);
-    }
-
-    .login-header {
-      background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
-      color: white;
-      padding: 2.5rem 1.5rem 1.5rem 1.5rem;
-      text-align: center;
-    }
-
-    .login-header .logo-icon {
-      width: 70px;
-      height: 70px;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 15px;
-    }
-
-    .login-header .logo-icon i {
-      font-size: 36px;
-      color: white;
-    }
-
-    .login-header h3 {
-      font-weight: 700;
-      font-size: 1.6rem;
-      margin-bottom: 5px;
-    }
-
-    .login-header p {
-      font-size: 0.95rem;
-      opacity: 0.9;
-      margin: 0;
-    }
-
-    .card-body {
-      padding: 2rem;
-    }
-
-    .form-floating {
-      margin-bottom: 1rem;
-    }
-
-    .form-floating input {
-      border: 2px solid #e5e7eb;
-      border-radius: 10px;
-      height: 56px;
-    }
-
-    .form-floating input:focus {
-      border-color: var(--primary-green);
-      box-shadow: 0 0 0 3px rgba(13, 148, 99, 0.15);
-    }
-
-    .btn-login {
-      background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
-      border: none;
-      font-weight: 600;
-      font-size: 1.1rem;
-      padding: 14px;
-      border-radius: 10px;
-      color: white;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .btn-login:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(13, 148, 99, 0.35);
-      color: white;
-    }
-
-    .btn-login:disabled {
-      opacity: 0.7;
-      transform: none;
-    }
-
-    .alert-error {
-      background: #fef2f2;
-      border: 1px solid #fecaca;
-      color: #dc2626;
-      padding: 12px 16px;
-      border-radius: 10px;
-      margin-bottom: 1rem;
-      display: none;
-    }
-
-    .alert-error.show {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .back-link {
-      color: #6b7280;
-      text-decoration: none;
-      font-size: 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: color 0.2s;
-    }
-
-    .back-link:hover {
-      color: var(--primary-green);
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .islamic-pattern {
+      background-image: radial-gradient(#ffffff 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: 0.1;
     }
 
     /* Loading overlay */
     #loadingOverlay {
       position: fixed;
       inset: 0;
-      background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 9999;
+      transition: opacity 0.4s ease;
     }
 
     #loadingOverlay.hidden {
-      display: none;
+      opacity: 0;
+      pointer-events: none;
     }
 
-    /* Responsive */
-    @media (max-width: 576px) {
-      .login-header {
-        padding: 2rem 1rem 1.2rem;
-      }
+    /* Main container hidden initially */
+    .main-container {
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
 
-      .login-header h3 {
-        font-size: 1.4rem;
-      }
+    .main-container.visible {
+      opacity: 1;
+    }
 
-      .card-body {
-        padding: 1.5rem;
-      }
+    /* Error alert */
+    .alert-error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+      padding: 12px 16px;
+      border-radius: 12px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+    }
 
-      input[type="email"],
-      input[type="password"] {
-        font-size: 16px !important;
-      }
+    .alert-error.show {
+      display: flex;
     }
   </style>
 </head>
 
-<body>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center font-sans antialiased">
+
   <!-- Loading Overlay -->
   <div id="loadingOverlay">
-    <div class="spinner-border text-light" role="status" style="width: 3rem; height: 3rem;">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-    <p class="text-white mt-3">Memeriksa sesi...</p>
-  </div>
-
-  <div class="login-card">
-    <div class="login-header">
-      <div class="logo-icon">
-        <i class="bi bi-shield-lock"></i>
-      </div>
-      <h3>Login Admin</h3>
-      <p>Pondok Pesantren Al Ikhsan Beji</p>
-    </div>
-
-    <div class="card-body">
-      <div class="alert-error" id="alertError">
-        <i class="bi bi-exclamation-circle"></i>
-        <span id="errorMessage">Email atau password salah</span>
-      </div>
-
-      <form id="loginForm">
-        <div class="form-floating">
-          <input type="email" class="form-control" id="email" placeholder="admin@email.com" required
-            autocomplete="username" />
-          <label for="email"><i class="bi bi-envelope me-2"></i>Email</label>
-        </div>
-
-        <div class="form-floating mb-4">
-          <input type="password" class="form-control" id="password" placeholder="Password" required
-            autocomplete="current-password" />
-          <label for="password"><i class="bi bi-lock me-2"></i>Password</label>
-        </div>
-
-        <button type="submit" class="btn btn-login w-100" id="btnLogin">
-          <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
-        </button>
-      </form>
-
-      <hr class="my-4" />
-
-      <div class="text-center">
-        <a href="/" class="back-link">
-          <i class="bi bi-arrow-left"></i> Kembali ke Website
-        </a>
-      </div>
+    <div class="text-center">
+      <i class="fas fa-circle-notch fa-spin text-white text-4xl mb-4"></i>
+      <p class="text-white text-lg font-light">Memeriksa sesi...</p>
     </div>
   </div>
 
-  <!-- Supabase JS (UMD) -->
+  <!-- Container Utama -->
+  <div class="main-container w-full min-h-screen flex overflow-hidden shadow-2xl">
+
+    <!-- BAGIAN KIRI: Narasi & Gambar -->
+    <div
+      class="hidden md:flex md:w-1/2 lg:w-3/5 bg-pesantren-900 relative flex-col justify-between text-white overflow-hidden">
+
+      <!-- Background Image -->
+      <img src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=2070&auto=format&fit=crop"
+        alt="Al-Quran Al-Karim" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay"
+        onerror="this.src='https://images.unsplash.com/photo-1585036156171-384164a8c675?q=80&w=2070';">
+
+      <!-- Overlay Gradient -->
+      <div class="absolute inset-0 bg-gradient-to-br from-pesantren-900/95 via-pesantren-800/80 to-transparent"></div>
+
+      <!-- Islamic Pattern -->
+      <div class="absolute inset-0 islamic-pattern"></div>
+
+      <!-- Konten Narasi -->
+      <div class="relative z-10 p-12 h-full flex flex-col justify-center">
+        <div class="mb-8">
+          <div class="text-white mb-6">
+            <h2
+              class="text-4xl lg:text-6xl font-serif font-medium leading-normal mb-4 text-center lg:text-left drop-shadow-sm">
+              ٱلسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ ٱللَّٰهِ وَبَرَكَاتُهُ
+            </h2>
+            <div class="inline-block border-b border-pesantren-400/30 pb-4 mt-2">
+              <span class="text-pesantren-50 text-2xl font-light tracking-wide italic font-sans">Portal Pendidik &
+                Pengelola</span>
+            </div>
+          </div>
+          <p class="text-lg text-pesantren-50 max-w-md leading-relaxed font-thin tracking-wide">
+            "Selamat datang para pendidik, guru, ustadz, dan juga pengelola web. Mari bersinergi dalam kebaikan."
+          </p>
+        </div>
+
+        <div class="mt-8 pl-4 border-l-2 border-pesantren-300/40">
+          <h3 class="font-sans font-normal uppercase tracking-[0.2em] text-xs text-pesantren-200 mb-1">Sistem Informasi
+            Manajemen</h3>
+          <p class="text-2xl font-serif text-white tracking-wide">Pondok Pesantren Al Ikhsan Beji</p>
+        </div>
+      </div>
+
+      <!-- Copyright footer kiri -->
+      <div class="relative z-10 p-12 pt-0 text-xs opacity-50 font-light tracking-wider">
+        &copy; 2026 TIM IT PESANTREN AL IKHSAN BEJI
+      </div>
+    </div>
+
+    <!-- BAGIAN KANAN: Form Login -->
+    <div class="w-full md:w-1/2 lg:w-2/5 flex flex-col items-center justify-center p-6 bg-gray-50 relative">
+
+      <!-- Card Login -->
+      <div
+        class="w-full max-w-sm z-10 bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-8 sm:p-10 border border-gray-100">
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+          <h1 class="text-3xl font-black text-pesantren-900 font-rubik tracking-tight uppercase">Login</h1>
+          <div class="w-8 h-1 bg-pesantren-200 mx-auto mt-3 rounded-full"></div>
+        </div>
+
+        <!-- Error Alert -->
+        <div class="alert-error mb-4" id="alertError">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="errorMessage">Email atau password salah</span>
+        </div>
+
+        <!-- Form -->
+        <form id="loginForm" class="space-y-6">
+
+          <!-- Input Email -->
+          <div>
+            <label for="email"
+              class="block text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em] mb-2 ml-1">Email</label>
+            <div class="relative group">
+              <div
+                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-pesantren-600">
+                <i class="far fa-envelope text-gray-400 group-focus-within:text-pesantren-600"></i>
+              </div>
+              <input type="email" id="email" name="email" required
+                class="pl-11 w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:bg-white focus:ring-2 focus:ring-pesantren-100 focus:border-pesantren-500 transition-all duration-300 text-sm text-gray-700 placeholder-gray-400 font-light"
+                placeholder="Masukkan email" autocomplete="username">
+            </div>
+          </div>
+
+          <!-- Input Password -->
+          <div>
+            <label for="password"
+              class="block text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em] mb-2 ml-1">Kata Sandi</label>
+            <div class="relative group">
+              <div
+                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-pesantren-600">
+                <i class="fas fa-lock text-gray-400 group-focus-within:text-pesantren-600"></i>
+              </div>
+              <input type="password" id="password" name="password" required
+                class="pl-11 pr-11 w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:bg-white focus:ring-2 focus:ring-pesantren-100 focus:border-pesantren-500 transition-all duration-300 text-sm text-gray-700 placeholder-gray-400 font-light"
+                placeholder="••••••••" autocomplete="current-password">
+              <button type="button" onclick="togglePassword()"
+                class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-pesantren-600 transition-colors cursor-pointer">
+                <i id="eye-icon" class="far fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Button Login -->
+          <button type="submit" id="btnLogin"
+            class="w-full bg-pesantren-600 text-white py-3.5 rounded-xl font-medium tracking-wide hover:bg-pesantren-700 focus:outline-none focus:ring-4 focus:ring-pesantren-100 transform transition-all duration-300 shadow-lg hover:shadow-pesantren-200 hover:-translate-y-0.5 mt-2 disabled:opacity-75 disabled:cursor-not-allowed disabled:transform-none">
+            Masuk
+          </button>
+        </form>
+
+        <!-- Back to Home -->
+        <div class="mt-6 text-center">
+          <a href="/" class="text-sm text-gray-400 hover:text-pesantren-600 transition-colors font-light">
+            <i class="fas fa-arrow-left mr-1"></i> Kembali ke Website
+          </a>
+        </div>
+
+        <!-- Footer -->
+        <p class="mt-6 text-center text-xs font-light text-gray-400 tracking-wide">
+          &copy; 2026 Al Ikhsan Beji
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/assets/js/pwa.js" defer></script>
 
   <script>
@@ -276,6 +256,21 @@
     const alertError = document.getElementById('alertError');
     const errorMessage = document.getElementById('errorMessage');
     const loadingOverlay = document.getElementById('loadingOverlay');
+    const mainContainer = document.querySelector('.main-container');
+
+    // Toggle Password Visibility
+    function togglePassword() {
+      const eyeIcon = document.getElementById('eye-icon');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+      }
+    }
 
     // Check if already logged in
     async function checkSession() {
@@ -285,7 +280,7 @@
 
         if (session && session.user) {
           console.log('[LOGIN] ✅ Already logged in:', session.user.email);
-          window.location.href = '/admin.html';
+          window.location.replace('/admin.html');
           return;
         }
 
@@ -294,7 +289,10 @@
         console.error('[LOGIN] Error checking session:', error);
       }
 
-      // Hide loading overlay
+      // Show main container with fade-in
+      mainContainer.classList.add('visible');
+
+      // Hide loading overlay with fade-out
       loadingOverlay.classList.add('hidden');
     }
 
@@ -312,7 +310,7 @@
 
       // Show loading state
       btnLogin.disabled = true;
-      btnLogin.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
+      btnLogin.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i>Memproses...';
       hideError();
 
       try {
@@ -330,13 +328,19 @@
 
         console.log('[LOGIN] ✅ Login successful!', data.user.email);
 
+        // Show success state
+        btnLogin.innerHTML = '<i class="fas fa-check mr-2"></i>Berhasil';
+        btnLogin.classList.remove('bg-pesantren-600', 'hover:bg-pesantren-700');
+        btnLogin.classList.add('bg-emerald-500');
+
         // Redirect to admin
-        window.location.href = '/admin.html';
+        setTimeout(() => {
+          window.location.href = '/admin.html';
+        }, 500);
 
       } catch (error) {
         console.error('[LOGIN] Login failed:', error);
 
-        // Show user-friendly error message
         let msg = 'Email atau password salah';
         if (error.message) {
           if (error.message.includes('Invalid login')) {
@@ -354,7 +358,7 @@
 
         // Reset button
         btnLogin.disabled = false;
-        btnLogin.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Masuk';
+        btnLogin.innerHTML = 'Masuk';
       }
     });
 
