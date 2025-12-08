@@ -1,307 +1,375 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#14532d" />
-    <title>Login Admin - PPDSB Pondok Pesantren Al Ikhsan Beji</title>
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    
-    <!-- Prevent Caching - Force Fresh Login Every Time -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
 
-    <!-- Bootstrap 5 -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d9463" />
+  <title>Login Admin - PPDSB Pondok Pesantren Al Ikhsan Beji</title>
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+  <link rel="manifest" href="/manifest.webmanifest" />
 
-    <!-- Bootstrap Icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
-    />
+  <!-- Prevent Caching -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
 
-    <style>
-      body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: "Segoe UI", "Roboto", Arial, sans-serif;
-        padding: 1rem;
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" />
+
+  <style>
+    :root {
+      --primary-green: #0d9463;
+      --dark-green: #065f46;
+      --light-green: #10b981;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Segoe UI", "Roboto", Arial, sans-serif;
+      padding: 1rem;
+    }
+
+    .login-card {
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      border-radius: 1.2rem;
+      overflow: hidden;
+      background: white;
+      animation: fadeInUp 0.7s cubic-bezier(0.39, 0.575, 0.565, 1);
+    }
+
+    .login-header {
+      background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+      color: white;
+      padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .login-header .logo-icon {
+      width: 70px;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+    }
+
+    .login-header .logo-icon i {
+      font-size: 36px;
+      color: white;
+    }
+
+    .login-header h3 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      margin-bottom: 5px;
+    }
+
+    .login-header p {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      margin: 0;
+    }
+
+    .card-body {
+      padding: 2rem;
+    }
+
+    .form-floating {
+      margin-bottom: 1rem;
+    }
+
+    .form-floating input {
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      height: 56px;
+    }
+
+    .form-floating input:focus {
+      border-color: var(--primary-green);
+      box-shadow: 0 0 0 3px rgba(13, 148, 99, 0.15);
+    }
+
+    .btn-login {
+      background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+      border: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 14px;
+      border-radius: 10px;
+      color: white;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(13, 148, 99, 0.35);
+      color: white;
+    }
+
+    .btn-login:disabled {
+      opacity: 0.7;
+      transform: none;
+    }
+
+    .alert-error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .alert-error.show {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-link {
+      color: #6b7280;
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: var(--primary-green);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
       }
-      .login-card {
-        max-width: 400px;
-        width: 100%;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.15);
-        border-radius: 1rem;
-        overflow: hidden;
-        background: white;
-        animation: fadeInUp 0.7s cubic-bezier(0.39, 0.575, 0.565, 1);
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
+    }
+
+    /* Loading overlay */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    #loadingOverlay.hidden {
+      display: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
       .login-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 2rem 1.5rem 1.2rem 1.5rem;
-        border-radius: 1rem 1rem 0 0;
-        box-shadow: 0 4px 24px rgba(102, 126, 234, 0.15);
+        padding: 2rem 1rem 1.2rem;
       }
+
       .login-header h3 {
-        font-weight: 700;
-        letter-spacing: 1px;
-        font-size: 2rem;
+        font-size: 1.4rem;
       }
-      .login-header p {
-        font-size: 1.1rem;
-        opacity: 0.85;
-      }
+
       .card-body {
-        background: white;
-        border-radius: 0 0 1rem 1rem;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-      }
-      .input-group-text {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        color: #fff;
-        border: none;
-        font-size: 1.2rem;
-      }
-      .form-control:focus {
-        border-color: #764ba2;
-        box-shadow: 0 0 0 2px #764ba233;
-      }
-      .btn-success {
-        background: linear-gradient(135deg, #0f9d58 0%, #0a7a43 100%);
-        border: none;
-        font-weight: 600;
-        font-size: 1.1rem;
-        letter-spacing: 1px;
-        box-shadow: 0 2px 8px rgba(15, 157, 88, 0.12);
-        transition: transform 0.2s, box-shadow 0.2s;
-      }
-      .btn-success:hover,
-      .btn-success:focus {
-        transform: translateY(-2px) scale(1.03);
-        box-shadow: 0 4px 16px rgba(15, 157, 88, 0.18);
-      }
-      .btn-link {
-        color: #764ba2;
-        font-weight: 500;
-        text-decoration: none;
-        transition: color 0.2s;
-      }
-      .btn-link:hover {
-        color: #f5576c;
-        text-decoration: underline;
-      }
-      .alert-danger {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        color: #fff;
-        border: none;
-        font-weight: 500;
-        box-shadow: 0 2px 8px rgba(245, 87, 108, 0.12);
-      }
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(40px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        padding: 1.5rem;
       }
 
-      /* ===== RESPONSIVE DESIGN ===== */
-      @media (max-width: 576px) {
-        body {
-          padding: 0.5rem;
-        }
-        .login-card {
-          margin: 0;
-        }
-        .login-header {
-          padding: 1.5rem 1rem 1rem 1rem;
-        }
-        .login-header h3 {
-          font-size: 1.5rem;
-          letter-spacing: 0.5px;
-        }
-        .login-header p {
-          font-size: 0.95rem;
-        }
-        .card-body {
-          padding: 1.5rem 1rem !important;
-        }
-        .form-label {
-          font-size: 0.9rem;
-        }
-        .form-control {
-          font-size: 0.9rem;
-          padding: 0.5rem 0.75rem;
-        }
-        .input-group-text {
-          font-size: 1rem;
-          padding: 0.5rem 0.75rem;
-        }
-        .btn-success {
-          font-size: 1rem;
-          padding: 0.75rem;
-        }
-        small {
-          font-size: 0.75rem;
-        }
-        .alert-danger {
-          font-size: 0.85rem;
-          padding: 0.75rem;
-        }
+      input[type="email"],
+      input[type="password"] {
+        font-size: 16px !important;
       }
+    }
+  </style>
+</head>
 
-      /* Tablet */
-      @media (min-width: 577px) and (max-width: 768px) {
-        .login-header h3 {
-          font-size: 1.75rem;
-        }
-        .login-header p {
-          font-size: 1rem;
-        }
-      }
+<body>
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay">
+    <div class="spinner-border text-light" role="status" style="width: 3rem; height: 3rem;">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text-white mt-3">Memeriksa sesi...</p>
+  </div>
 
-      /* Touch device improvements */
-      @media (hover: none) {
-        .btn-success:hover {
-          transform: none;
-        }
-      }
-
-      /* Prevent zoom on input focus (iOS) */
-      @media (max-width: 576px) {
-        input[type="text"],
-        input[type="password"] {
-          font-size: 16px !important;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="login-card">
-      <div class="card">
-        <div class="login-header text-center">
-          <h3 class="mb-0"><i class="bi bi-shield-lock"></i> Admin Login</h3>
-          <p class="mb-0 mt-2">PONDOK PESANTREN AL IKHSAN</p>
-        </div>
-        <div class="card-body p-4">
-          <form id="loginForm">
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="bi bi-envelope"></i>
-                </span>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="email"
-                  placeholder="Masukkan email admin"
-                  required
-                  autocomplete="username"
-                />
-              </div>
-            </div>
-
-            <div class="mb-4">
-              <label for="password" class="form-label">Password</label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="bi bi-lock"></i>
-                </span>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  placeholder="Masukkan password"
-                  required
-                  autocomplete="current-password"
-                />
-              </div>
-            </div>
-
-            <div
-              class="alert alert-danger"
-              id="errorAlert"
-              style="display: none"
-            >
-              <i class="bi bi-exclamation-triangle"></i>
-              <span id="errorMessage"></span>
-            </div>
-
-            <button type="submit" class="btn btn-success w-100 btn-lg">
-              <i class="bi bi-box-arrow-in-right"></i> Login
-            </button>
-          </form>
-
-          <hr class="my-3 my-md-4" />
-
-          <div class="text-center">
-            <small class="text-muted d-block mb-2">
-              <i class="bi bi-info-circle"></i> Uji Coba : email = <strong>admin</strong>, password = <strong>admin123</strong>
-            </small>
-            <a href="/" class="btn btn-link btn-sm mt-2">
-              <i class="bi bi-arrow-left"></i> Kembali ke Beranda
-            </a>
-          </div>
-        </div>
+  <div class="login-card">
+    <div class="login-header">
+      <div class="logo-icon">
+        <i class="bi bi-shield-lock"></i>
       </div>
+      <h3>Login Admin</h3>
+      <p>Pondok Pesantren Al Ikhsan Beji</p>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/assets/js/pwa.js" defer></script>
+    <div class="card-body">
+      <div class="alert-error" id="alertError">
+        <i class="bi bi-exclamation-circle"></i>
+        <span id="errorMessage">Email atau password salah</span>
+      </div>
 
-    <script>
-      document.getElementById("loginForm").addEventListener("submit", (e) => {
-        e.preventDefault();
+      <form id="loginForm">
+        <div class="form-floating">
+          <input type="email" class="form-control" id="email" placeholder="admin@email.com" required
+            autocomplete="username" />
+          <label for="email"><i class="bi bi-envelope me-2"></i>Email</label>
+        </div>
 
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
-        const errorAlert = document.getElementById("errorAlert");
-        const errorMessage = document.getElementById("errorMessage");
+        <div class="form-floating mb-4">
+          <input type="password" class="form-control" id="password" placeholder="Password" required
+            autocomplete="current-password" />
+          <label for="password"><i class="bi bi-lock me-2"></i>Password</label>
+        </div>
 
-        // Simple validation (hardcoded for demo)
-        if (email === "admin" && password === "admin123") {
-          console.log("[LOGIN] ✅ Login successful!");
-          
-          // Save login status to localStorage (persists across refresh)
-          localStorage.setItem("isAdminLoggedIn", "true");
-          localStorage.setItem("adminEmail", email);
-          localStorage.setItem("loginTimestamp", Date.now().toString());
-          
-          console.log("[LOGIN] ✅ Login data saved to localStorage");
-          console.log("[LOGIN] 🚀 Redirecting to /admin.html...");
-          
-          // Redirect to admin panel
-          window.location.href = "/admin.html";
-        } else {
-          console.log("[LOGIN] ❌ Login failed - invalid credentials");
-          errorMessage.textContent = "Email atau password salah!";
-          errorAlert.style.display = "block";
+        <button type="submit" class="btn btn-login w-100" id="btnLogin">
+          <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
+        </button>
+      </form>
 
-          // Hide error after 3 seconds
-          setTimeout(() => {
-            errorAlert.style.display = "none";
-          }, 3000);
+      <hr class="my-4" />
+
+      <div class="text-center">
+        <a href="/" class="back-link">
+          <i class="bi bi-arrow-left"></i> Kembali ke Website
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase JS (UMD) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/js/pwa.js" defer></script>
+
+  <script>
+    // Initialize Supabase
+    const SUPABASE_URL = 'https://sxbvadzcwpaovkhghttv.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4YnZhZHpjd3Bhb3ZraGdodHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExMDg4MDYsImV4cCI6MjA3NjY4NDgwNn0.miJeKmsNgjgS4fWegGlwrxF_cPUoZBT0YKl1oxmmXTE';
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // DOM Elements
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const btnLogin = document.getElementById('btnLogin');
+    const alertError = document.getElementById('alertError');
+    const errorMessage = document.getElementById('errorMessage');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+
+    // Check if already logged in
+    async function checkSession() {
+      try {
+        console.log('[LOGIN] Checking existing session...');
+        const { data: { session } } = await supabaseClient.auth.getSession();
+
+        if (session && session.user) {
+          console.log('[LOGIN] ✅ Already logged in:', session.user.email);
+          window.location.href = '/admin.html';
+          return;
         }
-      });
-    </script>
-  
 
+        console.log('[LOGIN] No active session found');
+      } catch (error) {
+        console.error('[LOGIN] Error checking session:', error);
+      }
 
+      // Hide loading overlay
+      loadingOverlay.classList.add('hidden');
+    }
+
+    // Handle login form submit
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email || !password) {
+        showError('Masukkan email dan password');
+        return;
+      }
+
+      // Show loading state
+      btnLogin.disabled = true;
+      btnLogin.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
+      hideError();
+
+      try {
+        console.log('[LOGIN] Attempting Supabase Auth login for:', email);
+
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+        if (error) {
+          console.error('[LOGIN] Auth error:', error);
+          throw error;
+        }
+
+        console.log('[LOGIN] ✅ Login successful!', data.user.email);
+
+        // Redirect to admin
+        window.location.href = '/admin.html';
+
+      } catch (error) {
+        console.error('[LOGIN] Login failed:', error);
+
+        // Show user-friendly error message
+        let msg = 'Email atau password salah';
+        if (error.message) {
+          if (error.message.includes('Invalid login')) {
+            msg = 'Email atau password salah';
+          } else if (error.message.includes('Email not confirmed')) {
+            msg = 'Email belum dikonfirmasi';
+          } else if (error.message.includes('Too many requests')) {
+            msg = 'Terlalu banyak percobaan. Coba lagi nanti.';
+          } else if (error.message.includes('User not found')) {
+            msg = 'Akun tidak ditemukan';
+          }
+        }
+
+        showError(msg);
+
+        // Reset button
+        btnLogin.disabled = false;
+        btnLogin.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Masuk';
+      }
+    });
+
+    function showError(msg) {
+      errorMessage.textContent = msg;
+      alertError.classList.add('show');
+    }
+
+    function hideError() {
+      alertError.classList.remove('show');
+    }
+
+    // Check session on page load
+    checkSession();
+  </script>
 </body>
+
 </html>

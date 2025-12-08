@@ -97,6 +97,31 @@
       text-align: center;
     }
 
+    /* Dropdown collapse icon rotation */
+    .sidebar .collapse-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar [aria-expanded="false"] .collapse-icon {
+      transform: rotate(-90deg);
+    }
+
+    .sidebar [aria-expanded="true"] .collapse-icon {
+      transform: rotate(0deg);
+    }
+
+    /* Submenu items */
+    .sidebar .collapse .nav-link {
+      padding: 8px 15px;
+      font-size: 0.9rem;
+      border-left: none;
+      margin: 2px 5px;
+    }
+
+    .sidebar .collapse .nav-link:hover {
+      transform: translateX(3px);
+    }
+
     .user-badge {
       background: rgba(255, 255, 255, .15);
       padding: 10px 15px;
@@ -1234,78 +1259,110 @@
       </div>
 
       <ul class="nav flex-column px-2 mt-3" style="flex-grow: 1; padding-bottom: 20px;">
-        <li class="nav-item">
-          <a class="nav-link active" href="#" data-tab="pendaftar" onclick="switchTab('pendaftar')">
-            <i class="bi bi-people-fill"></i> Data Pendaftar
+        <!-- ===== KELOLA SANTRI (Dropdown Group) ===== -->
+        <li class="nav-item mb-1">
+          <a class="nav-link d-flex justify-content-between align-items-center" href="#" data-bs-toggle="collapse"
+            data-bs-target="#menuKelolaSantri" aria-expanded="true"
+            style="background: rgba(255,255,255,0.1); border-radius: 8px; font-weight: 600;">
+            <span><i class="bi bi-people-fill me-2"></i>Kelola Santri</span>
+            <i class="bi bi-chevron-down collapse-icon"></i>
           </a>
+          <div class="collapse show" id="menuKelolaSantri">
+            <ul class="nav flex-column ms-3 mt-1" style="border-left: 2px solid rgba(255,255,255,0.2);">
+              <li class="nav-item">
+                <a class="nav-link active py-2" href="#" data-tab="pendaftar" onclick="switchTab('pendaftar')">
+                  <i class="bi bi-person-lines-fill"></i> Data Pendaftar
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="statistik" onclick="switchTab('statistik')">
+                  <i class="bi bi-bar-chart-fill"></i> Statistik
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="pembayaran" onclick="switchTab('pembayaran')">
+                  <i class="bi bi-credit-card-fill"></i> Pembayaran
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="payment-settings" onclick="switchTab('payment-settings')">
+                  <i class="bi bi-gear-fill"></i> Pengaturan Pembayaran
+                </a>
+              </li>
+            </ul>
+          </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-tab="statistik" onclick="switchTab('statistik')">
-            <i class="bi bi-bar-chart-fill"></i> Statistik
+
+        <!-- ===== KELOLA WEBSITE (Dropdown Group) ===== -->
+        <li class="nav-item mb-1">
+          <a class="nav-link d-flex justify-content-between align-items-center" href="#" data-bs-toggle="collapse"
+            data-bs-target="#menuKelolaWebsite" aria-expanded="true"
+            style="background: rgba(255,255,255,0.1); border-radius: 8px; font-weight: 600;">
+            <span><i class="bi bi-globe me-2"></i>Kelola Website</span>
+            <i class="bi bi-chevron-down collapse-icon"></i>
           </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-tab="pembayaran" onclick="switchTab('pembayaran')">
-            <i class="bi bi-credit-card-fill"></i> Pembayaran
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-tab="payment-settings" onclick="switchTab('payment-settings')">
-            <i class="bi bi-gear-fill"></i> Pengaturan Pembayaran
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-tab="gelombang" onclick="switchTab('gelombang')">
-            <i class="bi bi-calendar-range"></i> Kelola Gelombang
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-tab="berita" onclick="switchTab('berita')">
-            <i class="bi bi-newspaper"></i> Berita
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-tab="hero-carousel" onclick="switchTab('hero-carousel')">
-            <i class="bi bi-person-bounding-box"></i> Hero Carousel
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-tab="hero" onclick="switchTab('hero')">
-            <i class="bi bi-images"></i> Hero Slider
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-tab="why" onclick="switchTab('why')">
-            <i class="bi bi-file-text"></i> Why Section
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-tab="alur" onclick="switchTab('alur')">
-            <i class="bi bi-diagram-3"></i> Alur Pendaftaran
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-tab="syarat" onclick="switchTab('syarat')">
-            <i class="bi bi-clipboard-check"></i> Syarat Pendaftaran
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-tab="biaya" onclick="switchTab('biaya')">
-            <i class="bi bi-cash-stack"></i> Biaya
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-tab="brosur" onclick="switchTab('brosur')">
-            <i class="bi bi-file-earmark-text"></i> Brosur
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-tab="kontak" onclick="switchTab('kontak')">
-            <i class="bi bi-telephone"></i> Kontak
-          </a>
-          <a class="nav-link" href="#" data-tab="maintenance" onclick="switchTab('maintenance')">
-            <i class="bi bi-tools"></i> Mode Maintenance
-          </a>
+          <div class="collapse show" id="menuKelolaWebsite">
+            <ul class="nav flex-column ms-3 mt-1" style="border-left: 2px solid rgba(255,255,255,0.2);">
+              <!-- Less crucial items first -->
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="maintenance" onclick="switchTab('maintenance')">
+                  <i class="bi bi-tools"></i> Mode Maintenance
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="kontak" onclick="switchTab('kontak')">
+                  <i class="bi bi-telephone"></i> Kontak
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="brosur" onclick="switchTab('brosur')">
+                  <i class="bi bi-file-earmark-text"></i> Brosur
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="berita" onclick="switchTab('berita')">
+                  <i class="bi bi-newspaper"></i> Berita
+                </a>
+              </li>
+              <!-- Medium importance -->
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="why" onclick="switchTab('why')">
+                  <i class="bi bi-file-text"></i> Keunggulan Pondok
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="hero-carousel" onclick="switchTab('hero-carousel')">
+                  <i class="bi bi-person-bounding-box"></i> Gambar Santri
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="hero" onclick="switchTab('hero')">
+                  <i class="bi bi-images"></i> Gambar Bergerak
+                </a>
+              </li>
+              <!-- Most crucial at bottom -->
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="biaya" onclick="switchTab('biaya')">
+                  <i class="bi bi-cash-stack"></i> Biaya
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="syarat" onclick="switchTab('syarat')">
+                  <i class="bi bi-clipboard-check"></i> Syarat Pendaftaran
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="alur" onclick="switchTab('alur')">
+                  <i class="bi bi-diagram-3"></i> Alur Pendaftaran
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link py-2" href="#" data-tab="gelombang" onclick="switchTab('gelombang')">
+                  <i class="bi bi-calendar-range"></i> Kelola Gelombang
+                </a>
+              </li>
+            </ul>
+          </div>
         </li>
       </ul>
 
@@ -1413,16 +1470,6 @@
 
           <div class="card">
             <div class="card-body">
-              <!-- Pagination Info (Top) -->
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <div>
-                  <span class="text-muted" id="paginationInfo">Menampilkan data...</span>
-                </div>
-                <div>
-                  <span class="badge bg-secondary">10 data per halaman</span>
-                </div>
-              </div>
-
               <div class="table-responsive">
                 <table class="table table-hover">
                   <thead>
@@ -1554,55 +1601,6 @@
                 </div>
               </div>
             </div>
-            <!-- Chart row -->
-            <div class="col-12">
-              <div class="row g-4">
-                <div class="col-md-6">
-                  <div class="card">
-                    <div class="card-header" style="background:var(--info-gradient)">
-                      <h5 class="mb-0 text-white"><i class="bi bi-people-fill"></i> Asrama vs Non Asrama</h5>
-                    </div>
-                    <div class="card-body chart-card-body">
-                      <canvas id="chartAsrama" aria-label="Chart Asrama" role="img"></canvas>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="card">
-                    <div class="card-header" style="background:var(--info-gradient)">
-                      <h5 class="mb-0 text-white"><i class="bi bi-gender-ambiguous"></i> Gender (L vs P)</h5>
-                    </div>
-                    <div class="card-body chart-card-body">
-                      <canvas id="chartGender" aria-label="Chart Gender" role="img"></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Asal Provinsi -->
-            <div class="col-12">
-              <div class="card">
-                <div class="card-header" style="background:linear-gradient(135deg,#3b82f6 0%,#0ea5e9 100%)">
-                  <h5 class="mb-0 text-white"><i class="bi bi-geo-alt-fill"></i> Asal Provinsi Pendaftar</h5>
-                </div>
-                <div class="card-body chart-card-body">
-                  <div class="row province-chart-row">
-                    <div class="col-lg-8 mb-3 mb-lg-0">
-                      <canvas id="chartProvince" class="province-chart-canvas" aria-label="Chart Asal Provinsi"
-                        role="img"></canvas>
-                    </div>
-                    <div class="col-lg-4">
-                      <h6 class="text-muted mb-2">Top Provinsi</h6>
-                      <ul class="list-group list-group-flush small" id="provinceTopList">
-                        <li class="list-group-item">Memuat data...</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <!-- Hanya Sekolah - MTs -->
             <div class="col-md-6">
               <div class="card">
@@ -1649,6 +1647,55 @@
                   <div class="d-flex justify-content-between align-items-center mt-2">
                     <strong style="color:#2a5298">Total MA</strong>
                     <strong><span class="badge bg-warning text-dark fs-5" id="hanyaSekolahMaTotal">0</span></strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chart row -->
+            <div class="col-12">
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-header" style="background:var(--info-gradient)">
+                      <h5 class="mb-0 text-white"><i class="bi bi-people-fill"></i> Asrama vs Non Asrama</h5>
+                    </div>
+                    <div class="card-body chart-card-body">
+                      <canvas id="chartAsrama" aria-label="Chart Asrama" role="img"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-header" style="background:var(--info-gradient)">
+                      <h5 class="mb-0 text-white"><i class="bi bi-gender-ambiguous"></i> Gender (L vs P)</h5>
+                    </div>
+                    <div class="card-body chart-card-body">
+                      <canvas id="chartGender" aria-label="Chart Gender" role="img"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Asal Provinsi -->
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header" style="background:linear-gradient(135deg,#3b82f6 0%,#0ea5e9 100%)">
+                  <h5 class="mb-0 text-white"><i class="bi bi-geo-alt-fill"></i> Asal Provinsi Pendaftar</h5>
+                </div>
+                <div class="card-body chart-card-body">
+                  <div class="row province-chart-row">
+                    <div class="col-lg-8 mb-3 mb-lg-0">
+                      <canvas id="chartProvince" class="province-chart-canvas" aria-label="Chart Asal Provinsi"
+                        role="img"></canvas>
+                    </div>
+                    <div class="col-lg-4">
+                      <h6 class="text-muted mb-2">Top Provinsi</h6>
+                      <ul class="list-group list-group-flush small" id="provinceTopList">
+                        <li class="list-group-item">Memuat data...</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1907,10 +1954,10 @@
           </div>
         </div>
 
-        <!-- Tab: Hero Carousel (Gambar Santri di Hero Section) -->
+        <!-- Tab: Gambar Santri (Hero Section) -->
         <div id="tab-hero-carousel" class="tab-content" style="display:none">
           <div class="page-header">
-            <h2><i class="bi bi-person-bounding-box"></i> Hero Carousel Management</h2>
+            <h2><i class="bi bi-person-bounding-box"></i> Kelola Gambar Santri</h2>
             <p>Kelola gambar santri PNG transparan yang muncul di <strong>hero section utama</strong> (carousel dengan 3
               slide)</p>
           </div>
@@ -1981,7 +2028,7 @@
             </div>
           </div>
 
-          <!-- Hero Carousel Images List -->
+          <!-- Daftar Gambar Santri -->
           <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
               <h5 class="mb-0"><i class="bi bi-collection"></i> Gambar Santri (<span
@@ -2004,10 +2051,10 @@
           </div>
         </div>
 
-        <!-- Tab: Hero Slider -->
+        <!-- Tab: Gambar Bergerak -->
         <div id="tab-hero" class="tab-content" style="display:none">
           <div class="page-header">
-            <h2><i class="bi bi-images"></i> Image Slider Management</h2>
+            <h2><i class="bi bi-images"></i> Kelola Gambar Bergerak</h2>
             <p>Kelola gambar slider di section bawah hero (Auto-slide 4 detik, <strong>Gambar penuh tanpa
                 transparansi/overlay</strong>)</p>
           </div>
@@ -2079,16 +2126,16 @@
           </div>
         </div>
 
-        <!-- Tab: Why Section -->
+        <!-- Tab: Keunggulan Pondok -->
         <div id="tab-why" class="tab-content" style="display:none">
           <div class="page-header">
-            <h2><i class="bi bi-file-text"></i> Kelola Why Section (Narasi)</h2>
+            <h2><i class="bi bi-file-text"></i> Kelola Keunggulan Pondok</h2>
             <p>Edit narasi di section "Mengapa Memilih Pondok Pesantren Al Ikhsan Beji?"</p>
           </div>
 
           <div class="card">
             <div class="card-header">
-              <h5 class="mb-0"><i class="bi bi-pencil-square"></i> Edit Narasi Why Section</h5>
+              <h5 class="mb-0"><i class="bi bi-pencil-square"></i> Edit Narasi Keunggulan Pondok</h5>
             </div>
             <div class="card-body">
               <form id="whySectionForm" onsubmit="saveWhySection(event)">
@@ -2098,7 +2145,7 @@
                     Bahasa Konten
                   </label>
                   <div class="btn-group btn-group-sm" id="whyLangSwitch" role="group"
-                    aria-label="Pilih bahasa Why Section">
+                    aria-label="Pilih bahasa Keunggulan Pondok">
                     <button type="button" class="btn btn-warning active" data-why-lang-button="id">
                       <span class="me-1" aria-hidden="true">🇮🇩</span>
                       Indonesia
@@ -3190,64 +3237,103 @@
     }
   </script>
 
-  <!-- Supabase Client for Gelombang Management -->
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  <!-- Supabase Client (UMD version for better compatibility) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+    (async function () {
+      try {
+        // Supabase credentials
+        const SUPABASE_URL = 'https://sxbvadzcwpaovkhghttv.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4YnZhZHpjd3Bhb3ZraGdodHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExMDg4MDYsImV4cCI6MjA3NjY4NDgwNn0.miJeKmsNgjgS4fWegGlwrxF_cPUoZBT0YKl1oxmmXTE';
 
-    // Supabase credentials (already set by user)
-    const SUPABASE_URL = 'https://sxbvadzcwpaovkhghttv.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4YnZhZHpjd3Bhb3ZraGdodHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExMDg4MDYsImV4cCI6MjA3NjY4NDgwNn0.miJeKmsNgjgS4fWegGlwrxF_cPUoZBT0YKl1oxmmXTE';
+        // Initialize Supabase client (UMD exposes supabase global)
+        if (typeof supabase !== 'undefined' && supabase.createClient) {
+          window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+          console.log('[SUPABASE ADMIN] ✅ Client initialized successfully (UMD)');
+        } else {
+          console.error('[SUPABASE ADMIN] ❌ Supabase library not loaded');
+          return;
+        }
 
-    // Initialize Supabase client
-    window.supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // ===== AUTH CHECK: Protect admin panel =====
+        console.log('[AUTH] Checking authentication...');
+        const { data: { session } } = await window.supabase.auth.getSession();
 
-    console.log('[SUPABASE ADMIN] ✅ Client initialized successfully');
-    console.log('[SUPABASE ADMIN] → URL:', SUPABASE_URL);
-    console.log('[SUPABASE ADMIN] → Ready for gelombang management');
+        if (!session || !session.user) {
+          console.log('[AUTH] ❌ Not authenticated, redirecting to login...');
+          window.location.href = '/login.html';
+          return;
+        }
 
-    // ===== REAL-TIME SYNC: Listen to gelombang changes from other admin tabs =====
-    const channel = window.supabase
-      .channel('admin-gelombang-sync')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'gelombang'
-      }, (payload) => {
-        console.log('[SUPABASE ADMIN] 🔄 Gelombang data changed from another source:', payload);
+        console.log('[AUTH] ✅ Authenticated as:', session.user.email);
 
-        // Check if current tab is on gelombang tab
-        const gelombangTab = document.getElementById('tab-gelombang');
-        if (gelombangTab && gelombangTab.style.display !== 'none') {
-          console.log('[SUPABASE ADMIN] 🔄 Reloading gelombang data (real-time sync)...');
+        // Display user email in sidebar
+        const adminEmailEl = document.getElementById('adminEmail');
+        if (adminEmailEl) {
+          adminEmailEl.textContent = session.user.email;
+        }
 
-          // Show subtle notification
-          if (typeof toastr !== 'undefined' && toastr.info) {
-            toastr.info('Data gelombang diperbarui dari sumber lain');
-          }
+        // Hide loading overlay
+        const pageLoadingOverlay = document.getElementById('pageLoadingOverlay');
+        if (pageLoadingOverlay) {
+          pageLoadingOverlay.style.display = 'none';
+        }
 
-          // Reload data with slight delay
-          setTimeout(() => {
-            if (typeof loadGelombangData === 'function') {
-              loadGelombangData(true);
+        // ===== LOGOUT FUNCTIONALITY =====
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+          logoutBtn.addEventListener('click', async () => {
+            console.log('[AUTH] Logging out...');
+            logoutBtn.disabled = true;
+            logoutBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Logout...';
+
+            try {
+              await window.supabase.auth.signOut();
+              console.log('[AUTH] ✅ Logged out successfully');
+              window.location.href = '/login.html';
+            } catch (error) {
+              console.error('[AUTH] Logout error:', error);
+              logoutBtn.disabled = false;
+              logoutBtn.innerHTML = '<i class="bi bi-box-arrow-right"></i> Logout';
             }
-          }, 500);
+          });
         }
-      })
-      .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          console.log('[SUPABASE ADMIN] 🎧 Subscribed to real-time gelombang updates');
-        } else if (status === 'CLOSED') {
-          console.log('[SUPABASE ADMIN] ⚠️ Real-time connection closed');
-        } else if (status === 'CHANNEL_ERROR') {
-          console.error('[SUPABASE ADMIN] ❌ Real-time connection error');
-        }
-      });
 
-    // Cleanup on page unload
-    window.addEventListener('beforeunload', () => {
-      console.log('[SUPABASE ADMIN] 🔌 Unsubscribing from real-time updates');
-      window.supabase.removeChannel(channel);
-    });
+        // ===== REAL-TIME SYNC for gelombang =====
+        const channel = window.supabase
+          .channel('admin-gelombang-sync')
+          .on('postgres_changes', {
+            event: '*',
+            schema: 'public',
+            table: 'gelombang'
+          }, (payload) => {
+            console.log('[SUPABASE ADMIN] 🔄 Gelombang data changed:', payload);
+            const gelombangTab = document.getElementById('tab-gelombang');
+            if (gelombangTab && gelombangTab.style.display !== 'none') {
+              if (typeof toastr !== 'undefined' && toastr.info) {
+                toastr.info('Data gelombang diperbarui dari sumber lain');
+              }
+              setTimeout(() => {
+                if (typeof loadGelombangData === 'function') {
+                  loadGelombangData(true);
+                }
+              }, 500);
+            }
+          })
+          .subscribe((status) => {
+            if (status === 'SUBSCRIBED') {
+              console.log('[SUPABASE ADMIN] 🎧 Subscribed to real-time updates');
+            }
+          });
+
+        window.addEventListener('beforeunload', () => {
+          window.supabase.removeChannel(channel);
+        });
+
+      } catch (error) {
+        console.error('[SUPABASE ADMIN] ❌ Initialization error:', error);
+      }
+    })();
   </script>
 
   <!-- Client-side ZIP generation removed - now using server-side download -->
