@@ -193,6 +193,42 @@
     }
   };
 
+  /**
+   * Wait for Supabase client to be ready
+   * Handles race condition where ES module may not be initialized yet
+   * @param {number} maxWaitMs - Maximum time to wait in milliseconds (default: 5000)
+   * @param {number} intervalMs - Check interval in milliseconds (default: 100)
+   * @returns {Promise<object>} - Resolves with Supabase client or rejects with error
+   */
+  const waitForSupabase = (maxWaitMs = 5000, intervalMs = 100) => {
+    return new Promise((resolve, reject) => {
+      // Already available
+      if (typeof window.supabase !== 'undefined') {
+        console.log('[SUPABASE] ✅ Client already available');
+        resolve(window.supabase);
+        return;
+      }
+
+      console.log('[SUPABASE] ⏳ Waiting for client to initialize...');
+      const startTime = Date.now();
+
+      const checkInterval = setInterval(() => {
+        if (typeof window.supabase !== 'undefined') {
+          clearInterval(checkInterval);
+          console.log('[SUPABASE] ✅ Client ready after', Date.now() - startTime, 'ms');
+          resolve(window.supabase);
+          return;
+        }
+
+        if (Date.now() - startTime > maxWaitMs) {
+          clearInterval(checkInterval);
+          console.error('[SUPABASE] ❌ Timeout waiting for client');
+          reject(new Error('Supabase client tidak tersedia. Silakan refresh halaman.'));
+        }
+      }, intervalMs);
+    });
+  };
+
   const jsonRequest = async (url, { method = "GET", body, headers } = {}) => {
     const response = await fetch(url, {
       method,
@@ -3337,13 +3373,11 @@ Jazakumullahu khairan,
         </div>
       `;
 
-      // Check if Supabase client is available
-      if (typeof window.supabase === 'undefined') {
-        throw new Error('Supabase client tidak tersedia');
-      }
+      // Wait for Supabase client to be available (handles race condition)
+      const supabase = await waitForSupabase();
 
       // Fetch from Supabase table
-      const { data: heroImages, error } = await window.supabase
+      const { data: heroImages, error } = await supabase
         .from('hero_images')
         .select('*')
         .order('slide_order', { ascending: true });
@@ -3497,10 +3531,8 @@ Jazakumullahu khairan,
           btn.disabled = true;
           btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Uploading...';
 
-          // Check if Supabase client is available
-          if (typeof window.supabase === 'undefined') {
-            throw new Error('Supabase client tidak tersedia');
-          }
+          // Wait for Supabase client to be available (handles race condition)
+          const supabase = await waitForSupabase();
 
           // Generate unique filename
           const timestamp = Date.now();
@@ -3510,7 +3542,7 @@ Jazakumullahu khairan,
           console.log('[HERO_CAROUSEL] Uploading:', filename);
 
           // Upload to Supabase Storage
-          const { data: uploadData, error: uploadError } = await window.supabase.storage
+          const { data: uploadData, error: uploadError } = await supabase.storage
             .from('hero-images')
             .upload(`carousel/${filename}`, file, {
               cacheControl: '3600',
@@ -3522,7 +3554,7 @@ Jazakumullahu khairan,
           }
 
           // Get public URL
-          const { data: urlData } = window.supabase.storage
+          const { data: urlData } = supabase.storage
             .from('hero-images')
             .getPublicUrl(`carousel/${filename}`);
 
@@ -3530,7 +3562,7 @@ Jazakumullahu khairan,
           console.log('[HERO_CAROUSEL] Image URL:', imageUrl);
 
           // Check if slide order already exists
-          const { data: existing } = await window.supabase
+          const { data: existing } = await supabase
             .from('hero_images')
             .select('id')
             .eq('slide_order', parseInt(slideOrder))
@@ -3538,7 +3570,7 @@ Jazakumullahu khairan,
 
           if (existing) {
             // Update existing record
-            const { error: updateError } = await window.supabase
+            const { error: updateError } = await supabase
               .from('hero_images')
               .update({
                 image_url: imageUrl,
@@ -3551,7 +3583,7 @@ Jazakumullahu khairan,
             console.log('[HERO_CAROUSEL] Updated existing slide', slideOrder);
           } else {
             // Insert new record
-            const { error: insertError } = await window.supabase
+            const { error: insertError } = await supabase
               .from('hero_images')
               .insert({
                 slide_order: parseInt(slideOrder),
@@ -3604,8 +3636,11 @@ Jazakumullahu khairan,
     try {
       console.log('[HERO_CAROUSEL] Deleting:', imageId);
 
+      // Wait for Supabase client to be available
+      const supabase = await waitForSupabase();
+
       // Delete from database
-      const { error } = await window.supabase
+      const { error } = await supabase
         .from('hero_images')
         .delete()
         .eq('id', imageId);
@@ -3617,7 +3652,7 @@ Jazakumullahu khairan,
         const urlPath = new URL(imageUrl).pathname;
         const storagePath = urlPath.split('/hero-images/')[1];
         if (storagePath) {
-          await window.supabase.storage.from('hero-images').remove([storagePath]);
+          await supabase.storage.from('hero-images').remove([storagePath]);
         }
       } catch (storageError) {
         console.warn('[HERO_CAROUSEL] Storage cleanup failed:', storageError);
@@ -3637,7 +3672,10 @@ Jazakumullahu khairan,
    */
   async function toggleHeroCarouselActive(imageId, isActive) {
     try {
-      const { error } = await window.supabase
+      // Wait for Supabase client to be available
+      const supabase = await waitForSupabase();
+
+      const { error } = await supabase
         .from('hero_images')
         .update({ is_active: isActive, updated_at: new Date().toISOString() })
         .eq('id', imageId);
