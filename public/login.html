@@ -328,14 +328,19 @@
 
         console.log('[LOGIN] ✅ Login successful!', data.user.email);
 
+        // Set localStorage for initial guard (admin.js uses this for sync check)
+        localStorage.setItem('isAdminLoggedIn', 'true');
+        localStorage.setItem('adminEmail', data.user.email);
+        localStorage.setItem('loginTimestamp', Date.now().toString());
+
         // Show success state
         btnLogin.innerHTML = '<i class="fas fa-check mr-2"></i>Berhasil';
         btnLogin.classList.remove('bg-pesantren-600', 'hover:bg-pesantren-700');
         btnLogin.classList.add('bg-emerald-500');
 
-        // Redirect to admin
+        // Redirect to admin (use replace to prevent back button issues)
         setTimeout(() => {
-          window.location.href = '/admin.html';
+          window.location.replace('/admin.html');
         }, 500);
 
       } catch (error) {

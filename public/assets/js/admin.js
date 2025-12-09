@@ -310,15 +310,28 @@
 
     const logoutBtn = $("#logoutBtn");
     if (logoutBtn) {
-      logoutBtn.addEventListener("click", (event) => {
+      logoutBtn.addEventListener("click", async (event) => {
         event.preventDefault();
+
+        // Clear localStorage first
         localStorage.removeItem("isAdminLoggedIn");
         localStorage.removeItem("adminEmail");
         localStorage.removeItem("loginTimestamp");
+
+        // Sign out from Supabase Auth (if available)
+        try {
+          if (typeof window.supabase !== 'undefined') {
+            await window.supabase.auth.signOut();
+            console.log('[LOGOUT] ✅ Supabase session cleared');
+          }
+        } catch (error) {
+          console.warn('[LOGOUT] Error clearing Supabase session:', error);
+        }
+
         alert(
           "✅ Anda telah logout.\n\nSilakan login kembali untuk mengakses admin panel."
         );
-        window.location.href = "/login.html";
+        window.location.replace("/login.html");
       });
     }
 
