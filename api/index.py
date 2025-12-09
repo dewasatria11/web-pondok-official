@@ -6,11 +6,20 @@ Handles all API endpoints to stay under Vercel's 12 function limit
 import sys
 import os
 
-# Add the api directory to sys.path so that 'lib' can be imported correctly
-# This is required for Vercel serverless functions
-api_dir = os.path.dirname(os.path.abspath(__file__))
-if api_dir not in sys.path:
-    sys.path.insert(0, api_dir)
+# CRITICAL: Setup Python path for Vercel serverless environment
+# Vercel runs from project root, so we need to add api/ directory to path
+_current_file = os.path.abspath(__file__)
+_api_dir = os.path.dirname(_current_file)
+_project_root = os.path.dirname(_api_dir)
+
+# Add api directory first (for 'lib.handlers...' imports)
+if _api_dir not in sys.path:
+    sys.path.insert(0, _api_dir)
+
+# Debug logging
+print(f"[ROUTER] Current file: {_current_file}")
+print(f"[ROUTER] API dir: {_api_dir}")
+print(f"[ROUTER] sys.path[0]: {sys.path[0] if sys.path else 'EMPTY'}")
 
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs

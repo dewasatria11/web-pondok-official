@@ -10,8 +10,9 @@ __pycache__/
 dist/
 build/
 
-# Duplicate lib folder (handlers are in api/lib/)
-lib/
+# Duplicate lib folder at ROOT only (handlers are in api/lib/)
+# Use /lib to only match root, NOT api/lib/
+/lib
 
 # Node modules (Vercel installs fresh)
 node_modules/
