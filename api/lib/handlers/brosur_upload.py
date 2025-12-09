@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler
 import base64
 import re
 import time
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 from lib.handlers._crud_helpers import read_json_body, send_json, allow_cors
 
 

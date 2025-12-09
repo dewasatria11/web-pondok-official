@@ -10,7 +10,7 @@ import hashlib
 import json
 import time
 
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 
 CACHE_TTL_SECONDS = 60
 _locale_cache = {}

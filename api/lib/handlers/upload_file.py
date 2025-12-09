@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 from io import BytesIO
 from PIL import Image
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 
 # ---------- Utilities (format-preserving) ----------
 def _maybe_downscale(img: Image.Image, max_side: int = 1600) -> Image.Image:

@@ -11,7 +11,7 @@ import json
 from typing import Dict, Any
 
 try:
-    from lib._supabase import supabase_client
+    from .._supabase import supabase_client
 except ImportError:
     from _supabase import supabase_client
 

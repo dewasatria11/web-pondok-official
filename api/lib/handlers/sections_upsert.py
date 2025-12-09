@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 import json
 import os
 
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 
 ADMIN_API_TOKEN = os.getenv("ADMIN_API_TOKEN")
 

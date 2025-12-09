@@ -7,7 +7,7 @@ import json
 import base64
 import uuid
 from datetime import datetime
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):

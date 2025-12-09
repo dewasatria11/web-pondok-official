@@ -5,7 +5,7 @@ from io import BytesIO
 import zipfile
 import re
 from datetime import datetime, timedelta
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 
 
 def slugify(text):

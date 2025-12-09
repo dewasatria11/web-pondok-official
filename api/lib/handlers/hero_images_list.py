@@ -4,7 +4,7 @@ Fetch all hero images for slider (ordered by display_order)
 """
 from http.server import BaseHTTPRequestHandler
 import json
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):

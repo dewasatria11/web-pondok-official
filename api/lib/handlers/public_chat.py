@@ -1,5 +1,5 @@
 from http.server import BaseHTTPRequestHandler
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 from lib.handlers._crud_helpers import send_json, read_json_body, allow_cors
 
 def handle_chat_search(supa, query_text):

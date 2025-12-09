@@ -4,7 +4,7 @@ Supports: GET (list), POST (create), PUT (update), DELETE
 """
 from http.server import BaseHTTPRequestHandler
 
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 from ._crud_helpers import (
     read_json_body,
     send_json,

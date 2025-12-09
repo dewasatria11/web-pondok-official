@@ -3,7 +3,7 @@ import json
 from urllib.parse import parse_qs, urlparse
 from typing import Any, Dict, List
 from datetime import datetime
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):

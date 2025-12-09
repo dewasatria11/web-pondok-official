@@ -4,7 +4,7 @@ Menyimpan flag maintenance global agar admin bisa mengunci situs saat perawatan.
 """
 from http.server import BaseHTTPRequestHandler
 
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 from ._crud_helpers import (
     allow_cors,
     now_timestamp,

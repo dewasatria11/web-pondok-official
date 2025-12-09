@@ -3,7 +3,7 @@ import json
 import base64
 import csv
 from io import StringIO
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 from lib.handlers._crud_helpers import send_json, read_json_body, allow_cors
 
 class handler(BaseHTTPRequestHandler):

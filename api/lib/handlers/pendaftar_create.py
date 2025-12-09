@@ -3,7 +3,7 @@ import json
 import re
 from typing import Any, Dict, Tuple
 import requests
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 
 
 def verify_turnstile(token: str) -> Tuple[bool, str]:

@@ -4,7 +4,7 @@ from datetime import datetime
 from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from openpyxl.utils import get_column_letter
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 
 
 class handler(BaseHTTPRequestHandler):

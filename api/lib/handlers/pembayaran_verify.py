@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler
 import json
 import re
 from typing import List, Optional
-from lib._supabase import supabase_client
+from .._supabase import supabase_client
 
 def _normalize_digits(value: str) -> str:
     """Hilangkan semua karakter non-digit."""
