@@ -10,16 +10,16 @@ Proxy Supabase REST (PostgREST) dengan CORS & multi-tabel.
 
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs, urlencode
-import json, requests
+import json, requests, os
 
-# === Dewa Satria - Supabase Project Settings ===
-SUPABASE_URL = "https://pislnvhdmsxudltcuuku.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpc2xudmhkbXN4dWRsdGN1dWt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzODI4MTYsImV4cCI6MjA3NTk1ODgxNn0.j-M6yrGTumWsJM8K5IX-RPpnMbCEvWqLxRiO9HMPq6A"
-ALLOWED_ORIGIN = "https://ppdsb_pondok.vercel.app"  # domain web kamu
+# === Supabase Project Settings (from environment) ===
+SUPABASE_URL = os.getenv("SUPABASE_URL", "https://sxbvadzcwpaovkhghttv.supabase.co")
+SUPABASE_KEY = os.getenv("SUPABASE_ANON_KEY", "")
+ALLOWED_ORIGIN = os.getenv("ALLOWED_ORIGIN", "*")  # Allow all origins for flexibility
 DEFAULT_TABLE = "pendaftar"
 TIMEOUT_SEC = 30
 ALLOWED_TABLES = ["berita", "prestasi", "sambutan", "profile_pondok", "pendaftar"]
-# ==============================================
+# =====================================================
 
 def _cors_headers(h: BaseHTTPRequestHandler):
     h.send_header("Access-Control-Allow-Origin", ALLOWED_ORIGIN)
