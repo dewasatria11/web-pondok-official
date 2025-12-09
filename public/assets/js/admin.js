@@ -3389,9 +3389,9 @@ Jazakumullahu khairan,
       // Wait for Supabase client to be available (handles race condition)
       const supabase = await waitForSupabase();
 
-      // Fetch from Supabase table
+      // Fetch from Supabase table - SEPARATE table for santri PNG images
       const { data: heroImages, error } = await supabase
-        .from('hero_images')
+        .from('hero_carousel_images')
         .select('*')
         .order('slide_order', { ascending: true });
 
@@ -3554,10 +3554,10 @@ Jazakumullahu khairan,
 
           console.log('[HERO_CAROUSEL] Uploading:', filename);
 
-          // Upload to Supabase Storage
+          // Upload to Supabase Storage - SEPARATE bucket for santri images
           const { data: uploadData, error: uploadError } = await supabase.storage
-            .from('hero-images')
-            .upload(`carousel/${filename}`, file, {
+            .from('hero-carousel')
+            .upload(`santri/${filename}`, file, {
               cacheControl: '3600',
               upsert: true
             });
@@ -3568,15 +3568,15 @@ Jazakumullahu khairan,
 
           // Get public URL
           const { data: urlData } = supabase.storage
-            .from('hero-images')
-            .getPublicUrl(`carousel/${filename}`);
+            .from('hero-carousel')
+            .getPublicUrl(`santri/${filename}`);
 
           const imageUrl = urlData.publicUrl;
           console.log('[HERO_CAROUSEL] Image URL:', imageUrl);
 
           // Check if slide order already exists
           const { data: existing } = await supabase
-            .from('hero_images')
+            .from('hero_carousel_images')
             .select('id')
             .eq('slide_order', parseInt(slideOrder))
             .single();
@@ -3584,7 +3584,7 @@ Jazakumullahu khairan,
           if (existing) {
             // Update existing record
             const { error: updateError } = await supabase
-              .from('hero_images')
+              .from('hero_carousel_images')
               .update({
                 image_url: imageUrl,
                 alt_text: altText,
@@ -3597,7 +3597,7 @@ Jazakumullahu khairan,
           } else {
             // Insert new record
             const { error: insertError } = await supabase
-              .from('hero_images')
+              .from('hero_carousel_images')
               .insert({
                 slide_order: parseInt(slideOrder),
                 image_url: imageUrl,
@@ -3654,7 +3654,7 @@ Jazakumullahu khairan,
 
       // Delete from database
       const { error } = await supabase
-        .from('hero_images')
+        .from('hero_carousel_images')
         .delete()
         .eq('id', imageId);
 
@@ -3663,9 +3663,9 @@ Jazakumullahu khairan,
       // Also try to delete from storage (extract path from URL)
       try {
         const urlPath = new URL(imageUrl).pathname;
-        const storagePath = urlPath.split('/hero-images/')[1];
+        const storagePath = urlPath.split('/hero-carousel/')[1];
         if (storagePath) {
-          await supabase.storage.from('hero-images').remove([storagePath]);
+          await supabase.storage.from('hero-carousel').remove([storagePath]);
         }
       } catch (storageError) {
         console.warn('[HERO_CAROUSEL] Storage cleanup failed:', storageError);
@@ -3689,7 +3689,7 @@ Jazakumullahu khairan,
       const supabase = await waitForSupabase();
 
       const { error } = await supabase
-        .from('hero_images')
+        .from('hero_carousel_images')
         .update({ is_active: isActive, updated_at: new Date().toISOString() })
         .eq('id', imageId);
 
