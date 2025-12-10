@@ -3407,73 +3407,61 @@
       (async function () {
         try {
           // =====================================================
-          // ADMIN AUTH CHECK - Fixed redirect loop issue
+          // ADMIN AUTH CHECK - Using localStorage (stable)
           // =====================================================
 
           // Supabase credentials
           const SUPABASE_URL = 'https://sxbvadzcwpaovkhghttv.supabase.co';
           const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4YnZhZHpjd3Bhb3ZraGdodHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExMDg4MDYsImV4cCI6MjA3NjY4NDgwNn0.miJeKmsNgjgS4fWegGlwrxF_cPUoZBT0YKl1oxmmXTE';
 
-          // Check if already redirecting (prevent loops)
-          if (sessionStorage.getItem('admin_auth_redirecting') === 'true') {
-            console.log('[AUTH] Redirect in progress, clearing flag...');
-            sessionStorage.removeItem('admin_auth_redirecting');
+          // ======================================================
+          // FRESH SESSION DETECTION (sama dengan login.html)
+          // ======================================================
+          const SESSION_MARKER = 'admin_session_active';
+          const hasSessionMarker = sessionStorage.getItem(SESSION_MARKER);
+
+          if (!hasSessionMarker) {
+            console.log('[ADMIN] Fresh browser session detected, clearing old auth data');
+
+            // Clear Supabase auth data from localStorage
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+              const key = localStorage.key(i);
+              if (key && key.includes('supabase')) {
+                keysToRemove.push(key);
+              }
+            }
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+
+            sessionStorage.setItem(SESSION_MARKER, 'true');
+
+            // Redirect to login since this is fresh session
+            console.log('[ADMIN] Redirecting to login (fresh session)');
+            window.location.replace('/login.html');
+            return;
           }
 
-          // Initialize Supabase client
+          // Initialize Supabase client with default localStorage
           if (typeof supabase !== 'undefined' && supabase.createClient) {
-            window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-              auth: {
-                storage: window.sessionStorage,
-                autoRefreshToken: true,
-                persistSession: true,
-                detectSessionInUrl: true
-              }
-            });
+            window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             console.log('[SUPABASE ADMIN] ✅ Client initialized');
           } else {
             console.error('[SUPABASE ADMIN] ❌ Supabase library not loaded');
             return;
           }
 
-          // Small delay to ensure sessionStorage is fully read
-          await new Promise(resolve => setTimeout(resolve, 100));
-
-          // ===== AUTH CHECK with retry =====
+          // ===== AUTH CHECK =====
           console.log('[AUTH] Checking authentication...');
+          const { data: { session }, error } = await window.supabase.auth.getSession();
 
-          let session = null;
-          let retryCount = 0;
-          const maxRetries = 3;
-
-          while (retryCount < maxRetries) {
-            try {
-              const result = await window.supabase.auth.getSession();
-              session = result.data?.session;
-
-              if (session && session.user) {
-                console.log('[AUTH] ✅ Session found on attempt', retryCount + 1);
-                break;
-              }
-
-              // Wait before retry
-              if (retryCount < maxRetries - 1) {
-                console.log('[AUTH] No session found, retrying in 200ms...');
-                await new Promise(resolve => setTimeout(resolve, 200));
-              }
-            } catch (e) {
-              console.warn('[AUTH] Error checking session:', e.message);
-            }
-            retryCount++;
+          if (error) {
+            console.error('[AUTH] Error:', error.message);
+            window.location.replace('/login.html');
+            return;
           }
 
           if (!session || !session.user) {
-            console.log('[AUTH] ❌ Not authenticated after', maxRetries, 'attempts');
-
-            // Set flag to prevent loop
-            sessionStorage.setItem('admin_auth_redirecting', 'true');
-
-            // Redirect to login
+            console.log('[AUTH] ❌ Not authenticated');
             window.location.replace('/login.html');
             return;
           }

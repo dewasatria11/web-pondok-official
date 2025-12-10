@@ -396,16 +396,36 @@
     const SUPABASE_URL = 'https://sxbvadzcwpaovkhghttv.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4YnZhZHpjd3Bhb3ZraGdodHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExMDg4MDYsImV4cCI6MjA3NjY4NDgwNn0.miJeKmsNgjgS4fWegGlwrxF_cPUoZBT0YKl1oxmmXTE';
 
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: {
-        // Gunakan sessionStorage agar sesi bertahan saat navigasi,
-        // tapi hilang saat browser/tab ditutup
-        storage: window.sessionStorage,
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: true
+    // ======================================================
+    // FRESH SESSION DETECTION
+    // Jika browser baru dibuka (sessionStorage kosong tapi localStorage ada session),
+    // maka clear session agar user harus login ulang
+    // ======================================================
+    (function checkFreshBrowserSession() {
+      const SESSION_MARKER = 'admin_session_active';
+      const hasSessionMarker = sessionStorage.getItem(SESSION_MARKER);
+
+      if (!hasSessionMarker) {
+        // Ini adalah browser/tab baru - clear any old auth tokens
+        console.log('[LOGIN] Fresh browser session detected, clearing old auth data');
+
+        // Clear Supabase auth data from localStorage
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && key.includes('supabase')) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach(key => localStorage.removeItem(key));
+
+        // Set marker so subsequent page loads in same session don't clear
+        sessionStorage.setItem(SESSION_MARKER, 'true');
       }
-    });
+    })();
+
+    // Initialize Supabase with default localStorage (more stable)
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // DOM Elements
     const loginForm = document.getElementById('loginForm');
@@ -434,19 +454,7 @@
     // Check if already logged in
     async function checkSession() {
       try {
-        // Check if we just got redirected from admin (prevent loop)
-        const wasRedirectedFromAdmin = sessionStorage.getItem('admin_auth_redirecting') === 'true';
-        if (wasRedirectedFromAdmin) {
-          console.log('[LOGIN] Was redirected from admin, showing login form');
-          sessionStorage.removeItem('admin_auth_redirecting');
-          showLoginForm();
-          return;
-        }
-
         console.log('[LOGIN] Checking existing session...');
-
-        // Small delay to ensure sessionStorage is ready
-        await new Promise(resolve => setTimeout(resolve, 50));
 
         const { data: { session }, error } = await supabaseClient.auth.getSession();
 
@@ -509,8 +517,8 @@
 
         console.log('[LOGIN] ✅ Login successful!', data.user.email);
 
-        // NOTE: Sesi disimpan di sessionStorage, bertahan saat navigasi
-        // Tapi akan hilang saat browser/tab ditutup
+        // Pastikan session marker ada agar admin.html tidak clear auth token
+        sessionStorage.setItem('admin_session_active', 'true');
 
         // Show success state
         btnLogin.innerHTML = '<i class="fas fa-check mr-2"></i>Berhasil';
@@ -520,7 +528,7 @@
         // Redirect to admin (use replace to prevent back button issues)
         setTimeout(() => {
           window.location.replace('/admin.html');
-        }, 500);
+        }, 300);
 
       } catch (error) {
         console.error('[LOGIN] Login failed:', error);
