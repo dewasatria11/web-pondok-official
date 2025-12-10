@@ -434,8 +434,27 @@
     // Check if already logged in
     async function checkSession() {
       try {
+        // Check if we just got redirected from admin (prevent loop)
+        const wasRedirectedFromAdmin = sessionStorage.getItem('admin_auth_redirecting') === 'true';
+        if (wasRedirectedFromAdmin) {
+          console.log('[LOGIN] Was redirected from admin, showing login form');
+          sessionStorage.removeItem('admin_auth_redirecting');
+          showLoginForm();
+          return;
+        }
+
         console.log('[LOGIN] Checking existing session...');
-        const { data: { session } } = await supabaseClient.auth.getSession();
+
+        // Small delay to ensure sessionStorage is ready
+        await new Promise(resolve => setTimeout(resolve, 50));
+
+        const { data: { session }, error } = await supabaseClient.auth.getSession();
+
+        if (error) {
+          console.warn('[LOGIN] Session check error:', error.message);
+          showLoginForm();
+          return;
+        }
 
         if (session && session.user) {
           console.log('[LOGIN] ✅ Already logged in:', session.user.email);
@@ -444,14 +463,17 @@
         }
 
         console.log('[LOGIN] No active session found');
+        showLoginForm();
+
       } catch (error) {
         console.error('[LOGIN] Error checking session:', error);
+        showLoginForm();
       }
+    }
 
-      // Show main container with fade-in
+    // Helper to show login form
+    function showLoginForm() {
       mainContainer.classList.add('visible');
-
-      // Hide loading overlay with fade-out
       loadingOverlay.classList.add('hidden');
     }
 

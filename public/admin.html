@@ -3406,13 +3406,21 @@
     <script>
       (async function () {
         try {
+          // =====================================================
+          // ADMIN AUTH CHECK - Fixed redirect loop issue
+          // =====================================================
+
           // Supabase credentials
           const SUPABASE_URL = 'https://sxbvadzcwpaovkhghttv.supabase.co';
           const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4YnZhZHpjd3Bhb3ZraGdodHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExMDg4MDYsImV4cCI6MjA3NjY4NDgwNn0.miJeKmsNgjgS4fWegGlwrxF_cPUoZBT0YKl1oxmmXTE';
 
-          // Initialize Supabase client (UMD exposes supabase global)
-          // Menggunakan sessionStorage agar sesi bertahan saat navigasi,
-          // tapi hilang saat browser/tab ditutup
+          // Check if already redirecting (prevent loops)
+          if (sessionStorage.getItem('admin_auth_redirecting') === 'true') {
+            console.log('[AUTH] Redirect in progress, clearing flag...');
+            sessionStorage.removeItem('admin_auth_redirecting');
+          }
+
+          // Initialize Supabase client
           if (typeof supabase !== 'undefined' && supabase.createClient) {
             window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
               auth: {
@@ -3422,19 +3430,51 @@
                 detectSessionInUrl: true
               }
             });
-            console.log('[SUPABASE ADMIN] ✅ Client initialized (using sessionStorage)');
+            console.log('[SUPABASE ADMIN] ✅ Client initialized');
           } else {
             console.error('[SUPABASE ADMIN] ❌ Supabase library not loaded');
             return;
           }
 
-          // ===== AUTH CHECK: Protect admin panel =====
+          // Small delay to ensure sessionStorage is fully read
+          await new Promise(resolve => setTimeout(resolve, 100));
+
+          // ===== AUTH CHECK with retry =====
           console.log('[AUTH] Checking authentication...');
-          const { data: { session } } = await window.supabase.auth.getSession();
+
+          let session = null;
+          let retryCount = 0;
+          const maxRetries = 3;
+
+          while (retryCount < maxRetries) {
+            try {
+              const result = await window.supabase.auth.getSession();
+              session = result.data?.session;
+
+              if (session && session.user) {
+                console.log('[AUTH] ✅ Session found on attempt', retryCount + 1);
+                break;
+              }
+
+              // Wait before retry
+              if (retryCount < maxRetries - 1) {
+                console.log('[AUTH] No session found, retrying in 200ms...');
+                await new Promise(resolve => setTimeout(resolve, 200));
+              }
+            } catch (e) {
+              console.warn('[AUTH] Error checking session:', e.message);
+            }
+            retryCount++;
+          }
 
           if (!session || !session.user) {
-            console.log('[AUTH] ❌ Not authenticated, redirecting to login...');
-            window.location.href = '/login.html';
+            console.log('[AUTH] ❌ Not authenticated after', maxRetries, 'attempts');
+
+            // Set flag to prevent loop
+            sessionStorage.setItem('admin_auth_redirecting', 'true');
+
+            // Redirect to login
+            window.location.replace('/login.html');
             return;
           }
 
@@ -3469,8 +3509,12 @@
 
               try {
                 await window.supabase.auth.signOut();
+
+                // Clear all session data
+                sessionStorage.clear();
+
                 console.log('[AUTH] ✅ Logged out successfully');
-                window.location.href = '/login.html';
+                window.location.replace('/login.html');
               } catch (error) {
                 console.error('[AUTH] Logout error:', error);
                 logoutBtn.disabled = false;
