@@ -99,36 +99,42 @@ class handler(BaseHTTPRequestHandler):
                 province_counts[prov] = province_counts.get(prov, 0) + 1
                 
                 # Helper bools
-                is_mts = jenjang == "MTs"
+                is_mts = jenjang == "MTs" or jenjang == "MTS"
                 is_ma = jenjang == "MA"
-                is_kuliah = jenjang == "Kuliah"
-                is_l = jk == "L" or jk == "LAKI-LAKI"
-                is_p = jk == "P" or jk == "PEREMPUAN"
+                is_kuliah = jenjang == "Kuliah" or jenjang == "KULIAH"
+                is_l = "L" in jk
+                is_p = "P" in jk
+                
+                prog_upper = prog.upper()
 
-                # ... (rest of breakdown logic) ...
-                # Putra Induk
-                if prog == "Asrama Putra Induk":
+                # Putra Induk (Robust Check)
+                if "PUTRA INDUK" in prog_upper:
                     if is_mts: breakdown["putraIndukMts"] += 1
                     if is_ma: breakdown["putraIndukMa"] += 1
                     if is_kuliah: breakdown["putraIndukKuliah"] += 1
                     breakdown["putraIndukTotal"] += 1
                 
                 # Putra Tahfidz
-                elif prog == "Asrama Putra Tahfidz":
+                elif "TAHFIDZ" in prog_upper:
                     if is_mts: breakdown["putraTahfidzMts"] += 1
                     if is_ma: breakdown["putraTahfidzMa"] += 1
                     if is_kuliah: breakdown["putraTahfidzKuliah"] += 1
                     breakdown["putraTahfidzTotal"] += 1
                 
                 # Putri
-                elif prog == "Asrama Putri":
+                elif "PUTRI" in prog_upper:
                     if is_mts: breakdown["putriMts"] += 1
                     if is_ma: breakdown["putriMa"] += 1
                     if is_kuliah: breakdown["putriKuliah"] += 1
                     breakdown["putriTotal"] += 1
                 
-                # Hanya Sekolah
-                elif prog == "Hanya Sekolah":
+                # Hanya Sekolah (Non-Asrama) 
+                # Note: Logic asks for "Hanya Sekolah" specifically, or fallback?
+                # Usually if not one of the above Asramas, it's Sekolah only.
+                # But let's check for "SEKOLAH" or "NON" keyword if specific.
+                # If unsure, we can use 'else' but risky if data is dirty.
+                # Let's try matching "SEKOLAH" or if it doesn't match above but has valid jenjang.
+                elif "SEKOLAH" in prog_upper or "NON" in prog_upper:
                     if is_mts:
                         if is_l: breakdown["hanyaSekolahMtsL"] += 1
                         if is_p: breakdown["hanyaSekolahMtsP"] += 1
@@ -137,6 +143,12 @@ class handler(BaseHTTPRequestHandler):
                         if is_l: breakdown["hanyaSekolahMaL"] += 1
                         if is_p: breakdown["hanyaSekolahMaP"] += 1
                         breakdown["hanyaSekolahMaTotal"] += 1
+                
+                # Fallback: if program is just "MTs Regular" or something without "Sekolah" keyword
+                # but wasn't caught by Asrama checks, we might want to count it as Sekolah?
+                # For now stick to strict-ish text match to avoid over-counting garbage data.
+            
+            # Sort provinces by count (descending) and top 10
             
             # Sort provinces by count (descending) and top 10
             sorted_prov = sorted(province_counts.items(), key=lambda item: item[1], reverse=True)[:10]
