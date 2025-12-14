@@ -242,8 +242,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Push image down to align with text content */
-    margin-top: 70px;
+    /* Raised 15px higher */
+    margin-top: 55px;
     align-self: center;
 }
 

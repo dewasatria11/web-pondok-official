@@ -1254,12 +1254,26 @@
 
     function formatDate(dateString) {
       try {
+        if (!dateString) return "-";
+
+        // If string contains "pukul", strip everything after it
+        let cleanDate = String(dateString).split(/\s+pukul\s*/i)[0].trim();
+
+        // Parse the date - only use the date part (strip time)
+        const date = new Date(cleanDate);
+        if (isNaN(date.getTime())) {
+          // If parsing fails, try to extract date pattern
+          const match = cleanDate.match(/(\d{1,2})\s+(\w+)\s+(\d{4})/);
+          if (match) return `${match[1]} ${match[2]} ${match[3]}`;
+          return cleanDate;
+        }
+
         const options = { day: "numeric", month: "long", year: "numeric" };
         const docLang = document.documentElement.getAttribute("lang") || "id";
         const locale = docLang.startsWith("en") ? "en-US" : "id-ID";
-        return new Date(dateString).toLocaleDateString(locale, options);
+        return date.toLocaleDateString(locale, options);
       } catch (error) {
-        return dateString;
+        return String(dateString).split(/\s+pukul\s*/i)[0].trim() || "-";
       }
     }
 
