@@ -29,7 +29,7 @@ class handler(BaseHTTPRequestHandler):
             # Let's try fetching just the columns needed for stats with a higher limit.
             
             res = supa.table("pendaftar").select(
-                "id, statusberkas, jeniskelamin, rencanaprogram, rencanatingkat, asrama"
+                "id, statusberkas, jeniskelamin, rencanaprogram, rencanatingkat"
             ).execute()
             
             data = res.data if res.data else []
@@ -68,11 +68,8 @@ class handler(BaseHTTPRequestHandler):
                 full_prog = f"{jenjang} - {prog}"
                 program_counts[full_prog] = program_counts.get(full_prog, 0) + 1
                 
-                # Asrama (Logika sederhana, sesuaikan dengan data riil)
-                # Di seeder tidak ada kolom asrama spesifik, tapi mungkin dari "rencanatingkat"?
-                # Asumsi semua asrama default, atau check field lain.
-                # Kita gunakan placeholder logic jika kolom tidak ada.
-                if row.get("asrama"):
+                # Asrama (Logika fix: cek string 'Asrama' di rencana program)
+                if "Asrama" in prog:
                      asrama_counts["Asrama"] += 1
                 else:
                      asrama_counts["Non-Asrama"] += 1
