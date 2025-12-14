@@ -38,8 +38,8 @@ class handler(BaseHTTPRequestHandler):
                 query = query.eq("statusberkas", status)
             
             if q:
-                # Search in namaLengkap (case-insensitive)
-                query = query.ilike("namaLengkap", f"%{q}%")
+                # Search in namalengkap (case-insensitive)
+                query = query.ilike("namalengkap", f"%{q}%")
             
             # Apply pagination
             res = query.range(from_, to_).execute()
