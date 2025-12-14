@@ -728,18 +728,31 @@
 
       console.log('[STATISTIK] Data loaded:', result.kpi);
 
-      // Update KPIs
-      updateElementText("totalPendaftarCount", result.kpi.total);
+      // Update KPIs (IDs matched to admin.html)
+      updateElementText("totalCount", result.kpi.total);
       updateElementText("pendingCount", result.kpi.pending);
       updateElementText("diterimaCount", result.kpi.diterima);
       updateElementText("ditolakCount", result.kpi.ditolak);
+      updateElementText("revisiCount", result.kpi.revisi);
 
       // Update Last Updated Time
-      const upd = document.getElementById("updateTime");
+      // Update Last Updated Time
+      const upd = document.getElementById("updateTimePendaftar");
       const upd2 = document.getElementById("updateTimeStatistik");
-      const timeStr = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-      if (upd) upd.textContent = timeStr;
-      if (upd2) upd2.textContent = timeStr;
+
+      const now = new Date();
+      let timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+      // Fallback if empty (some browsers)
+      if (!timeStr || timeStr === "Invalid Date") {
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        timeStr = `${h}:${m}`;
+      }
+
+      const htmlContent = `<i class="bi bi-clock-history"></i> Data update: ${timeStr}`;
+
+      if (upd) upd.innerHTML = htmlContent;
+      if (upd2) upd2.innerHTML = htmlContent;
 
       // Update Charts if available
       if (result.charts) {
@@ -753,7 +766,12 @@
 
   function updateElementText(id, text) {
     const el = document.getElementById(id);
-    if (el) el.textContent = text;
+    if (el) {
+      el.textContent = text;
+      // console.log(`[STATISTIK] Updated #${id} to ${text}`);
+    } else {
+      console.warn(`[STATISTIK] Element #${id} not found!`);
+    }
   }
 
   function updateCharts(charts) {
@@ -1156,6 +1174,15 @@
   function renderCachedChartsIfVisible() {
     if (!isStatistikTabVisible()) return;
     if (!latestStatChartData) return;
+
+    // Ensure chart store exists
+    if (!window.__chartStore) {
+      window.__chartStore = {
+        asrama: null,
+        gender: null,
+        province: null // Added province just in case
+      };
+    }
 
     // Pastikan angka terakhir juga diterapkan ulang
     applyLatestStatNumbers();
