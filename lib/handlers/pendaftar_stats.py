@@ -150,12 +150,15 @@ class handler(BaseHTTPRequestHandler):
             
             # Sort provinces by count (descending) and top 10
             
-            # Sort provinces by count (descending) and top 10
-            sorted_prov = sorted(province_counts.items(), key=lambda item: item[1], reverse=True)[:10]
-            prov_chart_data = {
-                "labels": [k for k, v in sorted_prov],
-                "data": [v for k, v in sorted_prov]
-            }
+            # Debug: Collect distinct values to diagnose mismatch
+            distinct_programs = set()
+            distinct_jenjang = set()
+            distinct_gender = set()
+
+            for row in data:
+                distinct_programs.add(row.get("rencanaprogram"))
+                distinct_jenjang.add(row.get("rencanatingkat"))
+                distinct_gender.add(row.get("jeniskelamin"))
 
             # Construct response
             response_data = {
@@ -167,6 +170,11 @@ class handler(BaseHTTPRequestHandler):
                     "program": program_counts,
                     "asrama": asrama_counts,
                     "province": prov_chart_data
+                },
+                "debug_values": {
+                    "programs": list(distinct_programs),
+                    "jenjang": list(distinct_jenjang),
+                    "gender": list(distinct_gender)
                 },
                 "meta": {
                     "fetched_count": len(data),
