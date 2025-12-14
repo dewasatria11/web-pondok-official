@@ -727,6 +727,9 @@
       }
 
       console.log('[STATISTIK] Data loaded:', result.kpi);
+      if (result.debug_values) {
+        console.log('[STATISTIK] DEBUG DATA (Distinct Values):', result.debug_values);
+      }
 
       // Update KPIs (IDs matched to admin.html)
       updateElementText("totalCount", result.kpi.total);
