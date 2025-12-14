@@ -1256,24 +1256,28 @@
       try {
         if (!dateString) return "-";
 
-        // If string contains "pukul", strip everything after it
-        let cleanDate = String(dateString).split(/\s+pukul\s*/i)[0].trim();
-
-        // Parse the date - only use the date part (strip time)
-        const date = new Date(cleanDate);
+        // Parse the date string
+        const date = new Date(dateString);
         if (isNaN(date.getTime())) {
-          // If parsing fails, try to extract date pattern
-          const match = cleanDate.match(/(\d{1,2})\s+(\w+)\s+(\d{4})/);
-          if (match) return `${match[1]} ${match[2]} ${match[3]}`;
-          return cleanDate;
+          // If invalid date, strip any "pukul" text and return
+          return String(dateString).replace(/\s*pukul\s*\d{1,2}[.:]\d{2}.*/gi, "").trim() || "-";
         }
 
-        const options = { day: "numeric", month: "long", year: "numeric" };
+        // Extract only date parts - this ensures NO time
+        const day = date.getDate();
+        const month = date.getMonth();
+        const year = date.getFullYear();
+
+        // Format manually without any time component
         const docLang = document.documentElement.getAttribute("lang") || "id";
-        const locale = docLang.startsWith("en") ? "en-US" : "id-ID";
-        return date.toLocaleDateString(locale, options);
+        const monthNames = docLang.startsWith("en")
+          ? ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+          : ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+        return `${day} ${monthNames[month]} ${year}`;
       } catch (error) {
-        return String(dateString).split(/\s+pukul\s*/i)[0].trim() || "-";
+        // Fallback: strip pukul text
+        return String(dateString).replace(/\s*pukul\s*\d{1,2}[.:]\d{2}.*/gi, "").trim() || "-";
       }
     }
 
