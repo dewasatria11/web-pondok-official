@@ -34,24 +34,66 @@ class handler(BaseHTTPRequestHandler):
             
             data = res.data if res.data else []
             
-            # ... (truncated for brevity)
+            # Init stats containers
+            stats = {
+                "total": len(data),
+                "pending": 0,
+                "diterima": 0,
+                "ditolak": 0,
+                "revisi": 0
+            }
             
+            # Aggregation for Charts
+            gender_counts = {"L": 0, "P": 0}
+            program_counts = {}
+            asrama_counts = {"Asrama": 0, "Non-Asrama": 0}
+            
+            # Detailed Breakdown Calculation
+            breakdown = {
+                "putraIndukMts": 0, "putraIndukMa": 0, "putraIndukKuliah": 0, "putraIndukTotal": 0,
+                "putraTahfidzMts": 0, "putraTahfidzMa": 0, "putraTahfidzKuliah": 0, "putraTahfidzTotal": 0,
+                "putriMts": 0, "putriMa": 0, "putriKuliah": 0, "putriTotal": 0,
+                "hanyaSekolahMtsL": 0, "hanyaSekolahMtsP": 0, "hanyaSekolahMtsTotal": 0,
+                "hanyaSekolahMaL": 0, "hanyaSekolahMaP": 0, "hanyaSekolahMaTotal": 0
+            }
+
             # Province Aggregation (Top 10)
             province_counts = {}
 
             for row in data:
+                # 1. Status Stats
+                status = (row.get("statusberkas") or "PENDING").lower()
+                if status in stats:
+                    stats[status] += 1
+                else:
+                    stats["pending"] += 1
+                
+                # 2. Extract Data
                 prog = (row.get("rencanaprogram") or "").strip()
                 jenjang = (row.get("rencanatingkat") or "").strip()
                 jk = (row.get("jeniskelamin") or "").strip().upper()
                 prov = (row.get("provinsi") or "Belum Diisi").strip()
                 
-                # Normalize empty string
-                if not prov: prov = "Belum Diisi"
+                # 3. Chart Aggregations
+                # Gender
+                if "L" in jk: gender_counts["L"] += 1
+                elif "P" in jk: gender_counts["P"] += 1
                 
-                # Count Province
+                # Program Pie Chart
+                full_prog = f"{jenjang} - {prog}"
+                program_counts[full_prog] = program_counts.get(full_prog, 0) + 1
+                
+                # Asrama Pie Chart
+                if "Asrama" in prog:
+                     asrama_counts["Asrama"] += 1
+                else:
+                     asrama_counts["Non-Asrama"] += 1
+
+                # 4. Province
+                if not prov: prov = "Belum Diisi"
                 province_counts[prov] = province_counts.get(prov, 0) + 1
                 
-                # Helper bools
+                # Helper bools for Breakdown
                 is_mts = jenjang == "MTs" or jenjang == "MTS"
                 is_ma = jenjang == "MA"
                 is_kuliah = jenjang == "Kuliah" or jenjang == "KULIAH"
