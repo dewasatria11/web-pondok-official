@@ -30,6 +30,10 @@
       "destination": "/api/index?action=pendaftar_cek_status"
     },
     {
+      "source": "/api/pendaftar_stats",
+      "destination": "/api/index?action=pendaftar_stats"
+    },
+    {
       "source": "/api/pendaftar_status",
       "destination": "/api/index?action=pendaftar_status"
     },

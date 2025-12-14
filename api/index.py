@@ -42,6 +42,10 @@ class handler(BaseHTTPRequestHandler):
                 from lib.handlers.pendaftar_list import handler as PendaftarListHandler
                 PendaftarListHandler.do_GET(self) if self.command == 'GET' else PendaftarListHandler.do_OPTIONS(self)
                 
+            elif action == 'pendaftar_stats':
+                from lib.handlers.pendaftar_stats import handler as PendaftarStatsHandler
+                PendaftarStatsHandler.do_GET(self) if self.command == 'GET' else PendaftarStatsHandler.do_OPTIONS(self)
+
             elif action == 'pendaftar_cek_status':
                 from lib.handlers.pendaftar_cek_status import handler as CekStatusHandler
                 CekStatusHandler.do_GET(self) if self.command == 'GET' else CekStatusHandler.do_OPTIONS(self)
