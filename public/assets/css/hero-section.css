@@ -262,17 +262,18 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    /* Keep outside overflow for arrows/layout; cropping is handled by .hero-image-cropper */
-    overflow: visible;
+    /* Contain images within card boundaries */
+    overflow: hidden;
+    border-radius: 24px;
 }
 
-/* Cropping wrapper - transparent, no card shape */
+/* Cropping wrapper - constrained to card size */
 .hero-image-cropper {
     position: relative;
     width: 100%;
     height: 100%;
-    border-radius: 0;
-    overflow: visible;
+    border-radius: 24px;
+    overflow: hidden;
     --scale-adjust: 0;
     box-shadow: none;
 }
@@ -318,12 +319,13 @@
     left: 50%;
     width: 100%;
     height: 100%;
-    max-width: none;
-    max-height: none;
-    object-fit: contain;
-    object-position: center bottom;
-    transform-origin: 50% 100%;
-    transform: translateX(-50%) translateY(var(--y, 0px)) scale(calc(var(--scale, 1) + var(--scale-adjust, 0)));
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    transform-origin: 50% 50%;
+    transform: translateX(-50%);
+    border-radius: 24px;
 }
 
 /* =========================
