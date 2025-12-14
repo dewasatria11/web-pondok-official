@@ -796,10 +796,10 @@
         colors: ["#2196f3", "#e91e63"],
         title: "Komposisi Gender",
       },
-      // Province not yet in backend stats, keep empty or previous
+      // Province
       province: {
-        data: [],
-        labels: [],
+        data: charts.province?.data || [],
+        labels: charts.province?.labels || [],
         title: "Asal Provinsi Teratas",
       },
     };

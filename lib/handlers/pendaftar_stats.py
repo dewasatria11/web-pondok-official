@@ -29,7 +29,7 @@ class handler(BaseHTTPRequestHandler):
             # Let's try fetching just the columns needed for stats with a higher limit.
             
             res = supa.table("pendaftar").select(
-                "id, statusberkas, jeniskelamin, rencanaprogram, rencanatingkat"
+                "id, statusberkas, jeniskelamin, rencanaprogram, rencanatingkat, propinsi"
             ).execute()
             
             data = res.data if res.data else []
@@ -82,11 +82,21 @@ class handler(BaseHTTPRequestHandler):
                 "hanyaSekolahMtsL": 0, "hanyaSekolahMtsP": 0, "hanyaSekolahMtsTotal": 0,
                 "hanyaSekolahMaL": 0, "hanyaSekolahMaP": 0, "hanyaSekolahMaTotal": 0
             }
+            
+            # Province Aggregation (Top 10)
+            province_counts = {}
 
             for row in data:
                 prog = (row.get("rencanaprogram") or "").strip()
                 jenjang = (row.get("rencanatingkat") or "").strip()
                 jk = (row.get("jeniskelamin") or "").strip().upper()
+                prov = (row.get("propinsi") or "Belum Diisi").strip()
+                
+                # Normalize empty string
+                if not prov: prov = "Belum Diisi"
+                
+                # Count Province
+                province_counts[prov] = province_counts.get(prov, 0) + 1
                 
                 # Helper bools
                 is_mts = jenjang == "MTs"
@@ -95,6 +105,7 @@ class handler(BaseHTTPRequestHandler):
                 is_l = jk == "L" or jk == "LAKI-LAKI"
                 is_p = jk == "P" or jk == "PEREMPUAN"
 
+                # ... (rest of breakdown logic) ...
                 # Putra Induk
                 if prog == "Asrama Putra Induk":
                     if is_mts: breakdown["putraIndukMts"] += 1
@@ -127,6 +138,13 @@ class handler(BaseHTTPRequestHandler):
                         if is_p: breakdown["hanyaSekolahMaP"] += 1
                         breakdown["hanyaSekolahMaTotal"] += 1
             
+            # Sort provinces by count (descending) and top 10
+            sorted_prov = sorted(province_counts.items(), key=lambda item: item[1], reverse=True)[:10]
+            prov_chart_data = {
+                "labels": [k for k, v in sorted_prov],
+                "data": [v for k, v in sorted_prov]
+            }
+
             # Construct response
             response_data = {
                 "success": True,
@@ -135,7 +153,8 @@ class handler(BaseHTTPRequestHandler):
                 "charts": {
                     "gender": gender_counts,
                     "program": program_counts,
-                    "asrama": asrama_counts
+                    "asrama": asrama_counts,
+                    "province": prov_chart_data
                 },
                 "meta": {
                     "fetched_count": len(data),
