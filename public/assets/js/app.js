@@ -106,16 +106,27 @@ function showToast(message, type = "success") {
   }, 5000);
 }
 
-// Helper: Format date
+// Helper: Format date (DATE ONLY - no time/pukul)
 function formatDate(dateString) {
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  };
-  return new Date(dateString).toLocaleDateString("id-ID", options);
+  if (!dateString) return "-";
+
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "-";
+
+    // Extract date parts only - no time
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+
+    // Month names in Indonesian
+    const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
+      "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+    return `${day} ${monthNames[month]} ${year}`;
+  } catch (error) {
+    return "-";
+  }
 }
 
 // Helper: Validate email
