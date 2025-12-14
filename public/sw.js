@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ppdsb-pwa-v5';
+const CACHE_NAME = 'ppdsb-pwa-v6';
 const CORE_ASSETS = [
   '/',
   '/index.html',
@@ -83,9 +83,21 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Use stale-while-revalidate for CSS/JS - serve cache but update in background
+  // Images use cacheFirst for fast loading
+  if (isImageRequest(event.request)) {
+    event.respondWith(cacheFirst(event.request));
+    return;
+  }
+
+  // CSS/JS use stale-while-revalidate - serve cache but update in background
   event.respondWith(staleWhileRevalidate(event.request));
 });
+
+function isImageRequest(request) {
+  const url = new URL(request.url);
+  return /\.(jpg|jpeg|png|gif|webp|svg|ico|bmp)$/i.test(url.pathname);
+}
+
 
 function isHtmlRequest(request) {
   return request.mode === 'navigate' || (request.headers.get('accept') || '').includes('text/html');
