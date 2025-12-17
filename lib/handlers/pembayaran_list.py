@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler
 import json
+from urllib.parse import parse_qs, urlparse
 from lib._supabase import supabase_client
 
 def safe_float(value, default=0.0):
@@ -17,9 +18,28 @@ def safe_float(value, default=0.0):
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         try:
-            # Get all pembayaran from pembayaran table, ordered by newest first
+            parsed = urlparse(self.path)
+            params = parse_qs(parsed.query)
+
+            q = (params.get("q", [""])[0] or "").strip()
+            has_pagination = "page" in params or "pageSize" in params
+            page = int(params.get("page", ["1"])[0] or 1)
+            page_size = int(params.get("pageSize", ["10"])[0] or 10)
+            page = max(1, page)
+            page_size = max(1, min(50, page_size))
+
+            # Get pembayaran from pembayaran table, ordered by newest first
             supa = supabase_client(service_role=True)
-            result = supa.table('pembayaran').select("*").order('created_at', desc=True).execute()
+            query = supa.table('pembayaran').select("*").order('created_at', desc=True)
+            if q:
+                query = query.ilike("nama_lengkap", f"%{q}%")
+
+            if has_pagination:
+                from_ = (page - 1) * page_size
+                to_ = from_ + page_size - 1
+                result = query.range(from_, to_).execute()
+            else:
+                result = query.execute()
 
             # Get data safely
             raw_data = result.data if result else []
@@ -51,10 +71,43 @@ class handler(BaseHTTPRequestHandler):
                 }
                 result_data.append(mapped)
 
+            total = None
+            stats = None
+            if has_pagination:
+                def base_count_query():
+                    qb = supa.table("pembayaran").select("id", count="exact")
+                    if q:
+                        qb = qb.ilike("nama_lengkap", f"%{q}%")
+                    return qb
+
+                # Total count for current filter
+                count_res = base_count_query().execute()  # type: ignore
+                total = count_res.count if hasattr(count_res, "count") else len(result_data)  # type: ignore
+
+                # Summary counts for current filter (null treated as PENDING)
+                pending_res = base_count_query().eq("status_pembayaran", "PENDING").execute()  # type: ignore
+                pending = pending_res.count if hasattr(pending_res, "count") else 0  # type: ignore
+                pending_null_res = base_count_query().is_("status_pembayaran", None).execute()  # type: ignore
+                pending_null = pending_null_res.count if hasattr(pending_null_res, "count") else 0  # type: ignore
+
+                verified_res = base_count_query().eq("status_pembayaran", "VERIFIED").execute()  # type: ignore
+                verified = verified_res.count if hasattr(verified_res, "count") else 0  # type: ignore
+
+                rejected_res = base_count_query().eq("status_pembayaran", "REJECTED").execute()  # type: ignore
+                rejected = rejected_res.count if hasattr(rejected_res, "count") else 0  # type: ignore
+
+                stats = {
+                    "pending": int(pending) + int(pending_null),
+                    "verified": int(verified),
+                    "rejected": int(rejected),
+                    "total": int(total) if total is not None else len(result_data),
+                }
+
             # Send response
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Cache-Control', 'no-store')
             self.end_headers()
 
             response_data = {
@@ -62,6 +115,13 @@ class handler(BaseHTTPRequestHandler):
                 'data': result_data if result_data else [],
                 'count': len(result_data) if result_data else 0
             }
+            if has_pagination:
+                response_data.update({
+                    "page": page,
+                    "limit": page_size,
+                    "total": total if total is not None else len(result_data),
+                    "stats": stats,
+                })
 
             self.wfile.write(json.dumps(response_data).encode())
             

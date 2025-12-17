@@ -1757,52 +1757,55 @@
               </span>
             </div>
 
-            <div class="row mb-4 g-3">
-              <div class="col-md-3">
-                <div class="card stat-card warning">
-                  <div class="card-body">
-                    <div class="icon-box"><i class="bi bi-hourglass-split"></i></div>
-                    <h6>Pending</h6>
-                    <h3 id="statPending">0</h3>
-                    <small><i class="bi bi-clock"></i> Menunggu verifikasi</small>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="card stat-card success">
-                  <div class="card-body">
-                    <div class="icon-box"><i class="bi bi-check-circle-fill"></i></div>
-                    <h6>Verified</h6>
-                    <h3 id="statVerified">0</h3>
-                    <small><i class="bi bi-shield-check"></i> Terverifikasi</small>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="card stat-card danger">
-                  <div class="card-body">
-                    <div class="icon-box"><i class="bi bi-x-circle-fill"></i></div>
-                    <h6>Rejected</h6>
-                    <h3 id="statRejected">0</h3>
-                    <small><i class="bi bi-exclamation-triangle"></i> Ditolak</small>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="card stat-card primary">
-                  <div class="card-body">
-                    <div class="icon-box"><i class="bi bi-currency-dollar"></i></div>
-                    <h6>Total Revenue</h6>
-                    <h3 class="mb-0" id="statRevenue">Rp 0</h3>
-                  </div>
-                </div>
-              </div>
-            </div>
+	            <div class="row mb-4 g-3">
+	              <div class="col-md-4">
+	                <div class="card stat-card warning">
+	                  <div class="card-body">
+	                    <div class="icon-box"><i class="bi bi-hourglass-split"></i></div>
+	                    <h6>Pending</h6>
+	                    <h3 id="statPending">0</h3>
+	                    <small><i class="bi bi-clock"></i> Menunggu verifikasi</small>
+	                  </div>
+	                </div>
+	              </div>
+	              <div class="col-md-4">
+	                <div class="card stat-card success">
+	                  <div class="card-body">
+	                    <div class="icon-box"><i class="bi bi-check-circle-fill"></i></div>
+	                    <h6>Verified</h6>
+	                    <h3 id="statVerified">0</h3>
+	                    <small><i class="bi bi-shield-check"></i> Terverifikasi</small>
+	                  </div>
+	                </div>
+	              </div>
+	              <div class="col-md-4">
+	                <div class="card stat-card danger">
+	                  <div class="card-body">
+	                    <div class="icon-box"><i class="bi bi-x-circle-fill"></i></div>
+	                    <h6>Rejected</h6>
+	                    <h3 id="statRejected">0</h3>
+	                    <small><i class="bi bi-exclamation-triangle"></i> Ditolak</small>
+	                  </div>
+	                </div>
+	              </div>
+	            </div>
 
-            <div class="card">
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover">
+	            <div class="d-flex justify-content-between align-items-center mb-3">
+	              <h5 class="mb-0"><i class="bi bi-table"></i> Tabel Data Pembayaran</h5>
+	              <div class="d-flex flex-wrap gap-2 align-items-center">
+	                <!-- Search Input -->
+	                <div class="input-group input-group-sm" style="width: 250px;">
+	                  <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+	                  <input type="text" class="form-control border-start-0 ps-0" id="searchPembayaranInput"
+	                    placeholder="Cari nama pendaftar..." style="border-left: none; box-shadow: none;">
+	                </div>
+	              </div>
+	            </div>
+
+	            <div class="card">
+	              <div class="card-body">
+	                <div class="table-responsive">
+	                  <table class="table table-hover">
                     <thead>
                       <tr>
                         <th>No</th>
@@ -1814,7 +1817,7 @@
                         <th>Aksi</th>
                       </tr>
                     </thead>
-                    <tbody id="pembayaranTableBody">
+	                    <tbody id="pembayaranTableBody">
                       <tr>
                         <td colspan="7" class="text-center">
                           <div class="spinner-border text-primary" role="status">
@@ -1822,12 +1825,29 @@
                           </div>
                         </td>
                       </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
+	                    </tbody>
+	                  </table>
+	                </div>
+
+	                <!-- Pagination Controls (Bottom) -->
+	                <div class="d-flex justify-content-between align-items-center mt-3">
+	                  <div>
+	                    <button id="btnPrevPagePembayaran" class="btn btn-outline-secondary btn-sm"
+	                      onclick="previousPembayaranPage()" disabled>
+	                      <i class="bi bi-chevron-left"></i> Previous
+	                    </button>
+	                    <button id="btnNextPagePembayaran" class="btn btn-outline-secondary btn-sm"
+	                      onclick="nextPembayaranPage()" disabled>
+	                      Next <i class="bi bi-chevron-right"></i>
+	                    </button>
+	                  </div>
+	                  <div>
+	                    <span class="text-muted" id="pageInfoPembayaran">Halaman 1</span>
+	                  </div>
+	                </div>
+	              </div>
+	            </div>
+	          </div>
 
           <!-- Tab: Kelola Gelombang -->
           <div id="tab-gelombang" class="tab-content" style="display:none">

@@ -1,6 +1,8 @@
 # Environment
 .env
 .vercel
+setup-env.sh
+setup-env.local.sh
 
 # Python cache
 __pycache__/

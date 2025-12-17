@@ -1156,6 +1156,16 @@
 
         if (json.ok && json.data) {
           const d = json.data;
+          const toNumber = (v) => {
+            const n = parseInt(String(v || "").replace(/[^\d]/g, ""), 10);
+            return Number.isFinite(n) ? n : null;
+          };
+          // Simpan agar submit selalu pakai nominal yang tampil/terkonfigurasi
+          window.__ppdsbPaymentSettings = {
+            bank_nominal: toNumber(d.nominal),
+            qris_nominal: toNumber(d.qris_nominal),
+            bank_name: d.bank_name || "",
+          };
 
           // Bank Details
           if (d.bank_name) document.getElementById("displayBankName").textContent = d.bank_name;
@@ -1309,6 +1319,20 @@
               bukti_pembayaran: uploadResult.url,
               catatan: catatan,
               metode_pembayaran: paymentMethod,
+              jumlah: (() => {
+                const settings = window.__ppdsbPaymentSettings || {};
+                const preferred =
+                  paymentMethod === "qris"
+                    ? (settings.qris_nominal ?? settings.bank_nominal)
+                    : (settings.bank_nominal ?? settings.qris_nominal);
+                if (Number.isFinite(preferred)) return preferred;
+                const fallbackEl = document.getElementById("jumlahTransfer");
+                const fallback = parseInt(
+                  String(fallbackEl?.textContent || "").replace(/[^\d]/g, ""),
+                  10
+                );
+                return Number.isFinite(fallback) ? fallback : null;
+              })(),
             }),
           });
 

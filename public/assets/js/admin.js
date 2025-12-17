@@ -2017,6 +2017,47 @@ Jazakumullahu khairan,
      ========================= */
   // Track if pembayaran has been loaded at least once
   let pembayaranLoadedOnce = false;
+  let pembayaranCurrentPage = 1;
+  const pembayaranPageSize = 10; // WAJIB 10 data per halaman
+  let pembayaranTotalData = 0;
+
+  function updatePembayaranPaginationUI() {
+    const totalPages = Math.max(
+      1,
+      Math.ceil(pembayaranTotalData / pembayaranPageSize)
+    );
+    const pageInfo = document.getElementById("pageInfoPembayaran");
+    const btnPrev = document.getElementById("btnPrevPagePembayaran");
+    const btnNext = document.getElementById("btnNextPagePembayaran");
+
+    if (pageInfo) {
+      pageInfo.textContent = `Halaman ${pembayaranCurrentPage} dari ${totalPages}`;
+    }
+    if (btnPrev) {
+      btnPrev.disabled = pembayaranCurrentPage <= 1;
+    }
+    if (btnNext) {
+      btnNext.disabled = pembayaranCurrentPage >= totalPages;
+    }
+  }
+
+  function nextPembayaranPage() {
+    const totalPages = Math.max(
+      1,
+      Math.ceil(pembayaranTotalData / pembayaranPageSize)
+    );
+    if (pembayaranCurrentPage < totalPages) {
+      pembayaranCurrentPage += 1;
+      loadPembayaran();
+    }
+  }
+
+  function previousPembayaranPage() {
+    if (pembayaranCurrentPage > 1) {
+      pembayaranCurrentPage -= 1;
+      loadPembayaran();
+    }
+  }
 
   function refreshDataAfterPaymentChange() {
     invalidateStatisticsCache();
@@ -2132,16 +2173,37 @@ Jazakumullahu khairan,
         tbody.innerHTML = '<tr><td colspan="7" class="text-center"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Memuat data pembayaran...</td></tr>';
       }
 
-      const r = await fetch("/api/pembayaran_list");
+      let url = `/api/pembayaran_list?page=${pembayaranCurrentPage}&pageSize=${pembayaranPageSize}`;
+      const searchInput = document.getElementById("searchPembayaranInput");
+      if (searchInput && searchInput.value) {
+        url += `&q=${encodeURIComponent(searchInput.value.trim())}`;
+      }
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
+      const r = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeoutId);
       const result = await r.json();
 
       pembayaranLoadedOnce = true;
       console.log('[PEMBAYARAN] ✅ Data loaded:', result.data?.length || 0, 'items');
 
-      if (!(result.success && result.data)) return;
+      if (!(result.success && Array.isArray(result.data))) return;
+      pembayaranTotalData = result.total || result.count || result.data.length;
+
+      const pembayaranTotalPages = Math.max(
+        1,
+        Math.ceil(pembayaranTotalData / pembayaranPageSize)
+      );
+      if (pembayaranCurrentPage > pembayaranTotalPages) {
+        pembayaranCurrentPage = pembayaranTotalPages;
+        return loadPembayaran();
+      }
 
       // Tabel (tbody already declared above)
       if (tbody) {
+        const startNum = (pembayaranCurrentPage - 1) * pembayaranPageSize;
         tbody.innerHTML = result.data
           .map((item, i) => {
             const raw = (item.status || "PENDING").toUpperCase();
@@ -2153,7 +2215,7 @@ Jazakumullahu khairan,
                   : "warning";
             return `
             <tr>
-              <td>${i + 1}</td>
+              <td>${startNum + i + 1}</td>
               <td>${item.nisn || item.nik || "-"}</td>
               <td>${item.nama_lengkap || "-"}</td>
               <td>${rupiah(item.jumlah)}</td>
@@ -2177,18 +2239,18 @@ Jazakumullahu khairan,
       }
 
       // Statistik
-      const totalPending = result.data.filter(
-        (p) => (p.status || "PENDING").toUpperCase() === "PENDING"
-      ).length;
-      const totalVerified = result.data.filter(
-        (p) => (p.status || "PENDING").toUpperCase() === "VERIFIED"
-      ).length;
-      const totalRejected = result.data.filter(
-        (p) => (p.status || "PENDING").toUpperCase() === "REJECTED"
-      ).length;
-      const totalRevenue = result.data
-        .filter((p) => (p.status || "PENDING").toUpperCase() === "VERIFIED")
-        .reduce((sum, p) => sum + (parseFloat(p.jumlah) || 0), 0);
+      const totalPending =
+        result.stats?.pending ??
+        result.data.filter((p) => (p.status || "PENDING").toUpperCase() === "PENDING")
+          .length;
+      const totalVerified =
+        result.stats?.verified ??
+        result.data.filter((p) => (p.status || "PENDING").toUpperCase() === "VERIFIED")
+          .length;
+      const totalRejected =
+        result.stats?.rejected ??
+        result.data.filter((p) => (p.status || "PENDING").toUpperCase() === "REJECTED")
+          .length;
 
       const set = (id, val) => {
         const el = document.getElementById(id);
@@ -2197,7 +2259,7 @@ Jazakumullahu khairan,
       set("statPending", totalPending);
       set("statVerified", totalVerified);
       set("statRejected", totalRejected);
-      set("statRevenue", rupiah(totalRevenue));
+      updatePembayaranPaginationUI();
 
       const upd = $("#updateTimePembayaran");
       if (upd)
@@ -2449,6 +2511,8 @@ Jazakumullahu khairan,
   window.openVerifikasiPembayaran = openVerifikasiPembayaran;
   window.confirmVerifikasiPembayaran = confirmVerifikasiPembayaran;
   window.loadPembayaranDetail = loadPembayaranDetail;
+  window.nextPembayaranPage = nextPembayaranPage;
+  window.previousPembayaranPage = previousPembayaranPage;
 
   /* =========================
      6) MODAL CLEANUP HANDLERS
@@ -7037,12 +7101,27 @@ Jazakumullahu khairan,
           });
         }, 300);
       });
-    } else {
-      console.warn("[ADMIN] ⚠️ Search input NOT found");
-    }
+	    } else {
+	      console.warn("[ADMIN] ⚠️ Search input NOT found");
+	    }
 
-    loadPendaftar();
-  });
+	    // Search Pembayaran Handler (debounce 300ms)
+	    const searchPembayaranInput = document.getElementById("searchPembayaranInput");
+	    if (searchPembayaranInput) {
+	      let debounceTimer;
+	      searchPembayaranInput.addEventListener("input", () => {
+	        clearTimeout(debounceTimer);
+	        debounceTimer = setTimeout(() => {
+	          pembayaranCurrentPage = 1;
+	          if (document.getElementById("tab-pembayaran")?.style.display !== "none") {
+	            loadPembayaran();
+	          }
+	        }, 300);
+	      });
+	    }
+
+	    loadPendaftar();
+	  });
 
 
 

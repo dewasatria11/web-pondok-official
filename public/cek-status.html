@@ -1162,14 +1162,62 @@
         }
       });
 
-      let latestPaymentData = null;
-      let latestPaymentOwner = null;
-      let latestPaymentImageUrl = '';
+	      let latestPaymentData = null;
+	      let latestPaymentOwner = null;
+	      let latestPaymentImageUrl = '';
 
-      const toast = (type, message) => {
-        try {
-          if (window.toastr && typeof window.toastr[type] === 'function') {
-            window.toastr[type](message);
+	      const getPaymentAmountValue = (payment) => {
+	        if (!payment) return null;
+	        return (
+	          payment.jumlah ??
+	          payment.nominal ??
+	          payment.amount ??
+	          payment.total ??
+	          null
+	        );
+	      };
+
+	      const getPaymentMethodLabel = (payment) => {
+	        if (!payment) return '';
+	        const raw =
+	          payment.metode_pembayaran ||
+	          payment.metode ||
+	          payment.payment_method ||
+	          payment.method ||
+	          '';
+	        const value = String(raw || '').trim();
+	        if (!value) return '';
+	        const normalized = value.toLowerCase();
+	        if (normalized === 'qris' || normalized === 'qr' || normalized.includes('qris')) return 'QRIS';
+	        if (normalized === 'bank' || normalized === 'transfer' || normalized.includes('transfer bank')) return value === 'bank' ? 'Transfer Bank' : value;
+	        return value;
+	      };
+
+	      const getPaymentProofUrl = (payment) => {
+	        if (!payment) return '';
+	        return (
+	          payment.bukti_pembayaran ||
+	          payment.bukti_bayar_url ||
+	          payment.bukti ||
+	          payment.proof_url ||
+	          ''
+	        );
+	      };
+
+	      const withCacheBuster = (url, token) => {
+	        if (!url) return '';
+	        try {
+	          const stamp = token ? String(token) : String(Date.now());
+	          return url + (url.includes('?') ? '&' : '?') + '_v=' + encodeURIComponent(stamp);
+	        } catch {
+	          return url;
+	        }
+	      };
+
+	      const toast = (type, message) => {
+	        try {
+	          if (window.toastr && typeof window.toastr[type] === 'function') {
+	            window.toastr[type](message);
             return;
           }
         } catch { }
@@ -1213,14 +1261,16 @@
         syncBodyModalState();
       };
 
-      const updatePaymentContext = (owner, payment) => {
-        latestPaymentOwner = owner || null;
-        latestPaymentData = payment || null;
-        latestPaymentImageUrl = payment ? (payment.bukti_pembayaran || payment.bukti_bayar_url || '') : '';
-        if (!payment && paymentProofModal?.classList.contains('modal-visible')) {
-          hidePaymentProofModal();
-        }
-      };
+	      const updatePaymentContext = (owner, payment) => {
+	        latestPaymentOwner = owner || null;
+	        latestPaymentData = payment || null;
+	        const rawProofUrl = getPaymentProofUrl(payment);
+	        const versionToken = payment?.updated_at || payment?.created_at || payment?.tanggal_upload || '';
+	        latestPaymentImageUrl = rawProofUrl ? withCacheBuster(rawProofUrl, versionToken) : '';
+	        if (!payment && paymentProofModal?.classList.contains('modal-visible')) {
+	          hidePaymentProofModal();
+	        }
+	      };
 
       const showPaymentProofModal = () => {
         if (!paymentProofModal) return;
@@ -1229,16 +1279,17 @@
           return;
         }
 
-        const ownerName = latestPaymentOwner?.nama || latestPaymentData.nama_lengkap || '-';
-        const ownerNisn = latestPaymentOwner?.nisn || latestPaymentData.nisn || latestPaymentData.nik || latestPaymentData.nikcalon || '-';
-        const amount = latestPaymentData.jumlah ? formatCurrency(latestPaymentData.jumlah) : '-';
-        const method = latestPaymentData.metode_pembayaran || T('cekStatus.payment.modal.methodFallback');
-        const uploadedAt = latestPaymentData.created_at || latestPaymentData.tanggal_upload || '';
-        const verifiedAt = latestPaymentData.verified_at || latestPaymentData.tanggal_verifikasi || '';
-        const note = latestPaymentData.catatan_admin && latestPaymentData.catatan_admin.trim().length
-          ? latestPaymentData.catatan_admin
-          : T('cekStatus.payment.modal.noteEmpty');
-        const statusDisplay = getPaymentStatusDisplay(latestPaymentData.status_pembayaran || latestPaymentData.status);
+	        const ownerName = latestPaymentOwner?.nama || latestPaymentData.nama_lengkap || '-';
+	        const ownerNisn = latestPaymentOwner?.nisn || latestPaymentData.nisn || latestPaymentData.nik || latestPaymentData.nikcalon || '-';
+	        const amountValue = getPaymentAmountValue(latestPaymentData);
+	        const amount = amountValue ? formatCurrency(amountValue) : '-';
+	        const method = getPaymentMethodLabel(latestPaymentData) || T('cekStatus.payment.modal.methodFallback');
+	        const uploadedAt = latestPaymentData.created_at || latestPaymentData.tanggal_upload || latestPaymentData.updated_at || '';
+	        const verifiedAt = latestPaymentData.verified_at || latestPaymentData.tanggal_verifikasi || '';
+	        const note = latestPaymentData.catatan_admin && latestPaymentData.catatan_admin.trim().length
+	          ? latestPaymentData.catatan_admin
+	          : T('cekStatus.payment.modal.noteEmpty');
+	        const statusDisplay = getPaymentStatusDisplay(latestPaymentData.status_pembayaran || latestPaymentData.status);
 
         if (paymentProofNameEl) paymentProofNameEl.textContent = ownerName;
         if (paymentProofNisnEl) paymentProofNisnEl.textContent = ownerNisn;
@@ -1305,14 +1356,15 @@
         });
       });
 
-      paymentProofOpenImage?.addEventListener('click', (event) => {
-        event.preventDefault();
-        if (!latestPaymentImageUrl) {
-          toast('info', T('cekStatus.payment.modal.noImageToast'));
-          return;
-        }
-        window.open(latestPaymentImageUrl, '_blank', 'noopener');
-      });
+	        paymentProofOpenImage?.addEventListener('click', (event) => {
+	          event.preventDefault();
+	        const urlToOpen = paymentProofImage?.src || latestPaymentImageUrl;
+	        if (!urlToOpen) {
+	          toast('info', T('cekStatus.payment.modal.noImageToast'));
+	          return;
+	        }
+	        window.open(urlToOpen, '_blank', 'noopener');
+	      });
 
       statusResultContainer?.addEventListener('click', (event) => {
         const trigger = event.target.closest('[data-action="view-payment-proof"]');
@@ -1330,8 +1382,8 @@
 
       let lastRender = null;
 
-      const buildPaymentSuccess = (data, payment) => `
-          <div class="payment-notification status-extra mb-4 bg-gradient-to-r from-emerald-100 via-white to-emerald-50 border-3 border-emerald-300 rounded-xl p-6 shadow-xl" data-dynamic="true">
+	      const buildPaymentSuccess = (data, payment) => `
+	          <div class="payment-notification status-extra mb-4 bg-gradient-to-r from-emerald-100 via-white to-emerald-50 border-3 border-emerald-300 rounded-xl p-6 shadow-xl" data-dynamic="true">
             <div class="flex flex-col md:flex-row items-start gap-4">
               <div class="flex-shrink-0">
                 <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center shadow-lg">
@@ -1353,10 +1405,10 @@
                   <p class="text-green-900 text-sm mb-0">
                     ${T('cekStatus.payment.success.infoBody')}
                   </p>
-                  <p class="text-green-700 text-xs mt-2">
-                    <i class="bi bi-calendar-check"></i> ${T('cekStatus.payment.verifiedAt', { datetime: formatDateTime(payment?.verified_at) })}
-                  </p>
-                </div>
+	                  <p class="text-green-700 text-xs mt-2">
+	                    <i class="bi bi-calendar-check"></i> ${T('cekStatus.payment.verifiedAt', { datetime: formatDateTime(payment?.verified_at || payment?.tanggal_verifikasi) })}
+	                  </p>
+	                </div>
                 <div class="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-xl p-5">
                   <div class="text-center">
                     <i class="bi bi-info-circle-fill text-blue-600 text-xl mb-2"></i>
@@ -1414,8 +1466,8 @@
           </div>
         `;
 
-      const buildPaymentPending = (data, payment) => `
-          <div class="payment-notification status-extra mb-4 bg-gradient-to-r from-yellow-50 to-amber-50 border-3 border-yellow-400 rounded-xl p-6 shadow-xl" data-dynamic="true">
+	      const buildPaymentPending = (data, payment) => `
+	          <div class="payment-notification status-extra mb-4 bg-gradient-to-r from-yellow-50 to-amber-50 border-3 border-yellow-400 rounded-xl p-6 shadow-xl" data-dynamic="true">
             <div class="flex flex-col md:flex-row items-start gap-4">
               <div class="flex-shrink-0">
                 <div class="w-16 h-16 bg-yellow-600 rounded-full flex items-center justify-center shadow-lg animate-pulse">
@@ -1438,8 +1490,8 @@
                     ${T('cekStatus.payment.pending.infoBody')}
                   </p>
                   ${payment?.jumlah ? `<p class="text-yellow-700 text-xs mt-2"><i class="bi bi-cash-coin"></i> ${T('cekStatus.payment.common.amountLabel', { amount: formatCurrency(payment.jumlah) })}</p>` : ''}
-                  ${payment?.created_at ? `<p class="text-yellow-700 text-xs mt-1"><i class="bi bi-calendar-plus"></i> ${T('cekStatus.payment.pending.uploadedAt', { datetime: formatDateTime(payment.created_at) })}</p>` : ''}
-                </div>
+	                  ${(payment?.created_at || payment?.tanggal_upload) ? `<p class="text-yellow-700 text-xs mt-1"><i class="bi bi-calendar-plus"></i> ${T('cekStatus.payment.pending.uploadedAt', { datetime: formatDateTime(payment.created_at || payment.tanggal_upload) })}</p>` : ''}
+	                </div>
                 <button type="button"
                    class="inline-flex items-center gap-2 bg-yellow-600 hover:bg-yellow-700 text-white font-bold px-8 py-4 rounded-lg shadow-xl hover:shadow-2xl transition-all transform hover:scale-105 text-lg"
                    data-action="view-payment-proof">
