@@ -34,7 +34,12 @@ class handler(BaseHTTPRequestHandler):
                 .order(ORDER_FIELD, desc=False)
                 .execute()
             )
-            send_json(self, 200, {"ok": True, "data": result.data or []})
+            send_json(
+                self,
+                200,
+                {"ok": True, "data": result.data or []},
+                {"Cache-Control": "public, max-age=300, s-maxage=600, stale-while-revalidate=1800"},
+            )
         except Exception as exc:
             print(f"[BIAYA_ITEMS][GET] Error: {exc}")
             send_json(

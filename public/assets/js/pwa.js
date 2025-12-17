@@ -8,6 +8,9 @@
       .register('/sw.js')
       .then((registration) => {
         console.info('Service worker terdaftar:', registration.scope);
+        try {
+          registration.update();
+        } catch (e) {}
       })
       .catch((error) => {
         console.error('Gagal mendaftarkan service worker', error);

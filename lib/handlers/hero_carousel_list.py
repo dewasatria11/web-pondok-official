@@ -15,7 +15,13 @@ class handler(BaseHTTPRequestHandler):
             supa = supabase_client(service_role=True)
             
             # Fetch all active hero carousel images, ordered by slide_order ASC
-            result = supa.table("hero_carousel_images").select("*").eq("is_active", True).order("slide_order").execute()
+            result = (
+                supa.table("hero_carousel_images")
+                .select("slide_order,image_url,alt_text")
+                .eq("is_active", True)
+                .order("slide_order")
+                .execute()
+            )
             
             print(f"[HERO_CAROUSEL_LIST] Found {len(result.data) if result.data else 0} active images")
             
@@ -23,7 +29,7 @@ class handler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.send_header("Access-Control-Allow-Origin", "*")
-            self.send_header("Cache-Control", "public, max-age=60")  # Cache for 1 minute
+            self.send_header("Cache-Control", "public, max-age=60, s-maxage=300, stale-while-revalidate=600")
             self.end_headers()
             
             response = {

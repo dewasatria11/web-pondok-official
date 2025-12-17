@@ -9,6 +9,7 @@ from urllib.parse import urlparse, parse_qs
 import hashlib
 import json
 import time
+from typing import Optional
 
 from lib._supabase import supabase_client
 
@@ -81,7 +82,7 @@ def _rows_to_sections(locale: str, rows: list[dict], fallback_to_id: bool = True
     return result
 
 
-def _send_response(handler, status: int, body: str | None, etag: str | None):
+def _send_response(handler, status: int, body: Optional[str], etag: Optional[str]):
     handler.send_response(status)
     handler.send_header("Access-Control-Allow-Origin", "*")
     handler.send_header(

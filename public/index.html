@@ -20,7 +20,12 @@
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#14532d" />
 
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
+	  <link rel="preconnect" href="https://fonts.googleapis.com" />
+	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+	  <link rel="preconnect" href="https://sxbvadzcwpaovkhghttv.supabase.co" crossorigin />
+	  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+	  <link rel="dns-prefetch" href="https://sxbvadzcwpaovkhghttv.supabase.co" />
   <!-- TODO: Ganti favicon/logo di bawah dengan aset milik pesantren -->
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
@@ -29,10 +34,10 @@
 
   <title data-i18n="meta.title.home">Pondok Pesantren Al Ikhsan Beji | PPDB Online 2026/2027</title>
 
-  <link rel="stylesheet" href="/assets/css/tailwind.css" />
-  <link rel="stylesheet" href="/assets/css/scroll-animations.css" />
-  <link rel="stylesheet" href="/assets/css/hero-section.css?v=10" />
-  <script src="/i18n.js" defer></script>
+	  <link rel="stylesheet" href="/assets/css/tailwind.css?v=10" />
+	  <link rel="stylesheet" href="/assets/css/scroll-animations.css?v=10" />
+	  <link rel="stylesheet" href="/assets/css/hero-section.css?v=10" />
+	  <script src="/i18n.js?v=10" defer></script>
 
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
@@ -43,7 +48,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
 
   <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+	  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
 
   <style>
     :root {
@@ -924,18 +929,18 @@
               
               Atau upload PNG ke folder assets/img/
               -->
-              <div class="hero-slide-image hero-slide-image--active" data-slide="0" style="--scale: 1.5; --y: -20px;">
-                <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=450&h=550&fit=crop"
-                  alt="Santri Al Ikhsan Beji - Slide 1" loading="eager">
-              </div>
-              <div class="hero-slide-image" data-slide="1" style="--scale: 1.6; --y: -40px;">
-                <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=450&h=550&fit=crop"
-                  alt="Santri Al Ikhsan Beji - Slide 2" loading="lazy">
-              </div>
-              <div class="hero-slide-image" data-slide="2" style="--scale: 1.45; --y: -25px;">
-                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=450&h=550&fit=crop"
-                  alt="Santri Al Ikhsan Beji - Slide 3" loading="lazy">
-              </div>
+		              <div class="hero-slide-image hero-slide-image--active" data-slide="0" style="--scale: 1.5; --y: -20px;">
+		                <img src="/assets/img/hero-santri-placeholder.svg" width="1600" height="900"
+		                  alt="Santri Al Ikhsan Beji - Slide 1" loading="eager" fetchpriority="high" decoding="async">
+		              </div>
+		              <div class="hero-slide-image" data-slide="1" style="--scale: 1.6; --y: -40px;">
+		                <img src="/assets/img/hero-santri-placeholder.svg" width="1600" height="900"
+		                  alt="Santri Al Ikhsan Beji - Slide 2" loading="lazy" decoding="async">
+		              </div>
+		              <div class="hero-slide-image" data-slide="2" style="--scale: 1.45; --y: -25px;">
+		                <img src="/assets/img/hero-santri-placeholder.svg" width="1600" height="900"
+		                  alt="Santri Al Ikhsan Beji - Slide 3" loading="lazy" decoding="async">
+		              </div>
             </div>
           </div>
 
@@ -1317,27 +1322,27 @@
       }
     }
 
-    async function loadGelombangAktif() {
-      const container = document.getElementById("gelombangContainer");
-      if (!container) return;
+	    async function loadGelombangAktif({ forceReload = false } = {}) {
+	      const container = document.getElementById("gelombangContainer");
+	      if (!container) return;
 
-      try {
-        const cacheBuster = Date.now();
-        const listResponse = await fetch(`/api/get_gelombang_list?_t=${cacheBuster}`);
-        const listResult = await listResponse.json();
+	      try {
+	        const fetchOptions = forceReload ? { cache: "no-store" } : undefined;
+	        const listResponse = await fetch("/api/get_gelombang_list", fetchOptions);
+	        const listResult = await listResponse.json();
 
         if (!listResult.ok || !Array.isArray(listResult.data) || listResult.data.length === 0) {
           renderEmptyState(container);
           return;
         }
 
-        let activeId = null;
-        try {
-          const activeResponse = await fetch(`/api/gelombang_active?_t=${cacheBuster}`);
-          const activeResult = await activeResponse.json();
-          if (activeResult.ok && activeResult.data && activeResult.data.id !== undefined) {
-            const parsedId = Number(activeResult.data.id);
-            if (Number.isFinite(parsedId)) {
+	        let activeId = null;
+	        try {
+	          const activeResponse = await fetch("/api/gelombang_active", fetchOptions);
+	          const activeResult = await activeResponse.json();
+	          if (activeResult.ok && activeResult.data && activeResult.data.id !== undefined) {
+	            const parsedId = Number(activeResult.data.id);
+	            if (Number.isFinite(parsedId)) {
               activeId = parsedId;
             }
           }
@@ -1604,14 +1609,14 @@
     }
 
     // ===== BERITA PUBLISHED =====
-    async function loadBeritaPublished() {
-      const container = document.getElementById("beritaContainer");
-      if (!container) return;
+	    async function loadBeritaPublished({ forceReload = false } = {}) {
+	      const container = document.getElementById("beritaContainer");
+	      if (!container) return;
 
-      try {
-        const cacheBuster = Date.now();
-        const response = await fetch(`/api/berita_items?published_only=true&_t=${cacheBuster}`);
-        const result = await response.json();
+	      try {
+	        const fetchOptions = forceReload ? { cache: "no-store" } : undefined;
+	        const response = await fetch("/api/berita_items?published_only=true", fetchOptions);
+	        const result = await response.json();
 
         if (!result.ok || !Array.isArray(result.data) || result.data.length === 0) {
           container.innerHTML = `
@@ -1635,12 +1640,12 @@
 
         const [featuredBerita, ...otherBerita] = sortedBerita;
 
-        const buildImageUrl = (berita) => {
-          if (berita.image_url && berita.image_url.trim() !== "") {
-            return berita.image_url;
-          }
-          return "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=900&h=600&fit=crop";
-        };
+	        const buildImageUrl = (berita) => {
+	          if (berita.image_url && berita.image_url.trim() !== "") {
+	            return berita.image_url;
+	          }
+	          return "/assets/img/photo-placeholder.svg";
+	        };
 
         const extractContent = (berita) => {
           const raw =
@@ -1682,7 +1687,7 @@
                   src="${escapeHtml(imageUrl)}"
                   alt="${escapeHtml(title)}"
                   class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                  onerror="this.src='https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=900&h=600&fit=crop'"
+	                  onerror="this.src='/assets/img/photo-placeholder.svg'"
                 />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
               </div>
@@ -1722,7 +1727,7 @@
                   src="${escapeHtml(imageUrl)}"
                   alt="${escapeHtml(title)}"
                   class="w-full h-full object-cover"
-                  onerror="this.src='https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=400&h=300&fit=crop'"
+	                  onerror="this.src='/assets/img/photo-placeholder.svg'"
                 />
               </div>
               <div class="flex-1">
@@ -1818,67 +1823,63 @@
       }, 500);
     });
 
-    setInterval(() => {
-      loadGelombangAktif();
-    }, 60000);
-  </script>
-  <!-- Supabase Real-Time Sync (Optional - for cross-tab/cross-device sync) -->
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+	    setInterval(() => {
+	      if (!document.hidden) {
+	        loadGelombangAktif();
+	      }
+	    }, 60000);
+	  </script>
+	  <!-- Supabase Real-Time Sync (Optional) - lazy loaded to keep initial load fast -->
+	  <script>
+	    (function () {
+	      'use strict';
 
-    // Initialize Supabase client (same credentials as admin)
-    const SUPABASE_URL = 'https://sxbvadzcwpaovkhghttv.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4YnZhZHpjd3Bhb3ZraGdodHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExMDg4MDYsImV4cCI6MjA3NjY4NDgwNn0.miJeKmsNgjgS4fWegGlwrxF_cPUoZBT0YKl1oxmmXTE';
+	      const SUPABASE_URL = 'https://sxbvadzcwpaovkhghttv.supabase.co';
+	      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4YnZhZHpjd3Bhb3ZraGdodHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExMDg4MDYsImV4cCI6MjA3NjY4NDgwNn0.miJeKmsNgjgS4fWegGlwrxF_cPUoZBT0YKl1oxmmXTE';
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+	      const startRealtime = async () => {
+	        try {
+	          const mod = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
+	          const supabase = mod.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    console.log('[SUPABASE INDEX] ✅ Client initialized for real-time sync');
+	          const channel = supabase
+	            .channel('gelombang-changes-public')
+	            .on('postgres_changes', {
+	              event: '*',
+	              schema: 'public',
+	              table: 'gelombang'
+	            }, () => {
+	              setTimeout(() => {
+	                if (typeof loadGelombangAktif === 'function') {
+	                  loadGelombangAktif({ forceReload: true });
+	                }
+	              }, 300);
+	            })
+	            .subscribe();
 
-    // Subscribe to gelombang table changes (real-time across devices)
-    const channel = supabase
-      .channel('gelombang-changes-public')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'gelombang'
-      }, (payload) => {
-        console.log('[SUPABASE INDEX] 🔄 Gelombang data changed:', payload);
-        console.log('[SUPABASE INDEX] Event type:', payload.eventType);
+	          window.addEventListener('beforeunload', () => {
+	            try { supabase.removeChannel(channel); } catch (e) { }
+	          });
+	        } catch (e) {
+	          // Optional feature: fail silently
+	        }
+	      };
 
-        // Show notification to user
-        if (typeof toastr !== 'undefined' && toastr.info) {
-          const message = typeof window.__ === 'function'
-            ? window.__('sections.gelombang.toast.server')
-            : '📊 Data gelombang diperbarui dari server';
-          toastr.info(message);
-        }
+	      const schedule = () => {
+	        if ('requestIdleCallback' in window) {
+	          window.requestIdleCallback(() => startRealtime(), { timeout: 4000 });
+	        } else {
+	          setTimeout(startRealtime, 2000);
+	        }
+	      };
 
-        // Reload immediately (database already consistent)
-        setTimeout(() => {
-          console.log('[SUPABASE INDEX] 🔄 Reloading gelombang display from Supabase event...');
-          if (typeof loadGelombangAktif === 'function') {
-            loadGelombangAktif();
-          }
-        }, 300);
-      })
-      .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          console.log('[SUPABASE INDEX] ✅ Subscribed to real-time gelombang updates');
-          console.log('[SUPABASE INDEX] 🎧 Listening for database changes...');
-        } else if (status === 'CLOSED') {
-          console.log('[SUPABASE INDEX] ⚠️ Real-time connection closed');
-        } else if (status === 'CHANNEL_ERROR') {
-          console.error('[SUPABASE INDEX] ❌ Real-time connection error');
-        }
-        console.log('[SUPABASE INDEX] Connection status:', status);
-      });
-
-    // Cleanup on page unload
-    window.addEventListener('beforeunload', () => {
-      console.log('[SUPABASE INDEX] 🔌 Unsubscribing from real-time updates');
-      supabase.removeChannel(channel);
-    });
-  </script>
+	      if (document.readyState === 'loading') {
+	        document.addEventListener('DOMContentLoaded', schedule, { once: true });
+	      } else {
+	        schedule();
+	      }
+	    })();
+	  </script>
 
   <!-- Image Slider Script (Card Minimalis - Slide Animation) -->
   <script>
@@ -1893,17 +1894,10 @@
     /**
      * Load images from API for slider section
      */
-    async function loadImageSlider() {
-      try {
-        console.log('[IMAGE_SLIDER] 🚀 Starting to load images...');
-
-        // Add cache buster to ensure fresh data
-        const cacheBuster = new Date().getTime();
-        const response = await fetch(`/api/hero_images_list?_t=${cacheBuster}`);
-        console.log('[IMAGE_SLIDER] API Response status:', response.status, response.statusText);
-
-        const result = await response.json();
-        console.log('[IMAGE_SLIDER] API Result:', result);
+	    async function loadImageSlider() {
+	      try {
+	        const response = await fetch('/api/hero_images_list', { cache: 'no-cache' });
+	        const result = await response.json();
 
         // Get slider track element
         sliderTrack = document.getElementById('sliderTrack');
@@ -1912,35 +1906,28 @@
           return;
         }
 
-        if (!result.ok || !result.data || result.data.length === 0) {
-          console.log('[IMAGE_SLIDER] ⚠️ No images found, keeping fallback gradient');
-          // Reset position to 0
-          sliderTrack.style.transform = 'translateX(0)';
-          return;
-        }
+	        if (!result.ok || !result.data || result.data.length === 0) {
+	          // Reset position to 0
+	          sliderTrack.style.transform = 'translateX(0)';
+	          return;
+	        }
 
-        console.log('[IMAGE_SLIDER] ✅ Found', result.data.length, 'images');
-        console.log('[IMAGE_SLIDER] Image URLs:', result.data.map(img => img.image_url));
+	        // Remove fallback gradient
+	        const fallback = document.getElementById('sliderFallback');
+	        if (fallback) {
+	          fallback.remove();
+	        }
 
-        // Remove fallback gradient
-        const fallback = document.getElementById('sliderFallback');
-        if (fallback) {
-          console.log('[IMAGE_SLIDER] 🗑️ Removing fallback gradient...');
-          fallback.remove();
-        }
+	        // Clear track
+	        sliderTrack.innerHTML = '';
 
-        // Clear track
-        sliderTrack.innerHTML = '';
-        console.log('[IMAGE_SLIDER] 🧹 Cleared slider track');
-
-        // Create slide elements
-        result.data.forEach((image, index) => {
-          let cleanUrl = image.image_url;
-          if (cleanUrl) {
-            cleanUrl = cleanUrl.trim().replace(/\?$/, '');
-          }
-
-          console.log(`[IMAGE_SLIDER] 📸 Creating slide ${index} with URL:`, cleanUrl);
+	        // Create slide elements
+	        result.data.forEach((image, index) => {
+	          let cleanUrl = image.image_url;
+	          if (cleanUrl) {
+	            cleanUrl = cleanUrl.trim().replace(/\?$/, '');
+	          }
+	          if (!cleanUrl) return;
 
           const slideDiv = document.createElement('div');
           slideDiv.className = 'slider-slide';
@@ -1951,40 +1938,24 @@
           slideDiv.style.backgroundPosition = 'center';
           slideDiv.style.backgroundRepeat = 'no-repeat';
 
-          slideDiv.dataset.slideIndex = index;
-          slideDiv.dataset.imageUrl = cleanUrl;
-          sliderTrack.appendChild(slideDiv);
-
-          // Verify image loads
-          const testImg = new Image();
-          testImg.onload = () => {
-            console.log(`[IMAGE_SLIDER] ✅ Image ${index} loaded successfully:`, cleanUrl);
-          };
-          testImg.onerror = () => {
-            console.error(`[IMAGE_SLIDER] ❌ Image ${index} failed to load:`, cleanUrl);
-          };
-          testImg.src = cleanUrl;
-        });
+	          slideDiv.dataset.slideIndex = index;
+	          slideDiv.dataset.imageUrl = cleanUrl;
+	          sliderTrack.appendChild(slideDiv);
+	        });
 
         // Reset to first slide
         currentImageSlideIndex = 0;
         updateSliderPosition();
 
-        console.log('[IMAGE_SLIDER] 📊 Total slides created:', result.data.length);
+	        // Start auto-slider if more than 1 image
+	        if (result.data.length > 1) {
+	          startImageSlider();
+	        }
 
-        // Start auto-slider if more than 1 image
-        if (result.data.length > 1) {
-          startImageSlider();
-          console.log('[IMAGE_SLIDER] ✅ Slider started with', result.data.length, 'images (auto-rotate every 4s - SLIDE animation)');
-        } else if (result.data.length === 1) {
-          console.log('[IMAGE_SLIDER] ✅ Single image loaded (no auto-slide)');
-        }
-
-      } catch (error) {
-        console.error('[IMAGE_SLIDER] ❌ Error loading images:', error);
-        console.error('[IMAGE_SLIDER] Error details:', error.message, error.stack);
-      }
-    }
+	      } catch (error) {
+	        console.error('[IMAGE_SLIDER] ❌ Error loading images:', error);
+	      }
+	    }
 
     /**
      * Update slider position using translateX (SLIDE animation, NO FADE)
@@ -2165,72 +2136,91 @@
   <script src="/assets/js/scroll-animations.js?v=10" defer></script>
   <script src="/assets/js/hero-carousel.js?v=10" defer></script>
 
-  <!-- Hero Carousel Images Loader - Load santri images from database -->
-  <script>
-    document.addEventListener('DOMContentLoaded', async function () {
-      'use strict';
+	  <!-- Hero Carousel Images Loader - Load santri images from database -->
+	  <script>
+	    document.addEventListener('DOMContentLoaded', async function () {
+	      'use strict';
 
-      async function loadHeroCarouselImages() {
-        try {
-          console.log('[HERO_IMAGES] Loading santri images from database...');
+	      const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-          const response = await fetch('/api/index?action=hero_carousel_list');
+	      function isAllowedHeroCarouselUrl(url) {
+	        if (!url || typeof url !== 'string') return false;
+	        try {
+	          // Support both absolute and relative URLs
+	          const parsed = new URL(url, window.location.origin);
+	          return parsed.pathname.includes('/storage/v1/object/public/hero-carousel/');
+	        } catch (e) {
+	          return false;
+	        }
+	      }
 
-          if (!response.ok) {
-            console.warn('[HERO_IMAGES] API returned status:', response.status);
-            return false;
-          }
+	      async function loadHeroCarouselImages() {
+	        try {
+	          console.log('[HERO_IMAGES] Loading santri images from database...');
 
-          const result = await response.json();
+		          const response = await fetch('/api/index?action=hero_carousel_list', { cache: 'no-cache' });
 
-          console.log('[HERO_IMAGES] API Response:', result);
+	          if (!response.ok) {
+	            console.warn('[HERO_IMAGES] API returned status:', response.status);
+	            return false;
+	          }
 
-          if (!result.ok || !result.data || result.data.length === 0) {
-            console.log('[HERO_IMAGES] No active images found in database');
-            return false;
-          }
+	          const result = await response.json();
 
-          console.log('[HERO_IMAGES] Found', result.data.length, 'active images');
+	          console.log('[HERO_IMAGES] API Response:', result);
 
-          let updatedCount = 0;
+	          if (!result.ok) return { status: 'retry' };
 
-          // Map slide_order to data-slide index (1 -> 0, 2 -> 1, 3 -> 2)
-          result.data.forEach((image) => {
-            const slideOrder = image.slide_order || 1;
-            const slideIndex = slideOrder - 1; // Convert 1-based to 0-based
-            const slideEl = document.querySelector(`.hero-slide-image[data-slide="${slideIndex}"] img`);
+	          const dataCount = Array.isArray(result.data) ? result.data.length : 0;
+	          if (dataCount === 0) {
+	            console.log('[HERO_IMAGES] No active images found in database');
+	            return { status: 'done', updatedCount: 0, dataCount: 0 };
+	          }
 
-            console.log(`[HERO_IMAGES] Processing slide_order=${slideOrder} -> data-slide=${slideIndex}`, {
-              found: !!slideEl,
-              image_url: image.image_url?.substring(0, 50) + '...'
-            });
+	          console.log('[HERO_IMAGES] Found', dataCount, 'active images');
 
-            if (slideEl && image.image_url) {
-              slideEl.src = image.image_url;
-              slideEl.alt = image.alt_text || 'Santri Al Ikhsan Beji';
-              updatedCount++;
-              console.log(`[HERO_IMAGES] ✅ Updated slide ${slideIndex}`);
-            }
-          });
+	          let updatedCount = 0;
 
-          console.log('[HERO_IMAGES] ✅ Total images updated:', updatedCount);
-          return true;
+	          // Map slide_order to data-slide index (1 -> 0, 2 -> 1, 3 -> 2)
+		          result.data.forEach((image) => {
+		            const slideOrder = image.slide_order || 1;
+		            const slideIndex = slideOrder - 1; // Convert 1-based to 0-based
+		            const slideEl = document.querySelector(`.hero-slide-image[data-slide="${slideIndex}"] img`);
 
-        } catch (error) {
-          console.error('[HERO_IMAGES] Error loading images:', error);
-          return false;
-        }
-      }
+		            if (slideEl && image.image_url) {
+	              if (!isAllowedHeroCarouselUrl(image.image_url)) {
+	                console.warn('[HERO_IMAGES] Skipping non-supabase URL:', image.image_url);
+	                return;
+	              }
 
-      // Try to load images
-      const success = await loadHeroCarouselImages();
+	              slideEl.src = image.image_url;
+	              slideEl.alt = image.alt_text || 'Santri Al Ikhsan Beji';
+	              updatedCount++;
+	              console.log(`[HERO_IMAGES] ✅ Updated slide ${slideIndex}`);
+	            }
+	          });
 
-      if (!success) {
-        console.log('[HERO_IMAGES] Will retry in 1 second...');
-        setTimeout(loadHeroCarouselImages, 1000);
-      }
-    });
-  </script>
+	          console.log('[HERO_IMAGES] ✅ Total images updated:', updatedCount);
+	          return { status: updatedCount > 0 ? 'done' : 'retry', updatedCount, dataCount };
+
+	        } catch (error) {
+	          console.error('[HERO_IMAGES] Error loading images:', error);
+	          return { status: 'retry' };
+	        }
+	      }
+
+	      // Try to load images with retry (handles cold start / slow API)
+	      let delayMs = 600;
+	      for (let attempt = 1; attempt <= 10; attempt++) {
+	        const result = await loadHeroCarouselImages();
+	        if (result?.status === 'done') break;
+
+	        console.log(`[HERO_IMAGES] Retry ${attempt}/10 in ${delayMs}ms...`);
+	        await sleep(delayMs);
+	        delayMs = Math.min(Math.round(delayMs * 1.6), 4000);
+	      }
+	    });
+	  </script>
 
 
   <style>

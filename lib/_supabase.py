@@ -1,6 +1,8 @@
-# /api/_supabase.py
 import os
+from typing import Dict, Tuple
 from supabase import create_client, Client
+
+_CLIENT_CACHE: Dict[Tuple[str, str], Client] = {}
 
 def supabase_client(service_role: bool = False) -> Client:
     """
@@ -18,4 +20,11 @@ def supabase_client(service_role: bool = False) -> Client:
     if not url or not key:
         raise ValueError("ENV SUPABASE_URL / SUPABASE_*_KEY belum di-set.")
 
-    return create_client(url, key)
+    cache_key = (url, key)
+    cached = _CLIENT_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    client = create_client(url, key)
+    _CLIENT_CACHE[cache_key] = client
+    return client

@@ -11,10 +11,10 @@
   <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-  <link rel="stylesheet" href="/assets/css/tailwind.css" />
+	  <link rel="stylesheet" href="/assets/css/tailwind.css?v=10" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-  <script src="/i18n.js" defer></script>
-  <script src="/assets/js/navbar.js" defer></script>
+	  <script src="/i18n.js?v=10" defer></script>
+	  <script src="/assets/js/navbar.js?v=10" defer></script>
 
   <style>
     body {
@@ -263,10 +263,10 @@
       }
 
       const content = article.content_id || article.content_en || "";
-      const rawImage = article.image_url || "";
-      const imageUrl =
-        rawImage.trim() ||
-        "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=1200&h=700&fit=crop";
+	      const rawImage = article.image_url || "";
+	      const imageUrl =
+	        rawImage.trim() ||
+	        "/assets/img/photo-placeholder.svg";
 
       DETAIL_CONTAINER.innerHTML = `
           <article>
@@ -278,11 +278,11 @@
         article.title_id || article.title_en || ""
       )}</h1>
             <img
-              src="${escapeHtml(imageUrl)}"
-              alt="${escapeHtml(article.title_id || article.title_en || "")}"
-              class="w-full h-auto rounded-2xl shadow-lg object-cover mb-8"
-              onerror="this.src='https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=1200&h=700&fit=crop'"
-            />
+	              src="${escapeHtml(imageUrl)}"
+	              alt="${escapeHtml(article.title_id || article.title_en || "")}"
+	              class="w-full h-auto rounded-2xl shadow-lg object-cover mb-8"
+	              onerror="this.src='/assets/img/photo-placeholder.svg'"
+	            />
             <div class="prose-content">
               ${content || "<p>Konten berita akan tersedia segera.</p>"}
             </div>
@@ -306,18 +306,18 @@
           const excerpt = (item.content_id || item.content_en || "")
             .replace(/<[^>]+>/g, "")
             .slice(0, 120);
-          const image = item.image_url
-            ? escapeHtml(item.image_url)
-            : "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=400&h=300&fit=crop";
-          return `
+	          const image = item.image_url
+	            ? escapeHtml(item.image_url)
+	            : "/assets/img/photo-placeholder.svg";
+	          return `
               <a href="/berita.html?id=${encodeURIComponent(
             item.id
           )}" class="flex gap-4 bg-white border border-gray-100 rounded-2xl p-4 shadow hover:shadow-lg transition">
-                <div class="w-24 h-20 rounded-xl overflow-hidden flex-shrink-0">
-                  <img src="${image}" alt="${escapeHtml(
-            title
-          )}" class="w-full h-full object-cover" />
-                </div>
+	                <div class="w-24 h-20 rounded-xl overflow-hidden flex-shrink-0">
+	                  <img src="${image}" alt="${escapeHtml(
+	            title
+	          )}" class="w-full h-full object-cover" onerror="this.src='/assets/img/photo-placeholder.svg'" />
+	                </div>
                 <div class="flex-1">
                   <div class="text-xs text-gray-500 flex items-center gap-2 mb-1">
                     <i class="bi bi-calendar text-emerald-600"></i>

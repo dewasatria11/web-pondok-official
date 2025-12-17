@@ -22,12 +22,15 @@ def read_json_body(request_handler):
         raise ValueError(f"Body bukan JSON valid: {exc}") from exc
 
 
-def send_json(request_handler, status_code, payload):
+def send_json(request_handler, status_code, payload, extra_headers=None):
     """Send JSON response with CORS headers."""
     body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
     request_handler.send_response(status_code)
     request_handler.send_header("Content-Type", "application/json; charset=utf-8")
     request_handler.send_header("Access-Control-Allow-Origin", "*")
+    if extra_headers:
+        for key, value in extra_headers.items():
+            request_handler.send_header(str(key), str(value))
     request_handler.end_headers()
     request_handler.wfile.write(body)
 

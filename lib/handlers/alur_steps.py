@@ -36,7 +36,12 @@ class handler(BaseHTTPRequestHandler):
             )
 
             data = result.data or []
-            send_json(self, 200, {"ok": True, "data": data})
+            send_json(
+                self,
+                200,
+                {"ok": True, "data": data},
+                {"Cache-Control": "public, max-age=300, s-maxage=600, stale-while-revalidate=1800"},
+            )
         except Exception as exc:
             print(f"[ALUR_STEPS][GET] Error: {exc}")
             send_json(

@@ -8,7 +8,7 @@ Returns: Single active gelombang or null
 
 from http.server import BaseHTTPRequestHandler
 import json
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 try:
     from lib._supabase import supabase_client
@@ -16,7 +16,12 @@ except ImportError:
     from _supabase import supabase_client
 
 
-def _send_json(request_handler, code: int, payload: Dict[str, Any]) -> None:
+def _send_json(
+    request_handler,
+    code: int,
+    payload: Dict[str, Any],
+    extra_headers: Optional[Dict[str, str]] = None,
+) -> None:
     """Helper to send JSON response with CORS headers"""
     data = json.dumps(payload, default=str).encode('utf-8')
     request_handler.send_response(code)
@@ -25,6 +30,9 @@ def _send_json(request_handler, code: int, payload: Dict[str, Any]) -> None:
     request_handler.send_header('Access-Control-Allow-Origin', '*')
     request_handler.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
     request_handler.send_header('Access-Control-Allow-Headers', 'Content-Type')
+    if extra_headers:
+        for key, value in extra_headers.items():
+            request_handler.send_header(str(key), str(value))
     request_handler.end_headers()
     request_handler.wfile.write(data)
 
@@ -64,6 +72,8 @@ class handler(BaseHTTPRequestHandler):
             return _send_json(self, 200, {
                 "ok": True,
                 "data": active_gelombang
+            }, {
+                "Cache-Control": "public, max-age=30, s-maxage=120, stale-while-revalidate=300"
             })
             
         except Exception as e:
@@ -73,9 +83,8 @@ class handler(BaseHTTPRequestHandler):
             return _send_json(self, 500, {
                 "ok": False,
                 "error": str(e)
-            })
+            }, {"Cache-Control": "no-store"})
     
     def do_OPTIONS(self):
         """Handle CORS preflight"""
-        return _send_json(self, 204, {})
-
+        return _send_json(self, 204, {}, {"Cache-Control": "no-store"})

@@ -1,4 +1,6 @@
-const CACHE_NAME = 'ppdsb-pwa-v8';
+const CACHE_NAME = 'ppdsb-pwa-v9';
+const API_CACHE = 'ppdsb-api-v1';
+const EXTERNAL_IMAGE_CACHE = 'ppdsb-ext-img-v1';
 const CORE_ASSETS = [
   '/',
   '/index.html',
@@ -13,16 +15,24 @@ const CORE_ASSETS = [
   '/pembayaran.html',
   '/syarat-pendaftaran.html',
   '/offline.html',
-  '/assets/css/tailwind.css',
-  '/assets/js/navbar.js',
-  '/assets/js/pwa.js',
-  '/i18n.js',
+  '/assets/css/tailwind.css?v=10',
+  '/assets/css/hero-section.css?v=10',
+  '/assets/css/scroll-animations.css?v=10',
+  '/assets/js/app.js?v=10',
+  '/assets/js/navbar.js?v=10',
+  '/assets/js/pwa.js?v=10',
+  '/assets/js/install-button.js?v=10',
+  '/assets/js/scroll-animations.js?v=10',
+  '/assets/js/hero-carousel.js?v=10',
+  '/i18n.js?v=10',
   '/locales/id.json',
   '/locales/en.json',
   '/favicon.ico',
   '/favicon.png',
   '/apple-touch-icon.png',
-  '/manifest.webmanifest'
+  '/manifest.webmanifest',
+  '/assets/img/hero-santri-placeholder.svg',
+  '/assets/img/photo-placeholder.svg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -50,7 +60,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys
-          .filter((key) => key !== CACHE_NAME)
+          .filter((key) => ![CACHE_NAME, API_CACHE, EXTERNAL_IMAGE_CACHE].includes(key))
           .map((key) => caches.delete(key))
       )
     ).then(() => self.clients.claim())
@@ -64,14 +74,26 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(event.request.url);
 
-  // External origins - fetch directly
+  // External origins - cache Supabase public images, otherwise fetch directly
   if (url.origin !== self.location.origin) {
+    if (isSupabasePublicImage(url)) {
+      event.respondWith(cacheFirstExternal(event.request));
+      return;
+    }
     event.respondWith(fetch(event.request).catch(() => caches.match('/offline.html')));
     return;
   }
 
-  // API requests - always network
+  // API requests - cache only safe public GET endpoints
   if (url.pathname.startsWith('/api/')) {
+    if (event.request.cache === 'no-store') {
+      event.respondWith(networkOnly(event.request));
+      return;
+    }
+    if (isCacheableApiRequest(url)) {
+      event.respondWith(staleWhileRevalidateApi(event.request));
+      return;
+    }
     event.respondWith(networkOnly(event.request));
     return;
   }
@@ -158,6 +180,84 @@ async function staleWhileRevalidate(request) {
   }
 
   // No cache - wait for network
+  const networkResponse = await fetchPromise;
+  return networkResponse || Response.error();
+}
+
+function isSupabasePublicImage(url) {
+  if (!url || !url.hostname) return false;
+  if (!url.hostname.endsWith('.supabase.co')) return false;
+  const p = url.pathname || '';
+  if (!p.includes('/storage/v1/object/public/')) return false;
+  // Only allow caching for known public buckets used by this site
+  return (
+    p.includes('/storage/v1/object/public/hero-carousel/') ||
+    p.includes('/storage/v1/object/public/hero-images/') ||
+    p.includes('/storage/v1/object/public/brosur/') ||
+    p.includes('/storage/v1/object/public/public/')
+  );
+}
+
+async function cacheFirstExternal(request) {
+  const cache = await caches.open(EXTERNAL_IMAGE_CACHE);
+  const cachedResponse = await cache.match(request);
+
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  try {
+    const freshResponse = await fetch(request);
+    if (freshResponse && freshResponse.ok) {
+      cache.put(request, freshResponse.clone());
+    }
+    return freshResponse;
+  } catch (error) {
+    return Response.error();
+  }
+}
+
+function isCacheableApiRequest(url) {
+  const path = url.pathname;
+  if (path === '/api/berita_items') {
+    return url.searchParams.get('published_only') === 'true';
+  }
+
+  if (path === '/api/index') {
+    const action = url.searchParams.get('action') || '';
+    return ['hero_carousel_list'].includes(action);
+  }
+
+  return [
+    '/api/get_gelombang_list',
+    '/api/gelombang_active',
+    '/api/why_section_list',
+    '/api/hero_images_list',
+    '/api/alur_steps',
+    '/api/syarat_items',
+    '/api/biaya_items',
+    '/api/brosur_items',
+    '/api/kontak_items',
+    '/api/kontak_settings'
+  ].includes(path);
+}
+
+async function staleWhileRevalidateApi(request) {
+  const cache = await caches.open(API_CACHE);
+  const cachedResponse = await cache.match(request);
+
+  const fetchPromise = fetch(request).then((response) => {
+    if (response && response.ok) {
+      cache.put(request, response.clone());
+    }
+    return response;
+  }).catch(() => null);
+
+  if (cachedResponse) {
+    fetchPromise;
+    return cachedResponse;
+  }
+
   const networkResponse = await fetchPromise;
   return networkResponse || Response.error();
 }

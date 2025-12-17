@@ -73,7 +73,12 @@ class handler(BaseHTTPRequestHandler):
                     ), reverse=True)
 
             data = result.data or []
-            send_json(self, 200, {"ok": True, "data": data})
+            cache_headers = None
+            if published_only:
+                cache_headers = {
+                    "Cache-Control": "public, max-age=30, s-maxage=120, stale-while-revalidate=300"
+                }
+            send_json(self, 200, {"ok": True, "data": data}, cache_headers)
             
         except Exception as exc:
             print(f"[BERITA_ITEMS][GET] Error: {exc}")
@@ -350,4 +355,3 @@ class handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         """Handle CORS preflight"""
         allow_cors(self, ["GET", "POST", "PUT", "DELETE", "OPTIONS"])
-

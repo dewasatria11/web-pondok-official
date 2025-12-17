@@ -23,7 +23,12 @@ class handler(BaseHTTPRequestHandler):
         try:
             result = _public().table(TABLE_NAME).select("*").limit(1).execute()
             data = result.data[0] if result.data else {}
-            send_json(self, 200, {"ok": True, "data": data})
+            send_json(
+                self,
+                200,
+                {"ok": True, "data": data},
+                {"Cache-Control": "public, max-age=300, s-maxage=600, stale-while-revalidate=1800"},
+            )
         except Exception as exc:
             print(f"[KONTAK_SETTINGS][GET] Error: {exc}")
             send_json(

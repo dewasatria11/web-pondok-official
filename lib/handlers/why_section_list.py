@@ -73,6 +73,7 @@ class handler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Cache-Control", "public, max-age=300, s-maxage=600, stale-while-revalidate=1800")
             self.end_headers()
             
             self.wfile.write(json.dumps(response).encode())
@@ -87,6 +88,7 @@ class handler(BaseHTTPRequestHandler):
             self.send_response(200)  # Return 200 with error flag instead of 500
             self.send_header("Content-type", "application/json")
             self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Cache-Control", "public, max-age=60, s-maxage=120, stale-while-revalidate=300")
             self.end_headers()
             
             # Return default content even on error (graceful degradation)

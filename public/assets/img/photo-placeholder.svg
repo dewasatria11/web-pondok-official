@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" role="img" aria-label="Placeholder gambar">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#10b981" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#047857" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="700" rx="36" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="700" rx="36" fill="url(#accent)"/>
+
+  <!-- simple mountains -->
+  <path d="M0 560 L260 360 L430 460 L620 300 L860 520 L1200 320 L1200 700 L0 700 Z" fill="#0f172a" opacity="0.10"/>
+  <path d="M0 610 L240 450 L420 530 L610 390 L870 600 L1200 420 L1200 700 L0 700 Z" fill="#0f172a" opacity="0.08"/>
+
+  <!-- sun -->
+  <circle cx="960" cy="190" r="72" fill="#10b981" opacity="0.18"/>
+
+  <!-- frame icon -->
+  <g fill="none" stroke="#0f172a" stroke-opacity="0.22" stroke-width="16" stroke-linejoin="round">
+    <rect x="420" y="240" width="360" height="220" rx="26"/>
+    <path d="M450 410 L535 330 L605 390 L675 310 L750 410"/>
+    <circle cx="705" cy="290" r="18" fill="#0f172a" opacity="0.18" stroke="none"/>
+  </g>
+</svg>
