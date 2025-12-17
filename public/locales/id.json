@@ -60,7 +60,28 @@
     "subtitle": "Bergabunglah menjadi santri Pondok Pesantren Al Ikhsan Beji. Pendidikan islami terpadu dengan pembinaan akhlak, tahfidz Al-Qur'an, dan ilmu pengetahuan yang membentuk generasi Qur'ani dan berprestasi.",
     "ctaApply": "Daftar Sekarang",
     "ctaStatus": "Cek Status",
-    "ctaBrochure": "Download Brosur"
+    "ctaBrochure": "Download Brosur",
+    "carousel": {
+      "cta": {
+        "apply": "Daftar",
+        "status": "Cek Status"
+      },
+      "slide1": {
+        "titleLine1": "Penerimaan Peserta Didik Baru Penerimaan Peserta Didik Baru Terintegrasi",
+        "titleHighlight": "MTs, MA, dan Pondok Pesantren Al Ikhsan Beji",
+        "desc": "Bergabunglah menjadi santri Pondok Pesantren Al Ikhsan Beji. Pendidikan islami terpadu dengan pembinaan akhlak, tahfidz Al-Qur'an, dan ilmu pengetahuan yang membentuk generasi Qur'ani dan berprestasi."
+      },
+      "slide2": {
+        "titleLine1": "Karakter Islami yang Kuat",
+        "titleHighlight": "& Program Bahasa Arab - Inggris Berstandar Unggul",
+        "desc": "Pembinaan akhlakul karimah, program tahfidz Al-Qur'an intensif, dan disiplin santri yang membentuk pribadi berakhlak mulia serta berprestasi di bidang akademik maupun non-akademik."
+      },
+      "slide3": {
+        "titleLine1": "Berbasis Disiplin & Akhlak",
+        "titleHighlight": "& Wawasan Global",
+        "desc": "Kehidupan berasrama yang mendidik, bimbingan ustadz/ustadzah profesional, dan persiapan masa depan santri untuk menjadi pemimpin yang siap menghadapi tantangan dunia modern."
+      }
+    }
   },
   "sections": {
     "berita": {
@@ -180,7 +201,7 @@
       "registrationInfo": "Informasi Pendaftaran",
       "personal": "Data Pribadi Calon Siswa",
       "address": "Alamat",
-      "education": "Pendidikan & Rencana",
+      "education": "Pendidikan",
       "parents": "Data Orang Tua",
       "documents": "Upload Berkas"
     },
@@ -228,13 +249,13 @@
         "label": "Desa/Kelurahan"
       },
       "ijazahFormalTerakhir": {
-        "label": "Ijazah Formal Terakhir"
+        "label": "Pendidikan Terakhir"
       },
       "rencanaTingkat": {
-        "label": "Tingkat Pendidikan"
+        "label": "Jenjang Tujuan"
       },
       "rencanaProgram": {
-        "label": "Jenis Asrama"
+        "label": "Asrama"
       },
       "namaAyah": {
         "label": "Nama Ayah"
@@ -314,7 +335,7 @@
       "sections": {
         "personal": "Data Calon Siswa",
         "address": "Alamat",
-        "education": "Pendidikan & Rencana",
+        "education": "Pendidikan",
         "parents": "Data Orang Tua",
         "documents": "Berkas yang Akan Diupload"
       },
@@ -325,9 +346,9 @@
         "tanggalLahir": "Tanggal Lahir",
         "jenisKelamin": "Jenis Kelamin",
         "alamatLengkap": "Alamat Lengkap",
-        "ijazah": "Ijazah Formal Terakhir",
-        "rencanaTingkat": "Rencana Tingkat",
-        "rencanaProgram": "Rencana Program",
+        "ijazah": "Pendidikan Terakhir",
+        "rencanaTingkat": "Jenjang Tujuan",
+        "rencanaProgram": "Asrama",
         "namaAyah": "Nama Ayah",
         "nikAyah": "NIK Ayah",
         "statusAyah": "Status Ayah",

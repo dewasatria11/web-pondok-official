@@ -16,7 +16,7 @@ const CORE_ASSETS = [
   '/syarat-pendaftaran.html',
   '/offline.html',
   '/assets/css/tailwind.css?v=10',
-  '/assets/css/hero-section.css?v=10',
+  '/assets/css/hero-section.css?v=11',
   '/assets/css/scroll-animations.css?v=10',
   '/assets/js/app.js?v=10',
   '/assets/js/navbar.js?v=10',

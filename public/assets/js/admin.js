@@ -2163,33 +2163,38 @@ Jazakumullahu khairan,
     return null;
   }
 
-  async function loadPembayaran() {
-    try {
-      console.log('[PEMBAYARAN] 💳 Loading payment data...');
+	  async function loadPembayaran() {
+	    try {
+	      console.log('[PEMBAYARAN] 💳 Loading payment data...');
 
-      // Show loading state
-      const tbody = $("#pembayaranTableBody");
-      if (tbody && !pembayaranLoadedOnce) {
-        tbody.innerHTML = '<tr><td colspan="7" class="text-center"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Memuat data pembayaran...</td></tr>';
-      }
+	      // Show loading state
+	      const tbody = $("#pembayaranTableBody");
+	      if (tbody) {
+	        tbody.innerHTML =
+	          '<tr><td colspan="7" class="text-center"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Memuat data pembayaran...</td></tr>';
+	      }
 
-      let url = `/api/pembayaran_list?page=${pembayaranCurrentPage}&pageSize=${pembayaranPageSize}`;
-      const searchInput = document.getElementById("searchPembayaranInput");
-      if (searchInput && searchInput.value) {
-        url += `&q=${encodeURIComponent(searchInput.value.trim())}`;
-      }
+	      let url = `/api/pembayaran_list?page=${pembayaranCurrentPage}&pageSize=${pembayaranPageSize}`;
+	      const searchInput = document.getElementById("searchPembayaranInput");
+	      if (searchInput && searchInput.value) {
+	        url += `&q=${encodeURIComponent(searchInput.value.trim())}`;
+	      }
+	      console.log("[PEMBAYARAN] → API:", url);
 
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+	      const controller = new AbortController();
+	      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
 
-      const r = await fetch(url, { signal: controller.signal });
-      clearTimeout(timeoutId);
-      const result = await r.json();
+	      const r = await fetch(url, { signal: controller.signal });
+	      clearTimeout(timeoutId);
+	      if (!r.ok) {
+	        throw new Error(`HTTP ${r.status}: ${r.statusText}`);
+	      }
+	      const result = await r.json();
 
-      pembayaranLoadedOnce = true;
-      console.log('[PEMBAYARAN] ✅ Data loaded:', result.data?.length || 0, 'items');
+	      pembayaranLoadedOnce = true;
+	      console.log('[PEMBAYARAN] ✅ Data loaded:', result.data?.length || 0, 'items');
 
-      if (!(result.success && Array.isArray(result.data))) return;
+	      if (!(result.success && Array.isArray(result.data))) return;
       pembayaranTotalData = result.total || result.count || result.data.length;
 
       const pembayaranTotalPages = Math.max(
@@ -2266,10 +2271,15 @@ Jazakumullahu khairan,
         upd.textContent = `Data update: ${new Date().toLocaleTimeString(
           "id-ID"
         )}`;
-    } catch (e) {
-      console.error("loadPembayaran error:", e);
-    }
-  }
+	    } catch (e) {
+	      console.error("loadPembayaran error:", e);
+	      const tbody = $("#pembayaranTableBody");
+	      if (tbody) {
+	        tbody.innerHTML =
+	          '<tr><td colspan="7" class="text-center text-danger">❌ Gagal memuat data pembayaran. Silakan coba lagi.</td></tr>';
+	      }
+	    }
+	  }
 
   function viewPembayaranDetail(payment) {
     currentPembayaranData = payment;

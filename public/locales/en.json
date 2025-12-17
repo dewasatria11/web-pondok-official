@@ -60,7 +60,28 @@
     "subtitle": "Become a Student at Al Ikhsan Islamic Boarding School. Integrated Islamic education with character building, Qur'an memorisation, and knowledge to shape a Qur'anic and high-achieving generation.",
     "ctaApply": "Apply Now",
     "ctaStatus": "Check Status",
-    "ctaBrochure": "Download Brochure"
+    "ctaBrochure": "Download Brochure",
+    "carousel": {
+      "cta": {
+        "apply": "Apply",
+        "status": "Check Status"
+      },
+      "slide1": {
+        "titleLine1": "Integrated New Student Admissions",
+        "titleHighlight": "MTs, MA, and Al Ikhsan Beji Islamic Boarding School",
+        "desc": "Join Al Ikhsan Beji Islamic Boarding School. Integrated Islamic education with character development, Quran memorization (tahfidz), and sciences to shape a Qur’anic, high-achieving generation."
+      },
+      "slide2": {
+        "titleLine1": "Strong Islamic Character",
+        "titleHighlight": "& Arabic–English Programme (High Standard)",
+        "desc": "Character building (akhlaq), an intensive Quran memorization programme, and disciplined boarding life to shape students with noble character and achievements in both academic and non-academic fields."
+      },
+      "slide3": {
+        "titleLine1": "Discipline & Character Based",
+        "titleHighlight": "& Global Outlook",
+        "desc": "A nurturing boarding environment, guidance from professional ustadz/ustadzah, and future readiness so students grow into leaders prepared for modern challenges."
+      }
+    }
   },
   "sections": {
     "berita": {
@@ -180,7 +201,7 @@
       "registrationInfo": "Registration Info",
       "personal": "Prospective Student Personal Data",
       "address": "Address",
-      "education": "Education & Plan",
+      "education": "Education",
       "parents": "Parent Data",
       "documents": "Upload Documents"
     },
@@ -228,13 +249,13 @@
         "label": "Village/Sub-district"
       },
       "ijazahFormalTerakhir": {
-        "label": "Latest Formal Diploma"
+        "label": "Last Education"
       },
       "rencanaTingkat": {
-        "label": "Intended Education Level"
+        "label": "Target Level"
       },
       "rencanaProgram": {
-        "label": "Dormitory Option"
+        "label": "Dormitory"
       },
       "namaAyah": {
         "label": "Father's Name"
@@ -314,7 +335,7 @@
       "sections": {
         "personal": "Prospective Student Data",
         "address": "Address",
-        "education": "Education & Plan",
+        "education": "Education",
         "parents": "Parent Data",
         "documents": "Files to Be Uploaded"
       },
@@ -325,9 +346,9 @@
         "tanggalLahir": "Date of Birth",
         "jenisKelamin": "Gender",
         "alamatLengkap": "Full Address",
-        "ijazah": "Latest Diploma",
-        "rencanaTingkat": "Intended Level",
-        "rencanaProgram": "Program Plan",
+        "ijazah": "Last Education",
+        "rencanaTingkat": "Target Level",
+        "rencanaProgram": "Dormitory",
         "namaAyah": "Father's Name",
         "nikAyah": "Father's NIK",
         "statusAyah": "Father's Status",

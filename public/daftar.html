@@ -478,16 +478,50 @@
             </h5>
           </div>
 
-          <div class="col-span-full">
-            <label class="form-label">
-              <span data-i18n="form.fields.gelombang.label">Gelombang Pendaftaran</span>
-              <span class="text-danger">*</span>
-            </label>
-            <input type="text" class="form-control bg-gray-100 cursor-not-allowed" name="gelombang" id="gelombangInput"
-              readonly placeholder="Memuat gelombang..." data-i18n="form.fields.gelombang.placeholder"
-              data-i18n-attr="placeholder" required />
-            <div class="form-text text-brand-600 font-medium" id="gelombangStatus"></div>
-          </div>
+	          <div class="col-span-full">
+	            <label class="form-label">
+	              <span data-i18n="form.fields.gelombang.label">Gelombang Pendaftaran</span>
+	              <span class="text-danger">*</span>
+	            </label>
+	            <input type="text" class="form-control bg-gray-100 cursor-not-allowed" name="gelombang" id="gelombangInput"
+	              readonly placeholder="Memuat gelombang..." data-i18n="form.fields.gelombang.placeholder"
+	              data-i18n-attr="placeholder" required />
+	            <div class="form-text text-brand-600 font-medium" id="gelombangStatus"></div>
+	          </div>
+
+	          <div class="col-md-6">
+	            <label class="form-label">
+	              <span data-i18n="form.fields.rencanaTingkat.label">Jenjang Tujuan</span>
+	              <span class="text-danger">*</span>
+	            </label>
+	            <select class="form-select" id="rencanaTingkat" name="rencanaTingkat" required
+	              onchange="handleTingkatChange()">
+	              <option value="" data-i18n="form.options.select">Pilih...</option>
+	              <option value="MTs" data-i18n="form.options.planLevel.mts">MTs (Tsanawiyah)</option>
+	              <option value="MA" data-i18n="form.options.planLevel.ma">MA (Aliyah)</option>
+	              <option value="Kuliah" data-i18n="form.options.planLevel.college">Kuliah</option>
+	            </select>
+	          </div>
+
+	          <div class="col-md-6">
+	            <label class="form-label">
+	              <span data-i18n="form.fields.rencanaProgram.label">Asrama</span>
+	              <span class="text-danger">*</span>
+	            </label>
+	            <select class="form-select" id="rencanaProgram" name="rencanaProgram" required>
+	              <option value="" data-i18n="form.options.select">Pilih...</option>
+	              <option value="Asrama Putra Induk" data-i18n="form.options.planProgram.putraInduk">
+	                Asrama Putra Induk
+	              </option>
+	              <option value="Asrama Putra Tahfidz" data-i18n="form.options.planProgram.putraTahfidz">
+	                Asrama Putra Tahfidz
+	              </option>
+	              <option value="Asrama Putri" data-i18n="form.options.planProgram.putri">Asrama Putri</option>
+	              <option value="Hanya Sekolah" id="optionHanyaSekolah" data-i18n="form.options.planProgram.nonAsrama">
+	                Non Asrama
+	              </option>
+	            </select>
+	          </div>
 
           <!-- Data Pribadi -->
           <div class="col-span-full mt-4">
@@ -618,58 +652,24 @@
           </div>
 
           <!-- Pendidikan -->
-          <div class="col-span-full mt-4">
-            <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3" data-i18n="form.sections.education">
-              Pendidikan & Rencana
-            </h5>
-          </div>
+	          <div class="col-span-full mt-4">
+	            <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3" data-i18n="form.sections.education">
+	              Pendidikan
+	            </h5>
+	          </div>
 
-          <div class="col-md-6">
-            <label class="form-label">
-              <span data-i18n="form.fields.ijazahFormalTerakhir.label">Ijazah Formal Terakhir</span>
-              <span class="text-danger">*</span>
-            </label>
-            <select class="form-select" name="ijazahFormalTerakhir" required>
-              <option value="" data-i18n="form.options.select">Pilih...</option>
-              <option value="SD" data-i18n="form.options.education.sdMi">SD/MI</option>
-              <option value="SMP" data-i18n="form.options.education.smpMts">SMP/MTs</option>
-              <option value="SMA" data-i18n="form.options.education.smaMa">SMA/MA</option>
-            </select>
-          </div>
-
-          <div class="col-md-6">
-            <label class="form-label">
-              <span data-i18n="form.fields.rencanaTingkat.label">Tingkat Pendidikan</span>
-              <span class="text-danger">*</span>
-            </label>
-            <select class="form-select" id="rencanaTingkat" name="rencanaTingkat" required
-              onchange="handleTingkatChange()">
-              <option value="" data-i18n="form.options.select">Pilih...</option>
-              <option value="MTs" data-i18n="form.options.planLevel.mts">MTs (Tsanawiyah)</option>
-              <option value="MA" data-i18n="form.options.planLevel.ma">MA (Aliyah)</option>
-              <option value="Kuliah" data-i18n="form.options.planLevel.college">Kuliah</option>
-            </select>
-          </div>
-
-          <div class="col-md-6">
-            <label class="form-label">
-              <span data-i18n="form.fields.rencanaProgram.label">Jenis Asrama</span>
-              <span class="text-danger">*</span>
-            </label>
-            <select class="form-select" id="rencanaProgram" name="rencanaProgram" required>
-              <option value="" data-i18n="form.options.select">Pilih...</option>
-              <option value="Asrama Putra Induk" data-i18n="form.options.planProgram.putraInduk">
-                Asrama Putra Induk
-              </option>
-              <option value="Asrama Putra Tahfidz" data-i18n="form.options.planProgram.putraTahfidz">
-                Asrama Putra Tahfidz
-              </option>
-              <option value="Asrama Putri" data-i18n="form.options.planProgram.putri">Asrama Putri</option>
-              <option value="Hanya Sekolah" id="optionHanyaSekolah" data-i18n="form.options.planProgram.nonAsrama">
-                Non Asrama
-              </option>
-            </select>
-          </div>
+	          <div class="col-md-6">
+	            <label class="form-label">
+	              <span data-i18n="form.fields.ijazahFormalTerakhir.label">Pendidikan Terakhir</span>
+	              <span class="text-danger">*</span>
+	            </label>
+	            <select class="form-select" name="ijazahFormalTerakhir" required>
+	              <option value="" data-i18n="form.options.select">Pilih...</option>
+	              <option value="SD" data-i18n="form.options.education.sdMi">SD/MI</option>
+	              <option value="SMP" data-i18n="form.options.education.smpMts">SMP/MTs</option>
+	              <option value="SMA" data-i18n="form.options.education.smaMa">SMA/MA</option>
+	            </select>
+	          </div>
 
           <!-- Data Orang Tua -->
           <div class="col-span-full mt-4">
@@ -1967,17 +1967,24 @@
         formDataGlobal = formData;
 
         // Build konfirmasi HTML
-        let html = `
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div class="col-span-full bg-yellow-50 p-3 rounded border border-yellow-200 mb-2">
-              <p class="font-semibold text-yellow-800">Gelombang Pendaftaran</p>
-              <p id="conf-gelombang" class="text-lg font-bold text-brand-700">${activeGelombangName || "-"}</p>
-            </div>
+	        let html = `
+	          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+	            <div class="col-span-full bg-yellow-50 p-3 rounded border border-yellow-200 mb-2">
+	              <p class="font-semibold text-yellow-800">Gelombang Pendaftaran</p>
+	              <p id="conf-gelombang" class="text-lg font-bold text-brand-700">${activeGelombangName || "-"}</p>
+	            </div>
 
-            <!-- Data Calon Santri -->
-            <div class="col-span-full">
-              <h6 class="bg-brand-600 text-white p-2 rounded">
-                <i class="bi bi-person"></i> ${translate("form.review.sections.personal")}
+	            <div>
+	              <strong>${translate("form.review.labels.rencanaTingkat")}:</strong><br>${translateOptionValue("planLevel", formData.get("rencanaTingkat"))}
+	            </div>
+	            <div>
+	              <strong>${translate("form.review.labels.rencanaProgram")}:</strong><br>${translateOptionValue("planProgram", formData.get("rencanaProgram"))}
+	            </div>
+
+	            <!-- Data Calon Santri -->
+	            <div class="col-span-full">
+	              <h6 class="bg-brand-600 text-white p-2 rounded">
+	                <i class="bi bi-person"></i> ${translate("form.review.sections.personal")}
               </h6>
             </div>
             <div>
@@ -2009,25 +2016,19 @@
             </div>
 
             <!-- Pendidikan -->
-            <div class="col-span-full mt-3">
-              <h6 class="bg-brand-600 text-white p-2 rounded">
-                <i class="bi bi-mortarboard"></i> ${translate("form.review.sections.education")}
-              </h6>
-            </div>
-            <div>
-              <strong>${translate("form.review.labels.ijazah")}:</strong><br>${translateOptionValue("education", formData.get("ijazahFormalTerakhir"))}
-            </div>
-            <div>
-              <strong>${translate("form.review.labels.rencanaTingkat")}:</strong><br>${translateOptionValue("planLevel", formData.get("rencanaTingkat"))}
-            </div>
-            <div>
-              <strong>${translate("form.review.labels.rencanaProgram")}:</strong><br>${translateOptionValue("planProgram", formData.get("rencanaProgram"))}
-            </div>
+	            <div class="col-span-full mt-3">
+	              <h6 class="bg-brand-600 text-white p-2 rounded">
+	                <i class="bi bi-mortarboard"></i> ${translate("form.review.sections.education")}
+	              </h6>
+	            </div>
+	            <div>
+	              <strong>${translate("form.review.labels.ijazah")}:</strong><br>${translateOptionValue("education", formData.get("ijazahFormalTerakhir"))}
+	            </div>
 
-            <!-- Data Orang Tua -->
-            <div class="col-span-full mt-3">
-              <h6 class="bg-brand-600 text-white p-2 rounded">
-                <i class="bi bi-people"></i> ${translate("form.review.sections.parents")}
+	            <!-- Data Orang Tua -->
+	            <div class="col-span-full mt-3">
+	              <h6 class="bg-brand-600 text-white p-2 rounded">
+	                <i class="bi bi-people"></i> ${translate("form.review.sections.parents")}
               </h6>
             </div>
             <div>

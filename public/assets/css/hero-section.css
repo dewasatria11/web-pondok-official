@@ -143,14 +143,15 @@
 
 /* Arabic Tagline */
 .hero-arabic-text {
-    font-family: 'Amiri', serif;
+    font-family: "Tajawal", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
     font-size: clamp(1.25rem, 3vw, 1.75rem);
     font-weight: 700;
+    line-height: 1.25;
     color: #046e50;
     margin-bottom: 0.75rem;
     direction: rtl;
-    text-align: left;
-    letter-spacing: 0.02em;
+    unicode-bidi: plaintext;
+    text-align: start;
 }
 
 /* Main Headline */
