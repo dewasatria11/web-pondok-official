@@ -65,14 +65,33 @@ def verify_turnstile(token: str, remote_ip: str = "") -> Tuple[bool, str, List[s
         payload = {"secret": secret_key, "response": token}
         if remote_ip:
             payload["remoteip"] = remote_ip
-        resp = requests.post(url, data=payload, timeout=10)
-        resp.raise_for_status()
-        result = resp.json()
-        codes = result.get("error-codes", []) or []
-        success = bool(result.get("success"))
-        if success:
-            return True, "OK", []
-        return False, _turnstile_error_message(codes), list(codes) if isinstance(codes, list) else [str(codes)]
+
+        # Intermittent network issues can be more common on serverless edges;
+        # retry once for transient HTTP/timeout errors.
+        last_exc: Exception | None = None
+        for attempt, timeout_s in enumerate((10, 15), start=1):
+            try:
+                resp = requests.post(url, data=payload, timeout=timeout_s)
+                # Retry on transient upstream errors
+                if resp.status_code in (429,) or resp.status_code >= 500:
+                    resp.raise_for_status()
+                result = resp.json()
+                codes = result.get("error-codes", []) or []
+                success = bool(result.get("success"))
+                if success:
+                    return True, "OK", []
+                return (
+                    False,
+                    _turnstile_error_message(codes),
+                    list(codes) if isinstance(codes, list) else [str(codes)],
+                )
+            except requests.exceptions.RequestException as exc:
+                last_exc = exc
+                if attempt == 2:
+                    raise
+                continue
+        if last_exc:
+            raise last_exc
     except Exception as exc:
         print(f"[TURNSTILE] Error: {exc}")
         return False, "Gagal memverifikasi CAPTCHA", ["verify-failed"]

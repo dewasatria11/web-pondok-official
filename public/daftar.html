@@ -1000,23 +1000,46 @@
 	      latestTurnstileToken = "";
 	    }
 
-	    function focusTurnstile() {
-	      const el = document.getElementById("turnstileWidget");
-	      if (el) {
-	        el.scrollIntoView({ behavior: "smooth", block: "center" });
-	      }
-	    }
+		    function focusTurnstile() {
+		      const el = document.getElementById("turnstileWidget");
+		      if (el) {
+		        el.scrollIntoView({ behavior: "smooth", block: "center" });
+		      }
+		    }
+		
+		    function isKonfirmasiModalOpen() {
+		      const modalKonfirmasi = document.getElementById("modalKonfirmasi");
+		      return !!(modalKonfirmasi && modalKonfirmasi.classList.contains("modal-visible"));
+		    }
+		
+		    function closeKonfirmasiModal() {
+		      const modalKonfirmasi = document.getElementById("modalKonfirmasi");
+		      if (modalKonfirmasi) {
+		        modalKonfirmasi.classList.remove("modal-visible");
+		        modalKonfirmasi.classList.add("modal-hidden");
+		      }
+		    }
 
 	    // Turnstile callbacks (referenced from data-* attributes)
 	    window.onTurnstileSuccess = (token) => {
 	      latestTurnstileToken = token || "";
 	    };
-	    window.onTurnstileExpired = () => {
-	      latestTurnstileToken = "";
-	    };
-	    window.onTurnstileError = () => {
-	      latestTurnstileToken = "";
-	    };
+		    window.onTurnstileExpired = () => {
+		      latestTurnstileToken = "";
+		      if (isKonfirmasiModalOpen()) {
+		        closeKonfirmasiModal();
+		        toastr.warning("CAPTCHA kedaluwarsa. Silakan verifikasi ulang.");
+		        focusTurnstile();
+		      }
+		    };
+		    window.onTurnstileError = () => {
+		      latestTurnstileToken = "";
+		      if (isKonfirmasiModalOpen()) {
+		        closeKonfirmasiModal();
+		        toastr.warning("CAPTCHA bermasalah. Silakan coba verifikasi ulang.");
+		        focusTurnstile();
+		      }
+		    };
 
 	    const translate = (key, replacements) =>
 	      typeof window.__ === "function" ? window.__(key, replacements) : key;
@@ -1986,11 +2009,11 @@
     // --- END GELOMBANG LOGIC ---
 
     // Function to show konfirmasi modal
-    function showKonfirmasi() {
-      console.log('[KONFIRMASI] Function called');
+	    function showKonfirmasi() {
+	      console.log('[KONFIRMASI] Function called');
 
-      // Validate form first
-      if (!form.checkValidity()) {
+	      // Validate form first
+	      if (!form.checkValidity()) {
         console.warn('[KONFIRMASI] Form validation failed');
         form.classList.add("was-validated");
 
@@ -2005,13 +2028,22 @@
 
         toastr.error(translate("form.messages.validationRequired"));
         return;
-      }
+	      }
 
-      console.log('[KONFIRMASI] Form valid, building modal...');
+	      console.log('[KONFIRMASI] Form valid, building modal...');
+	
+	      // Di mobile, sering terjadi token CAPTCHA expired saat user lama di modal.
+	      // Wajibkan CAPTCHA terisi sebelum masuk modal agar submit lebih stabil.
+	      const preCaptchaToken = getTurnstileToken() || latestTurnstileToken;
+	      if (!preCaptchaToken) {
+	        toastr.warning("Silakan verifikasi CAPTCHA terlebih dahulu.");
+	        focusTurnstile();
+	        return;
+	      }
 
-      try {
-        const formData = new FormData(form);
-        formDataGlobal = formData;
+	      try {
+	        const formData = new FormData(form);
+	        formDataGlobal = formData;
 
         // Build konfirmasi HTML
 	        let html = `
@@ -2170,24 +2202,28 @@
           console.error('[KONFIRMASI] ❌ Modal element #modalKonfirmasi not found!');
           alert(translate("form.messages.alertModalMissing"));
         }
-      } catch (error) {
-        console.error('[KONFIRMASI] Error:', error);
-        toastr.error(`${translate("form.messages.submitErrorGeneric")}: ${error.message}`);
-      }
-    }
+	      } catch (error) {
+	        console.error('[KONFIRMASI] Error:', error);
+	        const reason = error?.message || (typeof error === "string" ? error : "");
+	        toastr.error(`${translate("form.messages.submitErrorGeneric")}${reason ? `: ${reason}` : ""}`);
+	      }
+	    }
 
     // Function to convert file to base64
-    function fileToBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-          const base64 = reader.result.split(",")[1];
-          resolve(base64);
-        };
-        reader.onerror = (error) => reject(error);
-      });
-    }
+	    function fileToBase64(file) {
+	      return new Promise((resolve, reject) => {
+	        const reader = new FileReader();
+	        reader.readAsDataURL(file);
+	        reader.onload = () => {
+	          const base64 = reader.result.split(",")[1];
+	          resolve(base64);
+	        };
+	        reader.onerror = () => {
+	          const reason = reader.error?.message || "Gagal membaca file. Silakan pilih ulang file dan coba lagi.";
+	          reject(new Error(reason));
+	        };
+	      });
+	    }
 
     // FIXED: Client-side image compression with proper async/await
     async function compressClientSide(file, targetBytes = 1 * 1024 * 1024) {
@@ -2322,10 +2358,11 @@
           }
         };
 
-        reader.onerror = (error) => {
-          console.error('[COMPRESS_ERROR] FileReader:', error);
-          reject(error);
-        };
+	        reader.onerror = (error) => {
+	          console.error('[COMPRESS_ERROR] FileReader:', error);
+	          const reason = reader.error?.message || "Gagal membaca file untuk kompresi. Silakan pilih ulang file dan coba lagi.";
+	          reject(new Error(reason));
+	        };
 
         reader.readAsDataURL(file);
       });
@@ -2522,15 +2559,23 @@
         console.log("[SUBMIT] Data yang akan dikirim:", data);
         console.log("[SUBMIT] Total fields:", Object.keys(data).length);
 
-        submitBtn.innerHTML =
-          `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.saving")}`;
+	        submitBtn.innerHTML =
+	          `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.saving")}`;
 
-        console.log("[SUBMIT] Sending POST to /api/pendaftar_create...");
-        const res = await fetch("/api/pendaftar_create", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
+	        console.log("[SUBMIT] Sending POST to /api/pendaftar_create...");
+	        const submitController = new AbortController();
+	        const submitTimeout = setTimeout(() => submitController.abort(), 60000); // 60s timeout
+	        let res;
+	        try {
+	          res = await fetch("/api/pendaftar_create", {
+	            method: "POST",
+	            headers: { "Content-Type": "application/json" },
+	            body: JSON.stringify(data),
+	            signal: submitController.signal,
+	          });
+	        } finally {
+	          clearTimeout(submitTimeout);
+	        }
 
         console.log("[SUBMIT] Response status:", res.status);
         console.log("[SUBMIT] Response headers:", Object.fromEntries(res.headers.entries()));
@@ -2552,28 +2597,29 @@
         console.log("[SUBMIT] json.nisn =", json.nisn);
         console.log("[SUBMIT] json.id =", json.id);
 
-	        if (!json.ok) {
-	          console.error("[SUBMIT] ❌ Server returned ok=false");
-	          console.error("[SUBMIT] Error:", json.error);
-	          console.error("[SUBMIT] Details:", json.details);
-	          const detailsText = (json.details || json.codes || "").toString().toLowerCase();
-	          const isCaptchaError =
-	            (json.error || "").toString().toLowerCase().includes("captcha") ||
-	            detailsText.includes("turnstile") ||
-	            detailsText.includes("timeout-or-duplicate") ||
-	            detailsText.includes("invalid-input-response") ||
-	            detailsText.includes("missing-input-response");
-	          if (isCaptchaError) {
-	            resetTurnstile();
-	            const modalKonfirmasi = document.getElementById("modalKonfirmasi");
-	            if (modalKonfirmasi) {
-	              modalKonfirmasi.classList.remove("modal-visible");
-	              modalKonfirmasi.classList.add("modal-hidden");
-	            }
-	            focusTurnstile();
-	          }
-	          throw new Error(json.error || translate("form.messages.submitErrorGeneric"));
-	        }
+		        if (!json.ok) {
+		          console.error("[SUBMIT] ❌ Server returned ok=false");
+		          console.error("[SUBMIT] Error:", json.error);
+		          console.error("[SUBMIT] Details:", json.details);
+		          const detailsText = (json.details || json.codes || "").toString().toLowerCase();
+		          const isCaptchaError =
+		            (json.error || "").toString().toLowerCase().includes("captcha") ||
+		            detailsText.includes("turnstile") ||
+		            detailsText.includes("timeout-or-duplicate") ||
+		            detailsText.includes("invalid-input-response") ||
+		            detailsText.includes("missing-input-response");
+		          if (isCaptchaError) {
+		            resetTurnstile();
+		            const modalKonfirmasi = document.getElementById("modalKonfirmasi");
+		            if (modalKonfirmasi) {
+		              modalKonfirmasi.classList.remove("modal-visible");
+		              modalKonfirmasi.classList.add("modal-hidden");
+		            }
+		            focusTurnstile();
+		            throw new Error(json.details || json.error || translate("form.messages.submitErrorGeneric"));
+		          }
+		          throw new Error(json.error || translate("form.messages.submitErrorGeneric"));
+		        }
 
 	        console.log("[SUBMIT] ✓ Data berhasil disimpan!");
 	        // Token Turnstile bersifat sekali pakai — reset setelah sukses supaya tidak duplikat di submit berikutnya
@@ -2719,16 +2765,29 @@
         console.error("Error Stack:", error.stack);
         console.error("=".repeat(80));
 
-	        let errorMsg = error.message || translate("form.messages.submitErrorGeneric");
-	        const normalizedMsg = (errorMsg || "").toLowerCase();
+		        const fallbackMessage = translate("form.messages.submitErrorGeneric");
+		        const getErrMessage = (err) => {
+		          if (!err) return "";
+		          if (typeof err === "string") return err;
+		          if (err.message) return err.message;
+		          try { return String(err); } catch (e) { return ""; }
+		        };
 
-	        if (normalizedMsg.includes("timeout")) {
-	          errorMsg = translate("form.messages.submitErrorTimeout");
-	        } else if (normalizedMsg.includes("networkerror") || normalizedMsg.includes("failed to fetch")) {
-	          errorMsg = translate("form.messages.submitErrorNetwork");
-	        } else if (normalizedMsg.includes("nisn tidak diterima")) {
-	          errorMsg = translate("form.errors.nisnMissing");
-	        } else if (normalizedMsg.includes("captcha")) {
+		        let errorMsg = getErrMessage(error) || fallbackMessage;
+		        const normalizedMsg = (errorMsg || "").toLowerCase();
+
+		        if (error?.name === "AbortError" || normalizedMsg.includes("timeout")) {
+		          errorMsg = translate("form.messages.submitErrorTimeout");
+		        } else if (
+		          error?.name === "TypeError" ||
+		          normalizedMsg.includes("networkerror") ||
+		          normalizedMsg.includes("failed to fetch") ||
+		          normalizedMsg.includes("load failed")
+		        ) {
+		          errorMsg = translate("form.messages.submitErrorNetwork");
+		        } else if (normalizedMsg.includes("nisn tidak diterima")) {
+		          errorMsg = translate("form.errors.nisnMissing");
+		        } else if (normalizedMsg.includes("captcha")) {
 	          // Pastikan captcha siap untuk percobaan ulang
 	          resetTurnstile();
 	          focusTurnstile();
