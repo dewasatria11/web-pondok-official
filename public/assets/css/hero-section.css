@@ -151,7 +151,8 @@
     margin-bottom: 0.75rem;
     direction: rtl;
     unicode-bidi: plaintext;
-    text-align: start;
+    /* Tetap RTL, tapi posisikan teks di sisi kiri (seperti desain sebelumnya) */
+    text-align: left;
 }
 
 /* Main Headline */
