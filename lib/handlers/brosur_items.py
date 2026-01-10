@@ -62,15 +62,8 @@ class handler(BaseHTTPRequestHandler):
             icon_class = (payload.get("icon_class") or "bi bi-file-earmark-arrow-down").strip()
             order_index = payload.get(ORDER_FIELD)
 
-            if (
-                not title
-                or not description
-                or not button_url
-                or not title_en
-                or not description_en
-                or not button_label_en
-            ):
-                raise ValueError("Isi judul, deskripsi, label tombol, dan URL di kedua bahasa")
+            if not title or not title_en or not button_url:
+                raise ValueError("Isi judul (ID & EN) dan URL wajib diisi")
 
             admin = _admin()
             if order_index is None:
