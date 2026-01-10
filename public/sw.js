@@ -1,3 +1,12 @@
+// Disable console logs for public users
+(function () {
+  console.log = function () { };
+  console.warn = function () { };
+  console.error = function () { };
+  console.info = function () { };
+  console.debug = function () { };
+})();
+
 const CACHE_NAME = 'ppdsb-pwa-v9';
 const API_CACHE = 'ppdsb-api-v1';
 const EXTERNAL_IMAGE_CACHE = 'ppdsb-ext-img-v1';

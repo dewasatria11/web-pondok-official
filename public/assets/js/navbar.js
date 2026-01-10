@@ -1,3 +1,12 @@
+// Disable console logs for public users
+(function () {
+  console.log = function () { };
+  console.warn = function () { };
+  console.error = function () { };
+  console.info = function () { };
+  console.debug = function () { };
+})();
+
 (function () {
   const navs = document.querySelectorAll('[data-nav-root]');
   if (!navs.length) return;

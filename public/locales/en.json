@@ -465,6 +465,7 @@
       "description": "Check your registration status at Al Ikhsan Islamic Boarding School by entering your NISN. View verification updates, admin notes, and payment status."
     },
     "hero": {
+      "badge": "Registration Status Service",
       "title": "Check Your Registration Status",
       "subtitle": "Enter your NISN to view the latest status from Al Ikhsan Islamic Boarding School."
     },

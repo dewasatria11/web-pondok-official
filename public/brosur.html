@@ -21,9 +21,9 @@
 
   <title data-i18n="meta.title.brochure">Brosur – PPDSB Pondok Pesantren Al Ikhsan Beji</title>
 
-	  <script src="/i18n.js?v=10" defer></script>
+  <script src="/i18n.js?v=10" defer></script>
 
-	  <link rel="stylesheet" href="/assets/css/tailwind.css?v=10" />
+  <link rel="stylesheet" href="/assets/css/tailwind.css?v=10" />
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
@@ -446,15 +446,150 @@
   <!-- MAIN -->
   <main class="flex-1 container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold text-gray-900 mb-6" data-i18n="pages.brochure.heading">Brosur Pendaftaran</h1>
-    <div class="prose max-w-none space-y-3">
+    <div class="prose max-w-none space-y-3 mb-8">
       <p data-i18n="pages.brochure.intro">Unduh brosur resmi untuk melihat program pendidikan, fasilitas, biaya, dan
         alur pendaftaran santri di Pondok Pesantren Al Ikhsan Beji:</p>
       <p class="text-sm text-gray-500" id="brosurLastUpdate"></p>
-      <div class="brosur-grid" id="brosurContainer">
-        <div class="text-gray-500" data-i18n="pages.brochure.loading">Memuat daftar brosur...</div>
-      </div>
+    </div>
+
+    <!-- Brosur Grid Container -->
+    <div class="brosur-grid-container" id="brosurContainer">
+      <div class="text-gray-500" data-i18n="pages.brochure.loading">Memuat daftar brosur...</div>
     </div>
   </main>
+
+  <style>
+    /* Brosur Grid Layout */
+    .brosur-grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .brosur-grid-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+
+    /* Brosur Card */
+    .brosur-card {
+      background: white;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .brosur-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Card Header with Orange Border */
+    .brosur-card-header {
+      background: white;
+      border-left: 4px solid #f97316;
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      font-size: 1.125rem;
+      color: #1f2937;
+    }
+
+    /* Image Preview Container */
+    .brosur-image-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      background: #f3f4f6;
+    }
+
+    .brosur-image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Button Container */
+    .brosur-buttons {
+      display: flex;
+      gap: 0.75rem;
+      padding: 1.25rem 1.5rem;
+      background: white;
+    }
+
+    @media (max-width: 640px) {
+      .brosur-buttons {
+        flex-direction: column;
+      }
+    }
+
+    /* Download Button (Teal) */
+    .btn-download {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.5rem;
+      background: #0d9488;
+      color: white;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-download:hover {
+      background: #0f766e;
+    }
+
+    .btn-download i {
+      font-size: 1.125rem;
+    }
+
+    /* Share Button (White Outline) */
+    .btn-share {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.5rem;
+      background: white;
+      color: #374151;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      border-radius: 0.5rem;
+      border: 2px solid #d1d5db;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-share:hover {
+      background: #f9fafb;
+      border-color: #9ca3af;
+    }
+
+    .btn-share i {
+      font-size: 1.125rem;
+    }
+
+    /* Loading/Empty State */
+    .brosur-empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #6b7280;
+    }
+  </style>
 
   <!-- FOOTER -->
   <footer class="bg-white text-gray-600 py-6 shadow-2xl border-t border-gray-200 mt-auto">
@@ -545,29 +680,35 @@
 
         function buildBrosurCard(item, index, lang) {
           const delay = 150 + index * 100;
-          const iconClass =
-            item.icon_class && item.icon_class.trim()
-              ? item.icon_class.trim()
-              : "bi bi-file-earmark-arrow-down";
           const title = escapeHtml(selectBrosurField(item, "title", lang));
-          const description = escapeHtml(selectBrosurField(item, "description", lang));
-          const defaultButton = translate(
-            "pages.brochure.defaultButton",
-            lang === "en" ? "Download PDF" : "Unduh PDF"
-          );
-          const buttonLabel = escapeHtml(
-            selectBrosurField(item, "button_label", lang) || defaultButton
-          );
           const url = escapeAttribute(item.button_url || "#");
+
+          // Button labels
+          const downloadLabel = translate(
+            "pages.brochure.downloadButton",
+            lang === "en" ? "Download Image" : "Unduh Gambar"
+          );
+          const shareLabel = translate(
+            "pages.brochure.shareButton",
+            lang === "en" ? "Share" : "Bagikan"
+          );
 
           return `
           <div class="brosur-card" data-aos="fade-up" data-aos-delay="${delay}">
-            <i class="${iconClass} text-brand-700 text-4xl mb-4"></i>
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">${title}</h3>
-            <p class="text-gray-600 mb-4">${description}</p>
-            <a href="${url}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-brand-700 hover:bg-brand-800" target="_blank" rel="noopener">
-              <i class="bi bi-download mr-2"></i> ${buttonLabel}
-            </a>
+            <div class="brosur-card-header">
+              ${title}
+            </div>
+            <div class="brosur-image-container">
+              <img src="${url}" alt="${title}" loading="lazy" />
+            </div>
+            <div class="brosur-buttons">
+              <a href="${url}" download class="btn-download" target="_blank" rel="noopener">
+                <i class="bi bi-download"></i> ${downloadLabel}
+              </a>
+              <button class="btn-share" onclick="shareBrosur('${escapeAttribute(title)}', '${url}')">
+                <i class="bi bi-share"></i> ${shareLabel}
+              </button>
+            </div>
           </div>
         `;
         }
@@ -579,7 +720,7 @@
 
           if (!items || !items.length) {
             const emptyText = escapeHtml(translate("pages.brochure.empty", "Belum ada brosur yang tersedia saat ini."));
-            container.innerHTML = `<div class="text-gray-500">${emptyText}</div>`;
+            container.innerHTML = `<div class="brosur-empty">${emptyText}</div>`;
             if (infoEl) infoEl.textContent = "";
             return;
           }
@@ -605,6 +746,32 @@
           }
         }
 
+        // Share function using Web Share API
+        window.shareBrosur = function (title, url) {
+          if (navigator.share) {
+            navigator.share({
+              title: title,
+              url: url
+            }).catch(err => {
+              console.log('Share cancelled or failed:', err);
+            });
+          } else {
+            // Fallback: copy to clipboard
+            navigator.clipboard.writeText(url).then(() => {
+              const lang = getActiveLanguage();
+              const message = lang === "en" ? "Link copied to clipboard!" : "Link disalin ke clipboard!";
+              if (window.toastr) {
+                toastr.success(message);
+              } else {
+                alert(message);
+              }
+            }).catch(err => {
+              console.error('Failed to copy:', err);
+              alert(url);
+            });
+          }
+        };
+
         async function loadBrosurContent({ force = false } = {}) {
           if (!force && cachedBrosurItems) {
             renderBrosurContent(cachedBrosurItems);
@@ -616,7 +783,7 @@
           if (!container) return;
 
           const loadingText = escapeHtml(translate("pages.brochure.loading", "Memuat daftar brosur..."));
-          container.innerHTML = `<div class="text-gray-500">${loadingText}</div>`;
+          container.innerHTML = `<div class="brosur-empty">${loadingText}</div>`;
           if (infoEl) infoEl.textContent = "";
 
           try {
@@ -644,7 +811,7 @@
 
             if (!cachedBrosurItems.length) {
               const emptyText = escapeHtml(translate("pages.brochure.empty", "Belum ada brosur yang tersedia saat ini."));
-              container.innerHTML = `<div class="text-gray-500">${emptyText}</div>`;
+              container.innerHTML = `<div class="brosur-empty">${emptyText}</div>`;
               return;
             }
 
@@ -652,7 +819,7 @@
           } catch (error) {
             console.error("[BROSUR_PAGE] Error memuat brosur:", error);
             const errorText = escapeHtml(translate("pages.brochure.error", "Gagal memuat brosur. Silakan coba beberapa saat lagi."));
-            container.innerHTML = `<div class="text-red-500">${errorText}</div>`;
+            container.innerHTML = `<div class="brosur-empty text-red-500">${errorText}</div>`;
           }
         }
 

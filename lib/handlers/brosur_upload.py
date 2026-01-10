@@ -22,10 +22,20 @@ class handler(BaseHTTPRequestHandler):
             if not file_b64 or not file_name:
                 return send_json(self, 400, {"ok": False, "error": "File dan nama wajib diisi"})
 
-            # Only allow PDF
+            # Allow PDF, JPG, PNG
             ext = (file_name.split(".")[-1] or "").lower()
-            if ext != "pdf":
-                return send_json(self, 400, {"ok": False, "error": "Hanya PDF yang diperbolehkan"})
+            allowed_extensions = {"pdf", "jpg", "jpeg", "png"}
+            if ext not in allowed_extensions:
+                return send_json(self, 400, {"ok": False, "error": "Hanya PDF, JPG, atau PNG yang diperbolehkan"})
+
+            # Map extension to MIME type
+            mime_types = {
+                "pdf": "application/pdf",
+                "jpg": "image/jpeg",
+                "jpeg": "image/jpeg",
+                "png": "image/png"
+            }
+            content_type = mime_types.get(ext, "application/octet-stream")
 
             # Strip data URL prefix if present
             if isinstance(file_b64, str) and file_b64.startswith("data:"):
@@ -41,12 +51,12 @@ class handler(BaseHTTPRequestHandler):
 
             max_size = 8 * 1024 * 1024  # 8MB
             if len(file_bytes) > max_size:
-                return send_json(self, 400, {"ok": False, "error": "Ukuran PDF maksimal 8MB"})
+                return send_json(self, 400, {"ok": False, "error": "Ukuran file maksimal 8MB"})
 
             base_name = ".".join(file_name.split(".")[:-1]) or "brosur"
             safe_name = _slugify_filename(base_name)
             ts = int(time.time())
-            storage_path = f"brosur/{ts}-{safe_name}.pdf"
+            storage_path = f"brosur/{ts}-{safe_name}.{ext}"
 
             try:
                 supa = supabase_client(service_role=True)
@@ -54,7 +64,7 @@ class handler(BaseHTTPRequestHandler):
                     path=storage_path,
                     file=file_bytes,
                     file_options={
-                        "content-type": "application/pdf",
+                        "content-type": content_type,
                     },
                 )
                 public_url = supa.storage.from_("brosur-files").get_public_url(storage_path)
@@ -72,7 +82,7 @@ class handler(BaseHTTPRequestHandler):
                     "url": public_url,
                     "path": storage_path,
                     "size": len(file_bytes),
-                    "mime": "application/pdf",
+                    "mime": content_type,
                 },
             )
         except Exception as e:

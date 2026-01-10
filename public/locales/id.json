@@ -465,6 +465,7 @@
       "description": "Cek status pendaftaran santri Pondok Pesantren Al Ikhsan Beji dengan memasukkan NISN. Lihat informasi verifikasi, catatan admin, dan status pembayaran terbaru."
     },
     "hero": {
+      "badge": "Layanan Status Pendaftaran",
       "title": "Cek Status Pendaftaran Santri",
       "subtitle": "Masukkan NISN Anda untuk melihat status pendaftaran Pondok Pesantren Al Ikhsan Beji."
     },

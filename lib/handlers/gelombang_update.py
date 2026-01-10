@@ -8,7 +8,7 @@ class handler(BaseHTTPRequestHandler):
     def do_POST(self):
         """
         POST /api/update_gelombang
-        Body: { id: number, start_date: "YYYY-MM-DD", end_date: "YYYY-MM-DD", tahun_ajaran: "2026/2027" }
+        Body: { id: number, nama: string, nama_en: string, start_date: "YYYY-MM-DD", end_date: "YYYY-MM-DD", tahun_ajaran: "2026/2027" }
         Response: Updated gelombang row
         """
         try:
@@ -32,11 +32,15 @@ class handler(BaseHTTPRequestHandler):
             
             # Validate required fields
             gelombang_id = data.get('id')
+            nama = data.get('nama')  # Indonesian name
+            nama_en = data.get('nama_en')  # English name (optional)
             start_date = data.get('start_date')
             end_date = data.get('end_date')
             tahun_ajaran = data.get('tahun_ajaran')
             
-            if not all([gelombang_id, start_date, end_date, tahun_ajaran]):
+            # nama, start_date, end_date, tahun_ajaran are required
+            # nama_en is optional for backward compatibility
+            if not all([gelombang_id, nama, start_date, end_date, tahun_ajaran]):
                 self.send_response(400)
                 self.send_header("Content-Type", "application/json")
                 self.send_header("Access-Control-Allow-Origin", "*")
@@ -44,7 +48,7 @@ class handler(BaseHTTPRequestHandler):
                 self.wfile.write(
                     json.dumps({
                         "ok": False,
-                        "error": "Missing required fields: id, start_date, end_date, tahun_ajaran"
+                        "error": "Missing required fields: id, nama, start_date, end_date, tahun_ajaran"
                     }).encode('utf-8')
                 )
                 return
@@ -82,15 +86,23 @@ class handler(BaseHTTPRequestHandler):
             # Get Supabase client with service role
             supa = supabase_client(service_role=True)
             
+            # Prepare update data
+            update_data = {
+                "nama": nama,
+                "start_date": start_date,
+                "end_date": end_date,
+                "tahun_ajaran": tahun_ajaran,
+                "updated_at": datetime.now().isoformat()
+            }
+            
+            # Add nama_en only if provided (optional field)
+            if nama_en:
+                update_data["nama_en"] = nama_en
+            
             # Update gelombang
             result = (
                 supa.table("gelombang")
-                .update({
-                    "start_date": start_date,
-                    "end_date": end_date,
-                    "tahun_ajaran": tahun_ajaran,
-                    "updated_at": datetime.now().isoformat()
-                })
+                .update(update_data)
                 .eq("id", gelombang_id)
                 .execute()
             )

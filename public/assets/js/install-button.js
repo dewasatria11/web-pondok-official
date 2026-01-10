@@ -5,17 +5,21 @@
 
   const setButtonsState = (buttons, available) => {
     buttons.forEach((button) => {
-      button.disabled = !available;
+      // ALWAYS enable button, just change the appearance
+      button.disabled = false;
+      button.removeAttribute('aria-disabled');
+
       if (available) {
-        button.removeAttribute('aria-disabled');
         button.removeAttribute('title');
+        button.classList.remove('opacity-60');
       } else {
-        button.setAttribute('aria-disabled', 'true');
+        // Show hint but keep button enabled
         if (button.dataset.installUnavailableText) {
           button.title = button.dataset.installUnavailableText;
         } else {
           button.title = UNAVAILABLE_HINT;
         }
+        button.classList.add('opacity-60');
       }
     });
   };
@@ -32,29 +36,72 @@
     });
   };
 
+  const showInstallInfo = () => {
+    const message = `
+📱 Informasi Install PWA:
+
+Aplikasi ini dapat diinstall sebagai Progressive Web App (PWA).
+
+Kemungkinan penyebab tombol install tidak tersedia:
+1. ✅ Aplikasi sudah terinstall di perangkat Anda
+2. 🌐 Browser tidak mendukung PWA install (gunakan Chrome/Edge)
+3. 📱 Pada iOS: Gunakan Safari, tap tombol Share → "Add to Home Screen"
+
+Untuk install manual:
+• Chrome/Edge Desktop: Klik ikon ⊕ di address bar
+• Chrome Android: Menu (⋮) → "Install app" atau "Add to Home Screen"
+• Safari iOS: Share button → "Add to Home Screen"
+    `.trim();
+
+    alert(message);
+    console.log('[PWA Install] beforeinstallprompt event not available');
+    console.log('[PWA Install] window.deferredPWAInstallPrompt:', window.deferredPWAInstallPrompt);
+  };
+
   const initInstallButtons = () => {
     const buttons = Array.from(document.querySelectorAll(BUTTON_SELECTOR));
-    if (!buttons.length) return;
+    if (!buttons.length) {
+      console.log('[PWA Install] No install buttons found');
+      return;
+    }
+
+    console.log(`[PWA Install] Found ${buttons.length} install button(s)`);
 
     const refreshButtons = () => {
       const available = Boolean(window.deferredPWAInstallPrompt);
+      console.log('[PWA Install] Refresh buttons - available:', available);
       setButtonsState(buttons, available);
     };
 
     const handleClick = async (event) => {
       event.preventDefault();
+      console.log('[PWA Install] Button clicked');
+
       const promptEvent = window.deferredPWAInstallPrompt;
+
       if (!promptEvent) {
+        console.warn('[PWA Install] No install prompt available, showing info');
+        showInstallInfo();
         refreshButtons();
         return;
       }
 
+      console.log('[PWA Install] Showing install prompt');
       setButtonsLoading(buttons, true);
+
       try {
         promptEvent.prompt();
-        await promptEvent.userChoice;
+        const choiceResult = await promptEvent.userChoice;
+        console.log('[PWA Install] User choice:', choiceResult.outcome);
+
+        if (choiceResult.outcome === 'accepted') {
+          console.log('[PWA Install] User accepted the install prompt');
+        } else {
+          console.log('[PWA Install] User dismissed the install prompt');
+        }
       } catch (error) {
-        console.error('Gagal menampilkan prompt install PWA', error);
+        console.error('[PWA Install] Error showing prompt:', error);
+        showInstallInfo();
       } finally {
         window.deferredPWAInstallPrompt = null;
         setButtonsLoading(buttons, false);
@@ -66,13 +113,30 @@
       button.addEventListener('click', handleClick);
     });
 
-    document.addEventListener('pwa-install-ready', refreshButtons);
+    document.addEventListener('pwa-install-ready', () => {
+      console.log('[PWA Install] pwa-install-ready event received');
+      refreshButtons();
+    });
+
     window.addEventListener('appinstalled', () => {
+      console.log('[PWA Install] App installed successfully');
       window.deferredPWAInstallPrompt = null;
       refreshButtons();
     });
 
+    // Initial state
     refreshButtons();
+
+    // Debug: Check after 2 seconds if event was received
+    setTimeout(() => {
+      if (!window.deferredPWAInstallPrompt) {
+        console.warn('[PWA Install] beforeinstallprompt event not received after 2s');
+        console.log('[PWA Install] Possible reasons:');
+        console.log('  1. App is already installed');
+        console.log('  2. Browser does not support PWA install');
+        console.log('  3. PWA criteria not met (manifest, service worker, HTTPS)');
+      }
+    }, 2000);
   };
 
   if (document.readyState === 'loading') {

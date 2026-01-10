@@ -1,6 +1,8 @@
 # PPDSB – Pendaftaran Web
 
-Platform ini digunakan Pondok Pesantren Al Ikhsan Beji untuk mengelola seluruh proses Penerimaan Peserta Didik dan Santri Baru (PPDSB). Aplikasi memadukan laman publik untuk calon santri/wali dan dashboard admin yang terintegrasi dengan Supabase.
+Platform ini digunakan Pondok Pesantren Al Ikhsan Beji untuk mengelola seluruh proses Penerimaan Peserta Didik dan Santri Baru (PPDSB). Aplikasi memadukan laman publik untuk calon santri/wali dan dashboard admin yang terintegrasi dengan Supabase. 
+
+email : admin@pondok.com | password : admin123 
 
 ## Fitur Utama
 
@@ -17,31 +19,7 @@ Platform ini digunakan Pondok Pesantren Al Ikhsan Beji untuk mengelola seluruh p
 - **Backend/API**: Vercel serverless (Python) dengan Supabase sebagai basis data & storage
 - **Utility**: Toastr, Moment-style helpers, CSV export, WhatsApp notification templates
 
-## Struktur Direktori Singkat
 
-- `public/` – Halaman publik (beranda, daftar, cek-status, admin, dsb.) plus asset CSS/JS
-- `lib/handlers/` – Router API (pendaftar, pembayaran, konten dinamis, maintenance, dsb.)
-- `api/index.py` – Router utama Vercel yang memetakan endpoint ke handler
-- `styles/`, `styles/tailwind`, `PWA_GUIDE.md`, dll. – utilitas styling dan panduan PWA
 
-## Cara Menjalankan
 
-1. Salin `.env.example` menjadi `.env` dan isi `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`.
-2. Install dependensi:
-   ```bash
-   npm install
-   ```
-3. Jalankan secara lokal (misal menggunakan Vercel CLI):
-   ```bash
-   vercel dev
-   ```
-4. Deploy ke Vercel untuk memanfaatkan routing serverless & integrasi Supabase.
-
-## Catatan
-
-- Mode maintenance membutuhkan tabel `maintenance_settings` di Supabase (lihat handler `lib/handlers/maintenance_status.py`).
-- Pastikan service worker terbaru (`public/sw.js`) telah aktif setelah deploy untuk menjamin caching & maintenance overlay bekerja.
-
-Kontribusi, isu, atau perbaikan dapat diajukan melalui repository ini. Semoga bermanfaat untuk keberlangsungan PPDSB Al Ikhsan Beji.
-
-Salam Hangat Dewa S. iya
+Salam Hangat Dewa S.

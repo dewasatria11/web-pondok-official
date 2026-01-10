@@ -2163,38 +2163,38 @@ Jazakumullahu khairan,
     return null;
   }
 
-	  async function loadPembayaran() {
-	    try {
-	      console.log('[PEMBAYARAN] 💳 Loading payment data...');
+  async function loadPembayaran() {
+    try {
+      console.log('[PEMBAYARAN] 💳 Loading payment data...');
 
-	      // Show loading state
-	      const tbody = $("#pembayaranTableBody");
-	      if (tbody) {
-	        tbody.innerHTML =
-	          '<tr><td colspan="7" class="text-center"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Memuat data pembayaran...</td></tr>';
-	      }
+      // Show loading state
+      const tbody = $("#pembayaranTableBody");
+      if (tbody) {
+        tbody.innerHTML =
+          '<tr><td colspan="7" class="text-center"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Memuat data pembayaran...</td></tr>';
+      }
 
-	      let url = `/api/pembayaran_list?page=${pembayaranCurrentPage}&pageSize=${pembayaranPageSize}`;
-	      const searchInput = document.getElementById("searchPembayaranInput");
-	      if (searchInput && searchInput.value) {
-	        url += `&q=${encodeURIComponent(searchInput.value.trim())}`;
-	      }
-	      console.log("[PEMBAYARAN] → API:", url);
+      let url = `/api/pembayaran_list?page=${pembayaranCurrentPage}&pageSize=${pembayaranPageSize}`;
+      const searchInput = document.getElementById("searchPembayaranInput");
+      if (searchInput && searchInput.value) {
+        url += `&q=${encodeURIComponent(searchInput.value.trim())}`;
+      }
+      console.log("[PEMBAYARAN] → API:", url);
 
-	      const controller = new AbortController();
-	      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
 
-	      const r = await fetch(url, { signal: controller.signal });
-	      clearTimeout(timeoutId);
-	      if (!r.ok) {
-	        throw new Error(`HTTP ${r.status}: ${r.statusText}`);
-	      }
-	      const result = await r.json();
+      const r = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeoutId);
+      if (!r.ok) {
+        throw new Error(`HTTP ${r.status}: ${r.statusText}`);
+      }
+      const result = await r.json();
 
-	      pembayaranLoadedOnce = true;
-	      console.log('[PEMBAYARAN] ✅ Data loaded:', result.data?.length || 0, 'items');
+      pembayaranLoadedOnce = true;
+      console.log('[PEMBAYARAN] ✅ Data loaded:', result.data?.length || 0, 'items');
 
-	      if (!(result.success && Array.isArray(result.data))) return;
+      if (!(result.success && Array.isArray(result.data))) return;
       pembayaranTotalData = result.total || result.count || result.data.length;
 
       const pembayaranTotalPages = Math.max(
@@ -2271,15 +2271,15 @@ Jazakumullahu khairan,
         upd.textContent = `Data update: ${new Date().toLocaleTimeString(
           "id-ID"
         )}`;
-	    } catch (e) {
-	      console.error("loadPembayaran error:", e);
-	      const tbody = $("#pembayaranTableBody");
-	      if (tbody) {
-	        tbody.innerHTML =
-	          '<tr><td colspan="7" class="text-center text-danger">❌ Gagal memuat data pembayaran. Silakan coba lagi.</td></tr>';
-	      }
-	    }
-	  }
+    } catch (e) {
+      console.error("loadPembayaran error:", e);
+      const tbody = $("#pembayaranTableBody");
+      if (tbody) {
+        tbody.innerHTML =
+          '<tr><td colspan="7" class="text-center text-danger">❌ Gagal memuat data pembayaran. Silakan coba lagi.</td></tr>';
+      }
+    }
+  }
 
   function viewPembayaranDetail(payment) {
     currentPembayaranData = payment;
@@ -2749,6 +2749,18 @@ Jazakumullahu khairan,
           <div class="card-body">
             <div class="row g-3">
               <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-translate"></i> Nama Gelombang (ID)</label>
+                <input type="text" class="form-control" id="nama_${gelombang.id}" 
+                       value="${gelombang.nama || ''}" placeholder="Gelombang 1 - Januari 2026" required>
+                <small class="text-muted">Bahasa Indonesia</small>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-globe"></i> Period Name (EN)</label>
+                <input type="text" class="form-control" id="nama_en_${gelombang.id}" 
+                       value="${gelombang.nama_en || ''}" placeholder="Period 1 - January 2026">
+                <small class="text-muted">English translation</small>
+              </div>
+              <div class="col-md-6">
                 <label class="form-label"><i class="bi bi-calendar-event"></i> Tanggal Mulai</label>
                 <input type="date" class="form-control" id="start_date_${gelombang.id}" 
                        value="${gelombang.start_date}" required>
@@ -2790,13 +2802,15 @@ Jazakumullahu khairan,
     // Ensure ID is a number
     id = parseInt(id, 10);
 
+    const nama = document.getElementById(`nama_${id}`).value;
+    const namaEn = document.getElementById(`nama_en_${id}`).value;
     const startDate = document.getElementById(`start_date_${id}`).value;
     const endDate = document.getElementById(`end_date_${id}`).value;
     const tahunAjaran = document.getElementById(`tahun_ajaran_${id}`).value;
 
     // Validate
-    if (!startDate || !endDate || !tahunAjaran) {
-      safeToastr.error('Semua field harus diisi!');
+    if (!nama || !startDate || !endDate || !tahunAjaran) {
+      safeToastr.error('Field wajib (Nama ID, Tanggal, Tahun Ajaran) harus diisi!');
       return;
     }
 
@@ -2805,7 +2819,7 @@ Jazakumullahu khairan,
       return;
     }
 
-    console.log('[GELOMBANG] Updating gelombang:', id, { startDate, endDate, tahunAjaran });
+    console.log('[GELOMBANG] Updating gelombang:', id, { nama, namaEn, startDate, endDate, tahunAjaran });
 
     // Find the button and show minimal loading state
     const button = event.target.closest('button');
@@ -2819,6 +2833,8 @@ Jazakumullahu khairan,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           id: id,
+          nama: nama,
+          nama_en: namaEn,
           start_date: startDate,
           end_date: endDate,
           tahun_ajaran: tahunAjaran
@@ -2836,6 +2852,8 @@ Jazakumullahu khairan,
       // Update local data cache
       const gelombangIndex = currentGelombangData.findIndex(g => g.id === id);
       if (gelombangIndex !== -1) {
+        currentGelombangData[gelombangIndex].nama = nama;
+        currentGelombangData[gelombangIndex].nama_en = namaEn;
         currentGelombangData[gelombangIndex].start_date = startDate;
         currentGelombangData[gelombangIndex].end_date = endDate;
         currentGelombangData[gelombangIndex].tahun_ajaran = tahunAjaran;
@@ -7111,27 +7129,27 @@ Jazakumullahu khairan,
           });
         }, 300);
       });
-	    } else {
-	      console.warn("[ADMIN] ⚠️ Search input NOT found");
-	    }
+    } else {
+      console.warn("[ADMIN] ⚠️ Search input NOT found");
+    }
 
-	    // Search Pembayaran Handler (debounce 300ms)
-	    const searchPembayaranInput = document.getElementById("searchPembayaranInput");
-	    if (searchPembayaranInput) {
-	      let debounceTimer;
-	      searchPembayaranInput.addEventListener("input", () => {
-	        clearTimeout(debounceTimer);
-	        debounceTimer = setTimeout(() => {
-	          pembayaranCurrentPage = 1;
-	          if (document.getElementById("tab-pembayaran")?.style.display !== "none") {
-	            loadPembayaran();
-	          }
-	        }, 300);
-	      });
-	    }
+    // Search Pembayaran Handler (debounce 300ms)
+    const searchPembayaranInput = document.getElementById("searchPembayaranInput");
+    if (searchPembayaranInput) {
+      let debounceTimer;
+      searchPembayaranInput.addEventListener("input", () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          pembayaranCurrentPage = 1;
+          if (document.getElementById("tab-pembayaran")?.style.display !== "none") {
+            loadPembayaran();
+          }
+        }, 300);
+      });
+    }
 
-	    loadPendaftar();
-	  });
+    loadPendaftar();
+  });
 
 
 

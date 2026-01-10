@@ -1757,55 +1757,55 @@
               </span>
             </div>
 
-	            <div class="row mb-4 g-3">
-	              <div class="col-md-4">
-	                <div class="card stat-card warning">
-	                  <div class="card-body">
-	                    <div class="icon-box"><i class="bi bi-hourglass-split"></i></div>
-	                    <h6>Pending</h6>
-	                    <h3 id="statPending">0</h3>
-	                    <small><i class="bi bi-clock"></i> Menunggu verifikasi</small>
-	                  </div>
-	                </div>
-	              </div>
-	              <div class="col-md-4">
-	                <div class="card stat-card success">
-	                  <div class="card-body">
-	                    <div class="icon-box"><i class="bi bi-check-circle-fill"></i></div>
-	                    <h6>Verified</h6>
-	                    <h3 id="statVerified">0</h3>
-	                    <small><i class="bi bi-shield-check"></i> Terverifikasi</small>
-	                  </div>
-	                </div>
-	              </div>
-	              <div class="col-md-4">
-	                <div class="card stat-card danger">
-	                  <div class="card-body">
-	                    <div class="icon-box"><i class="bi bi-x-circle-fill"></i></div>
-	                    <h6>Rejected</h6>
-	                    <h3 id="statRejected">0</h3>
-	                    <small><i class="bi bi-exclamation-triangle"></i> Ditolak</small>
-	                  </div>
-	                </div>
-	              </div>
-	            </div>
+            <div class="row mb-4 g-3">
+              <div class="col-md-4">
+                <div class="card stat-card warning">
+                  <div class="card-body">
+                    <div class="icon-box"><i class="bi bi-hourglass-split"></i></div>
+                    <h6>Pending</h6>
+                    <h3 id="statPending">0</h3>
+                    <small><i class="bi bi-clock"></i> Menunggu verifikasi</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card stat-card success">
+                  <div class="card-body">
+                    <div class="icon-box"><i class="bi bi-check-circle-fill"></i></div>
+                    <h6>Verified</h6>
+                    <h3 id="statVerified">0</h3>
+                    <small><i class="bi bi-shield-check"></i> Terverifikasi</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card stat-card danger">
+                  <div class="card-body">
+                    <div class="icon-box"><i class="bi bi-x-circle-fill"></i></div>
+                    <h6>Rejected</h6>
+                    <h3 id="statRejected">0</h3>
+                    <small><i class="bi bi-exclamation-triangle"></i> Ditolak</small>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-	            <div class="d-flex justify-content-between align-items-center mb-3">
-	              <h5 class="mb-0"><i class="bi bi-table"></i> Tabel Data Pembayaran</h5>
-	              <div class="d-flex flex-wrap gap-2 align-items-center">
-	                <!-- Search Input -->
-	                <div class="input-group input-group-sm" style="width: 250px;">
-	                  <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
-	                  <input type="text" class="form-control border-start-0 ps-0" id="searchPembayaranInput"
-	                    placeholder="Cari nama pendaftar..." style="border-left: none; box-shadow: none;">
-	                </div>
-	              </div>
-	            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0"><i class="bi bi-table"></i> Tabel Data Pembayaran</h5>
+              <div class="d-flex flex-wrap gap-2 align-items-center">
+                <!-- Search Input -->
+                <div class="input-group input-group-sm" style="width: 250px;">
+                  <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                  <input type="text" class="form-control border-start-0 ps-0" id="searchPembayaranInput"
+                    placeholder="Cari nama pendaftar..." style="border-left: none; box-shadow: none;">
+                </div>
+              </div>
+            </div>
 
-	            <div class="card">
-	              <div class="card-body">
-	                <div class="table-responsive">
-	                  <table class="table table-hover">
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover">
                     <thead>
                       <tr>
                         <th>No</th>
@@ -1817,7 +1817,7 @@
                         <th>Aksi</th>
                       </tr>
                     </thead>
-	                    <tbody id="pembayaranTableBody">
+                    <tbody id="pembayaranTableBody">
                       <tr>
                         <td colspan="7" class="text-center">
                           <div class="spinner-border text-primary" role="status">
@@ -1825,29 +1825,29 @@
                           </div>
                         </td>
                       </tr>
-	                    </tbody>
-	                  </table>
-	                </div>
+                    </tbody>
+                  </table>
+                </div>
 
-	                <!-- Pagination Controls (Bottom) -->
-	                <div class="d-flex justify-content-between align-items-center mt-3">
-	                  <div>
-	                    <button id="btnPrevPagePembayaran" class="btn btn-outline-secondary btn-sm"
-	                      onclick="previousPembayaranPage()" disabled>
-	                      <i class="bi bi-chevron-left"></i> Previous
-	                    </button>
-	                    <button id="btnNextPagePembayaran" class="btn btn-outline-secondary btn-sm"
-	                      onclick="nextPembayaranPage()" disabled>
-	                      Next <i class="bi bi-chevron-right"></i>
-	                    </button>
-	                  </div>
-	                  <div>
-	                    <span class="text-muted" id="pageInfoPembayaran">Halaman 1</span>
-	                  </div>
-	                </div>
-	              </div>
-	            </div>
-	          </div>
+                <!-- Pagination Controls (Bottom) -->
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <div>
+                    <button id="btnPrevPagePembayaran" class="btn btn-outline-secondary btn-sm"
+                      onclick="previousPembayaranPage()" disabled>
+                      <i class="bi bi-chevron-left"></i> Previous
+                    </button>
+                    <button id="btnNextPagePembayaran" class="btn btn-outline-secondary btn-sm"
+                      onclick="nextPembayaranPage()" disabled>
+                      Next <i class="bi bi-chevron-right"></i>
+                    </button>
+                  </div>
+                  <div>
+                    <span class="text-muted" id="pageInfoPembayaran">Halaman 1</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <!-- Tab: Kelola Gelombang -->
           <div id="tab-gelombang" class="tab-content" style="display:none">
@@ -2024,18 +2024,18 @@
                 slide)</p>
             </div>
 
-	            <!-- Info Alert -->
-	            <div class="alert alert-info mb-4">
-	              <i class="bi bi-info-circle-fill"></i> <strong>Panduan Gambar:</strong>
-	              <ul class="mb-0 mt-2">
-	                <li><strong>Format:</strong> PNG transparan (disarankan) atau WebP transparan</li>
-	                <li><strong>Ukuran:</strong> Rekomendasi portrait (mis. 800×1000px atau lebih)</li>
-	                <li><strong>Ukuran file:</strong> Maksimal 5 MB</li>
-	                <li><strong>Konten:</strong> Foto santri/siswa (1 orang) yang akan ditampilkan di hero section</li>
-	                <li><strong>Penempatan:</strong> Muncul di sisi kanan teks hero (Slide 1–3, maksimal 3 gambar)</li>
-	                <li><strong>Catatan:</strong> Upload pada slide yang sama akan mengganti gambar sebelumnya</li>
-	              </ul>
-	            </div>
+            <!-- Info Alert -->
+            <div class="alert alert-info mb-4">
+              <i class="bi bi-info-circle-fill"></i> <strong>Panduan Gambar:</strong>
+              <ul class="mb-0 mt-2">
+                <li><strong>Format:</strong> PNG transparan (disarankan) atau WebP transparan</li>
+                <li><strong>Ukuran:</strong> Rekomendasi portrait (mis. 800×1000px atau lebih)</li>
+                <li><strong>Ukuran file:</strong> Maksimal 5 MB</li>
+                <li><strong>Konten:</strong> Foto santri/siswa (1 orang) yang akan ditampilkan di hero section</li>
+                <li><strong>Penempatan:</strong> Muncul di sisi kanan teks hero (Slide 1–3, maksimal 3 gambar)</li>
+                <li><strong>Catatan:</strong> Upload pada slide yang sama akan mengganti gambar sebelumnya</li>
+              </ul>
+            </div>
 
             <!-- Upload Section -->
             <div class="card mb-4">
@@ -2045,13 +2045,13 @@
               <div class="card-body">
                 <form id="heroCarouselUploadForm">
                   <div class="row">
-	                    <div class="col-md-6">
-	                      <div class="mb-3">
-	                        <label for="heroCarouselImageInput" class="form-label">Pilih Gambar (PNG/WebP)</label>
-	                        <input type="file" class="form-control" id="heroCarouselImageInput"
-	                          accept="image/png,image/webp" required>
-	                        <small class="text-muted">Format: PNG transparan atau WebP transparan. Maks 5MB.</small>
-	                      </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="heroCarouselImageInput" class="form-label">Pilih Gambar (PNG/WebP)</label>
+                        <input type="file" class="form-control" id="heroCarouselImageInput"
+                          accept="image/png,image/webp" required>
+                        <small class="text-muted">Format: PNG transparan atau WebP transparan. Maks 5MB.</small>
+                      </div>
                       <div class="mb-3">
                         <label for="heroCarouselSlideOrder" class="form-label">Urutan Slide</label>
                         <select class="form-select" id="heroCarouselSlideOrder">
@@ -2680,18 +2680,7 @@
                       <div class="brosur-lang-pane" data-brosur-lang-pane="id">
                         <div class="mb-3">
                           <label for="brosurTitle_id" class="form-label">Judul (Bahasa Indonesia)</label>
-                          <input type="text" class="form-control" id="brosurTitle_id"
-                            placeholder="Contoh: Brosur Umum PPDSB">
-                        </div>
-                        <div class="mb-3">
-                          <label for="brosurDescription_id" class="form-label">Deskripsi (Bahasa Indonesia)</label>
-                          <textarea class="form-control" id="brosurDescription_id" rows="3"
-                            placeholder="Deskripsi singkat brosur"></textarea>
-                        </div>
-                        <div class="mb-3">
-                          <label for="brosurButtonLabel_id" class="form-label">Label Tombol (Bahasa Indonesia)</label>
-                          <input type="text" class="form-control" id="brosurButtonLabel_id"
-                            placeholder="Contoh: Unduh PDF" value="Unduh PDF">
+                          <input type="text" class="form-control" id="brosurTitle_id" placeholder="Contoh: Brosur MTs">
                         </div>
                       </div>
 
@@ -2699,40 +2688,24 @@
                         <div class="mb-3">
                           <label for="brosurTitle_en" class="form-label">Title (English)</label>
                           <input type="text" class="form-control" id="brosurTitle_en"
-                            placeholder="Example: General Prospectus">
-                        </div>
-                        <div class="mb-3">
-                          <label for="brosurDescription_en" class="form-label">Description (English)</label>
-                          <textarea class="form-control" id="brosurDescription_en" rows="3"
-                            placeholder="Short description of the brochure"></textarea>
-                        </div>
-                        <div class="mb-3">
-                          <label for="brosurButtonLabel_en" class="form-label">Button Label (English)</label>
-                          <input type="text" class="form-control" id="brosurButtonLabel_en"
-                            placeholder="Example: Download PDF" value="Download PDF">
+                            placeholder="Example: MTs Brochure">
                         </div>
                       </div>
 
                       <div class="mb-3">
-                        <label for="brosurFile" class="form-label">Upload PDF Brosur</label>
-                        <input type="file" class="form-control" id="brosurFile" accept="application/pdf">
+                        <label for="brosurFile" class="form-label">Upload Gambar Brosur</label>
+                        <input type="file" class="form-control" id="brosurFile" accept="image/jpeg,image/png,image/jpg">
                         <small class="text-muted d-block mt-1" id="brosurUploadHelp">
-                          Unggah file PDF (maks 8MB). URL unduhan akan diisi otomatis setelah upload.
+                          Unggah gambar JPG/PNG (maks 8MB). URL akan diisi otomatis setelah upload.
                         </small>
                         <input type="hidden" id="brosurFilePath">
                         <input type="hidden" id="brosurFileSize">
-                        <input type="hidden" id="brosurFileMime" value="application/pdf">
+                        <input type="hidden" id="brosurFileMime" value="image/jpeg">
                       </div>
                       <div class="mb-3">
-                        <label for="brosurButtonUrl" class="form-label">URL Unduhan (Otomatis)</label>
-                        <input type="url" class="form-control" id="brosurButtonUrl" placeholder="Hasil upload PDF"
+                        <label for="brosurButtonUrl" class="form-label">URL Gambar (Otomatis)</label>
+                        <input type="url" class="form-control" id="brosurButtonUrl" placeholder="Hasil upload gambar"
                           readonly>
-                      </div>
-                      <div class="mb-3">
-                        <label for="brosurIconClass" class="form-label">Kelas Ikon</label>
-                        <input type="text" class="form-control" id="brosurIconClass"
-                          placeholder="Contoh: bi bi-file-earmark-arrow-down" value="bi bi-file-earmark-arrow-down">
-                        <small class="text-muted">Gunakan kelas ikon Bootstrap Icons</small>
                       </div>
                       <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-primary flex-grow-1" id="btnSaveBrosur">
@@ -2774,7 +2747,7 @@
                         </tbody>
                       </table>
                     </div>
-                    <small class="text-muted">Pastikan tautan brosur mengarah ke file PDF.</small>
+                    <small class="text-muted">Pastikan tautan brosur mengarah ke gambar JPG/PNG.</small>
                   </div>
                 </div>
               </div>
@@ -3850,7 +3823,7 @@
 
   <!-- Admin JS (load last, after all dependencies) - Async to prevent blocking -->
   <script defer src="/assets/js/admin.js?v=v13_pembayaran_search_fix"></script>
-	  <script defer src="/assets/js/pwa.js?v=10"></script>
+  <script defer src="/assets/js/pwa.js?v=10"></script>
 
   <!-- DEBUG: Test if admin.js loaded successfully -->
   <script>
