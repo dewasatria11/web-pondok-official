@@ -615,85 +615,94 @@
   </script>
 
   <script>
+      // Disable console for public users
       (function () {
-        const escapeHtml = (value = "") =>
-          String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+        console.log = function () { };
+        console.warn = function () { };
+        console.error = function () { };
+        console.info = function () { };
+        console.debug = function () { };
+      })();
 
-        const escapeAttribute = escapeHtml;
+    (function () {
+      const escapeHtml = (value = "") =>
+        String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
 
-        const translate = (key, fallback = "", replacements) => {
-          if (typeof window.__ === "function") {
-            const value = window.__(key, replacements);
-            if (typeof value === "string" && value !== key) {
-              return value;
-            }
+      const escapeAttribute = escapeHtml;
+
+      const translate = (key, fallback = "", replacements) => {
+        if (typeof window.__ === "function") {
+          const value = window.__(key, replacements);
+          if (typeof value === "string" && value !== key) {
+            return value;
           }
-          return fallback || key;
-        };
+        }
+        return fallback || key;
+      };
 
-        const getActiveLanguage = () => {
-          if (typeof window.__lang === "function") {
-            return window.__lang();
-          }
-          const stored = (localStorage.getItem("lang") || "id").toLowerCase();
-          return stored.startsWith("en") ? "en" : "id";
-        };
+      const getActiveLanguage = () => {
+        if (typeof window.__lang === "function") {
+          return window.__lang();
+        }
+        const stored = (localStorage.getItem("lang") || "id").toLowerCase();
+        return stored.startsWith("en") ? "en" : "id";
+      };
 
-        const formatTimestamp = (value, lang) => {
-          if (!value) return "";
-          const ts = typeof value === "number" ? value : Date.parse(value);
-          if (Number.isNaN(ts)) return "";
-          const locale = lang === "en" ? "en-US" : "id-ID";
-          return new Date(ts).toLocaleString(locale, {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          });
-        };
+      const formatTimestamp = (value, lang) => {
+        if (!value) return "";
+        const ts = typeof value === "number" ? value : Date.parse(value);
+        if (Number.isNaN(ts)) return "";
+        const locale = lang === "en" ? "en-US" : "id-ID";
+        return new Date(ts).toLocaleString(locale, {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      };
 
-        const selectBrosurField = (item = {}, field, lang) => {
-          const normalized = lang === "en" ? "en" : "id";
-          if (normalized === "en") {
-            const value = item[`${field}_en`];
-            if (typeof value === "string" && value.trim()) return value.trim();
-          }
-          const base = item[field];
-          if (typeof base === "string" && base.trim()) return base.trim();
-          if (normalized === "id") {
-            const fallback = item[`${field}_en`];
-            if (typeof fallback === "string" && fallback.trim()) return fallback.trim();
-          } else {
-            const fallback = item[field];
-            if (typeof fallback === "string" && fallback.trim()) return fallback.trim();
-          }
-          return "";
-        };
+      const selectBrosurField = (item = {}, field, lang) => {
+        const normalized = lang === "en" ? "en" : "id";
+        if (normalized === "en") {
+          const value = item[`${field}_en`];
+          if (typeof value === "string" && value.trim()) return value.trim();
+        }
+        const base = item[field];
+        if (typeof base === "string" && base.trim()) return base.trim();
+        if (normalized === "id") {
+          const fallback = item[`${field}_en`];
+          if (typeof fallback === "string" && fallback.trim()) return fallback.trim();
+        } else {
+          const fallback = item[field];
+          if (typeof fallback === "string" && fallback.trim()) return fallback.trim();
+        }
+        return "";
+      };
 
-        let cachedBrosurItems = null;
+      let cachedBrosurItems = null;
 
-        function buildBrosurCard(item, index, lang) {
-          const delay = 150 + index * 100;
-          const title = escapeHtml(selectBrosurField(item, "title", lang));
-          const url = escapeAttribute(item.button_url || "#");
+      function buildBrosurCard(item, index, lang) {
+        const delay = 150 + index * 100;
+        const title = escapeHtml(selectBrosurField(item, "title", lang));
+        const url = escapeAttribute(item.button_url || "#");
 
-          // Button labels
-          const downloadLabel = translate(
-            "pages.brochure.downloadButton",
-            lang === "en" ? "Download Image" : "Unduh Gambar"
-          );
-          const shareLabel = translate(
-            "pages.brochure.shareButton",
-            lang === "en" ? "Share" : "Bagikan"
-          );
+        // Button labels
+        const downloadLabel = translate(
+          "pages.brochure.downloadButton",
+          lang === "en" ? "Download Image" : "Unduh Gambar"
+        );
+        const shareLabel = translate(
+          "pages.brochure.shareButton",
+          lang === "en" ? "Share" : "Bagikan"
+        );
 
-          return `
+        return `
           <div class="brosur-card" data-aos="fade-up" data-aos-delay="${delay}">
             <div class="brosur-card-header">
               ${title}
@@ -711,137 +720,137 @@
             </div>
           </div>
         `;
+      }
+
+      function renderBrosurContent(items) {
+        const container = document.getElementById("brosurContainer");
+        const infoEl = document.getElementById("brosurLastUpdate");
+        if (!container) return;
+
+        if (!items || !items.length) {
+          const emptyText = escapeHtml(translate("pages.brochure.empty", "Belum ada brosur yang tersedia saat ini."));
+          container.innerHTML = `<div class="brosur-empty">${emptyText}</div>`;
+          if (infoEl) infoEl.textContent = "";
+          return;
         }
 
-        function renderBrosurContent(items) {
-          const container = document.getElementById("brosurContainer");
-          const infoEl = document.getElementById("brosurLastUpdate");
-          if (!container) return;
+        const lang = getActiveLanguage();
+        container.innerHTML = items
+          .map((item, index) => buildBrosurCard(item, index, lang))
+          .join("");
 
-          if (!items || !items.length) {
+        if (infoEl) {
+          const latestTimestamp = items.reduce((max, item) => {
+            const ts = item?.updated_at
+              ? Date.parse(item.updated_at)
+              : item?.created_at
+                ? Date.parse(item.created_at)
+                : 0;
+            return Number.isNaN(ts) ? max : Math.max(max, ts);
+          }, 0);
+
+          infoEl.textContent = latestTimestamp
+            ? `${translate("pages.brochure.lastUpdated", lang === "en" ? "Last updated:" : "Terakhir diperbarui:")} ${formatTimestamp(latestTimestamp, lang)}`
+            : "";
+        }
+      }
+
+      // Share function using Web Share API
+      window.shareBrosur = function (title, url) {
+        if (navigator.share) {
+          navigator.share({
+            title: title,
+            url: url
+          }).catch(err => {
+            console.log('Share cancelled or failed:', err);
+          });
+        } else {
+          // Fallback: copy to clipboard
+          navigator.clipboard.writeText(url).then(() => {
+            const lang = getActiveLanguage();
+            const message = lang === "en" ? "Link copied to clipboard!" : "Link disalin ke clipboard!";
+            if (window.toastr) {
+              toastr.success(message);
+            } else {
+              alert(message);
+            }
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+            alert(url);
+          });
+        }
+      };
+
+      async function loadBrosurContent({ force = false } = {}) {
+        if (!force && cachedBrosurItems) {
+          renderBrosurContent(cachedBrosurItems);
+          return;
+        }
+
+        const container = document.getElementById("brosurContainer");
+        const infoEl = document.getElementById("brosurLastUpdate");
+        if (!container) return;
+
+        const loadingText = escapeHtml(translate("pages.brochure.loading", "Memuat daftar brosur..."));
+        container.innerHTML = `<div class="brosur-empty">${loadingText}</div>`;
+        if (infoEl) infoEl.textContent = "";
+
+        try {
+          const response = await fetch("/api/brosur_items");
+          const result = await response.json();
+          if (!result.ok) {
+            throw new Error(result.error || "Gagal memuat data");
+          }
+
+          const items = Array.isArray(result.data) ? result.data : [];
+          cachedBrosurItems = items
+            .map((item) => ({
+              ...item,
+              title: selectBrosurField(item, "title", "id"),
+              title_en: selectBrosurField(item, "title", "en"),
+              description: selectBrosurField(item, "description", "id"),
+              description_en: selectBrosurField(item, "description", "en"),
+              button_label: selectBrosurField(item, "button_label", "id"),
+              button_label_en: selectBrosurField(item, "button_label", "en"),
+            }))
+            .sort(
+              (a, b) =>
+                (a?.order_index || 0) - (b?.order_index || 0)
+            );
+
+          if (!cachedBrosurItems.length) {
             const emptyText = escapeHtml(translate("pages.brochure.empty", "Belum ada brosur yang tersedia saat ini."));
             container.innerHTML = `<div class="brosur-empty">${emptyText}</div>`;
-            if (infoEl) infoEl.textContent = "";
             return;
           }
 
-          const lang = getActiveLanguage();
-          container.innerHTML = items
-            .map((item, index) => buildBrosurCard(item, index, lang))
-            .join("");
-
-          if (infoEl) {
-            const latestTimestamp = items.reduce((max, item) => {
-              const ts = item?.updated_at
-                ? Date.parse(item.updated_at)
-                : item?.created_at
-                  ? Date.parse(item.created_at)
-                  : 0;
-              return Number.isNaN(ts) ? max : Math.max(max, ts);
-            }, 0);
-
-            infoEl.textContent = latestTimestamp
-              ? `${translate("pages.brochure.lastUpdated", lang === "en" ? "Last updated:" : "Terakhir diperbarui:")} ${formatTimestamp(latestTimestamp, lang)}`
-              : "";
-          }
+          renderBrosurContent(cachedBrosurItems);
+        } catch (error) {
+          console.error("[BROSUR_PAGE] Error memuat brosur:", error);
+          const errorText = escapeHtml(translate("pages.brochure.error", "Gagal memuat brosur. Silakan coba beberapa saat lagi."));
+          container.innerHTML = `<div class="brosur-empty text-red-500">${errorText}</div>`;
         }
+      }
 
-        // Share function using Web Share API
-        window.shareBrosur = function (title, url) {
-          if (navigator.share) {
-            navigator.share({
-              title: title,
-              url: url
-            }).catch(err => {
-              console.log('Share cancelled or failed:', err);
-            });
-          } else {
-            // Fallback: copy to clipboard
-            navigator.clipboard.writeText(url).then(() => {
-              const lang = getActiveLanguage();
-              const message = lang === "en" ? "Link copied to clipboard!" : "Link disalin ke clipboard!";
-              if (window.toastr) {
-                toastr.success(message);
-              } else {
-                alert(message);
-              }
-            }).catch(err => {
-              console.error('Failed to copy:', err);
-              alert(url);
-            });
-          }
-        };
+      document.addEventListener("DOMContentLoaded", () => {
+        loadBrosurContent({ force: true });
+      });
 
-        async function loadBrosurContent({ force = false } = {}) {
-          if (!force && cachedBrosurItems) {
-            renderBrosurContent(cachedBrosurItems);
-            return;
-          }
-
-          const container = document.getElementById("brosurContainer");
-          const infoEl = document.getElementById("brosurLastUpdate");
-          if (!container) return;
-
-          const loadingText = escapeHtml(translate("pages.brochure.loading", "Memuat daftar brosur..."));
-          container.innerHTML = `<div class="brosur-empty">${loadingText}</div>`;
-          if (infoEl) infoEl.textContent = "";
-
-          try {
-            const response = await fetch("/api/brosur_items");
-            const result = await response.json();
-            if (!result.ok) {
-              throw new Error(result.error || "Gagal memuat data");
-            }
-
-            const items = Array.isArray(result.data) ? result.data : [];
-            cachedBrosurItems = items
-              .map((item) => ({
-                ...item,
-                title: selectBrosurField(item, "title", "id"),
-                title_en: selectBrosurField(item, "title", "en"),
-                description: selectBrosurField(item, "description", "id"),
-                description_en: selectBrosurField(item, "description", "en"),
-                button_label: selectBrosurField(item, "button_label", "id"),
-                button_label_en: selectBrosurField(item, "button_label", "en"),
-              }))
-              .sort(
-                (a, b) =>
-                  (a?.order_index || 0) - (b?.order_index || 0)
-              );
-
-            if (!cachedBrosurItems.length) {
-              const emptyText = escapeHtml(translate("pages.brochure.empty", "Belum ada brosur yang tersedia saat ini."));
-              container.innerHTML = `<div class="brosur-empty">${emptyText}</div>`;
-              return;
-            }
-
-            renderBrosurContent(cachedBrosurItems);
-          } catch (error) {
-            console.error("[BROSUR_PAGE] Error memuat brosur:", error);
-            const errorText = escapeHtml(translate("pages.brochure.error", "Gagal memuat brosur. Silakan coba beberapa saat lagi."));
-            container.innerHTML = `<div class="brosur-empty text-red-500">${errorText}</div>`;
-          }
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
+      window.addEventListener("i18n:languageChanged", () => {
+        if (cachedBrosurItems) {
+          renderBrosurContent(cachedBrosurItems);
+        } else {
           loadBrosurContent({ force: true });
-        });
+        }
+      });
 
-        window.addEventListener("i18n:languageChanged", () => {
-          if (cachedBrosurItems) {
-            renderBrosurContent(cachedBrosurItems);
-          } else {
-            loadBrosurContent({ force: true });
-          }
-        });
-
-        window.addEventListener("storage", (event) => {
-          if (event.key === "brosur_items_update") {
-            cachedBrosurItems = null;
-            loadBrosurContent({ force: true });
-          }
-        });
-      })();
+      window.addEventListener("storage", (event) => {
+        if (event.key === "brosur_items_update") {
+          cachedBrosurItems = null;
+          loadBrosurContent({ force: true });
+        }
+      });
+    })();
   </script>
 
   <script>

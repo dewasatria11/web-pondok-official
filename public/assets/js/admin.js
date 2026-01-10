@@ -5459,21 +5459,18 @@ Jazakumullahu khairan,
     const iconClass = ($("#brosurIconClass")?.value || "").trim();
 
     const missing = BROSUR_LANGS.filter(
-      (lang) =>
-        !values[lang].title ||
-        !values[lang].description ||
-        !values[lang].button_label
+      (lang) => !values[lang].title
     );
 
     if (missing.length || !buttonUrl) {
       if (!buttonUrl) {
-        safeToastr.warning("URL unduhan wajib diisi");
+        safeToastr.warning("URL gambar wajib diisi");
       } else {
         const label = missing
           .map((lang) => BROSUR_LABEL[lang]?.name || lang.toUpperCase())
           .join(", ");
         safeToastr.warning(
-          `Judul, deskripsi, dan label tombol wajib diisi untuk bahasa: ${label}`
+          `Judul wajib diisi untuk bahasa: ${label}`
         );
       }
       return;
@@ -5485,17 +5482,20 @@ Jazakumullahu khairan,
     try {
       const payload = {
         title: values.id.title,
-        description: values.id.description,
-        button_label: values.id.button_label || "Unduh PDF",
         title_en: values.en.title,
-        description_en: values.en.description,
-        button_label_en: values.en.button_label || "Download PDF",
         button_url: buttonUrl,
         file_path: filePath || null,
         file_size: fileSize,
         file_mime: fileMime || null,
-        icon_class: iconClass || "bi bi-file-earmark-arrow-down",
       };
+
+      // Optional fields (backward compatibility)
+      if (values.id.description) payload.description = values.id.description;
+      if (values.en.description) payload.description_en = values.en.description;
+      if (values.id.button_label) payload.button_label = values.id.button_label;
+      if (values.en.button_label) payload.button_label_en = values.en.button_label;
+      if (iconClass) payload.icon_class = iconClass;
+
       let message = "Brosur ditambahkan";
       if (id) {
         payload.id = id;
