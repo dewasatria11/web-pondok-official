@@ -3,7 +3,6 @@
   "meta.title.register": "Formulir Pendaftaran – PPDSB Pondok Pesantren Al Ikhsan Beji",
   "meta.description.home": "PPDSB Pondok Pesantren Al Ikhsan Beji. Penerimaan Peserta Didik dan Santri Baru tahun ajaran 2026/2027. Pendidikan islami terpadu dengan akhlak dan prestasi.",
   "meta.description.register": "Formulir pendaftaran santri baru Pondok Pesantren Al Ikhsan Beji. Isi data diri, pendidikan, orang tua, dan unggah dokumen pendaftaran.",
-
   "hero.badge": "Tahun Ajaran 2026/2027",
   "hero.ctaApply": "Daftar Sekarang",
   "hero.ctaStatus": "Cek Status",
@@ -18,7 +17,10 @@
   "hero.carousel.slide3.titleLine1": "Berbasis Disiplin Akhlak",
   "hero.carousel.slide3.titleHighlight": "& Wawasan Global",
   "hero.carousel.slide3.desc": "Kehidupan berasrama yang mendidik, bimbingan ustadz/ustadzah profesional, dan persiapan masa depan santri untuk menjadi pemimpin yang siap menghadapi tantangan dunia modern.",
-
   "section.hero.title": "<span class='text-yellow-400' style='text-shadow:2px 4px 8px rgba(0,0,0,0.5);'>Penerimaan Peserta Didik dan Santri Baru</span><br/><span>(PPDSB) PONDOK PESANTREN AL IKHSAN BEJI</span>",
-  "section.hero.body": "<p>Bergabunglah menjadi santri Pondok Pesantren Al Ikhsan Beji. Pendidikan islami terpadu dengan pembinaan akhlak, tahfidz Al-Qur'an, dan ilmu pengetahuan yang membentuk generasi Qur'ani dan berprestasi.</p>"
+  "section.hero.body": "<p>Bergabunglah menjadi santri Pondok Pesantren Al Ikhsan Beji. Pendidikan islami terpadu dengan pembinaan akhlak, tahfidz Al-Qur'an, dan ilmu pengetahuan yang membentuk generasi Qur'ani dan berprestasi.</p>",
+  "form.security.botProtection": "Keamanan data: Verifikasi ini melindungi formulir dari bot.",
+  "form.documents.ijazah": "Foto Ijazah Terakhir",
+  "form.documents.akta": "Foto Akta Kelahiran",
+  "form.documents.kk": "Foto Kartu Keluarga"
 }

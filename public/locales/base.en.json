@@ -3,7 +3,6 @@
   "meta.title.register": "Registration Form – Al Ikhsan Islamic Boarding School",
   "meta.description.home": "Al Ikhsan Islamic Boarding School. New Student and Santri Admissions for the 2026/2027 academic year. Integrated Islamic education that builds character and achievements.",
   "meta.description.register": "New santri registration form for Al Ikhsan Islamic Boarding School. Fill in personal data, education, parents, and upload registration documents.",
-
   "hero.badge": "Academic Year 2026/2027",
   "hero.ctaApply": "Apply Now",
   "hero.ctaStatus": "Check Status",
@@ -18,7 +17,10 @@
   "hero.carousel.slide3.titleLine1": "Discipline & Character Based",
   "hero.carousel.slide3.titleHighlight": "& Global Outlook",
   "hero.carousel.slide3.desc": "A nurturing boarding environment, guidance from professional ustadz/ustadzah, and future readiness so students grow into leaders prepared for modern challenges.",
-
   "section.hero.title": "<span class='text-yellow-400' style='text-shadow:2px 4px 8px rgba(0,0,0,0.5);'>New Student and Santri Admissions</span><br/><span>Al Ikhsan Islamic Boarding School (PPDSB)</span>",
-  "section.hero.body": "<p>Join Al Ikhsan Islamic Boarding School. Integrated Islamic education with character development, Quran memorization (tahfidz), and sciences to shape a Qur’anic, high-achieving generation.</p>"
+  "section.hero.body": "<p>Join Al Ikhsan Islamic Boarding School. Integrated Islamic education with character development, Quran memorization (tahfidz), and sciences to shape a Qur’anic, high-achieving generation.</p>",
+  "form.security.botProtection": "Data Security: This verification protects the form from bots.",
+  "form.documents.ijazah": "Last Diploma Photo",
+  "form.documents.akta": "Birth Certificate Photo",
+  "form.documents.kk": "Family Card Photo"
 }

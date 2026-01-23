@@ -502,7 +502,8 @@
     .brosur-image-container {
       position: relative;
       width: 100%;
-      max-height: 400px;
+      height: 280px;
+      /* Fixed height for uniformity */
       overflow: hidden;
       background: #f3f4f6;
       cursor: pointer;
@@ -516,8 +517,10 @@
     .brosur-image-container img {
       width: 100%;
       height: 100%;
-      max-height: 400px;
-      object-fit: contain;
+      object-fit: cover;
+      /* Fill the container without distortion */
+      object-position: top center;
+      /* Focus on the top part (usually title) */
       display: block;
     }
 
