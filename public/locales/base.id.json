@@ -20,7 +20,7 @@
   "section.hero.title": "<span class='text-yellow-400' style='text-shadow:2px 4px 8px rgba(0,0,0,0.5);'>Penerimaan Peserta Didik dan Santri Baru</span><br/><span>(PPDSB) PONDOK PESANTREN AL IKHSAN BEJI</span>",
   "section.hero.body": "<p>Bergabunglah menjadi santri Pondok Pesantren Al Ikhsan Beji. Pendidikan islami terpadu dengan pembinaan akhlak, tahfidz Al-Qur'an, dan ilmu pengetahuan yang membentuk generasi Qur'ani dan berprestasi.</p>",
   "form.security.botProtection": "Keamanan data: Verifikasi ini melindungi formulir dari bot.",
-  "form.docs.ijazah": "Foto Ijazah Terakhir",
-  "form.docs.akta": "Foto Akta Kelahiran",
-  "form.docs.kk": "Foto Kartu Keluarga"
+  "label.document.ijazah": "Foto Ijazah Terakhir",
+  "label.document.akta": "Foto Akta Kelahiran",
+  "label.document.kk": "Foto Kartu Keluarga"
 }

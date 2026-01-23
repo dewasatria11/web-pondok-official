@@ -20,7 +20,7 @@
   "section.hero.title": "<span class='text-yellow-400' style='text-shadow:2px 4px 8px rgba(0,0,0,0.5);'>New Student and Santri Admissions</span><br/><span>Al Ikhsan Islamic Boarding School (PPDSB)</span>",
   "section.hero.body": "<p>Join Al Ikhsan Islamic Boarding School. Integrated Islamic education with character development, Quran memorization (tahfidz), and sciences to shape a Qur’anic, high-achieving generation.</p>",
   "form.security.botProtection": "Data Security: This verification protects the form from bots.",
-  "form.docs.ijazah": "Last Diploma Photo",
-  "form.docs.akta": "Birth Certificate Photo",
-  "form.docs.kk": "Family Card Photo"
+  "label.document.ijazah": "Last Diploma Photo",
+  "label.document.akta": "Birth Certificate Photo",
+  "label.document.kk": "Family Card Photo"
 }
