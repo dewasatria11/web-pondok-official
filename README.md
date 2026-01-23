@@ -2,7 +2,7 @@
 
 Platform ini digunakan Pondok Pesantren Al Ikhsan Beji untuk mengelola seluruh proses Penerimaan Peserta Didik dan Santri Baru (PPDSB). Aplikasi memadukan laman publik untuk calon santri/wali dan dashboard admin yang terintegrasi dengan Supabase. 
 
-email : admin@pondok.com | password : admin123 
+Login Admin  email : admin@pondok.com | password : admin123 
 
 ## Fitur Utama
 
@@ -21,5 +21,5 @@ email : admin@pondok.com | password : admin123
 
 
 
-
+klo mau edit ini langsung aja git add dan push ke main, biar otomatis ke deploy di vercel
 Salam Hangat Dewa S.
