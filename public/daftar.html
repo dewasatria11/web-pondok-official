@@ -3365,14 +3365,29 @@
             firstInvalid.reportValidity();
             console.log('[Wizard] Validation failed on:', firstInvalid);
 
+            // Get field label or name
+            let fieldName = firstInvalid.getAttribute('name') || firstInvalid.getAttribute('id') || 'Unknown Field';
+            // Try to find label (closest wrapper logic or previous sibling)
+            // In wizard form, label is usually inside .col parent
+            try {
+              // Find parent col or form-group
+              const parent = firstInvalid.closest('.col-md-6') || firstInvalid.closest('.col-span-full') || firstInvalid.parentElement;
+              if (parent) {
+                const labelEl = parent.querySelector('label');
+                if (labelEl) fieldName = labelEl.innerText.replace('*', '').trim();
+              }
+            } catch (e) { }
+
+            const errorMsg = `Mohon lengkapi: ${fieldName}`;
+
             // Show generic message
             try {
               if (typeof toastr !== 'undefined') {
-                toastr.warning('Mohon lengkapi data yang wajib diisi sebelum melanjutkan.');
+                toastr.warning(errorMsg);
               } else {
                 // Debounce alert to avoid spam
                 if (!window._wizardAlertShown) {
-                  alert('Mohon lengkapi data yang wajib diisi.');
+                  alert(errorMsg);
                   window._wizardAlertShown = true;
                   setTimeout(() => window._wizardAlertShown = false, 2000);
                 }
