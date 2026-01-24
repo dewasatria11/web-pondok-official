@@ -1051,24 +1051,25 @@
 
 
       <!-- Navigation Buttons -->
-      <div class="wizard-navigation border-t mt-8 pt-6">
-        <div class="wizard-nav-group">
-          <button type="button" id="wizard-prev-btn" class="wizard-btn wizard-btn-secondary">
+      <div class="wizard-navigation flex justify-between items-center border-t mt-8 pt-6">
+        <div class="wizard-nav-group flex gap-3">
+          <button type="button" id="wizard-prev-btn" class="wizard-btn wizard-btn-secondary px-6 py-3">
             <i class="bi bi-arrow-left"></i>
             <span>Sebelumnya</span>
           </button>
         </div>
-        <div class="wizard-nav-group">
-          <button type="button" id="wizard-back-to-review-btn" class="wizard-btn wizard-btn-link" style="display:none;">
+        <div class="wizard-nav-group flex gap-3 ml-auto">
+          <button type="button" id="wizard-back-to-review-btn" class="wizard-btn wizard-btn-link px-6 py-3"
+            style="display:none;">
             <i class="bi bi-arrow-return-left"></i>
             <span>Kembali ke Review</span>
           </button>
-          <button type="button" id="wizard-next-btn" class="wizard-btn wizard-btn-primary">
+          <button type="button" id="wizard-next-btn" class="wizard-btn wizard-btn-primary px-6 py-3">
             <span>Selanjutnya</span>
             <i class="bi bi-arrow-right"></i>
           </button>
-          <button type="button" id="wizard-submit-btn" class="wizard-btn wizard-btn-primary" style="display:none;"
-            onclick="submitFinal()">
+          <button type="button" id="wizard-submit-btn" class="wizard-btn wizard-btn-primary px-6 py-3"
+            style="display:none;" onclick="submitFinal()">
             <i class="bi bi-send"></i>
             <span>Kirim Pendaftaran</span>
           </button>
@@ -2809,6 +2810,11 @@
         // Add gelombang explicitly
         data["gelombang"] = activeGelombangName || "";
 
+        // Fix field mapping mismatch (frontend uses 'kota', backend expects 'kotaKabupaten')
+        if (data["kota"] && !data["kotaKabupaten"]) {
+          data["kotaKabupaten"] = data["kota"];
+        }
+
         console.log("[SUBMIT] Data yang akan dikirim:", data);
         console.log("[SUBMIT] Total fields:", Object.keys(data).length);
 
@@ -3677,7 +3683,11 @@
           section.fields.forEach(field => {
             let value = formData[field.name];
 
-            if (field.type === 'file' && value && value instanceof File) {
+            // Check if it's a file object (either File instance or our metadata object)
+            // The metadata object from getFormDataFromStep has name, size, type properties
+            const isFile = value && (value instanceof File || (value.name && value.size));
+
+            if (field.type === 'file' && isFile) {
               // Check if we have a preview for this file
               if (imagePreviewsData[field.name]) {
                 value = `

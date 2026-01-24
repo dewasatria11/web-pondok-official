@@ -9,7 +9,6 @@
     "api/index.py": {
       "runtime": "@vercel/python@4.3.1",
       "maxDuration": 60,
-      "memory": 2048,
       "includeFiles": "public/locales/**"
     }
   },
