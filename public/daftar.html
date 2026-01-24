@@ -935,150 +935,149 @@
               <!-- Upload Berkas -->
 
             </div>
-        </div>
 
-        <!-- STEP 6 -->
-        <div class="wizard-form-step" data-wizard-step="6">
-          <div class="wizard-step-header">
-            <h2>Step 6: Upload Berkas</h2>
-            <p>Upload dokumen pendaftaran</p>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- STEP 6 -->
+            <div class="wizard-form-step" data-wizard-step="6">
+              <div class="wizard-step-header">
+                <h2>Step 6: Upload Berkas</h2>
+                <p>Upload dokumen pendaftaran</p>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
 
-            <div class="col-md-6">
-              <label class="form-label">
-                <i class="bi bi-image"></i> <span data-i18n="label.document.ijazah">...</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input type="file" class="form-control" name="fileIjazah" accept=".jpg,.jpeg,.png" required />
-              <small class="text-muted" data-i18n="form.documents.fields.ijazah.helper">JPG atau PNG (max 2MB)</small>
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <i class="bi bi-image"></i> <span data-i18n="label.document.ijazah">...</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="file" class="form-control" name="fileIjazah" accept=".jpg,.jpeg,.png" required />
+                  <small class="text-muted" data-i18n="form.documents.fields.ijazah.helper">JPG atau PNG (max
+                    2MB)</small>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <i class="bi bi-image"></i> <span data-i18n="label.document.akta">...</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="file" class="form-control" name="fileAkta" accept=".jpg,.jpeg,.png" required />
+                  <small class="text-muted" data-i18n="form.documents.fields.akta.helper">JPG atau PNG (max 2MB)</small>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <i class="bi bi-image"></i> <span data-i18n="form.documents.fields.foto.label">Pas Foto 3x4</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="file" class="form-control" name="fileFoto" accept=".jpg,.jpeg,.png" required />
+                  <small class="text-muted" data-i18n="form.documents.fields.foto.helper">JPG atau PNG (max
+                    2MB)</small>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <i class="bi bi-image"></i> <span data-i18n="label.document.kk">...</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="file" class="form-control" name="fileKK" accept=".jpg,.jpeg,.png" required />
+                  <small class="text-muted">JPG atau PNG (max 2MB)</small>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <i class="bi bi-image"></i> <span data-i18n="form.documents.fields.bpjs.label">Kartu
+                      BPJS</span>
+                    <span class="text-muted" data-i18n="form.documents.optionalTag">(Opsional)</span>
+                  </label>
+                  <input type="file" class="form-control" name="fileBPJS" accept=".jpg,.jpeg,.png" />
+                  <small class="text-muted" data-i18n="form.documents.fields.bpjs.helper">JPG atau PNG (max 2MB) - Tidak
+                    wajib</small>
+                </div>
+              </div>
+
+
+
             </div>
 
-            <div class="col-md-6">
-              <label class="form-label">
-                <i class="bi bi-image"></i> <span data-i18n="label.document.akta">...</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input type="file" class="form-control" name="fileAkta" accept=".jpg,.jpeg,.png" required />
-              <small class="text-muted" data-i18n="form.documents.fields.akta.helper">JPG atau PNG (max 2MB)</small>
+            <!-- STEP 7: Finalisasi -->
+            <div class="wizard-form-step" data-wizard-step="7">
+              <div class="wizard-step-header">
+                <h2>Step 7: Finalisasi & Review</h2>
+                <p>Periksa kembali semua data sebelum mengirim pendaftaran</p>
+              </div>
+
+              <div class="bg-white rounded-lg shadow-sm p-6">
+                <!-- Review Content -->
+                <div id="wizard-review-content"></div>
+
+                <!-- Turnstile Verification -->
+                <div class="wizard-turnstile-container">
+                  <div class="wizard-turnstile-title">
+                    <i class="bi bi-shield-check"></i>
+                    <span>Verifikasi Keamanan</span>
+                  </div>
+                  <p class="text-sm text-gray-600 mb-2">
+                    Verifikasi ini melindungi formulir dari bot.
+                  </p>
+                  <div id="turnstileWidget" class="cf-turnstile" data-sitekey="0x4AAAAAACDDkC6MDnS8Ozbo"
+                    data-theme="light" data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired"
+                    data-timeout-callback="onTurnstileExpired" data-error-callback="onTurnstileError"
+                    data-refresh-expired="auto" data-refresh-timeout="auto">
+                  </div>
+                </div>
+
+                <!-- Confirmation Checkbox -->
+                <div class="wizard-confirmation">
+                  <div class="wizard-confirmation-title">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <span>Konfirmasi Akhir</span>
+                  </div>
+                  <div class="wizard-confirmation-text">
+                    <p><strong>Seluruh data yang saya isikan adalah BENAR.</strong></p>
+                    <p>Bersedia menerima konsekuensi jika ditemukan ketidaksesuaian.</p>
+                  </div>
+                  <div class="wizard-confirmation-checkbox">
+                    <input type="checkbox" id="confirmation-checkbox" required />
+                    <label for="confirmation-checkbox">
+                      Saya telah membaca, memahami, dan menyetujui pernyataan di atas.
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="col-md-6">
-              <label class="form-label">
-                <i class="bi bi-image"></i> <span data-i18n="form.documents.fields.foto.label">Pas Foto 3x4</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input type="file" class="form-control" name="fileFoto" accept=".jpg,.jpeg,.png" required />
-              <small class="text-muted" data-i18n="form.documents.fields.foto.helper">JPG atau PNG (max
-                2MB)</small>
+
+
+
+            <!-- Navigation Buttons -->
+            <div class="wizard-navigation flex justify-between items-center border-t mt-8 pt-6">
+              <div class="wizard-nav-group flex gap-3">
+                <button type="button" id="wizard-prev-btn" class="wizard-btn wizard-btn-secondary px-6 py-3">
+                  <i class="bi bi-arrow-left"></i>
+                  <span>Sebelumnya</span>
+                </button>
+              </div>
+              <div class="wizard-nav-group flex gap-3 ml-auto">
+                <button type="button" id="wizard-back-to-review-btn" class="wizard-btn wizard-btn-link px-6 py-3"
+                  style="display:none;">
+                  <i class="bi bi-arrow-return-left"></i>
+                  <span>Kembali ke Review</span>
+                </button>
+                <button type="button" id="wizard-next-btn" class="wizard-btn wizard-btn-primary px-6 py-3">
+                  <span>Selanjutnya</span>
+                  <i class="bi bi-arrow-right"></i>
+                </button>
+                <button type="button" id="wizard-submit-btn" class="wizard-btn wizard-btn-primary px-6 py-3"
+                  style="display:none;" onclick="submitFinal()">
+                  <i class="bi bi-send"></i>
+                  <span>Kirim Pendaftaran</span>
+                </button>
+              </div>
             </div>
 
-            <div class="col-md-6">
-              <label class="form-label">
-                <i class="bi bi-image"></i> <span data-i18n="label.document.kk">...</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input type="file" class="form-control" name="fileKK" accept=".jpg,.jpeg,.png" required />
-              <small class="text-muted">JPG atau PNG (max 2MB)</small>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <i class="bi bi-image"></i> <span data-i18n="form.documents.fields.bpjs.label">Kartu
-                  BPJS</span>
-                <span class="text-muted" data-i18n="form.documents.optionalTag">(Opsional)</span>
-              </label>
-              <input type="file" class="form-control" name="fileBPJS" accept=".jpg,.jpeg,.png" />
-              <small class="text-muted" data-i18n="form.documents.fields.bpjs.helper">JPG atau PNG (max 2MB) - Tidak
-                wajib</small>
-            </div>
-          </div>
-
-
+          </form>
         </div>
       </div>
-
-
-      <!-- STEP 7: Finalisasi -->
-      <div class="wizard-form-step" data-wizard-step="7">
-        <div class="wizard-step-header">
-          <h2>Step 7: Finalisasi & Review</h2>
-          <p>Periksa kembali semua data sebelum mengirim pendaftaran</p>
-        </div>
-
-        <div class="bg-white rounded-lg shadow-sm p-6">
-          <!-- Review Content -->
-          <div id="wizard-review-content"></div>
-
-          <!-- Turnstile Verification -->
-          <div class="wizard-turnstile-container">
-            <div class="wizard-turnstile-title">
-              <i class="bi bi-shield-check"></i>
-              <span>Verifikasi Keamanan</span>
-            </div>
-            <p class="text-sm text-gray-600 mb-2">
-              Verifikasi ini melindungi formulir dari bot.
-            </p>
-            <div id="turnstileWidget" class="cf-turnstile" data-sitekey="0x4AAAAAACDDkC6MDnS8Ozbo" data-theme="light"
-              data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired"
-              data-timeout-callback="onTurnstileExpired" data-error-callback="onTurnstileError"
-              data-refresh-expired="auto" data-refresh-timeout="auto">
-            </div>
-          </div>
-
-          <!-- Confirmation Checkbox -->
-          <div class="wizard-confirmation">
-            <div class="wizard-confirmation-title">
-              <i class="bi bi-exclamation-triangle-fill"></i>
-              <span>Konfirmasi Akhir</span>
-            </div>
-            <div class="wizard-confirmation-text">
-              <p><strong>Seluruh data yang saya isikan adalah BENAR.</strong></p>
-              <p>Bersedia menerima konsekuensi jika ditemukan ketidaksesuaian.</p>
-            </div>
-            <div class="wizard-confirmation-checkbox">
-              <input type="checkbox" id="confirmation-checkbox" required />
-              <label for="confirmation-checkbox">
-                Saya telah membaca, memahami, dan menyetujui pernyataan di atas.
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-
-      <!-- Navigation Buttons -->
-      <div class="wizard-navigation flex justify-between items-center border-t mt-8 pt-6">
-        <div class="wizard-nav-group flex gap-3">
-          <button type="button" id="wizard-prev-btn" class="wizard-btn wizard-btn-secondary px-6 py-3">
-            <i class="bi bi-arrow-left"></i>
-            <span>Sebelumnya</span>
-          </button>
-        </div>
-        <div class="wizard-nav-group flex gap-3 ml-auto">
-          <button type="button" id="wizard-back-to-review-btn" class="wizard-btn wizard-btn-link px-6 py-3"
-            style="display:none;">
-            <i class="bi bi-arrow-return-left"></i>
-            <span>Kembali ke Review</span>
-          </button>
-          <button type="button" id="wizard-next-btn" class="wizard-btn wizard-btn-primary px-6 py-3">
-            <span>Selanjutnya</span>
-            <i class="bi bi-arrow-right"></i>
-          </button>
-          <button type="button" id="wizard-submit-btn" class="wizard-btn wizard-btn-primary px-6 py-3"
-            style="display:none;" onclick="submitFinal()">
-            <i class="bi bi-send"></i>
-            <span>Kirim Pendaftaran</span>
-          </button>
-        </div>
-      </div>
-
-      </form>
-    </div>
-    </div>
     </div>
 
   </main>
