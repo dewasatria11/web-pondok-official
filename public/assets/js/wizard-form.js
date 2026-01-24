@@ -5,6 +5,10 @@
 
 (function () {
     'use strict';
+    // DEBUG: Verify script loads
+    console.log('[Wizard] Script file loaded');
+    // alert('DEBUG: Wizard Script Loaded!'); // Uncomment if needed, but console should suffice if user checks it. Since user says "no alert", I will force one.
+    alert('DEBUG: Wizard Script Loaded');
 
     // ==================== Configuration ====================
     const WIZARD_CONFIG = {
