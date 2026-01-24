@@ -784,284 +784,299 @@
                 <h2>Step 5: Data Orang Tua</h2>
                 <p>Informasi Ayah dan Ibu</p>
               </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-
-                <!-- Header Ayah -->
-                <div class="col-12 mt-2 mb-2">
-                  <h5 class="font-bold text-gray-700 border-b pb-2"><i class="bi bi-person-fill"></i> Data Ayah</h5>
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">
-                    <span data-i18n="form.fields.namaAyah.label">Nama Ayah</span>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <input type="text" class="form-control" name="namaAyah" required />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">
-                    <span data-i18n="form.fields.nikAyah.label">NIK Ayah</span>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <input type="text" class="form-control" name="nikAyah" required maxlength="16" pattern="[0-9]{16}" />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">
-                    <span data-i18n="form.fields.statusAyah.label">Status Ayah</span>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <select class="form-select" name="statusAyah" required>
-                    <option value="" data-i18n="form.options.select">Pilih...</option>
-                    <option value="Hidup" data-i18n="form.options.parentStatus.alive">Hidup</option>
-                    <option value="Meninggal" data-i18n="form.options.parentStatus.deceased">Meninggal</option>
-                  </select>
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">
-                    <span data-i18n="form.fields.pekerjaanAyah.label">Pekerjaan Ayah</span>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <select class="form-select" name="pekerjaanAyah" required>
-                    <option value="" data-i18n="form.options.select">Pilih...</option>
-                    <option value="PNS" data-i18n="form.options.job.pns">PNS</option>
-                    <option value="TNI/Polri" data-i18n="form.options.job.tniPolri">TNI/Polri</option>
-                    <option value="Guru/Dosen" data-i18n="form.options.job.teacher">Guru/Dosen</option>
-                    <option value="Pegawai Swasta" data-i18n="form.options.job.privateEmployee">Pegawai Swasta
-                    </option>
-                    <option value="Wiraswasta" data-i18n="form.options.job.entrepreneur">Wiraswasta</option>
-                    <option value="Petani" data-i18n="form.options.job.farmer">Petani</option>
-                    <option value="Nelayan" data-i18n="form.options.job.fisherman">Nelayan</option>
-                    <option value="Pedagang" data-i18n="form.options.job.trader">Pedagang</option>
-                    <option value="Buruh" data-i18n="form.options.job.laborer">Buruh</option>
-                    <option value="Sopir" data-i18n="form.options.job.driver">Sopir</option>
-                    <option value="Tukang" data-i18n="form.options.job.craftsman">Tukang</option>
-                    <option value="Pensiunan" data-i18n="form.options.job.retired">Pensiunan</option>
-                    <option value="Tidak Bekerja" data-i18n="form.options.job.unemployed">Tidak Bekerja</option>
-                    <option value="Lainnya" data-i18n="form.options.job.other">Lainnya</option>
-                  </select>
-                </div>
-
-                <!-- Header Ibu -->
-                <div class="col-12 mt-4 mb-2">
-                  <h5 class="font-bold text-gray-700 border-b pb-2"><i class="bi bi-person-heart"></i> Data Ibu</h5>
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">
-                    <span data-i18n="form.fields.namaIbu.label">Nama Ibu</span>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <input type="text" class="form-control" name="namaIbu" required />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">
-                    <span data-i18n="form.fields.nikIbu.label">NIK Ibu</span>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <input type="text" class="form-control" name="nikIbu" required maxlength="16" pattern="[0-9]{16}" />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">
-                    <span data-i18n="form.fields.statusIbu.label">Status Ibu</span>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <select class="form-select" name="statusIbu" required>
-                    <option value="" data-i18n="form.options.select">Pilih...</option>
-                    <option value="Hidup" data-i18n="form.options.parentStatus.alive">Hidup</option>
-                    <option value="Meninggal" data-i18n="form.options.parentStatus.deceased">Meninggal</option>
-                  </select>
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">
-                    <span data-i18n="form.fields.pekerjaanIbu.label">Pekerjaan Ibu</span>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <select class="form-select" name="pekerjaanIbu" required>
-                    <option value="" data-i18n="form.options.select">Pilih...</option>
-                    <option value="PNS" data-i18n="form.options.job.pns">PNS</option>
-                    <option value="TNI/Polri" data-i18n="form.options.job.tniPolri">TNI/Polri</option>
-                    <option value="Guru/Dosen" data-i18n="form.options.job.teacher">Guru/Dosen</option>
-                    <option value="Pegawai Swasta" data-i18n="form.options.job.privateEmployee">Pegawai Swasta
-                    </option>
-                    <option value="Wiraswasta" data-i18n="form.options.job.entrepreneur">Wiraswasta</option>
-                    <option value="Petani" data-i18n="form.options.job.farmer">Petani</option>
-                    <option value="Pedagang" data-i18n="form.options.job.trader">Pedagang</option>
-                    <option value="Ibu Rumah Tangga" data-i18n="form.options.job.housewife">Ibu Rumah Tangga</option>
-                    <option value="Buruh" data-i18n="form.options.job.laborer">Buruh</option>
-                    <option value="Pensiunan" data-i18n="form.options.job.retired">Pensiunan</option>
-                    <option value="Tidak Bekerja" data-i18n="form.options.job.unemployed">Tidak Bekerja</option>
-                    <option value="Lainnya" data-i18n="form.options.job.other">Lainnya</option>
-                  </select>
-                </div>
-
-                <!-- Header Kontak -->
-                <div class="col-12 mt-4 mb-2">
-                  <h5 class="font-bold text-gray-700 border-b pb-2"><i class="bi bi-telephone"></i> Kontak Orang Tua
+                <!-- Card Data Ayah -->
+                <div class="bg-white border border-gray-200 rounded-lg p-6 border-l-4 border-blue-500 shadow-sm">
+                  <h5 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <i class="bi bi-person-fill text-blue-500"></i>
+                    Data Ayah
                   </h5>
+
+                  <div class="space-y-4">
+                    <div>
+                      <label class="form-label">
+                        <span data-i18n="form.fields.namaAyah.label">Nama Ayah</span>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <input type="text" class="form-control" name="namaAyah" required />
+                    </div>
+
+                    <div>
+                      <label class="form-label">
+                        <span data-i18n="form.fields.nikAyah.label">NIK Ayah</span>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <input type="text" class="form-control" name="nikAyah" required maxlength="16"
+                        pattern="[0-9]{16}" />
+                    </div>
+
+                    <div>
+                      <label class="form-label">
+                        <span data-i18n="form.fields.statusAyah.label">Status Ayah</span>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <select class="form-select" name="statusAyah" required>
+                        <option value="" data-i18n="form.options.select">Pilih...</option>
+                        <option value="Hidup" data-i18n="form.options.parentStatus.alive">Hidup</option>
+                        <option value="Meninggal" data-i18n="form.options.parentStatus.deceased">Meninggal</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label class="form-label">
+                        <span data-i18n="form.fields.pekerjaanAyah.label">Pekerjaan Ayah</span>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <select class="form-select" name="pekerjaanAyah" required>
+                        <option value="" data-i18n="form.options.select">Pilih...</option>
+                        <option value="PNS" data-i18n="form.options.job.pns">PNS</option>
+                        <option value="TNI/Polri" data-i18n="form.options.job.tniPolri">TNI/Polri</option>
+                        <option value="Guru/Dosen" data-i18n="form.options.job.teacher">Guru/Dosen</option>
+                        <option value="Pegawai Swasta" data-i18n="form.options.job.privateEmployee">Pegawai Swasta
+                        </option>
+                        <option value="Wiraswasta" data-i18n="form.options.job.entrepreneur">Wiraswasta</option>
+                        <option value="Petani" data-i18n="form.options.job.farmer">Petani</option>
+                        <option value="Nelayan" data-i18n="form.options.job.fisherman">Nelayan</option>
+                        <option value="Pedagang" data-i18n="form.options.job.trader">Pedagang</option>
+                        <option value="Buruh" data-i18n="form.options.job.laborer">Buruh</option>
+                        <option value="Sopir" data-i18n="form.options.job.driver">Sopir</option>
+                        <option value="Tukang" data-i18n="form.options.job.craftsman">Tukang</option>
+                        <option value="Pensiunan" data-i18n="form.options.job.retired">Pensiunan</option>
+                        <option value="Tidak Bekerja" data-i18n="form.options.job.unemployed">Tidak Bekerja</option>
+                        <option value="Lainnya" data-i18n="form.options.job.other">Lainnya</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
 
-                <div class="col-md-6">
-                  <label class="form-label">
-                    <span data-i18n="form.fields.teleponOrtu.label">No Telepon Orang Tua</span>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <input type="tel" class="form-control" name="teleponOrtu" required />
-                </div>
+                <!-- Card Data Ibu -->
+                <div class="bg-white border border-gray-200 rounded-lg p-6 border-l-4 border-pink-500 shadow-sm">
+                  <h5 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <i class="bi bi-person-heart text-pink-500"></i>
+                    Data Ibu
+                  </h5>
 
-                <!-- Upload Berkas -->
+                  <div class="space-y-4">
+                    <div>
+                      <label class="form-label">
+                        <span data-i18n="form.fields.namaIbu.label">Nama Ibu</span>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <input type="text" class="form-control" name="namaIbu" required />
+                    </div>
+
+                    <div>
+                      <label class="form-label">
+                        <span data-i18n="form.fields.nikIbu.label">NIK Ibu</span>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <input type="text" class="form-control" name="nikIbu" required maxlength="16"
+                        pattern="[0-9]{16}" />
+                    </div>
+
+                    <div>
+                      <label class="form-label">
+                        <span data-i18n="form.fields.statusIbu.label">Status Ibu</span>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <select class="form-select" name="statusIbu" required>
+                        <option value="" data-i18n="form.options.select">Pilih...</option>
+                        <option value="Hidup" data-i18n="form.options.parentStatus.alive">Hidup</option>
+                        <option value="Meninggal" data-i18n="form.options.parentStatus.deceased">Meninggal</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label class="form-label">
+                        <span data-i18n="form.fields.pekerjaanIbu.label">Pekerjaan Ibu</span>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <select class="form-select" name="pekerjaanIbu" required>
+                        <option value="" data-i18n="form.options.select">Pilih...</option>
+                        <option value="PNS" data-i18n="form.options.job.pns">PNS</option>
+                        <option value="TNI/Polri" data-i18n="form.options.job.tniPolri">TNI/Polri</option>
+                        <option value="Guru/Dosen" data-i18n="form.options.job.teacher">Guru/Dosen</option>
+                        <option value="Pegawai Swasta" data-i18n="form.options.job.privateEmployee">Pegawai Swasta
+                        </option>
+                        <option value="Wiraswasta" data-i18n="form.options.job.entrepreneur">Wiraswasta</option>
+                        <option value="Petani" data-i18n="form.options.job.farmer">Petani</option>
+                        <option value="Pedagang" data-i18n="form.options.job.trader">Pedagang</option>
+                        <option value="Ibu Rumah Tangga" data-i18n="form.options.job.housewife">Ibu Rumah Tangga
+                        </option>
+                        <option value="Buruh" data-i18n="form.options.job.laborer">Buruh</option>
+                        <option value="Pensiunan" data-i18n="form.options.job.retired">Pensiunan</option>
+                        <option value="Tidak Bekerja" data-i18n="form.options.job.unemployed">Tidak Bekerja</option>
+                        <option value="Lainnya" data-i18n="form.options.job.other">Lainnya</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
 
               </div>
-            </div>
 
-            <!-- STEP 6 -->
-            <div class="wizard-form-step" data-wizard-step="6">
-              <div class="wizard-step-header">
-                <h2>Step 6: Upload Berkas</h2>
-                <p>Upload dokumen pendaftaran</p>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-
-                <div class="col-md-6">
-                  <label class="form-label">
-                    <i class="bi bi-file-pdf"></i> <span data-i18n="label.document.ijazah">...</span>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <input type="file" class="form-control" name="fileIjazah" accept=".pdf,.jpg,.jpeg,.png" required />
-                  <small class="text-muted" data-i18n="form.documents.fields.ijazah.helper">PDF, JPG, atau PNG (max
-                    2MB)</small>
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">
-                    <i class="bi bi-file-pdf"></i> <span data-i18n="label.document.akta">...</span>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <input type="file" class="form-control" name="fileAkta" accept=".pdf,.jpg,.jpeg,.png" required />
-                  <small class="text-muted" data-i18n="form.documents.fields.akta.helper">PDF, JPG, atau PNG (max
-                    2MB)</small>
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">
-                    <i class="bi bi-image"></i> <span data-i18n="form.documents.fields.foto.label">Pas Foto 3x4</span>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <input type="file" class="form-control" name="fileFoto" accept=".jpg,.jpeg,.png" required />
-                  <small class="text-muted" data-i18n="form.documents.fields.foto.helper">JPG atau PNG (max
-                    2MB)</small>
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">
-                    <i class="bi bi-card-image"></i> <span data-i18n="label.document.kk">...</span>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <input type="file" class="form-control" name="fileKK" accept=".jpg,.jpeg,.png,.pdf" required />
-                  <small class="text-muted">PDF, JPG, atau PNG (max 2MB)</small>
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">
-                    <i class="bi bi-file-medical"></i> <span data-i18n="form.documents.fields.bpjs.label">Kartu
-                      BPJS</span>
-                    <span class="text-muted" data-i18n="form.documents.optionalTag">(Opsional)</span>
-                  </label>
-                  <input type="file" class="form-control" name="fileBPJS" accept=".pdf,.jpg,.jpeg,.png" />
-                  <small class="text-muted" data-i18n="form.documents.fields.bpjs.helper">PDF, JPG, atau PNG (max 2MB)
-                    - Tidak
-                    wajib</small>
+              <!-- Kontak Orang Tua (Full Width Below Cards) -->
+              <div class="mt-6">
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                  <h5 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
+                    <i class="bi bi-telephone text-green-600"></i>
+                    Kontak Orang Tua
+                  </h5>
+                  <div>
+                    <label class="form-label">
+                      <span data-i18n="form.fields.teleponOrtu.label">No Telepon Orang Tua</span>
+                      <span class="text-danger">*</span>
+                    </label>
+                    <input type="tel" class="form-control" name="teleponOrtu" required />
+                  </div>
                 </div>
               </div>
 
+              <!-- Upload Berkas -->
 
             </div>
         </div>
 
+        <!-- STEP 6 -->
+        <div class="wizard-form-step" data-wizard-step="6">
+          <div class="wizard-step-header">
+            <h2>Step 6: Upload Berkas</h2>
+            <p>Upload dokumen pendaftaran</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-            <!-- STEP 7: Finalisasi -->
-            <div class="wizard-form-step" data-wizard-step="7">
-              <div class="wizard-step-header">
-                <h2>Step 7: Finalisasi & Review</h2>
-                <p>Periksa kembali semua data sebelum mengirim pendaftaran</p>
-              </div>
 
-              <!-- Review Content -->
-              <div id="wizard-review-content"></div>
-
-              <!-- Turnstile Verification -->
-              <div class="wizard-turnstile-container">
-                <div class="wizard-turnstile-title">
-                  <i class="bi bi-shield-check"></i>
-                  <span>Verifikasi Keamanan</span>
-                </div>
-                <p class="text-sm text-gray-600 mb-2">
-                  Verifikasi ini melindungi formulir dari bot.
-                </p>
-                <div id="turnstileWidget" class="cf-turnstile" data-sitekey="0x4AAAAAACDDkC6MDnS8Ozbo" data-theme="light"
-                  data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired"
-                  data-timeout-callback="onTurnstileExpired" data-error-callback="onTurnstileError"
-                  data-refresh-expired="auto" data-refresh-timeout="auto">
-                </div>
-              </div>
-
-              <!-- Confirmation Checkbox -->
-              <div class="wizard-confirmation">
-                <div class="wizard-confirmation-title">
-                  <i class="bi bi-exclamation-triangle-fill"></i>
-                  <span>Konfirmasi Akhir</span>
-                </div>
-                <div class="wizard-confirmation-text">
-                  <p><strong>Seluruh data yang saya isikan adalah BENAR.</strong></p>
-                  <p>Bersedia menerima konsekuensi jika ditemukan ketidaksesuaian.</p>
-                </div>
-                <div class="wizard-confirmation-checkbox">
-                  <input type="checkbox" id="confirmation-checkbox" required />
-                  <label for="confirmation-checkbox">
-                    Saya telah membaca, memahami, dan menyetujui pernyataan di atas.
-                  </label>
-                </div>
-              </div>
+            <div class="col-md-6">
+              <label class="form-label">
+                <i class="bi bi-image"></i> <span data-i18n="label.document.ijazah">...</span>
+                <span class="text-danger">*</span>
+              </label>
+              <input type="file" class="form-control" name="fileIjazah" accept=".jpg,.jpeg,.png" required />
+              <small class="text-muted" data-i18n="form.documents.fields.ijazah.helper">JPG atau PNG (max 2MB)</small>
             </div>
 
+            <div class="col-md-6">
+              <label class="form-label">
+                <i class="bi bi-image"></i> <span data-i18n="label.document.akta">...</span>
+                <span class="text-danger">*</span>
+              </label>
+              <input type="file" class="form-control" name="fileAkta" accept=".jpg,.jpeg,.png" required />
+              <small class="text-muted" data-i18n="form.documents.fields.akta.helper">JPG atau PNG (max 2MB)</small>
+            </div>
 
+            <div class="col-md-6">
+              <label class="form-label">
+                <i class="bi bi-image"></i> <span data-i18n="form.documents.fields.foto.label">Pas Foto 3x4</span>
+                <span class="text-danger">*</span>
+              </label>
+              <input type="file" class="form-control" name="fileFoto" accept=".jpg,.jpeg,.png" required />
+              <small class="text-muted" data-i18n="form.documents.fields.foto.helper">JPG atau PNG (max
+                2MB)</small>
+            </div>
 
+            <div class="col-md-6">
+              <label class="form-label">
+                <i class="bi bi-image"></i> <span data-i18n="label.document.kk">...</span>
+                <span class="text-danger">*</span>
+              </label>
+              <input type="file" class="form-control" name="fileKK" accept=".jpg,.jpeg,.png" required />
+              <small class="text-muted">JPG atau PNG (max 2MB)</small>
+            </div>
 
-        <!-- Navigation Buttons -->
-        <div class="wizard-navigation border-t mt-8 pt-6">
-          <div class="wizard-nav-group">
-            <button type="button" id="wizard-prev-btn" class="wizard-btn wizard-btn-secondary">
-              <i class="bi bi-arrow-left"></i>
-              <span>Sebelumnya</span>
-            </button>
+            <div class="col-md-6">
+              <label class="form-label">
+                <i class="bi bi-image"></i> <span data-i18n="form.documents.fields.bpjs.label">Kartu
+                  BPJS</span>
+                <span class="text-muted" data-i18n="form.documents.optionalTag">(Opsional)</span>
+              </label>
+              <input type="file" class="form-control" name="fileBPJS" accept=".jpg,.jpeg,.png" />
+              <small class="text-muted" data-i18n="form.documents.fields.bpjs.helper">JPG atau PNG (max 2MB) - Tidak
+                wajib</small>
+            </div>
           </div>
-          <div class="wizard-nav-group">
-            <button type="button" id="wizard-back-to-review-btn" class="wizard-btn wizard-btn-link"
-              style="display:none;">
-              <i class="bi bi-arrow-return-left"></i>
-              <span>Kembali ke Review</span>
-            </button>
-            <button type="button" id="wizard-next-btn" class="wizard-btn wizard-btn-primary">
-              <span>Selanjutnya</span>
-              <i class="bi bi-arrow-right"></i>
-            </button>
-            <button type="button" id="wizard-submit-btn" class="wizard-btn wizard-btn-primary" style="display:none;"
-              onclick="submitFinal()">
-              <i class="bi bi-send"></i>
-              <span>Kirim Pendaftaran</span>
-            </button>
-          </div>
+
+
         </div>
-
-        </form>
       </div>
+
+
+      <!-- STEP 7: Finalisasi -->
+      <div class="wizard-form-step" data-wizard-step="7">
+        <div class="wizard-step-header">
+          <h2>Step 7: Finalisasi & Review</h2>
+          <p>Periksa kembali semua data sebelum mengirim pendaftaran</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <!-- Review Content -->
+          <div id="wizard-review-content"></div>
+
+          <!-- Turnstile Verification -->
+          <div class="wizard-turnstile-container">
+            <div class="wizard-turnstile-title">
+              <i class="bi bi-shield-check"></i>
+              <span>Verifikasi Keamanan</span>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">
+              Verifikasi ini melindungi formulir dari bot.
+            </p>
+            <div id="turnstileWidget" class="cf-turnstile" data-sitekey="0x4AAAAAACDDkC6MDnS8Ozbo" data-theme="light"
+              data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired"
+              data-timeout-callback="onTurnstileExpired" data-error-callback="onTurnstileError"
+              data-refresh-expired="auto" data-refresh-timeout="auto">
+            </div>
+          </div>
+
+          <!-- Confirmation Checkbox -->
+          <div class="wizard-confirmation">
+            <div class="wizard-confirmation-title">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              <span>Konfirmasi Akhir</span>
+            </div>
+            <div class="wizard-confirmation-text">
+              <p><strong>Seluruh data yang saya isikan adalah BENAR.</strong></p>
+              <p>Bersedia menerima konsekuensi jika ditemukan ketidaksesuaian.</p>
+            </div>
+            <div class="wizard-confirmation-checkbox">
+              <input type="checkbox" id="confirmation-checkbox" required />
+              <label for="confirmation-checkbox">
+                Saya telah membaca, memahami, dan menyetujui pernyataan di atas.
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <!-- Navigation Buttons -->
+      <div class="wizard-navigation border-t mt-8 pt-6">
+        <div class="wizard-nav-group">
+          <button type="button" id="wizard-prev-btn" class="wizard-btn wizard-btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            <span>Sebelumnya</span>
+          </button>
+        </div>
+        <div class="wizard-nav-group">
+          <button type="button" id="wizard-back-to-review-btn" class="wizard-btn wizard-btn-link" style="display:none;">
+            <i class="bi bi-arrow-return-left"></i>
+            <span>Kembali ke Review</span>
+          </button>
+          <button type="button" id="wizard-next-btn" class="wizard-btn wizard-btn-primary">
+            <span>Selanjutnya</span>
+            <i class="bi bi-arrow-right"></i>
+          </button>
+          <button type="button" id="wizard-submit-btn" class="wizard-btn wizard-btn-primary" style="display:none;"
+            onclick="submitFinal()">
+            <i class="bi bi-send"></i>
+            <span>Kirim Pendaftaran</span>
+          </button>
+        </div>
+      </div>
+
+      </form>
+    </div>
     </div>
     </div>
 
@@ -3340,55 +3355,77 @@
         const stepElement = document.querySelector(`[data-wizard-step="${stepNumber}"]`);
         if (!stepElement) return true;
 
+        // Reset previous error styles
+        stepElement.querySelectorAll('.border-red-500').forEach(el => {
+          el.classList.remove('border-red-500', 'ring-1', 'ring-red-500', 'bg-red-50');
+        });
+
         // Special Check for Gelombang (Step 1)
         if (stepNumber === 1) {
           const gelombangInput = document.getElementById('gelombangInput');
           if (gelombangInput && (!gelombangInput.value || gelombangInput.value.trim() === '')) {
-            console.error('[Wizard] Gelombang is empty');
-            // Use generic alert if toastr is not guaranteed
-            alert('Sistem Gagal Memuat Data Gelombang Pendaftaran. Mohon Refresh Halaman atau Cek Koneksi Internet.');
+            if (typeof toastr !== 'undefined') {
+              toastr.error('Sistem Gagal Memuat Data Gelombang Pendaftaran. Mohon Refresh Halaman.');
+            } else {
+              alert('Sistem Gagal Memuat Data Gelombang Pendaftaran. Mohon Refresh Halaman.');
+            }
             return false;
           }
         }
 
         const inputs = stepElement.querySelectorAll('input, select, textarea');
-        let isValid = true;
+        let firstInvalidField = null;
+        let isStepValid = true;
 
         inputs.forEach(input => {
           if (input.hasAttribute('required') && !input.disabled) {
+            let isInputValid = true;
+
             if (input.type === 'checkbox') {
-              if (!input.checked) isValid = false;
+              if (!input.checked) isInputValid = false;
             } else if (input.type === 'radio') {
               const radioGroup = stepElement.querySelectorAll(`input[name="${input.name}"]`);
               const anyChecked = Array.from(radioGroup).some(radio => radio.checked);
-              if (!anyChecked) isValid = false;
+              if (!anyChecked) isInputValid = false;
             } else if (input.type === 'file') {
-              if (!input.files || input.files.length === 0) isValid = false;
+              if (!input.files || input.files.length === 0) isInputValid = false;
             } else {
-              if (!input.value || input.value.trim() === '') isValid = false;
+              if (!input.value || input.value.trim() === '') isInputValid = false;
             }
 
             // HTML5 validation
             if (!input.checkValidity()) {
-              isValid = false;
+              isInputValid = false;
+            }
+
+            if (!isInputValid) {
+              isStepValid = false;
+              // Add visual error indicator
+              if (input.type !== 'checkbox' && input.type !== 'radio') {
+                input.classList.add('border-red-500', 'ring-1', 'ring-red-500', 'bg-red-50');
+              }
+
+              // Save first invalid for focus/scroll
+              if (!firstInvalidField) {
+                firstInvalidField = input;
+              }
+
+              // Remove error on input change
+              const removeError = function () {
+                this.classList.remove('border-red-500', 'ring-1', 'ring-red-500', 'bg-red-50');
+              };
+              input.addEventListener('input', removeError, { once: true });
+              input.addEventListener('change', removeError, { once: true });
             }
           }
         });
 
-        // Show validation messages
-        if (!isValid) {
-          const firstInvalid = stepElement.querySelector('input:invalid, select:invalid, textarea:invalid');
-          if (firstInvalid) {
-            firstInvalid.reportValidity();
-            console.log('[Wizard] Validation failed on:', firstInvalid);
-
-            // Get field label or name
-            let fieldName = firstInvalid.getAttribute('name') || firstInvalid.getAttribute('id') || 'Unknown Field';
-            // Try to find label (closest wrapper logic or previous sibling)
-            // In wizard form, label is usually inside .col parent
+        if (!isStepValid) {
+          if (firstInvalidField) {
+            // Get field name
+            let fieldName = firstInvalidField.getAttribute('name') || 'Field ini';
             try {
-              // Find parent col or form-group
-              const parent = firstInvalid.closest('.col-md-6') || firstInvalid.closest('.col-span-full') || firstInvalid.parentElement;
+              const parent = firstInvalidField.closest('.col-md-6') || firstInvalidField.closest('.col-span-full') || firstInvalidField.parentElement;
               if (parent) {
                 const labelEl = parent.querySelector('label');
                 if (labelEl) fieldName = labelEl.innerText.replace('*', '').trim();
@@ -3397,23 +3434,19 @@
 
             const errorMsg = `Mohon lengkapi: ${fieldName}`;
 
-            // Show generic message
-            try {
-              if (typeof toastr !== 'undefined') {
-                toastr.warning(errorMsg);
-              } else {
-                // Debounce alert to avoid spam
-                if (!window._wizardAlertShown) {
-                  alert(errorMsg);
-                  window._wizardAlertShown = true;
-                  setTimeout(() => window._wizardAlertShown = false, 2000);
-                }
-              }
-            } catch (e) { console.error(e); }
+            if (typeof toastr !== 'undefined') {
+              toastr.warning(errorMsg, 'Validasi Gagal');
+            } else {
+              alert(errorMsg);
+            }
+
+            firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstInvalidField.focus({ preventScroll: true });
           }
+          return false;
         }
 
-        return isValid;
+        return true;
       }
 
       // ==================== Step Navigation ====================
@@ -3644,8 +3677,25 @@
           section.fields.forEach(field => {
             let value = formData[field.name];
 
-            if (field.type === 'file' && value) {
-              value = `<i class="bi bi-check-circle-fill text-green-600"></i> ${value.name}`;
+            if (field.type === 'file' && value && value instanceof File) {
+              // Check if we have a preview for this file
+              if (imagePreviewsData[field.name]) {
+                value = `
+                  <div class="flex items-center gap-2">
+                    <img src="${imagePreviewsData[field.name]}" 
+                         alt="${field.label}" 
+                         class="w-32 h-32 object-cover rounded cursor-pointer border-2 border-gray-300 hover:border-blue-500 transition"
+                         onclick="showImageZoom('${field.label}', '${imagePreviewsData[field.name]}')"
+                         title="Klik untuk zoom" />
+                    <div class="text-sm">
+                      <div class="font-medium text-gray-700">${value.name}</div>
+                      <div class="text-gray-500">${(value.size / 1024).toFixed(1)} KB</div>
+                    </div>
+                  </div>
+                `;
+              } else {
+                value = `<i class="bi bi-check-circle-fill text-green-600"></i> ${value.name}`;
+              }
             } else if (!value || value === '') {
               value = field.optional ? '<em class="text-gray-400">Tidak diisi</em>' : '<em class="text-red-500">Belum diisi</em>';
             }
@@ -3666,6 +3716,51 @@
 
         elements.reviewContent.innerHTML = html;
       }
+
+      // Global storage for image preview data URLs
+      const imagePreviewsData = {};
+
+      // Show image zoom modal
+      window.showImageZoom = function (title, imageUrl) {
+        const modal = document.getElementById('imageZoomModal');
+        const modalImage = document.getElementById('zoomModalImage');
+        const modalTitle = document.getElementById('zoomModalTitle');
+
+        if (modal && modalImage && modalTitle) {
+          modalTitle.textContent = title;
+          modalImage.src = imageUrl;
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        }
+      };
+
+      // Close zoom modal
+      window.closeImageZoom = function () {
+        const modal = document.getElementById('imageZoomModal');
+        if (modal) {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        }
+      };
+
+      // Generate image preview when file is selected
+      function handleFileSelect(event) {
+        const input = event.target;
+        const file = input.files[0];
+
+        if (file && file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            imagePreviewsData[input.name] = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      // Attach file input listeners
+      document.querySelectorAll('input[type="file"]').forEach(input => {
+        input.addEventListener('change', handleFileSelect);
+      });
 
       // Make editSection function global
       window.wizardEditSection = function (stepNumber) {
@@ -3787,6 +3882,32 @@
       window.wizardClearLocalStorage = clearLocalStorage;
     })();
   </script>
+  <!-- Image Zoom Modal -->
+  <div id="imageZoomModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/80"
+    onclick="closeImageZoom()">
+    <div class="relative max-w-4xl max-h-[90vh] w-full mx-4" onclick="event.stopPropagation()">
+      <!-- Close Button -->
+      <button onclick="closeImageZoom()" class="absolute -top-12 right-0 text-white hover:text-gray-300 transition">
+        <i class="bi bi-x-circle-fill text-3xl"></i>
+      </button>
+
+      <!-- Image Title -->
+      <div class="text-center mb-3">
+        <h3 id="zoomModalTitle" class="text-white text-xl font-semibold"></h3>
+      </div>
+
+      <!-- Image -->
+      <div class="bg-white rounded-lg p-2 shadow-2xl">
+        <img id="zoomModalImage" src="" alt="Preview" class="w-full h-auto max-h-[75vh] object-contain rounded">
+      </div>
+
+      <!-- Close hint -->
+      <div class="text-center mt-3 text-white text-sm">
+        <i class="bi bi-info-circle"></i> Klik di luar gambar atau tombol X untuk menutup
+      </div>
+    </div>
+  </div>
+
 </body>
 
 </html>
