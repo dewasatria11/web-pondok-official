@@ -671,383 +671,394 @@
               </div>
             </div>
 
+            <!-- STEP 3 -->
+            <div class="wizard-form-step" data-wizard-step="3">
+              <div class="wizard-step-header">
+                <h2>Step 3: Alamat</h2>
+                <p>Isi alamat lengkap tempat tinggal</p>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+
+                <div class="col-12">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.alamatJalan.label">Alamat Jalan</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control" name="alamatJalan" placeholder="Contoh: Jl. Merdeka No. 123"
+                    data-i18n="form.fields.alamatJalan" data-i18n-attr="placeholder" data-i18n-skip-text required />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.provinsi.label">Provinsi</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <select class="form-select" id="provinsiAlamat" required>
+                    <option value="" data-i18n="form.options.selectProvince">Pilih Provinsi...</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.kota.label">Kota/Kabupaten</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <select class="form-select" id="kotaAlamat" required disabled>
+                    <option value="" data-i18n="form.options.selectProvinceFirst">Pilih Provinsi Dulu...</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.kecamatan.label">Kecamatan</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <select class="form-select" id="kecamatanAlamat" required disabled>
+                    <option value="" data-i18n="form.options.selectCityFirst">Pilih Kota Dulu...</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.desa.label">Desa/Kelurahan</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <select class="form-select" id="desaAlamat" name="desa" required disabled>
+                    <option value="" data-i18n="form.options.selectDistrictFirst">Pilih Kecamatan Dulu...</option>
+                  </select>
+                </div>
+
+                <!-- Pendidikan -->
+
+              </div>
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="wizard-form-step" data-wizard-step="4">
+              <div class="wizard-step-header">
+                <h2>Step 4: Pendidikan</h2>
+                <p>Riwayat pendidikan terakhir</p>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.ijazahFormalTerakhir.label">Pendidikan Terakhir</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <select class="form-select" name="ijazahFormalTerakhir" required>
+                    <option value="" data-i18n="form.options.select">Pilih...</option>
+                    <option value="SD" data-i18n="form.options.education.sdMi">SD/MI</option>
+                    <option value="SMP" data-i18n="form.options.education.smpMts">SMP/MTs</option>
+                    <option value="SMA" data-i18n="form.options.education.smaMa">SMA/MA</option>
+                  </select>
+                </div>
+
+                <!-- Data Orang Tua -->
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span>Nama Sekolah Asal</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control" name="namaSekolahAsal" required />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span>Nomor KIP</span>
+                    <span class="text-muted">(Opsional)</span>
+                  </label>
+                  <input type="text" class="form-control" name="nomorKIP" />
+                  <small class="text-muted">Kosongkan jika tidak memiliki</small>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- STEP 5 -->
+            <div class="wizard-form-step" data-wizard-step="5">
+              <div class="wizard-step-header">
+                <h2>Step 5: Data Orang Tua</h2>
+                <p>Informasi Ayah dan Ibu</p>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+
+                <!-- Header Ayah -->
+                <div class="col-12 mt-2 mb-2">
+                  <h5 class="font-bold text-gray-700 border-b pb-2"><i class="bi bi-person-fill"></i> Data Ayah</h5>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.namaAyah.label">Nama Ayah</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control" name="namaAyah" required />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.nikAyah.label">NIK Ayah</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control" name="nikAyah" required maxlength="16" pattern="[0-9]{16}" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.statusAyah.label">Status Ayah</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <select class="form-select" name="statusAyah" required>
+                    <option value="" data-i18n="form.options.select">Pilih...</option>
+                    <option value="Hidup" data-i18n="form.options.parentStatus.alive">Hidup</option>
+                    <option value="Meninggal" data-i18n="form.options.parentStatus.deceased">Meninggal</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.pekerjaanAyah.label">Pekerjaan Ayah</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <select class="form-select" name="pekerjaanAyah" required>
+                    <option value="" data-i18n="form.options.select">Pilih...</option>
+                    <option value="PNS" data-i18n="form.options.job.pns">PNS</option>
+                    <option value="TNI/Polri" data-i18n="form.options.job.tniPolri">TNI/Polri</option>
+                    <option value="Guru/Dosen" data-i18n="form.options.job.teacher">Guru/Dosen</option>
+                    <option value="Pegawai Swasta" data-i18n="form.options.job.privateEmployee">Pegawai Swasta
+                    </option>
+                    <option value="Wiraswasta" data-i18n="form.options.job.entrepreneur">Wiraswasta</option>
+                    <option value="Petani" data-i18n="form.options.job.farmer">Petani</option>
+                    <option value="Nelayan" data-i18n="form.options.job.fisherman">Nelayan</option>
+                    <option value="Pedagang" data-i18n="form.options.job.trader">Pedagang</option>
+                    <option value="Buruh" data-i18n="form.options.job.laborer">Buruh</option>
+                    <option value="Sopir" data-i18n="form.options.job.driver">Sopir</option>
+                    <option value="Tukang" data-i18n="form.options.job.craftsman">Tukang</option>
+                    <option value="Pensiunan" data-i18n="form.options.job.retired">Pensiunan</option>
+                    <option value="Tidak Bekerja" data-i18n="form.options.job.unemployed">Tidak Bekerja</option>
+                    <option value="Lainnya" data-i18n="form.options.job.other">Lainnya</option>
+                  </select>
+                </div>
+
+                <!-- Header Ibu -->
+                <div class="col-12 mt-4 mb-2">
+                  <h5 class="font-bold text-gray-700 border-b pb-2"><i class="bi bi-person-heart"></i> Data Ibu</h5>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.namaIbu.label">Nama Ibu</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control" name="namaIbu" required />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.nikIbu.label">NIK Ibu</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control" name="nikIbu" required maxlength="16" pattern="[0-9]{16}" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.statusIbu.label">Status Ibu</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <select class="form-select" name="statusIbu" required>
+                    <option value="" data-i18n="form.options.select">Pilih...</option>
+                    <option value="Hidup" data-i18n="form.options.parentStatus.alive">Hidup</option>
+                    <option value="Meninggal" data-i18n="form.options.parentStatus.deceased">Meninggal</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.pekerjaanIbu.label">Pekerjaan Ibu</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <select class="form-select" name="pekerjaanIbu" required>
+                    <option value="" data-i18n="form.options.select">Pilih...</option>
+                    <option value="PNS" data-i18n="form.options.job.pns">PNS</option>
+                    <option value="TNI/Polri" data-i18n="form.options.job.tniPolri">TNI/Polri</option>
+                    <option value="Guru/Dosen" data-i18n="form.options.job.teacher">Guru/Dosen</option>
+                    <option value="Pegawai Swasta" data-i18n="form.options.job.privateEmployee">Pegawai Swasta
+                    </option>
+                    <option value="Wiraswasta" data-i18n="form.options.job.entrepreneur">Wiraswasta</option>
+                    <option value="Petani" data-i18n="form.options.job.farmer">Petani</option>
+                    <option value="Pedagang" data-i18n="form.options.job.trader">Pedagang</option>
+                    <option value="Ibu Rumah Tangga" data-i18n="form.options.job.housewife">Ibu Rumah Tangga</option>
+                    <option value="Buruh" data-i18n="form.options.job.laborer">Buruh</option>
+                    <option value="Pensiunan" data-i18n="form.options.job.retired">Pensiunan</option>
+                    <option value="Tidak Bekerja" data-i18n="form.options.job.unemployed">Tidak Bekerja</option>
+                    <option value="Lainnya" data-i18n="form.options.job.other">Lainnya</option>
+                  </select>
+                </div>
+
+                <!-- Header Kontak -->
+                <div class="col-12 mt-4 mb-2">
+                  <h5 class="font-bold text-gray-700 border-b pb-2"><i class="bi bi-telephone"></i> Kontak Orang Tua
+                  </h5>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span data-i18n="form.fields.teleponOrtu.label">No Telepon Orang Tua</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="tel" class="form-control" name="teleponOrtu" required />
+                </div>
+
+                <!-- Upload Berkas -->
+
+              </div>
+            </div>
+
+            <!-- STEP 6 -->
+            <div class="wizard-form-step" data-wizard-step="6">
+              <div class="wizard-step-header">
+                <h2>Step 6: Upload Berkas</h2>
+                <p>Upload dokumen pendaftaran</p>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <i class="bi bi-file-pdf"></i> <span data-i18n="label.document.ijazah">...</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="file" class="form-control" name="fileIjazah" accept=".pdf,.jpg,.jpeg,.png" required />
+                  <small class="text-muted" data-i18n="form.documents.fields.ijazah.helper">PDF, JPG, atau PNG (max
+                    2MB)</small>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <i class="bi bi-file-pdf"></i> <span data-i18n="label.document.akta">...</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="file" class="form-control" name="fileAkta" accept=".pdf,.jpg,.jpeg,.png" required />
+                  <small class="text-muted" data-i18n="form.documents.fields.akta.helper">PDF, JPG, atau PNG (max
+                    2MB)</small>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <i class="bi bi-image"></i> <span data-i18n="form.documents.fields.foto.label">Pas Foto 3x4</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="file" class="form-control" name="fileFoto" accept=".jpg,.jpeg,.png" required />
+                  <small class="text-muted" data-i18n="form.documents.fields.foto.helper">JPG atau PNG (max
+                    2MB)</small>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <i class="bi bi-card-image"></i> <span data-i18n="label.document.kk">...</span>
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="file" class="form-control" name="fileKK" accept=".jpg,.jpeg,.png,.pdf" required />
+                  <small class="text-muted">PDF, JPG, atau PNG (max 2MB)</small>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <i class="bi bi-file-medical"></i> <span data-i18n="form.documents.fields.bpjs.label">Kartu
+                      BPJS</span>
+                    <span class="text-muted" data-i18n="form.documents.optionalTag">(Opsional)</span>
+                  </label>
+                  <input type="file" class="form-control" name="fileBPJS" accept=".pdf,.jpg,.jpeg,.png" />
+                  <small class="text-muted" data-i18n="form.documents.fields.bpjs.helper">PDF, JPG, atau PNG (max 2MB)
+                    - Tidak
+                    wajib</small>
+                </div>
+              </div>
+
+
+            </div>
         </div>
-        <!-- STEP 3 -->
-        <div class="wizard-form-step" data-wizard-step="3">
+
+
+        <!-- STEP 7: Finalisasi -->
+        <div class="wizard-form-step" data-wizard-step="7">
           <div class="wizard-step-header">
-            <h2>Step 3: Alamat</h2>
-            <p>Isi alamat lengkap tempat tinggal</p>
+            <h2>Step 7: Finalisasi & Review</h2>
+            <p>Periksa kembali semua data sebelum mengirim pendaftaran</p>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
+          <!-- Review Content -->
+          <div id="wizard-review-content"></div>
 
-            <div class="col-12">
-              <label class="form-label">
-                <span data-i18n="form.fields.alamatJalan.label">Alamat Jalan</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input type="text" class="form-control" name="alamatJalan" placeholder="Contoh: Jl. Merdeka No. 123"
-                data-i18n="form.fields.alamatJalan" data-i18n-attr="placeholder" data-i18n-skip-text required />
+          <!-- Turnstile Verification -->
+          <div class="wizard-turnstile-container">
+            <div class="wizard-turnstile-title">
+              <i class="bi bi-shield-check"></i>
+              <span>Verifikasi Keamanan</span>
             </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.provinsi.label">Provinsi</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select class="form-select" id="provinsiAlamat" required>
-                <option value="" data-i18n="form.options.selectProvince">Pilih Provinsi...</option>
-              </select>
+            <p class="text-sm text-gray-600 mb-2">
+              Verifikasi ini melindungi formulir dari bot.
+            </p>
+            <div id="turnstileWidget" class="cf-turnstile" data-sitekey="0x4AAAAAACDDkC6MDnS8Ozbo" data-theme="light"
+              data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired"
+              data-timeout-callback="onTurnstileExpired" data-error-callback="onTurnstileError"
+              data-refresh-expired="auto" data-refresh-timeout="auto">
             </div>
+          </div>
 
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.kota.label">Kota/Kabupaten</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select class="form-select" id="kotaAlamat" required disabled>
-                <option value="" data-i18n="form.options.selectProvinceFirst">Pilih Provinsi Dulu...</option>
-              </select>
+          <!-- Confirmation Checkbox -->
+          <div class="wizard-confirmation">
+            <div class="wizard-confirmation-title">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              <span>Konfirmasi Akhir</span>
             </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.kecamatan.label">Kecamatan</span>
-                <span class="text-danger">*</span>
-              </label>
-              <select class="form-select" id="kecamatanAlamat" required disabled>
-                <option value="" data-i18n="form.options.selectCityFirst">Pilih Kota Dulu...</option>
-              </select>
+            <div class="wizard-confirmation-text">
+              <p><strong>Seluruh data yang saya isikan adalah BENAR.</strong></p>
+              <p>Bersedia menerima konsekuensi jika ditemukan ketidaksesuaian.</p>
             </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span data-i18n="form.fields.desa.label">Desa/Kelurahan</span>
-                <span class="text-danger">*</span>
+            <div class="wizard-confirmation-checkbox">
+              <input type="checkbox" id="confirmation-checkbox" required />
+              <label for="confirmation-checkbox">
+                Saya telah membaca, memahami, dan menyetujui pernyataan di atas.
               </label>
-              <select class="form-select" id="desaAlamat" name="desa" required disabled>
-                <option value="" data-i18n="form.options.selectDistrictFirst">Pilih Kecamatan Dulu...</option>
-              </select>
             </div>
-
-            <!-- Pendidikan -->
-
           </div>
         </div>
 
+
+        <!-- Navigation Buttons -->
       </div>
-      <!-- STEP 4 -->
-      <div class="wizard-form-step" data-wizard-step="4">
-        <div class="wizard-step-header">
-          <h2>Step 4: Pendidikan</h2>
-          <p>Riwayat pendidikan terakhir</p>
+      <div class="wizard-navigation">
+        <div class="wizard-nav-group">
+          <button type="button" id="wizard-prev-btn" class="wizard-btn wizard-btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            <span>Sebelumnya</span>
+          </button>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-
-          <div class="col-md-6">
-            <label class="form-label">
-              <span data-i18n="form.fields.ijazahFormalTerakhir.label">Pendidikan Terakhir</span>
-              <span class="text-danger">*</span>
-            </label>
-            <select class="form-select" name="ijazahFormalTerakhir" required>
-              <option value="" data-i18n="form.options.select">Pilih...</option>
-              <option value="SD" data-i18n="form.options.education.sdMi">SD/MI</option>
-              <option value="SMP" data-i18n="form.options.education.smpMts">SMP/MTs</option>
-              <option value="SMA" data-i18n="form.options.education.smaMa">SMA/MA</option>
-            </select>
-          </div>
-
-          <!-- Data Orang Tua -->
-
-          <div class="col-md-6">
-            <label class="form-label">
-              <span>Nama Sekolah Asal</span>
-              <span class="text-danger">*</span>
-            </label>
-            <input type="text" class="form-control" name="namaSekolahAsal" required />
-          </div>
-
-          <div class="col-md-6">
-            <label class="form-label">
-              <span>Nomor KIP</span>
-              <span class="text-muted">(Opsional)</span>
-            </label>
-            <input type="text" class="form-control" name="nomorKIP" />
-            <small class="text-muted">Kosongkan jika tidak memiliki</small>
-          </div>
-
+        <div class="wizard-nav-group">
+          <button type="button" id="wizard-back-to-review-btn" class="wizard-btn wizard-btn-link" style="display:none;">
+            <i class="bi bi-arrow-return-left"></i>
+            <span>Kembali ke Review</span>
+          </button>
+          <button type="button" id="wizard-next-btn" class="wizard-btn wizard-btn-primary">
+            <span>Selanjutnya</span>
+            <i class="bi bi-arrow-right"></i>
+          </button>
+          <button type="button" id="wizard-submit-btn" class="wizard-btn wizard-btn-primary" style="display:none;"
+            onclick="submitFinal()">
+            <i class="bi bi-send"></i>
+            <span>Kirim Pendaftaran</span>
+          </button>
         </div>
       </div>
 
-    </div>
-    <!-- STEP 5 -->
-    <div class="wizard-form-step" data-wizard-step="5">
-      <div class="wizard-step-header">
-        <h2>Step 5: Data Orang Tua</h2>
-        <p>Informasi Ayah dan Ibu</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-
-        <div class="col-md-6">
-          <label class="form-label">
-            <span data-i18n="form.fields.namaAyah.label">Nama Ayah</span>
-            <span class="text-danger">*</span>
-          </label>
-          <input type="text" class="form-control" name="namaAyah" required />
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">
-            <span data-i18n="form.fields.nikAyah.label">NIK Ayah</span>
-            <span class="text-danger">*</span>
-          </label>
-          <input type="text" class="form-control" name="nikAyah" required maxlength="16" pattern="[0-9]{16}" />
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">
-            <span data-i18n="form.fields.statusAyah.label">Status Ayah</span>
-            <span class="text-danger">*</span>
-          </label>
-          <select class="form-select" name="statusAyah" required>
-            <option value="" data-i18n="form.options.select">Pilih...</option>
-            <option value="Hidup" data-i18n="form.options.parentStatus.alive">Hidup</option>
-            <option value="Meninggal" data-i18n="form.options.parentStatus.deceased">Meninggal</option>
-          </select>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">
-            <span data-i18n="form.fields.pekerjaanAyah.label">Pekerjaan Ayah</span>
-            <span class="text-danger">*</span>
-          </label>
-          <select class="form-select" name="pekerjaanAyah" required>
-            <option value="" data-i18n="form.options.select">Pilih...</option>
-            <option value="PNS" data-i18n="form.options.job.pns">PNS</option>
-            <option value="TNI/Polri" data-i18n="form.options.job.tniPolri">TNI/Polri</option>
-            <option value="Guru/Dosen" data-i18n="form.options.job.teacher">Guru/Dosen</option>
-            <option value="Pegawai Swasta" data-i18n="form.options.job.privateEmployee">Pegawai Swasta
-            </option>
-            <option value="Wiraswasta" data-i18n="form.options.job.entrepreneur">Wiraswasta</option>
-            <option value="Petani" data-i18n="form.options.job.farmer">Petani</option>
-            <option value="Nelayan" data-i18n="form.options.job.fisherman">Nelayan</option>
-            <option value="Pedagang" data-i18n="form.options.job.trader">Pedagang</option>
-            <option value="Buruh" data-i18n="form.options.job.laborer">Buruh</option>
-            <option value="Sopir" data-i18n="form.options.job.driver">Sopir</option>
-            <option value="Tukang" data-i18n="form.options.job.craftsman">Tukang</option>
-            <option value="Pensiunan" data-i18n="form.options.job.retired">Pensiunan</option>
-            <option value="Tidak Bekerja" data-i18n="form.options.job.unemployed">Tidak Bekerja</option>
-            <option value="Lainnya" data-i18n="form.options.job.other">Lainnya</option>
-          </select>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">
-            <span data-i18n="form.fields.namaIbu.label">Nama Ibu</span>
-            <span class="text-danger">*</span>
-          </label>
-          <input type="text" class="form-control" name="namaIbu" required />
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">
-            <span data-i18n="form.fields.nikIbu.label">NIK Ibu</span>
-            <span class="text-danger">*</span>
-          </label>
-          <input type="text" class="form-control" name="nikIbu" required maxlength="16" pattern="[0-9]{16}" />
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">
-            <span data-i18n="form.fields.statusIbu.label">Status Ibu</span>
-            <span class="text-danger">*</span>
-          </label>
-          <select class="form-select" name="statusIbu" required>
-            <option value="" data-i18n="form.options.select">Pilih...</option>
-            <option value="Hidup" data-i18n="form.options.parentStatus.alive">Hidup</option>
-            <option value="Meninggal" data-i18n="form.options.parentStatus.deceased">Meninggal</option>
-          </select>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">
-            <span data-i18n="form.fields.pekerjaanIbu.label">Pekerjaan Ibu</span>
-            <span class="text-danger">*</span>
-          </label>
-          <select class="form-select" name="pekerjaanIbu" required>
-            <option value="" data-i18n="form.options.select">Pilih...</option>
-            <option value="PNS" data-i18n="form.options.job.pns">PNS</option>
-            <option value="TNI/Polri" data-i18n="form.options.job.tniPolri">TNI/Polri</option>
-            <option value="Guru/Dosen" data-i18n="form.options.job.teacher">Guru/Dosen</option>
-            <option value="Pegawai Swasta" data-i18n="form.options.job.privateEmployee">Pegawai Swasta
-            </option>
-            <option value="Wiraswasta" data-i18n="form.options.job.entrepreneur">Wiraswasta</option>
-            <option value="Petani" data-i18n="form.options.job.farmer">Petani</option>
-            <option value="Pedagang" data-i18n="form.options.job.trader">Pedagang</option>
-            <option value="Ibu Rumah Tangga" data-i18n="form.options.job.housewife">Ibu Rumah Tangga</option>
-            <option value="Buruh" data-i18n="form.options.job.laborer">Buruh</option>
-            <option value="Pensiunan" data-i18n="form.options.job.retired">Pensiunan</option>
-            <option value="Tidak Bekerja" data-i18n="form.options.job.unemployed">Tidak Bekerja</option>
-            <option value="Lainnya" data-i18n="form.options.job.other">Lainnya</option>
-          </select>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">
-            <span data-i18n="form.fields.teleponOrtu.label">No Telepon Orang Tua</span>
-            <span class="text-danger">*</span>
-          </label>
-          <input type="tel" class="form-control" name="teleponOrtu" required />
-        </div>
-
-        <!-- Upload Berkas -->
-
-      </div>
-    </div>
-
-    </div>
-    <!-- STEP 6 -->
-    <div class="wizard-form-step" data-wizard-step="6">
-      <div class="wizard-step-header">
-        <h2>Step 6: Upload Berkas</h2>
-        <p>Upload dokumen pendaftaran</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-
-        <div class="col-md-6">
-          <label class="form-label">
-            <i class="bi bi-file-pdf"></i> <span data-i18n="label.document.ijazah">...</span>
-            <span class="text-danger">*</span>
-          </label>
-          <input type="file" class="form-control" name="fileIjazah" accept=".pdf,.jpg,.jpeg,.png" required />
-          <small class="text-muted" data-i18n="form.documents.fields.ijazah.helper">PDF, JPG, atau PNG (max
-            2MB)</small>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">
-            <i class="bi bi-file-pdf"></i> <span data-i18n="label.document.akta">...</span>
-            <span class="text-danger">*</span>
-          </label>
-          <input type="file" class="form-control" name="fileAkta" accept=".pdf,.jpg,.jpeg,.png" required />
-          <small class="text-muted" data-i18n="form.documents.fields.akta.helper">PDF, JPG, atau PNG (max
-            2MB)</small>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">
-            <i class="bi bi-image"></i> <span data-i18n="form.documents.fields.foto.label">Pas Foto 3x4</span>
-            <span class="text-danger">*</span>
-          </label>
-          <input type="file" class="form-control" name="fileFoto" accept=".jpg,.jpeg,.png" required />
-          <small class="text-muted" data-i18n="form.documents.fields.foto.helper">JPG atau PNG (max
-            2MB)</small>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">
-            <i class="bi bi-card-image"></i> <span data-i18n="label.document.kk">...</span>
-            <span class="text-danger">*</span>
-          </label>
-          <input type="file" class="form-control" name="fileKK" accept=".jpg,.jpeg,.png,.pdf" required />
-          <small class="text-muted">PDF, JPG, atau PNG (max 2MB)</small>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">
-            <i class="bi bi-file-medical"></i> <span data-i18n="form.documents.fields.bpjs.label">Kartu
-              BPJS</span>
-            <span class="text-muted" data-i18n="form.documents.optionalTag">(Opsional)</span>
-          </label>
-          <input type="file" class="form-control" name="fileBPJS" accept=".pdf,.jpg,.jpeg,.png" />
-          <small class="text-muted" data-i18n="form.documents.fields.bpjs.helper">PDF, JPG, atau PNG (max 2MB)
-            - Tidak
-            wajib</small>
-        </div>
-      </div>
-
-
-    </div>
-    </div>
-
-
-    </div>
-    <!-- STEP 7: Finalisasi -->
-    <div class="wizard-form-step" data-wizard-step="7">
-      <div class="wizard-step-header">
-        <h2>Step 7: Finalisasi & Review</h2>
-        <p>Periksa kembali semua data sebelum mengirim pendaftaran</p>
-      </div>
-
-      <!-- Review Content -->
-      <div id="wizard-review-content"></div>
-
-      <!-- Turnstile Verification -->
-      <div class="wizard-turnstile-container">
-        <div class="wizard-turnstile-title">
-          <i class="bi bi-shield-check"></i>
-          <span>Verifikasi Keamanan</span>
-        </div>
-        <p class="text-sm text-gray-600 mb-2">
-          Verifikasi ini melindungi formulir dari bot.
-        </p>
-        <div id="turnstileWidget" class="cf-turnstile" data-sitekey="0x4AAAAAACDDkC6MDnS8Ozbo" data-theme="light"
-          data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired"
-          data-timeout-callback="onTurnstileExpired" data-error-callback="onTurnstileError" data-refresh-expired="auto"
-          data-refresh-timeout="auto">
-        </div>
-      </div>
-
-      <!-- Confirmation Checkbox -->
-      <div class="wizard-confirmation">
-        <div class="wizard-confirmation-title">
-          <i class="bi bi-exclamation-triangle-fill"></i>
-          <span>Konfirmasi Akhir</span>
-        </div>
-        <div class="wizard-confirmation-text">
-          <p><strong>Seluruh data yang saya isikan adalah BENAR.</strong></p>
-          <p>Bersedia menerima konsekuensi jika ditemukan ketidaksesuaian.</p>
-        </div>
-        <div class="wizard-confirmation-checkbox">
-          <input type="checkbox" id="confirmation-checkbox" required />
-          <label for="confirmation-checkbox">
-            Saya telah membaca, memahami, dan menyetujui pernyataan di atas.
-          </label>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- Navigation Buttons -->
-    </div>
-    <div class="wizard-navigation">
-      <div class="wizard-nav-group">
-        <button type="button" id="wizard-prev-btn" class="wizard-btn wizard-btn-secondary">
-          <i class="bi bi-arrow-left"></i>
-          <span>Sebelumnya</span>
-        </button>
-      </div>
-      <div class="wizard-nav-group">
-        <button type="button" id="wizard-back-to-review-btn" class="wizard-btn wizard-btn-link" style="display:none;">
-          <i class="bi bi-arrow-return-left"></i>
-          <span>Kembali ke Review</span>
-        </button>
-        <button type="button" id="wizard-next-btn" class="wizard-btn wizard-btn-primary">
-          <span>Selanjutnya</span>
-          <i class="bi bi-arrow-right"></i>
-        </button>
-        <button type="button" id="wizard-submit-btn" class="wizard-btn wizard-btn-primary" style="display:none;"
-          onclick="submitFinal()">
-          <i class="bi bi-send"></i>
-          <span>Kirim Pendaftaran</span>
-        </button>
-      </div>
-    </div>
-
-    </form>
+      </form>
     </div>
     </div>
     </div>
