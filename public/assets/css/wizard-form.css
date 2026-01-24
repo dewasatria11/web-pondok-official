@@ -213,9 +213,8 @@
     display: flex;
     justify-content: space-between;
     gap: 1rem;
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #e5e7eb;
+    /* margin-top and padding-top now handled by Tailwind classes (mt-8 pt-6) */
+    /* border-top now handled by Tailwind class (border-t) */
 }
 
 .wizard-nav-group {
