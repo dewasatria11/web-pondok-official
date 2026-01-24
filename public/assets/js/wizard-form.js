@@ -186,10 +186,24 @@
 
         // Show validation messages
         if (!isValid) {
-            // Trigger HTML5 validation UI
             const firstInvalid = stepElement.querySelector('input:invalid, select:invalid, textarea:invalid');
             if (firstInvalid) {
                 firstInvalid.reportValidity();
+                console.log('[Wizard] Validation failed on:', firstInvalid);
+
+                // Show generic message
+                try {
+                    if (typeof toastr !== 'undefined') {
+                        toastr.warning('Mohon lengkapi data yang wajib diisi sebelum melanjutkan.');
+                    } else {
+                        // Debounce alert to avoid spam
+                        if (!window._wizardAlertShown) {
+                            alert('Mohon lengkapi data yang wajib diisi.');
+                            window._wizardAlertShown = true;
+                            setTimeout(() => window._wizardAlertShown = false, 2000);
+                        }
+                    }
+                } catch (e) { console.error(e); }
             }
         }
 
