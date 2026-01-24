@@ -160,6 +160,16 @@
         const stepElement = document.querySelector(`[data-wizard-step="${stepNumber}"]`);
         if (!stepElement) return true;
 
+        // Special Check for Gelombang (Step 1)
+        if (stepNumber === 1) {
+            const gelombangInput = document.getElementById('gelombangInput');
+            if (gelombangInput && (!gelombangInput.value || gelombangInput.value.trim() === '')) {
+                console.error('[Wizard] Gelombang is empty');
+                alert('Sistem Gagal Memuat Data Gelombang Pendaftaran. Mohon Refresh Halaman atau Cek Koneksi Internet.');
+                return false;
+            }
+        }
+
         const inputs = stepElement.querySelectorAll('input, select, textarea');
         let isValid = true;
 
@@ -302,6 +312,9 @@
     function nextStep() {
         // Validate current step
         if (!validateStep(wizardState.currentStep)) {
+            // Alert handled in validateStep?
+            // Force alert just in case
+            // alert('Mohon lengkapi data yang wajib.');
             return;
         }
 
@@ -477,7 +490,14 @@
 
         // Next button
         if (elements.nextBtn) {
-            elements.nextBtn.addEventListener('click', nextStep);
+            console.log('[Wizard] Next button found, attaching listener');
+            elements.nextBtn.addEventListener('click', (e) => {
+                console.log('[Wizard] Next button clicked');
+                nextStep();
+            });
+        } else {
+            console.error('[Wizard] FATAL: Next button element not found found during init');
+            alert('Sistem Error: Tombol Next tidak terdeteksi script. Mohon refresh halaman.');
         }
 
         // Back to Review button

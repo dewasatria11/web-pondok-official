@@ -2736,7 +2736,8 @@
 
     // Function to submit final
     async function submitFinal() {
-      const submitBtn = document.querySelector('#btnKonfirmasiKirim');
+      // Updated to use Wizard Submit Button
+      const submitBtn = document.querySelector('#wizard-submit-btn') || document.querySelector('#btnKonfirmasiKirim');
       const originalText = submitBtn.innerHTML;
 
       submitBtn.disabled = true;
