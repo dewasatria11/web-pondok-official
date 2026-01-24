@@ -23,9 +23,7 @@
 
   <title data-i18n="meta.title.register">Formulir Pendaftaran - PPDSB Pondok Pesantren Al Ikhsan Beji</title>
 
-    <link rel="stylesheet" href="/assets/css/tailwind.css?v=12" />
-  <!-- Wizard Styles -->
-  <link rel="stylesheet" href="/assets/css/wizard-form.css" />
+  <link rel="stylesheet" href="/assets/css/tailwind.css?v=12" />
 
   <script src="/i18n.js?v=12" defer></script>
 
@@ -466,76 +464,12 @@
   <!-- END MOBILE NAV OVERLAY -->
   <!-- MAIN -->
   <main class="flex-1 container mx-auto px-4 py-8">
-    
-    <div class="wizard-container">
-      
-      <!-- WIZARD SIDEBAR NAVIGATION -->
-      <aside class="wizard-sidebar">
-        <h3 class="wizard-sidebar-title">Langkah Pendaftaran</h3>
-        <ul class="wizard-steps">
-          <li class="wizard-step-item active" data-step="1">
-            <div class="wizard-step-number">1</div>
-            <div class="wizard-step-content">
-              <div class="wizard-step-title">Informasi Pendaftaran</div>
-              <div class="wizard-step-subtitle">Gelombang & Program</div>
-            </div>
-          </li>
-          <li class="wizard-step-item" data-step="2">
-            <div class="wizard-step-number">2</div>
-            <div class="wizard-step-content">
-              <div class="wizard-step-title">Data Pribadi</div>
-              <div class="wizard-step-subtitle">Identitas Calon Siswa</div>
-            </div>
-          </li>
-          <li class="wizard-step-item" data-step="3">
-            <div class="wizard-step-number">3</div>
-            <div class="wizard-step-content">
-              <div class="wizard-step-title">Alamat</div>
-              <div class="wizard-step-subtitle">Tempat Tinggal</div>
-            </div>
-          </li>
-          <li class="wizard-step-item" data-step="4">
-            <div class="wizard-step-number">4</div>
-            <div class="wizard-step-content">
-              <div class="wizard-step-title">Pendidikan</div>
-              <div class="wizard-step-subtitle">Riwayat Pendidikan</div>
-            </div>
-          </li>
-          <li class="wizard-step-item" data-step="5">
-            <div class="wizard-step-number">5</div>
-            <div class="wizard-step-content">
-              <div class="wizard-step-title">Data Orang Tua</div>
-              <div class="wizard-step-subtitle">Informasi Orang Tua/Wali</div>
-            </div>
-          </li>
-          <li class="wizard-step-item" data-step="6">
-            <div class="wizard-step-number">6</div>
-            <div class="wizard-step-content">
-              <div class="wizard-step-title">Upload Berkas</div>
-              <div class="wizard-step-subtitle">Dokumen Pendaftaran</div>
-            </div>
-          </li>
-          <li class="wizard-step-item" data-step="7">
-            <div class="wizard-step-number">7</div>
-            <div class="wizard-step-content">
-              <div class="wizard-step-title">Finalisasi</div>
-              <div class="wizard-step-subtitle">Review & Submit</div>
-            </div>
-          </li>
-        </ul>
-      </aside>
-    
-      <div class="wizard-content">
-        <div class="wizard-content-inner">
-          <form id="formPendaftar" class="space-y-6" novalidate>
-            <!-- STEP 1 -->
-            <div class="wizard-form-step active" data-wizard-step="1">
-              <div class="wizard-step-header">
-                <h2>Step 1: Informasi Pendaftaran</h2>
-                <p>Pilih gelombang pendaftaran, jenjang, dan program asrama</p>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
+    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+      <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center" data-i18n="form.heading">Formulir Pendaftaran</h1>
+      <p class="text-center text-gray-600 mb-6" data-i18n="form.intro">Silakan isi formulir di bawah ini dengan lengkap
+        dan benar.</p>
+
+      <form id="formPendaftar" class="space-y-6" novalidate>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="col-span-full">
             <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3"
@@ -590,18 +524,11 @@
           </div>
 
           <!-- Data Pribadi -->
-          
-              </div>
-            </div>
-
-            <!-- STEP 2 -->
-            <div class="wizard-form-step" data-wizard-step="2">
-              <div class="wizard-step-header">
-                <h2>Step 2: Data Pribadi</h2>
-                <p>Isi data identitas calon siswa</p>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
+          <div class="col-span-full mt-4">
+            <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3" data-i18n="form.sections.personal">
+              Data Pribadi Calon Siswa
+            </h5>
+          </div>
 
           <div class="col-md-6">
             <label class="form-label">
@@ -670,18 +597,10 @@
           </div>
 
           <!-- Alamat -->
-          
-              </div>
-            </div>
-            
-            <!-- STEP 3 -->
-            <div class="wizard-form-step" data-wizard-step="3">
-              <div class="wizard-step-header">
-                <h2>Step 3: Alamat</h2>
-                <p>Isi alamat lengkap tempat tinggal</p>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
+          <div class="col-span-full mt-4">
+            <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3" data-i18n="form.sections.address">
+              Alamat</h5>
+          </div>
 
           <div class="col-12">
             <label class="form-label">
@@ -733,18 +652,11 @@
           </div>
 
           <!-- Pendidikan -->
-          
-              </div>
-            </div>
-
-            <!-- STEP 4 -->
-            <div class="wizard-form-step" data-wizard-step="4">
-              <div class="wizard-step-header">
-                <h2>Step 4: Pendidikan</h2>
-                <p>Riwayat pendidikan terakhir</p>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
+          <div class="col-span-full mt-4">
+            <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3" data-i18n="form.sections.education">
+              Pendidikan
+            </h5>
+          </div>
 
           <div class="col-md-6">
             <label class="form-label">
@@ -760,35 +672,10 @@
           </div>
 
           <!-- Data Orang Tua -->
-          
-            <div class="col-md-6">
-              <label class="form-label">
-                <span>Nama Sekolah Asal</span>
-                <span class="text-danger">*</span>
-              </label>
-              <input type="text" class="form-control" name="namaSekolahAsal" required />
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <span>Nomor KIP</span>
-                <span class="text-muted">(Opsional)</span>
-              </label>
-              <input type="text" class="form-control" name="nomorKIP" />
-              <small class="text-muted">Kosongkan jika tidak memiliki</small>
-            </div>
-    
-              </div>
-            </div>
-
-            <!-- STEP 5 -->
-            <div class="wizard-form-step" data-wizard-step="5">
-              <div class="wizard-step-header">
-                <h2>Step 5: Data Orang Tua</h2>
-                <p>Informasi Ayah dan Ibu</p>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
+          <div class="col-span-full mt-4">
+            <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3" data-i18n="form.sections.parents">
+              Data Orang Tua</h5>
+          </div>
 
           <div class="col-md-6">
             <label class="form-label">
@@ -901,18 +788,14 @@
           </div>
 
           <!-- Upload Berkas -->
-          
-              </div>
-            </div>
-
-            <!-- STEP 6 -->
-            <div class="wizard-form-step" data-wizard-step="6">
-              <div class="wizard-step-header">
-                <h2>Step 6: Upload Berkas</h2>
-                <p>Upload dokumen pendaftaran</p>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
+          <div class="col-span-full mt-4">
+            <h5 class="text-lg font-semibold text-gray-800 border-bottom pb-2 mb-3">
+              <i class="bi bi-file-earmark-arrow-up"></i> <span data-i18n="form.documents.title">Upload Berkas</span>
+            </h5>
+            <p class="text-muted small" data-i18n="form.documents.note">
+              Format: PDF, JPG, PNG. Maksimal 2MB per file.
+            </p>
+          </div>
 
           <div class="col-md-6">
             <label class="form-label">
@@ -962,92 +845,30 @@
           </div>
         </div>
 
-        
-              </div>
-            </div>
-
-            
-            <!-- STEP 7: Finalisasi -->
-            <div class="wizard-form-step" data-wizard-step="7">
-                <div class="wizard-step-header">
-                  <h2>Step 7: Finalisasi & Review</h2>
-                  <p>Periksa kembali semua data sebelum mengirim pendaftaran</p>
-                </div>
-
-                <!-- Review Content -->
-                <div id="wizard-review-content"></div>
-
-                <!-- Turnstile Verification -->
-                <div class="wizard-turnstile-container">
-                  <div class="wizard-turnstile-title">
-                    <i class="bi bi-shield-check"></i>
-                    <span>Verifikasi Keamanan</span>
-                  </div>
-                  <p class="text-sm text-gray-600 mb-2">
-                    Verifikasi ini melindungi formulir dari bot.
-                  </p>
-                  <div id="turnstileWidget" class="cf-turnstile" 
-                    data-sitekey="0x4AAAAAACDDkC6MDnS8Ozbo" 
-                    data-theme="light"
-                    data-callback="onTurnstileSuccess" 
-                    data-expired-callback="onTurnstileExpired"
-                    data-timeout-callback="onTurnstileExpired" 
-                    data-error-callback="onTurnstileError"
-                    data-refresh-expired="auto" 
-                    data-refresh-timeout="auto">
-                  </div>
-                </div>
-
-                <!-- Confirmation Checkbox -->
-                <div class="wizard-confirmation">
-                  <div class="wizard-confirmation-title">
-                    <i class="bi bi-exclamation-triangle-fill"></i>
-                    <span>Konfirmasi Akhir</span>
-                  </div>
-                  <div class="wizard-confirmation-text">
-                    <p><strong>Seluruh data yang saya isikan adalah BENAR.</strong></p>
-                    <p>Bersedia menerima konsekuensi jika ditemukan ketidaksesuaian.</p>
-                  </div>
-                  <div class="wizard-confirmation-checkbox">
-                    <input type="checkbox" id="confirmation-checkbox" required />
-                    <label for="confirmation-checkbox">
-                      Saya telah membaca, memahami, dan menyetujui pernyataan di atas.
-                    </label>
-                  </div>
-                </div>
-            </div>
-    
-            
-            <!-- Navigation Buttons -->
-            <div class="wizard-navigation">
-              <div class="wizard-nav-group">
-                <button type="button" id="wizard-prev-btn" class="wizard-btn wizard-btn-secondary">
-                  <i class="bi bi-arrow-left"></i>
-                  <span>Sebelumnya</span>
-                </button>
-              </div>
-              <div class="wizard-nav-group">
-                <button type="button" id="wizard-back-to-review-btn" class="wizard-btn wizard-btn-link" style="display:none;">
-                  <i class="bi bi-arrow-return-left"></i>
-                  <span>Kembali ke Review</span>
-                </button>
-                <button type="button" id="wizard-next-btn" class="wizard-btn wizard-btn-primary">
-                  <span>Selanjutnya</span>
-                  <i class="bi bi-arrow-right"></i>
-                </button>
-                <button type="button" id="wizard-submit-btn" class="wizard-btn wizard-btn-primary" style="display:none;" onclick="submitFinal()">
-                  <i class="bi bi-send"></i>
-                  <span>Kirim Pendaftaran</span>
-                </button>
-              </div>
-            </div>
-    
-          </form>
+        <div class="mt-4">
+          <p class="text-sm text-gray-600 mb-2" data-i18n="form.security.botProtection">Keamanan data / Data security:
+            verifikasi ini melindungi formulir dari
+            bot.</p>
+          <div id="turnstileWidget" class="cf-turnstile" data-sitekey="0x4AAAAAACDDkC6MDnS8Ozbo" data-theme="light"
+            data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired"
+            data-timeout-callback="onTurnstileExpired" data-error-callback="onTurnstileError"
+            data-refresh-expired="auto" data-refresh-timeout="auto"></div>
         </div>
-      </div>
+
+        <div class="mt-4 flex flex-col sm:flex-row gap-2">
+          <button id="btnLanjutKonfirmasi"
+            class="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-5 py-3 rounded-lg w-full sm:w-auto"
+            type="button">
+            <i class="bi bi-check-circle"></i> <span data-i18n="form.buttons.review">Lanjut ke Konfirmasi</span>
+          </button>
+          <a href="/"
+            class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-lg w-full sm:w-auto">
+            <i class="bi bi-arrow-left"></i> <span data-i18n="form.buttons.back">Kembali</span>
+          </a>
+        </div>
+      </form>
     </div>
-    
-    </main>
+  </main>
 
   <!-- Modal Sukses -->
   <div id="modalSukses" class="modal-hidden fixed inset-0 z-50 flex items-center justify-center">
@@ -3152,8 +2973,6 @@
 
 
 
-  <!-- Wizard Script -->
-  <script src="/assets/js/wizard-form.js"></script>
 </body>
 
 </html>
