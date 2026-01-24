@@ -3467,7 +3467,7 @@
 
         // Next button
         if (elements.nextBtn) {
-          elements.nextBtn.style.display = (isLastStep || wizardState.currentStep === WIZARD_CONFIG.totalSteps - 1) ? 'none' : 'inline-flex';
+          elements.nextBtn.style.display = isLastStep ? 'none' : 'inline-flex';
         }
 
         // Back to Review button

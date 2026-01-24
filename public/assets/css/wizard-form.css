@@ -228,10 +228,10 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
+    padding: 0.5rem 1.25rem;
     border-radius: 0.5rem;
     font-weight: 600;
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     transition: all 0.2s ease;
     border: none;
     cursor: pointer;
@@ -462,6 +462,16 @@
         justify-content: space-between;
         overflow-x: auto;
         padding-bottom: 0.5rem;
+        /* Hide scrollbar */
+        scrollbar-width: none;
+        /* Firefox */
+        -ms-overflow-style: none;
+        /* IE/Edge */
+    }
+
+    .wizard-steps::-webkit-scrollbar {
+        display: none;
+        /* Chrome/Safari/Opera */
     }
 
     .wizard-step-item {
@@ -491,8 +501,8 @@
     }
 
     .wizard-step-title {
-        font-size: 0.75rem;
-        margin-bottom: 0;
+        display: none;
+        /* Hide text on mobile, show only numbers */
     }
 
     .wizard-step-subtitle {
