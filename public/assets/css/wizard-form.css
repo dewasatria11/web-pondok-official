@@ -516,6 +516,11 @@
         font-size: 1.25rem;
     }
 
+    .wizard-step-header p {
+        display: none;
+        /* Hide description text on mobile */
+    }
+
     .wizard-navigation {
         flex-direction: column-reverse;
     }

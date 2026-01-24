@@ -694,7 +694,7 @@
                     <span data-i18n="form.fields.provinsi.label">Provinsi</span>
                     <span class="text-danger">*</span>
                   </label>
-                  <select class="form-select" id="provinsiAlamat" required>
+                  <select class="form-select" id="provinsiAlamat" name="provinsi" required>
                     <option value="" data-i18n="form.options.selectProvince">Pilih Provinsi...</option>
                   </select>
                 </div>
@@ -704,7 +704,7 @@
                     <span data-i18n="form.fields.kota.label">Kota/Kabupaten</span>
                     <span class="text-danger">*</span>
                   </label>
-                  <select class="form-select" id="kotaAlamat" required disabled>
+                  <select class="form-select" id="kotaAlamat" name="kota" required disabled>
                     <option value="" data-i18n="form.options.selectProvinceFirst">Pilih Provinsi Dulu...</option>
                   </select>
                 </div>
@@ -714,7 +714,7 @@
                     <span data-i18n="form.fields.kecamatan.label">Kecamatan</span>
                     <span class="text-danger">*</span>
                   </label>
-                  <select class="form-select" id="kecamatanAlamat" required disabled>
+                  <select class="form-select" id="kecamatanAlamat" name="kecamatan" required disabled>
                     <option value="" data-i18n="form.options.selectCityFirst">Pilih Kota Dulu...</option>
                   </select>
                 </div>
@@ -986,50 +986,51 @@
         </div>
 
 
-        <!-- STEP 7: Finalisasi -->
-        <div class="wizard-form-step" data-wizard-step="7">
-          <div class="wizard-step-header">
-            <h2>Step 7: Finalisasi & Review</h2>
-            <p>Periksa kembali semua data sebelum mengirim pendaftaran</p>
-          </div>
+            <!-- STEP 7: Finalisasi -->
+            <div class="wizard-form-step" data-wizard-step="7">
+              <div class="wizard-step-header">
+                <h2>Step 7: Finalisasi & Review</h2>
+                <p>Periksa kembali semua data sebelum mengirim pendaftaran</p>
+              </div>
 
-          <!-- Review Content -->
-          <div id="wizard-review-content"></div>
+              <!-- Review Content -->
+              <div id="wizard-review-content"></div>
 
-          <!-- Turnstile Verification -->
-          <div class="wizard-turnstile-container">
-            <div class="wizard-turnstile-title">
-              <i class="bi bi-shield-check"></i>
-              <span>Verifikasi Keamanan</span>
-            </div>
-            <p class="text-sm text-gray-600 mb-2">
-              Verifikasi ini melindungi formulir dari bot.
-            </p>
-            <div id="turnstileWidget" class="cf-turnstile" data-sitekey="0x4AAAAAACDDkC6MDnS8Ozbo" data-theme="light"
-              data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired"
-              data-timeout-callback="onTurnstileExpired" data-error-callback="onTurnstileError"
-              data-refresh-expired="auto" data-refresh-timeout="auto">
-            </div>
-          </div>
+              <!-- Turnstile Verification -->
+              <div class="wizard-turnstile-container">
+                <div class="wizard-turnstile-title">
+                  <i class="bi bi-shield-check"></i>
+                  <span>Verifikasi Keamanan</span>
+                </div>
+                <p class="text-sm text-gray-600 mb-2">
+                  Verifikasi ini melindungi formulir dari bot.
+                </p>
+                <div id="turnstileWidget" class="cf-turnstile" data-sitekey="0x4AAAAAACDDkC6MDnS8Ozbo" data-theme="light"
+                  data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired"
+                  data-timeout-callback="onTurnstileExpired" data-error-callback="onTurnstileError"
+                  data-refresh-expired="auto" data-refresh-timeout="auto">
+                </div>
+              </div>
 
-          <!-- Confirmation Checkbox -->
-          <div class="wizard-confirmation">
-            <div class="wizard-confirmation-title">
-              <i class="bi bi-exclamation-triangle-fill"></i>
-              <span>Konfirmasi Akhir</span>
+              <!-- Confirmation Checkbox -->
+              <div class="wizard-confirmation">
+                <div class="wizard-confirmation-title">
+                  <i class="bi bi-exclamation-triangle-fill"></i>
+                  <span>Konfirmasi Akhir</span>
+                </div>
+                <div class="wizard-confirmation-text">
+                  <p><strong>Seluruh data yang saya isikan adalah BENAR.</strong></p>
+                  <p>Bersedia menerima konsekuensi jika ditemukan ketidaksesuaian.</p>
+                </div>
+                <div class="wizard-confirmation-checkbox">
+                  <input type="checkbox" id="confirmation-checkbox" required />
+                  <label for="confirmation-checkbox">
+                    Saya telah membaca, memahami, dan menyetujui pernyataan di atas.
+                  </label>
+                </div>
+              </div>
             </div>
-            <div class="wizard-confirmation-text">
-              <p><strong>Seluruh data yang saya isikan adalah BENAR.</strong></p>
-              <p>Bersedia menerima konsekuensi jika ditemukan ketidaksesuaian.</p>
-            </div>
-            <div class="wizard-confirmation-checkbox">
-              <input type="checkbox" id="confirmation-checkbox" required />
-              <label for="confirmation-checkbox">
-                Saya telah membaca, memahami, dan menyetujui pernyataan di atas.
-              </label>
-            </div>
-          </div>
-        </div>
+
 
 
 
