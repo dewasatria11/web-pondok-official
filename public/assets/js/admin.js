@@ -1558,6 +1558,10 @@
           </h6></div>
           <div class="col-md-6"><strong>Ijazah Formal Terakhir:</strong><br>${pendaftar.ijazahformalterakhir || "-"
         }</div>
+          <div class="col-md-6"><strong>Nama Sekolah Asal:</strong><br>${pendaftar.namasekolahasal || pendaftar.namaSekolahAsal || "-"
+        }</div>
+          <div class="col-md-6"><strong>Nomor KIP:</strong><br>${pendaftar.nomorkip || pendaftar.nomorKIP || "-"
+        }</div>
           <div class="col-md-6"><strong>Rencana Tingkat:</strong><br>${pendaftar.rencanatingkat || "-"
         }</div>
           <div class="col-md-6"><strong>Rencana Program:</strong><br>${pendaftar.rencanaprogram || "-"
