@@ -1054,25 +1054,28 @@
 
 
             <!-- Navigation Buttons -->
-            <div class="wizard-navigation flex justify-between items-center border-t mt-8 pt-6">
-              <div class="wizard-nav-group flex gap-3">
-                <button type="button" id="wizard-prev-btn" class="wizard-btn wizard-btn-secondary px-6 py-3">
+            <div class="wizard-navigation"
+              style="display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; gap: 0.5rem; border-top: 1px solid #e5e7eb; margin-top: 2rem; padding-top: 1.5rem;">
+              <div style="display: flex; gap: 0.5rem;">
+                <button type="button" id="wizard-prev-btn" class="wizard-btn wizard-btn-secondary"
+                  style="padding: 0.75rem 1.5rem;">
                   <i class="bi bi-arrow-left"></i>
                   <span data-i18n="form.wizard.buttons.previous">Sebelumnya</span>
                 </button>
               </div>
-              <div class="wizard-nav-group flex gap-3 ml-auto">
-                <button type="button" id="wizard-back-to-review-btn" class="wizard-btn wizard-btn-link px-6 py-3"
-                  style="display:none;">
+              <div style="display: flex; gap: 0.5rem;">
+                <button type="button" id="wizard-back-to-review-btn" class="wizard-btn wizard-btn-link"
+                  style="display:none; padding: 0.75rem 1.5rem;">
                   <i class="bi bi-arrow-return-left"></i>
                   <span data-i18n="form.wizard.buttons.backToReview">Kembali ke Review</span>
                 </button>
-                <button type="button" id="wizard-next-btn" class="wizard-btn wizard-btn-primary px-6 py-3">
+                <button type="button" id="wizard-next-btn" class="wizard-btn wizard-btn-primary"
+                  style="padding: 0.75rem 1.5rem;">
                   <span data-i18n="form.wizard.buttons.next">Selanjutnya</span>
                   <i class="bi bi-arrow-right"></i>
                 </button>
-                <button type="button" id="wizard-submit-btn" class="wizard-btn wizard-btn-primary px-6 py-3"
-                  style="display:none;" onclick="submitFinal()">
+                <button type="button" id="wizard-submit-btn" class="wizard-btn wizard-btn-primary"
+                  style="display:none; padding: 0.75rem 1.5rem;" onclick="submitFinal()">
                   <i class="bi bi-send"></i>
                   <span data-i18n="form.wizard.buttons.submit">Kirim Pendaftaran</span>
                 </button>
