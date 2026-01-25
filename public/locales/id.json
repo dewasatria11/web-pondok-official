@@ -205,6 +205,44 @@
       "parents": "Data Orang Tua",
       "documents": "Upload Berkas"
     },
+    "wizard": {
+      "steps": {
+        "step1": {
+          "title": "Informasi Pendaftaran",
+          "subtitle": "Gelombang & Program"
+        },
+        "step2": {
+          "title": "Data Pribadi",
+          "subtitle": "Identitas Calon Siswa"
+        },
+        "step3": {
+          "title": "Alamat",
+          "subtitle": "Tempat Tinggal"
+        },
+        "step4": {
+          "title": "Pendidikan",
+          "subtitle": "Riwayat Pendidikan"
+        },
+        "step5": {
+          "title": "Data Orang Tua",
+          "subtitle": "Informasi Orang Tua/Wali"
+        },
+        "step6": {
+          "title": "Upload Berkas",
+          "subtitle": "Dokumen Pendaftaran"
+        },
+        "step7": {
+          "title": "Finalisasi",
+          "subtitle": "Review & Submit"
+        }
+      },
+      "buttons": {
+        "previous": "Sebelumnya",
+        "next": "Selanjutnya",
+        "backToReview": "Kembali ke Review",
+        "submit": "Kirim Pendaftaran"
+      }
+    },
     "fields": {
       "gelombang": {
         "label": "Gelombang Pendaftaran",
@@ -283,7 +321,19 @@
       },
       "teleponOrtu": {
         "label": "No Telepon Orang Tua"
+      },
+      "namaSekolahAsal": {
+        "label": "Nama Sekolah Asal"
+      },
+      "nomorKIP": {
+        "label": "Nomor KIP",
+        "helper": "Kosongkan jika tidak memiliki"
       }
+    },
+    "parentSections": {
+      "father": "Data Ayah",
+      "mother": "Data Ibu",
+      "contact": "Kontak Orang Tua"
     },
     "documents": {
       "title": "Upload Berkas",

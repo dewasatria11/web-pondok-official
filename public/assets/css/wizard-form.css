@@ -522,15 +522,26 @@
     }
 
     .wizard-navigation {
-        flex-direction: column-reverse;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 
     .wizard-nav-group {
-        flex-direction: column;
+        flex-direction: row;
+        flex: 1;
+    }
+
+    .wizard-nav-group:first-child {
+        justify-content: flex-start;
+    }
+
+    .wizard-nav-group:last-child {
+        justify-content: flex-end;
     }
 
     .wizard-btn {
-        width: 100%;
+        flex: 0 1 auto;
+        min-width: 120px;
     }
 
     .wizard-review-content {

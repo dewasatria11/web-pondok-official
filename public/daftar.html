@@ -476,50 +476,51 @@
           <li class="wizard-step-item active" data-step="1">
             <div class="wizard-step-number">1</div>
             <div class="wizard-step-content">
-              <div class="wizard-step-title">Informasi Pendaftaran</div>
-              <div class="wizard-step-subtitle">Gelombang & Program</div>
+              <div class="wizard-step-title" data-i18n="form.wizard.steps.step1.title">Informasi Pendaftaran</div>
+              <div class="wizard-step-subtitle" data-i18n="form.wizard.steps.step1.subtitle">Gelombang & Program</div>
             </div>
           </li>
           <li class="wizard-step-item" data-step="2">
             <div class="wizard-step-number">2</div>
             <div class="wizard-step-content">
-              <div class="wizard-step-title">Data Pribadi</div>
-              <div class="wizard-step-subtitle">Identitas Calon Siswa</div>
+              <div class="wizard-step-title" data-i18n="form.wizard.steps.step2.title">Data Pribadi</div>
+              <div class="wizard-step-subtitle" data-i18n="form.wizard.steps.step2.subtitle">Identitas Calon Siswa</div>
             </div>
           </li>
           <li class="wizard-step-item" data-step="3">
             <div class="wizard-step-number">3</div>
             <div class="wizard-step-content">
-              <div class="wizard-step-title">Alamat</div>
-              <div class="wizard-step-subtitle">Tempat Tinggal</div>
+              <div class="wizard-step-title" data-i18n="form.wizard.steps.step3.title">Alamat</div>
+              <div class="wizard-step-subtitle" data-i18n="form.wizard.steps.step3.subtitle">Tempat Tinggal</div>
             </div>
           </li>
           <li class="wizard-step-item" data-step="4">
             <div class="wizard-step-number">4</div>
             <div class="wizard-step-content">
-              <div class="wizard-step-title">Pendidikan</div>
-              <div class="wizard-step-subtitle">Riwayat Pendidikan</div>
+              <div class="wizard-step-title" data-i18n="form.wizard.steps.step4.title">Pendidikan</div>
+              <div class="wizard-step-subtitle" data-i18n="form.wizard.steps.step4.subtitle">Riwayat Pendidikan</div>
             </div>
           </li>
           <li class="wizard-step-item" data-step="5">
             <div class="wizard-step-number">5</div>
             <div class="wizard-step-content">
-              <div class="wizard-step-title">Data Orang Tua</div>
-              <div class="wizard-step-subtitle">Informasi Orang Tua/Wali</div>
+              <div class="wizard-step-title" data-i18n="form.wizard.steps.step5.title">Data Orang Tua</div>
+              <div class="wizard-step-subtitle" data-i18n="form.wizard.steps.step5.subtitle">Informasi Orang Tua/Wali
+              </div>
             </div>
           </li>
           <li class="wizard-step-item" data-step="6">
             <div class="wizard-step-number">6</div>
             <div class="wizard-step-content">
-              <div class="wizard-step-title">Upload Berkas</div>
-              <div class="wizard-step-subtitle">Dokumen Pendaftaran</div>
+              <div class="wizard-step-title" data-i18n="form.wizard.steps.step6.title">Upload Berkas</div>
+              <div class="wizard-step-subtitle" data-i18n="form.wizard.steps.step6.subtitle">Dokumen Pendaftaran</div>
             </div>
           </li>
           <li class="wizard-step-item" data-step="7">
             <div class="wizard-step-number">7</div>
             <div class="wizard-step-content">
-              <div class="wizard-step-title">Finalisasi</div>
-              <div class="wizard-step-subtitle">Review & Submit</div>
+              <div class="wizard-step-title" data-i18n="form.wizard.steps.step7.title">Finalisasi</div>
+              <div class="wizard-step-subtitle" data-i18n="form.wizard.steps.step7.subtitle">Review & Submit</div>
             </div>
           </li>
         </ul>
@@ -550,7 +551,7 @@
                     <div class="form-text text-brand-600 font-medium" id="gelombangStatus"></div>
                   </div>
 
-                  <div class="col-md-6">
+                  <div class="col-span-full">
                     <label class="form-label">
                       <span data-i18n="form.fields.rencanaTingkat.label">Jenjang Tujuan</span>
                       <span class="text-danger">*</span>
@@ -564,7 +565,7 @@
                     </select>
                   </div>
 
-                  <div class="col-md-6">
+                  <div class="col-span-full">
                     <label class="form-label">
                       <span data-i18n="form.fields.rencanaProgram.label">Asrama</span>
                       <span class="text-danger">*</span>
@@ -760,7 +761,7 @@
 
                 <div class="col-md-6">
                   <label class="form-label">
-                    <span>Nama Sekolah Asal</span>
+                    <span data-i18n="form.fields.namaSekolahAsal.label">Nama Sekolah Asal</span>
                     <span class="text-danger">*</span>
                   </label>
                   <input type="text" class="form-control" name="namaSekolahAsal" required />
@@ -768,11 +769,12 @@
 
                 <div class="col-md-6">
                   <label class="form-label">
-                    <span>Nomor KIP</span>
+                    <span data-i18n="form.fields.nomorKIP.label">Nomor KIP</span>
                     <span class="text-muted">(Opsional)</span>
                   </label>
                   <input type="text" class="form-control" name="nomorKIP" />
-                  <small class="text-muted">Kosongkan jika tidak memiliki</small>
+                  <small class="text-muted" data-i18n="form.fields.nomorKIP.helper">Kosongkan jika tidak
+                    memiliki</small>
                 </div>
 
               </div>
@@ -790,7 +792,7 @@
                 <div class="bg-white border border-gray-200 rounded-lg p-6 border-l-4 border-blue-500 shadow-sm">
                   <h5 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
                     <i class="bi bi-person-fill text-blue-500"></i>
-                    Data Ayah
+                    <span data-i18n="form.parentSections.father">Data Ayah</span>
                   </h5>
 
                   <div class="space-y-4">
@@ -854,7 +856,7 @@
                 <div class="bg-white border border-gray-200 rounded-lg p-6 border-l-4 border-pink-500 shadow-sm">
                   <h5 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
                     <i class="bi bi-person-heart text-pink-500"></i>
-                    Data Ibu
+                    <span data-i18n="form.parentSections.mother">Data Ibu</span>
                   </h5>
 
                   <div class="space-y-4">
@@ -920,14 +922,15 @@
                 <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
                   <h5 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
                     <i class="bi bi-telephone text-green-600"></i>
-                    Kontak Orang Tua
+                    <span data-i18n="form.parentSections.contact">Kontak Orang Tua</span>
                   </h5>
                   <div>
                     <label class="form-label">
                       <span data-i18n="form.fields.teleponOrtu.label">No Telepon Orang Tua</span>
                       <span class="text-danger">*</span>
                     </label>
-                    <input type="tel" class="form-control" name="teleponOrtu" required />
+                    <input type="tel" class="form-control" name="teleponOrtu" required maxlength="13"
+                      pattern="0\d{9,12}" title="Nomor telepon harus diawali 0 dan terdiri dari 10-13 digit" />
                   </div>
                 </div>
               </div>
@@ -1054,23 +1057,23 @@
               <div class="wizard-nav-group flex gap-3">
                 <button type="button" id="wizard-prev-btn" class="wizard-btn wizard-btn-secondary px-6 py-3">
                   <i class="bi bi-arrow-left"></i>
-                  <span>Sebelumnya</span>
+                  <span data-i18n="form.wizard.buttons.previous">Sebelumnya</span>
                 </button>
               </div>
               <div class="wizard-nav-group flex gap-3 ml-auto">
                 <button type="button" id="wizard-back-to-review-btn" class="wizard-btn wizard-btn-link px-6 py-3"
                   style="display:none;">
                   <i class="bi bi-arrow-return-left"></i>
-                  <span>Kembali ke Review</span>
+                  <span data-i18n="form.wizard.buttons.backToReview">Kembali ke Review</span>
                 </button>
                 <button type="button" id="wizard-next-btn" class="wizard-btn wizard-btn-primary px-6 py-3">
-                  <span>Selanjutnya</span>
+                  <span data-i18n="form.wizard.buttons.next">Selanjutnya</span>
                   <i class="bi bi-arrow-right"></i>
                 </button>
                 <button type="button" id="wizard-submit-btn" class="wizard-btn wizard-btn-primary px-6 py-3"
                   style="display:none;" onclick="submitFinal()">
                   <i class="bi bi-send"></i>
-                  <span>Kirim Pendaftaran</span>
+                  <span data-i18n="form.wizard.buttons.submit">Kirim Pendaftaran</span>
                 </button>
               </div>
             </div>
@@ -3639,8 +3642,8 @@
             icon: 'bi-book',
             fields: [
               { label: 'Pendidikan Terakhir', name: 'ijazahFormalTerakhir' },
-              { label: 'Nama Sekolah Asal', name: 'namaSekolahAsal' },
-              { label: 'Nomor KIP', name: 'nomorKIP', optional: true },
+              { label: translate('form.fields.namaSekolahAsal.label') || 'Nama Sekolah Asal', name: 'namaSekolahAsal' },
+              { label: translate('form.fields.nomorKIP.label') || 'Nomor KIP', name: 'nomorKIP', optional: true },
             ],
           },
           {

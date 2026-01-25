@@ -205,6 +205,44 @@
       "parents": "Parent Data",
       "documents": "Upload Documents"
     },
+    "wizard": {
+      "steps": {
+        "step1": {
+          "title": "Registration Info",
+          "subtitle": "Period & Program"
+        },
+        "step2": {
+          "title": "Personal Data",
+          "subtitle": "Student Identity"
+        },
+        "step3": {
+          "title": "Address",
+          "subtitle": "Residence"
+        },
+        "step4": {
+          "title": "Education",
+          "subtitle": "Educational Background"
+        },
+        "step5": {
+          "title": "Parent Data",
+          "subtitle": "Parent/Guardian Info"
+        },
+        "step6": {
+          "title": "Upload Documents",
+          "subtitle": "Registration Files"
+        },
+        "step7": {
+          "title": "Finalize",
+          "subtitle": "Review & Submit"
+        }
+      },
+      "buttons": {
+        "previous": "Previous",
+        "next": "Next",
+        "backToReview": "Back to Review",
+        "submit": "Submit Registration"
+      }
+    },
     "fields": {
       "gelombang": {
         "label": "Period",
@@ -283,7 +321,19 @@
       },
       "teleponOrtu": {
         "label": "Parent Phone Number"
+      },
+      "namaSekolahAsal": {
+        "label": "Previous School Name"
+      },
+      "nomorKIP": {
+        "label": "KIP Number",
+        "helper": "Leave blank if not applicable"
       }
+    },
+    "parentSections": {
+      "father": "Father's Data",
+      "mother": "Mother's Data",
+      "contact": "Parent Contact"
     },
     "documents": {
       "title": "Upload Documents",
