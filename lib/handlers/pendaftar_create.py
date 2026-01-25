@@ -154,27 +154,27 @@ class handler(BaseHTTPRequestHandler):
             # Validasi NIK calon (16 digit) - Required
             nik_calon = str(data["nikCalon"]).strip()
             if not re.match(r'^\d{16}$', nik_calon):
-                errors.append("NIK Calon harus 16 digit angka")
+                errors.append(f"NIK Calon harus 16 digit angka (received: {nik_calon})")
             
             # Validasi NIK Ayah (16 digit)
             nik_ayah = str(data["nikAyah"]).strip()
             if not re.match(r'^\d{16}$', nik_ayah):
-                errors.append("NIK Ayah harus 16 digit angka")
+                errors.append(f"NIK Ayah harus 16 digit angka (received: {nik_ayah})")
                 
             # Validasi NIK Ibu (16 digit)
             nik_ibu = str(data["nikIbu"]).strip()
             if not re.match(r'^\d{16}$', nik_ibu):
-                errors.append("NIK Ibu harus 16 digit angka")
+                errors.append(f"NIK Ibu harus 16 digit angka (received: {nik_ibu})")
             
             # Validasi NISN (10 digit)
             nisn = str(data["nisn"]).strip()
             if not re.match(r'^\d{10}$', nisn):
-                errors.append("NISN harus 10 digit angka")
+                errors.append(f"NISN harus 10 digit angka (received: {nisn})")
             
             # Validasi jenis kelamin
             jenis_kelamin = data["jenisKelamin"]
             if jenis_kelamin not in ['L', 'P']:
-                errors.append("Jenis kelamin harus 'L' atau 'P'")
+                errors.append(f"Jenis kelamin harus 'L' atau 'P' (received: {jenis_kelamin})")
             
             # Validasi format tanggal lahir
             try:
@@ -187,7 +187,7 @@ class handler(BaseHTTPRequestHandler):
             if data.get("teleponOrtu"):
                 telepon = str(data["teleponOrtu"]).strip()
                 if not re.match(r'^0\d{9,12}$', telepon):
-                    errors.append("Nomor telepon harus diawali 0 dan terdiri dari 10-13 digit")
+                    errors.append(f"Nomor telepon harus diawali 0 dan terdiri dari 10-13 digit (received: {telepon})")
             
             # Jika ada error validasi, kirim response error
             if errors:
@@ -238,7 +238,15 @@ class handler(BaseHTTPRequestHandler):
             # Add provinsi tempat lahir if provided
             if data.get("provinsiTempatLahir"):
                 payload["provinsitempatlahir"] = data.get("provinsiTempatLahir", "").strip()
+
+            # Map namaSekolahAsal -> sekolahdomisili
+            if data.get("namaSekolahAsal"):
+                payload["sekolahdomisili"] = data.get("namaSekolahAsal", "").strip()
             
+            # Log nomorKIP (not saving to DB yet as column missing)
+            if data.get("nomorKIP"):
+                print(f"[PENDAFTAR_CREATE] Received nomorKIP: {data.get('nomorKIP')}")
+
             # Insert to Supabase using ANON_KEY (public registration, allowed by RLS)
             supa = supabase_client(service_role=False)  # Use ANON_KEY
             
