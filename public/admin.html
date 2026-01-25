@@ -46,18 +46,26 @@
 
     /* Sidebar */
     .sidebar {
-      min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 280px;
+      height: 100vh;
       background: var(--sidebar-gradient);
       color: #fff;
       box-shadow: 4px 0 20px rgba(0, 0, 0, .1);
       display: flex;
       flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 1000;
     }
 
     .sidebar-header {
       padding: 25px 20px;
       background: rgba(255, 255, 255, .1);
       border-bottom: 1px solid rgba(255, 255, 255, .1);
+      flex-shrink: 0;
     }
 
     .sidebar-header h5 {
@@ -145,6 +153,7 @@
 
     /* Layout */
     .content-area {
+      margin-left: 280px;
       padding: 30px;
       min-height: 100vh;
     }
