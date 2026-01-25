@@ -2777,10 +2777,22 @@
         `<span class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></span>${translate("form.progress.sending")}`;
 
       try {
+        // CRITICAL FIX: Temporarily enable all disabled selects so their values are included in FormData
+        // Disabled fields are NOT submitted with forms by default
+        const disabledSelects = form.querySelectorAll('select:disabled');
+        disabledSelects.forEach(select => {
+          select.disabled = false;
+        });
+
         // Rebuild form data to make sure Turnstile token is the latest (token can refresh/expire)
         const formData = new FormData(form);
         formDataGlobal = formData;
         const data = {};
+
+        // Re-disable the selects after FormData is created
+        disabledSelects.forEach(select => {
+          select.disabled = true;
+        });
 
         const captchaToken =
           getTurnstileToken() ||
