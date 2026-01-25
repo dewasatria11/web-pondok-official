@@ -532,8 +532,9 @@
             <!-- STEP 1 -->
             <div class="wizard-form-step active" data-wizard-step="1">
               <div class="wizard-step-header">
-                <h2>Step 1: Informasi Pendaftaran</h2>
-                <p>Pilih gelombang pendaftaran, jenjang, dan program asrama</p>
+                <h2 data-i18n="form.wizard.stepHeaders.step1.title">Step 1: Informasi Pendaftaran</h2>
+                <p data-i18n="form.wizard.stepHeaders.step1.description">Pilih gelombang pendaftaran, jenjang, dan
+                  program asrama</p>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
@@ -595,8 +596,8 @@
             <!-- STEP 2 -->
             <div class="wizard-form-step" data-wizard-step="2">
               <div class="wizard-step-header">
-                <h2>Step 2: Data Pribadi</h2>
-                <p>Isi data identitas calon siswa</p>
+                <h2 data-i18n="form.wizard.stepHeaders.step2.title">Step 2: Data Pribadi</h2>
+                <p data-i18n="form.wizard.stepHeaders.step2.description">Isi data identitas calon siswa</p>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
@@ -675,8 +676,8 @@
             <!-- STEP 3 -->
             <div class="wizard-form-step" data-wizard-step="3">
               <div class="wizard-step-header">
-                <h2>Step 3: Alamat</h2>
-                <p>Isi alamat lengkap tempat tinggal</p>
+                <h2 data-i18n="form.wizard.stepHeaders.step3.title">Step 3: Alamat</h2>
+                <p data-i18n="form.wizard.stepHeaders.step3.description">Isi alamat lengkap tempat tinggal</p>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
@@ -738,8 +739,8 @@
             <!-- STEP 4 -->
             <div class="wizard-form-step" data-wizard-step="4">
               <div class="wizard-step-header">
-                <h2>Step 4: Pendidikan</h2>
-                <p>Riwayat pendidikan terakhir</p>
+                <h2 data-i18n="form.wizard.stepHeaders.step4.title">Step 4: Pendidikan</h2>
+                <p data-i18n="form.wizard.stepHeaders.step4.description">Riwayat pendidikan terakhir</p>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
@@ -783,8 +784,8 @@
             <!-- STEP 5 -->
             <div class="wizard-form-step" data-wizard-step="5">
               <div class="wizard-step-header">
-                <h2>Step 5: Data Orang Tua</h2>
-                <p>Informasi Ayah dan Ibu</p>
+                <h2 data-i18n="form.wizard.stepHeaders.step5.title">Step 5: Data Orang Tua</h2>
+                <p data-i18n="form.wizard.stepHeaders.step5.description">Informasi Ayah dan Ibu</p>
               </div>
               <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
@@ -942,8 +943,8 @@
             <!-- STEP 6 -->
             <div class="wizard-form-step" data-wizard-step="6">
               <div class="wizard-step-header">
-                <h2>Step 6: Upload Berkas</h2>
-                <p>Upload dokumen pendaftaran</p>
+                <h2 data-i18n="form.wizard.stepHeaders.step6.title">Step 6: Upload Berkas</h2>
+                <p data-i18n="form.wizard.stepHeaders.step6.description">Upload dokumen pendaftaran</p>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
@@ -1005,8 +1006,8 @@
             <!-- STEP 7: Finalisasi -->
             <div class="wizard-form-step" data-wizard-step="7">
               <div class="wizard-step-header">
-                <h2>Step 7: Finalisasi & Review</h2>
-                <p>Periksa kembali semua data sebelum mengirim pendaftaran</p>
+                <h2 data-i18n="form.wizard.stepHeaders.step7.title">Step 7: Finalisasi & Review</h2>
+                <p data-i18n="form.wizard.stepHeaders.step7.description">Review data dan kirim pendaftaran</p>
               </div>
 
               <div class="bg-white rounded-lg shadow-sm p-6">
@@ -3387,7 +3388,7 @@
             if (typeof toastr !== 'undefined') {
               toastr.error('Sistem Gagal Memuat Data Gelombang Pendaftaran. Mohon Refresh Halaman.');
             } else {
-              alert('Sistem Gagal Memuat Data Gelombang Pendaftaran. Mohon Refresh Halaman.');
+              alert(translate('form.messages.gelombangLoadFailed'));
             }
             return false;
           }
@@ -3452,10 +3453,10 @@
               }
             } catch (e) { }
 
-            const errorMsg = `Mohon lengkapi: ${fieldName}`;
+            const errorMsg = `${translate('form.messages.pleaseComplete')}: ${fieldName}`;
 
             if (typeof toastr !== 'undefined') {
-              toastr.warning(errorMsg, 'Validasi Gagal');
+              toastr.warning(errorMsg, translate('form.messages.validationFailed'));
             } else {
               alert(errorMsg);
             }
@@ -3818,7 +3819,7 @@
           });
         } else {
           console.error('[Wizard] FATAL: Next button element not found found during init');
-          alert('Sistem Error: Tombol Next tidak terdeteksi script. Mohon refresh halaman.');
+          alert(translate('form.messages.systemError'));
         }
 
         // Back to Review button

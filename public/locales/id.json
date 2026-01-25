@@ -241,6 +241,36 @@
         "next": "Selanjutnya",
         "backToReview": "Kembali ke Review",
         "submit": "Kirim Pendaftaran"
+      },
+      "stepHeaders": {
+        "step1": {
+          "title": "Step 1: Informasi Pendaftaran",
+          "description": "Pilih gelombang pendaftaran, jenjang, dan program asrama"
+        },
+        "step2": {
+          "title": "Step 2: Data Pribadi",
+          "description": "Isi data identitas calon siswa"
+        },
+        "step3": {
+          "title": "Step 3: Alamat",
+          "description": "Isi alamat lengkap tempat tinggal"
+        },
+        "step4": {
+          "title": "Step 4: Pendidikan",
+          "description": "Riwayat pendidikan terakhir"
+        },
+        "step5": {
+          "title": "Step 5: Data Orang Tua",
+          "description": "Informasi Ayah dan Ibu"
+        },
+        "step6": {
+          "title": "Step 6: Upload Berkas",
+          "description": "Upload dokumen pendaftaran"
+        },
+        "step7": {
+          "title": "Step 7: Finalisasi",
+          "description": "Review data dan kirim pendaftaran"
+        }
       }
     },
     "fields": {
@@ -484,7 +514,11 @@
       "submitErrorTimeout": "Request timeout. Silakan cek koneksi internet Anda dan coba lagi.",
       "submitErrorNetwork": "Koneksi gagal. Pastikan internet Anda stabil dan server dapat diakses.",
       "uploadAlert": "⚠️ DETAIL ERROR:\n\n{{message}}\n\nSilakan:\n1. Pastikan file tidak terlalu besar (max 2MB)\n2. Cek format file (JPEG/PNG/PDF)\n3. Cek koneksi internet\n4. Coba lagi",
-      "repairMode": "Mode Perbaikan: Data pendaftaran Anda yang sebelumnya telah dimuat. Silakan perbaiki data yang diperlukan dan submit ulang."
+      "repairMode": "Mode Perbaikan: Data pendaftaran Anda yang sebelumnya telah dimuat. Silakan perbaiki data yang diperlukan dan submit ulang.",
+      "gelombangLoadFailed": "Sistem Gagal Memuat Data Gelombang Pendaftaran. Mohon Refresh Halaman.",
+      "validationFailed": "Validasi Gagal",
+      "pleaseComplete": "Mohon lengkapi",
+      "systemError": "Sistem Error: Tombol Next tidak terdeteksi script. Mohon refresh halaman."
     },
     "progress": {
       "sending": "Mengirim...",

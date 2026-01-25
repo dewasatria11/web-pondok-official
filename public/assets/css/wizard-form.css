@@ -523,12 +523,15 @@
 
     .wizard-navigation {
         flex-direction: row;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        gap: 0.5rem;
+        justify-content: space-between;
     }
 
     .wizard-nav-group {
         flex-direction: row;
-        flex: 1;
+        flex: 0 1 auto;
+        gap: 0.5rem;
     }
 
     .wizard-nav-group:first-child {
@@ -540,8 +543,19 @@
     }
 
     .wizard-btn {
-        flex: 0 1 auto;
-        min-width: 120px;
+        flex: 0 0 auto;
+        min-width: auto;
+        padding: 0.5rem 1rem !important;
+        font-size: 0.8125rem;
+        white-space: nowrap;
+    }
+
+    .wizard-btn span {
+        display: inline;
+    }
+
+    .wizard-btn i {
+        font-size: 0.875rem;
     }
 
     .wizard-review-content {

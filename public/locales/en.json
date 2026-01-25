@@ -241,6 +241,36 @@
         "next": "Next",
         "backToReview": "Back to Review",
         "submit": "Submit Registration"
+      },
+      "stepHeaders": {
+        "step1": {
+          "title": "Step 1: Registration Info",
+          "description": "Choose admission period, level, and dormitory program"
+        },
+        "step2": {
+          "title": "Step 2: Personal Data",
+          "description": "Fill in student identity information"
+        },
+        "step3": {
+          "title": "Step 3: Address",
+          "description": "Enter complete residence address"
+        },
+        "step4": {
+          "title": "Step 4: Education",
+          "description": "Last educational background"
+        },
+        "step5": {
+          "title": "Step 5: Parent Data",
+          "description": "Father and Mother information"
+        },
+        "step6": {
+          "title": "Step 6: Upload Documents",
+          "description": "Upload registration documents"
+        },
+        "step7": {
+          "title": "Step 7: Finalize",
+          "description": "Review data and submit registration"
+        }
       }
     },
     "fields": {
@@ -484,7 +514,11 @@
       "submitErrorTimeout": "Request timed out. Please check your internet connection and try again.",
       "submitErrorNetwork": "Connection failed. Ensure your internet is stable and the server is reachable.",
       "uploadAlert": "⚠️ ERROR DETAILS:\n\n{{message}}\n\nPlease:\n1. Ensure the file is under 2MB\n2. Check the file format (JPEG/PNG/PDF)\n3. Check your internet connection\n4. Try again",
-      "repairMode": "Revision Mode: Your previous registration data has been loaded. Please fix the required fields and submit again."
+      "repairMode": "Revision Mode: Your previous registration data has been loaded. Please fix the required fields and submit again.",
+      "gelombangLoadFailed": "System Failed to Load Admission Period Data. Please Refresh the Page.",
+      "validationFailed": "Validation Failed",
+      "pleaseComplete": "Please complete",
+      "systemError": "System Error: Next button not detected by script. Please refresh the page."
     },
     "progress": {
       "sending": "Submitting...",
