@@ -2917,10 +2917,19 @@
         console.log("NISN:", nisn);
         console.log("Pendaftar ID:", pendaftarId);
 
-        const fileIjazah = formData.get("fileIjazah");
-        const fileAkta = formData.get("fileAkta");
-        const fileFoto = formData.get("fileFoto");
-        const fileBPJS = formData.get("fileBPJS");
+        // CRITICAL FIX: Use stored files instead of FormData to prevent mobile browser issues
+        // Mobile browsers may release file references after navigation/scrolling
+        const fileIjazah = storedFilesData["fileIjazah"] || formData.get("fileIjazah");
+        const fileAkta = storedFilesData["fileAkta"] || formData.get("fileAkta");
+        const fileFoto = storedFilesData["fileFoto"] || formData.get("fileFoto");
+        const fileKK = storedFilesData["fileKK"] || formData.get("fileKK");
+        const fileBPJS = storedFilesData["fileBPJS"] || formData.get("fileBPJS");
+
+        console.log("[UPLOAD] File sources - Ijazah:", fileIjazah ? "stored" : "none",
+                    "Akta:", fileAkta ? "stored" : "none",
+                    "Foto:", fileFoto ? "stored" : "none",
+                    "KK:", fileKK ? "stored" : "none",
+                    "BPJS:", fileBPJS ? "stored" : "none");
 
         const fileUrls = {};
 
@@ -2965,7 +2974,6 @@
           }
         }
 
-        const fileKK = formData.get("fileKK");
         if (fileKK?.size > 0) {
           console.log("[UPLOAD] Processing KK...");
           submitBtn.innerHTML =
@@ -3771,17 +3779,32 @@
         }
       };
 
+      // Store file objects to prevent mobile browser from releasing file reference
+      const storedFilesData = {};
+
       // Generate image preview when file is selected
       function handleFileSelect(event) {
         const input = event.target;
         const file = input.files[0];
 
-        if (file && file.type.startsWith('image/')) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            imagePreviewsData[input.name] = e.target.result;
-          };
-          reader.readAsDataURL(file);
+        if (file) {
+          // CRITICAL FIX: Store file data immediately to prevent mobile browser issues
+          // On mobile browsers, file references can be released during wizard navigation/scrolling
+          // Storing the actual file object prevents "file could not be read" errors
+          storedFilesData[input.name] = file;
+          console.log(`[FILE_STORE] Stored ${input.name}: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`);
+
+          if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              imagePreviewsData[input.name] = e.target.result;
+            };
+            reader.onerror = function (error) {
+              console.error(`[FILE_STORE] Error reading ${input.name}:`, error);
+              toastr.error(`Gagal membaca file ${input.name}. Silakan pilih ulang file.`);
+            };
+            reader.readAsDataURL(file);
+          }
         }
       }
 
