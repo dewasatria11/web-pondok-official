@@ -3138,7 +3138,9 @@
       const WIZARD_CONFIG = {
         totalSteps: 7,
         localStorageKey: 'pendaftaran_draft',
+        timestampKey: 'pendaftaran_draft_timestamp',
         autoSaveDelay: 500, // ms
+        draftExpiryHours: 24 // Auto-delete drafts older than 24 hours
       };
 
       // ==================== State Management ====================
@@ -3226,7 +3228,11 @@
             formData: getAllFormData(),
             timestamp: Date.now(),
           };
-          localStorage.setItem(WIZARD_CONFIG.localStorageKey, JSON.stringify(dataToSave));
+          // Use sessionStorage instead of localStorage - clears on browser close
+          sessionStorage.setItem(WIZARD_CONFIG.localStorageKey, JSON.stringify(dataToSave));
+          // Keep timestamp in localStorage for 24h expiry check
+          localStorage.setItem(WIZARD_CONFIG.timestampKey, Date.now());
+          console.log('[Wizard] Draft saved to sessionStorage');
         } catch (error) {
           console.warn('[Wizard] Failed to save to localStorage:', error);
         }
@@ -3236,11 +3242,34 @@
 
       function loadFromLocalStorage() {
         try {
-          const saved = localStorage.getItem(WIZARD_CONFIG.localStorageKey);
+          const saved = sessionStorage.getItem(WIZARD_CONFIG.localStorageKey);
           if (!saved) return false;
 
           const data = JSON.parse(saved);
           if (!data || !data.formData) return false;
+
+          // Check if draft has expired (24 hours)
+          const savedTime = data.timestamp || 0;
+          const now = Date.now();
+          const hoursPassed = (now - savedTime) / (1000 * 60 * 60);
+
+          if (hoursPassed > WIZARD_CONFIG.draftExpiryHours) {
+            console.log('[Wizard] Draft expired (' + Math.floor(hoursPassed) + ' hours old), clearing...');
+            clearLocalStorage();
+            return false;
+          }
+
+          // Ask user confirmation before restoring
+          const hoursAgoText = hoursPassed < 1
+            ? Math.floor(hoursPassed * 60) + ' menit'
+            : Math.floor(hoursPassed) + ' jam';
+          const confirmMsg = `Ditemukan draft formulir dari ${hoursAgoText} yang lalu.\nLanjutkan mengisi?`;
+
+          if (!confirm(confirmMsg)) {
+            console.log('[Wizard] User declined to restore draft');
+            clearLocalStorage();
+            return false;
+          }
 
           // Restore form data
           Object.keys(data.formData).forEach(name => {
@@ -3266,7 +3295,7 @@
             wizardState.currentStep = data.currentStep;
           }
 
-          console.log('[Wizard] Data restored from localStorage');
+          console.log('[Wizard] Draft restored from sessionStorage');
           return true;
         } catch (error) {
           console.warn('[Wizard] Failed to load from localStorage:', error);
@@ -3276,8 +3305,9 @@
 
       function clearLocalStorage() {
         try {
-          localStorage.removeItem(WIZARD_CONFIG.localStorageKey);
-          console.log('[Wizard] localStorage cleared');
+          sessionStorage.removeItem(WIZARD_CONFIG.localStorageKey);
+          localStorage.removeItem(WIZARD_CONFIG.timestampKey);
+          console.log('[Wizard] Draft cleared from storage');
         } catch (error) {
           console.warn('[Wizard] Failed to clear localStorage:', error);
         }
