@@ -1175,6 +1175,12 @@
     const form = document.getElementById("formPendaftar");
     let formDataGlobal = null;
 
+    // Global storage for file objects to prevent mobile browser from releasing file reference
+    const storedFilesData = {};
+
+    // Global storage for image preview data URLs
+    const imagePreviewsData = {};
+
     function isKonfirmasiModalOpen() {
       const modalKonfirmasi = document.getElementById("modalKonfirmasi");
       return !!(modalKonfirmasi && modalKonfirmasi.classList.contains("modal-visible"));
@@ -3647,12 +3653,6 @@
 
         elements.reviewContent.innerHTML = html;
       }
-
-      // Global storage for image preview data URLs
-      const imagePreviewsData = {};
-
-      // Global storage for file objects to prevent mobile browser from releasing file reference
-      const storedFilesData = {};
 
       // Show image zoom modal
       window.showImageZoom = function (title, imageUrl) {
