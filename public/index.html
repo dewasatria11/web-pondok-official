@@ -2565,7 +2565,11 @@
             })
           });
 
+          console.log('[CAPTCHA] Response status:', response.status);
+          console.log('[CAPTCHA] Response status text:', response.statusText);
+
           const data = await response.json();
+          console.log('[CAPTCHA] Response data:', data);
 
           if (response.ok && data.success) {
             // Save to localStorage with timestamp (valid for 1 hour)
