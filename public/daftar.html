@@ -21,64 +21,6 @@
 
   <title data-i18n="meta.title.register">Formulir Pendaftaran - PPDSB Pondok Pesantren Al Ikhsan Beji</title>
 
-  <!-- CAPTCHA Gate Protection - Must verify on main page first -->
-  <script>
-    (function () {
-      // Check if user has valid CAPTCHA session from main page (1 hour expiry)
-      const STORAGE_KEY = 'captcha_verified_token';
-      const STORAGE_TIMESTAMP_KEY = 'captcha_verified_timestamp';
-      const SESSION_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
-
-      function isSessionValid() {
-        const savedTimestamp = localStorage.getItem(STORAGE_TIMESTAMP_KEY);
-        const savedToken = localStorage.getItem(STORAGE_KEY);
-
-        if (!savedToken || !savedTimestamp) {
-          return false;
-        }
-
-        const timestamp = parseInt(savedTimestamp, 10);
-        const now = Date.now();
-        const elapsed = now - timestamp;
-
-        // Session valid if less than 1 hour has passed
-        return elapsed < SESSION_DURATION;
-      }
-
-      function getRemainingTime() {
-        const savedTimestamp = localStorage.getItem(STORAGE_TIMESTAMP_KEY);
-        if (!savedTimestamp) return 0;
-
-        const timestamp = parseInt(savedTimestamp, 10);
-        const now = Date.now();
-        const elapsed = now - timestamp;
-        const remaining = SESSION_DURATION - elapsed;
-
-        return Math.max(0, Math.floor(remaining / (60 * 1000))); // in minutes
-      }
-
-      // If not verified or session expired, redirect to main page
-      if (!isSessionValid()) {
-        console.warn('[CAPTCHA] No valid session, redirecting to main page');
-
-        // Clear expired session
-        localStorage.removeItem(STORAGE_KEY);
-        localStorage.removeItem(STORAGE_TIMESTAMP_KEY);
-
-        // Redirect to main page with redirect parameter
-        alert('Silakan verifikasi keamanan terlebih dahulu. Anda akan diarahkan ke halaman utama.');
-        window.location.href = '/?redirect=daftar';
-      } else {
-        const remaining = getRemainingTime();
-        console.log(`[CAPTCHA] Valid session found, ${remaining} minutes remaining`);
-
-        // Warn user when session is expiring soon (5 minutes before)
-        if (remaining <= 5 && remaining > 0) {
-          console.warn(`[CAPTCHA] Session expiring in ${remaining} minutes`);
-        }
-      }
-    })();
-  </script>
 
   <link rel="stylesheet" href="/assets/css/tailwind.css?v=12" />
   <!-- Wizard Styles -->

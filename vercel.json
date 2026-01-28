@@ -217,10 +217,6 @@
       "destination": "/api/index?action=admin_users"
     },
     {
-      "source": "/api/verify-turnstile-session",
-      "destination": "/api/index?action=verify-turnstile-session"
-    },
-    {
       "source": "/",
       "destination": "/index.html"
     },
