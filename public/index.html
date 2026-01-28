@@ -2643,6 +2643,23 @@
 
       // Initialize on page load
       window.addEventListener('DOMContentLoaded', function () {
+        // CLEANUP: Remove old daily verification keys if they exist
+        const oldDateKey = 'captcha_verified_date';
+        if (localStorage.getItem(oldDateKey)) {
+          console.log('[CAPTCHA] Cleaning up old daily verification key');
+          localStorage.removeItem(oldDateKey);
+        }
+
+        // Check session validity
+        const hasToken = localStorage.getItem(STORAGE_KEY);
+        const hasTimestamp = localStorage.getItem(STORAGE_TIMESTAMP_KEY);
+        console.log('[CAPTCHA] Current localStorage state:', {
+          hasToken: !!hasToken,
+          hasTimestamp: !!hasTimestamp,
+          token: hasToken ? hasToken.substring(0, 20) + '...' : 'none',
+          timestamp: hasTimestamp
+        });
+
         if (!isSessionValid()) {
           // Clear expired session
           clearSession();
