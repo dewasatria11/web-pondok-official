@@ -3788,25 +3788,36 @@
       // Generate image preview when file is selected
       function handleFileSelect(event) {
         const input = event.target;
-        const file = input.files[0];
+        const file = input.files && input.files[0];
 
         if (file) {
-          // CRITICAL FIX: Store file data immediately to prevent mobile browser issues
-          // On mobile browsers, file references can be released during wizard navigation/scrolling
-          // Storing the actual file object prevents "file could not be read" errors
-          storedFilesData[input.name] = file;
-          console.log(`[FILE_STORE] Stored ${input.name}: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`);
+          try {
+            // CRITICAL FIX: Store file data immediately to prevent mobile browser issues
+            // On mobile browsers, file references can be released during wizard navigation/scrolling
+            // Storing the actual file object prevents "file could not be read" errors
+            storedFilesData[input.name] = file;
 
-          if (file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-              imagePreviewsData[input.name] = e.target.result;
-            };
-            reader.onerror = function (error) {
-              console.error(`[FILE_STORE] Error reading ${input.name}:`, error);
-              toastr.error(`Gagal membaca file ${input.name}. Silakan pilih ulang file.`);
-            };
-            reader.readAsDataURL(file);
+            // Defensive logging to prevent NaN errors
+            const fileSize = (typeof file.size === 'number' && !isNaN(file.size))
+              ? (file.size / 1024).toFixed(2)
+              : 'unknown';
+            console.log(`[FILE_STORE] Stored ${input.name}: ${file.name || 'unnamed'} (${fileSize} KB)`);
+
+            if (file.type && file.type.startsWith('image/')) {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                imagePreviewsData[input.name] = e.target.result;
+              };
+              reader.onerror = function (error) {
+                console.error(`[FILE_STORE] Error reading ${input.name}:`, error);
+                if (typeof toastr !== 'undefined') {
+                  toastr.error(`Gagal membaca file ${input.name}. Silakan pilih ulang file.`);
+                }
+              };
+              reader.readAsDataURL(file);
+            }
+          } catch (error) {
+            console.error(`[FILE_STORE] Unexpected error handling file:`, error);
           }
         }
       }
