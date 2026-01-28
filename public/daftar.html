@@ -2794,29 +2794,12 @@
           console.error("[SUBMIT] ❌ Server returned ok=false");
           console.error("[SUBMIT] Error:", json.error);
           console.error("[SUBMIT] Details:", json.details);
-          const detailsText = (json.details || json.codes || "").toString().toLowerCase();
-          const isCaptchaError =
-            (json.error || "").toString().toLowerCase().includes("captcha") ||
-            detailsText.includes("turnstile") ||
-            detailsText.includes("timeout-or-duplicate") ||
-            detailsText.includes("invalid-input-response") ||
-            detailsText.includes("missing-input-response");
-          if (isCaptchaError) {
-            resetTurnstile();
-            const modalKonfirmasi = document.getElementById("modalKonfirmasi");
-            if (modalKonfirmasi) {
-              modalKonfirmasi.classList.remove("modal-visible");
-              modalKonfirmasi.classList.add("modal-hidden");
-            }
-            focusTurnstile();
-            throw new Error(json.details || json.error || translate("form.messages.submitErrorGeneric"));
-          }
+          // Error handling - no CAPTCHA check needed
           throw new Error(json.error || translate("form.messages.submitErrorGeneric"));
         }
 
         console.log("[SUBMIT] ✓ Data berhasil disimpan!");
-        // Token Turnstile bersifat sekali pakai — reset setelah sukses supaya tidak duplikat di submit berikutnya
-        resetTurnstile();
+
 
         const nisn = json.nisn;
         const pendaftarId = json.id;
@@ -2988,10 +2971,6 @@
           errorMsg = translate("form.messages.submitErrorNetwork");
         } else if (normalizedMsg.includes("nisn tidak diterima")) {
           errorMsg = translate("form.errors.nisnMissing");
-        } else if (normalizedMsg.includes("captcha")) {
-          // Pastikan captcha siap untuk percobaan ulang
-          resetTurnstile();
-          focusTurnstile();
         }
 
         const errorTitle = translate("form.messages.submitErrorTitle");
