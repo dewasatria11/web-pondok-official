@@ -13,8 +13,6 @@
     content="Formulir Pendaftaran, PPDSB, Pondok Pesantren Al Ikhsan Beji, Pendaftaran Santri Baru, Beji, Depok" />
   <meta name="theme-color" content="#14532d" />
 
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
@@ -22,6 +20,65 @@
   <link rel="manifest" href="/manifest.webmanifest">
 
   <title data-i18n="meta.title.register">Formulir Pendaftaran - PPDSB Pondok Pesantren Al Ikhsan Beji</title>
+
+  <!-- CAPTCHA Gate Protection - Must verify on main page first -->
+  <script>
+    (function () {
+      // Check if user has valid CAPTCHA session from main page (1 hour expiry)
+      const STORAGE_KEY = 'captcha_verified_token';
+      const STORAGE_TIMESTAMP_KEY = 'captcha_verified_timestamp';
+      const SESSION_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+
+      function isSessionValid() {
+        const savedTimestamp = localStorage.getItem(STORAGE_TIMESTAMP_KEY);
+        const savedToken = localStorage.getItem(STORAGE_KEY);
+
+        if (!savedToken || !savedTimestamp) {
+          return false;
+        }
+
+        const timestamp = parseInt(savedTimestamp, 10);
+        const now = Date.now();
+        const elapsed = now - timestamp;
+
+        // Session valid if less than 1 hour has passed
+        return elapsed < SESSION_DURATION;
+      }
+
+      function getRemainingTime() {
+        const savedTimestamp = localStorage.getItem(STORAGE_TIMESTAMP_KEY);
+        if (!savedTimestamp) return 0;
+
+        const timestamp = parseInt(savedTimestamp, 10);
+        const now = Date.now();
+        const elapsed = now - timestamp;
+        const remaining = SESSION_DURATION - elapsed;
+
+        return Math.max(0, Math.floor(remaining / (60 * 1000))); // in minutes
+      }
+
+      // If not verified or session expired, redirect to main page
+      if (!isSessionValid()) {
+        console.warn('[CAPTCHA] No valid session, redirecting to main page');
+
+        // Clear expired session
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(STORAGE_TIMESTAMP_KEY);
+
+        // Redirect to main page with redirect parameter
+        alert('Silakan verifikasi keamanan terlebih dahulu. Anda akan diarahkan ke halaman utama.');
+        window.location.href = '/?redirect=daftar';
+      } else {
+        const remaining = getRemainingTime();
+        console.log(`[CAPTCHA] Valid session found, ${remaining} minutes remaining`);
+
+        // Warn user when session is expiring soon (5 minutes before)
+        if (remaining <= 5 && remaining > 0) {
+          console.warn(`[CAPTCHA] Session expiring in ${remaining} minutes`);
+        }
+      }
+    })();
+  </script>
 
   <link rel="stylesheet" href="/assets/css/tailwind.css?v=12" />
   <!-- Wizard Styles -->
@@ -1014,22 +1071,6 @@
                 <!-- Review Content -->
                 <div id="wizard-review-content"></div>
 
-                <!-- Turnstile Verification -->
-                <div class="wizard-turnstile-container">
-                  <div class="wizard-turnstile-title">
-                    <i class="bi bi-shield-check"></i>
-                    <span>Verifikasi Keamanan</span>
-                  </div>
-                  <p class="text-sm text-gray-600 mb-2">
-                    Verifikasi ini melindungi formulir dari bot.
-                  </p>
-                  <div id="turnstileWidget" class="cf-turnstile" data-sitekey="0x4AAAAAACDDkC6MDnS8Ozbo"
-                    data-theme="light" data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired"
-                    data-timeout-callback="onTurnstileExpired" data-error-callback="onTurnstileError"
-                    data-refresh-expired="auto" data-refresh-timeout="auto">
-                  </div>
-                </div>
-
                 <!-- Confirmation Checkbox -->
                 <div class="wizard-confirmation">
                   <div class="wizard-confirmation-title">
@@ -1191,39 +1232,6 @@
   <script>
     const form = document.getElementById("formPendaftar");
     let formDataGlobal = null;
-    let latestTurnstileToken = "";
-
-    function getTurnstileToken() {
-      // Prefer API response (always latest), fallback to hidden input
-      try {
-        if (window.turnstile && typeof window.turnstile.getResponse === "function") {
-          const t = window.turnstile.getResponse();
-          if (t) return t;
-        }
-      } catch (err) {
-        // ignore
-      }
-      const input = document.querySelector('input[name="cf-turnstile-response"]');
-      return (input && input.value) ? input.value : "";
-    }
-
-    function resetTurnstile() {
-      try {
-        if (window.turnstile && typeof window.turnstile.reset === "function") {
-          window.turnstile.reset();
-        }
-      } catch (err) {
-        // ignore
-      }
-      latestTurnstileToken = "";
-    }
-
-    function focusTurnstile() {
-      const el = document.getElementById("turnstileWidget");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }
 
     function isKonfirmasiModalOpen() {
       const modalKonfirmasi = document.getElementById("modalKonfirmasi");
@@ -1238,26 +1246,6 @@
       }
     }
 
-    // Turnstile callbacks (referenced from data-* attributes)
-    window.onTurnstileSuccess = (token) => {
-      latestTurnstileToken = token || "";
-    };
-    window.onTurnstileExpired = () => {
-      latestTurnstileToken = "";
-      if (isKonfirmasiModalOpen()) {
-        closeKonfirmasiModal();
-        toastr.warning("CAPTCHA kedaluwarsa. Silakan verifikasi ulang.");
-        focusTurnstile();
-      }
-    };
-    window.onTurnstileError = () => {
-      latestTurnstileToken = "";
-      if (isKonfirmasiModalOpen()) {
-        closeKonfirmasiModal();
-        toastr.warning("CAPTCHA bermasalah. Silakan coba verifikasi ulang.");
-        focusTurnstile();
-      }
-    };
 
     const translate = (key, replacements) =>
       typeof window.__ === "function" ? window.__(key, replacements) : key;
@@ -2291,14 +2279,13 @@
 
       console.log('[KONFIRMASI] Form valid, building modal...');
 
-      // Di mobile, sering terjadi token CAPTCHA expired saat user lama di modal.
-      // Wajibkan CAPTCHA terisi sebelum masuk modal agar submit lebih stabil.
-      const preCaptchaToken = getTurnstileToken() || latestTurnstileToken;
-      if (!preCaptchaToken) {
-        toastr.warning("Silakan verifikasi CAPTCHA terlebih dahulu.");
-        focusTurnstile();
-        return;
-      }
+      // CAPTCHA DISABLED - Bypass CAPTCHA validation
+      // const preCaptchaToken = getTurnstileToken() || latestTurnstileToken;
+      // if (!preCaptchaToken) {
+      //   toastr.warning("Silakan verifikasi CAPTCHA terlebih dahulu.");
+      //   focusTurnstile();
+      //   return;
+      // }
 
       try {
         const formData = new FormData(form);
@@ -2801,21 +2788,8 @@
           select.disabled = true;
         });
 
-        const captchaToken =
-          getTurnstileToken() ||
-          latestTurnstileToken ||
-          formData.get("cf-turnstile-response") ||
-          formData.get("cf_turnstile_response");
-        if (!captchaToken) {
-          // Close confirmation modal so user can see the widget
-          const modalKonfirmasi = document.getElementById("modalKonfirmasi");
-          if (modalKonfirmasi) {
-            modalKonfirmasi.classList.remove("modal-visible");
-            modalKonfirmasi.classList.add("modal-hidden");
-          }
-          focusTurnstile();
-          throw new Error("Verifikasi CAPTCHA diperlukan atau sudah kedaluwarsa. Silakan verifikasi ulang.");
-        }
+        // CAPTCHA DISABLED - Use dummy token
+        const captchaToken = "CAPTCHA_DISABLED_BY_ADMIN";
 
         for (let [key, value] of formData.entries()) {
           if (!key.startsWith("file")) {
@@ -2926,10 +2900,10 @@
         const fileBPJS = storedFilesData["fileBPJS"] || formData.get("fileBPJS");
 
         console.log("[UPLOAD] File sources - Ijazah:", fileIjazah ? "stored" : "none",
-                    "Akta:", fileAkta ? "stored" : "none",
-                    "Foto:", fileFoto ? "stored" : "none",
-                    "KK:", fileKK ? "stored" : "none",
-                    "BPJS:", fileBPJS ? "stored" : "none");
+          "Akta:", fileAkta ? "stored" : "none",
+          "Foto:", fileFoto ? "stored" : "none",
+          "KK:", fileKK ? "stored" : "none",
+          "BPJS:", fileBPJS ? "stored" : "none");
 
         const fileUrls = {};
 
@@ -3835,9 +3809,10 @@
         if (!elements.submitBtn || !elements.confirmationCheckbox) return;
 
         const isCheckboxChecked = elements.confirmationCheckbox.checked;
-        const isTurnstileValid = getTurnstileToken() !== '';
+        // CAPTCHA DISABLED - Only check confirmation checkbox
+        // const isTurnstileValid = getTurnstileToken() !== '';
 
-        elements.submitBtn.disabled = !isCheckboxChecked || !isTurnstileValid;
+        elements.submitBtn.disabled = !isCheckboxChecked;
       }
 
       // ==================== Event Listeners ====================
@@ -3885,22 +3860,6 @@
         if (elements.confirmationCheckbox) {
           elements.confirmationCheckbox.addEventListener('change', updateSubmitButtonState);
         }
-
-        // Turnstile callbacks (update submit button when turnstile succeeds)
-        window.onTurnstileSuccess = function (token) {
-          latestTurnstileToken = token;
-          updateSubmitButtonState();
-        };
-
-        window.onTurnstileExpired = function () {
-          latestTurnstileToken = '';
-          updateSubmitButtonState();
-        };
-
-        window.onTurnstileError = function () {
-          latestTurnstileToken = '';
-          updateSubmitButtonState();
-        };
       }
 
       // ==================== Initialization ====================

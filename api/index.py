@@ -300,6 +300,13 @@ class handler(BaseHTTPRequestHandler):
                 else:
                     AdminUsersHandler.do_OPTIONS(self)
 
+            elif action == 'verify-turnstile-session':
+                from lib.handlers.turnstile_session import handler as TurnstileSessionHandler
+                if self.command == 'POST':
+                    TurnstileSessionHandler.do_POST(self)
+                else:
+                    TurnstileSessionHandler.do_OPTIONS(self)
+
 
 
                     

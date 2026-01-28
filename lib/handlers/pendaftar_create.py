@@ -109,23 +109,23 @@ class handler(BaseHTTPRequestHandler):
             body = self.rfile.read(content_length).decode('utf-8')
             data = json.loads(body)
 
-            # Verify Cloudflare Turnstile
-            captcha_token = data.get("cf-turnstile-response") or data.get("cf_turnstile_response")
-            client_ip = _pick_client_ip(self.headers)
-            is_human, captcha_message, captcha_codes = verify_turnstile(captcha_token, client_ip)
-            if not is_human:
-                self.send_response(400)
-                self.send_header('Content-Type', 'application/json')
-                self.send_header('Access-Control-Allow-Origin', '*')
-                self.end_headers()
-                self.wfile.write(json.dumps({
-                    "ok": False,
-                    "error": "Verifikasi CAPTCHA gagal. Silakan coba lagi.",
-                    "details": captcha_message,
-                    "codes": captcha_codes
-                }).encode())
-                return
-            
+            # CAPTCHA DISABLED - Skip Cloudflare Turnstile verification
+            # captcha_token = data.get("cf-turnstile-response") or data.get("cf_turnstile_response")
+            # client_ip = _pick_client_ip(self.headers)
+            # is_human, captcha_message, captcha_codes = verify_turnstile(captcha_token, client_ip)
+            # if not is_human:
+            #     self.send_response(400)
+            #     self.send_header('Content-Type', 'application/json')
+            #     self.send_header('Access-Control-Allow-Origin', '*')
+            #     self.end_headers()
+            #     self.wfile.write(json.dumps({
+            #         "ok": False,
+            #         "error": "Verifikasi CAPTCHA gagal. Silakan coba lagi.",
+            #         "details": captcha_message,
+            #         "codes": captcha_codes
+            #     }).encode())
+            #     return
+
             # Validasi data wajib (NIK Calon is optional based on schema)
             required_fields = [
                 "nisn", "namaLengkap", "tempatLahir", "tanggalLahir", 
@@ -285,18 +285,35 @@ class handler(BaseHTTPRequestHandler):
         except Exception as e:
             print(f"[PENDAFTAR_CREATE] ❌ EXCEPTION: {str(e)}")
             print(f"[PENDAFTAR_CREATE] Exception type: {type(e).__name__}")
-            
+
             import traceback
             print(f"[PENDAFTAR_CREATE] Traceback:")
             traceback.print_exc()
-            
-            self.send_response(500)
+
+            # Handle duplicate NISN error specifically
+            error_str = str(e)
+            status_code = 500
+            error_message = str(e)
+
+            # Check for PostgreSQL duplicate key error (23505)
+            if "23505" in error_str or "duplicate key" in error_str.lower():
+                if "pendaftar_nisn_key" in error_str:
+                    status_code = 409  # Conflict
+                    error_message = "NISN sudah terdaftar. Silakan gunakan NISN yang berbeda atau hubungi admin jika ini adalah kesalahan."
+                elif "pendaftar_nikcalon_key" in error_str or "nikcalon" in error_str.lower():
+                    status_code = 409  # Conflict
+                    error_message = "NIK Calon sudah terdaftar. Silakan periksa kembali NIK atau hubungi admin."
+                else:
+                    status_code = 409  # Conflict
+                    error_message = "Data yang Anda masukkan sudah terdaftar. Silakan periksa kembali atau hubungi admin."
+
+            self.send_response(status_code)
             self.send_header('Content-Type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             self.wfile.write(json.dumps({
                 "ok": False,
-                "error": str(e)
+                "error": error_message
             }).encode())
     
     def do_OPTIONS(self):
