@@ -3756,6 +3756,9 @@
       // Global storage for image preview data URLs
       const imagePreviewsData = {};
 
+      // Global storage for file objects to prevent mobile browser from releasing file reference
+      const storedFilesData = {};
+
       // Show image zoom modal
       window.showImageZoom = function (title, imageUrl) {
         const modal = document.getElementById('imageZoomModal');
